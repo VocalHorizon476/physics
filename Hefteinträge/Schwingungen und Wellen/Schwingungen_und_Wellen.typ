@@ -1335,3 +1335,13 @@ Alles gerechnet mit $lambda = d dot sin (arctan a/e)$ und $d = (0.001m)/500$ mit
   *$500^(+7)_(-3)$*, wenn unterschiedliches rauskommt\
   *$(500 plus.minus 7)$*, wenn das Gleiche rauskommt
 ]
+
+
+#page(
+  paper: "a4",
+  height: auto,
+  margin: 0pt,
+)[
+  #image("images/280821 - BeugungEinzelspalt.pdf", page: 1, width: 100%)
+]
+
