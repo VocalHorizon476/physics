@@ -1,0 +1,891 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amssymb, amsthm}
+\usepackage[fleqn]{amsmath}
+\usepackage{tikz}
+\newcommand{\dkreis}[1]{%
+	\tikz[baseline=(char.base)]{
+		\node[shape=circle,draw,line width=1pt,inner sep=1.5pt]
+		(char) {\bfseries #1};
+	}%
+}
+\setlength{\mathindent}{0.5cm}
+\makeatletter
+\renewcommand\tagform@[1]{}
+\makeatother
+\usepackage{float}
+\usepackage[a4paper, margin=2.5cm]{geometry}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
+\usetikzlibrary{circuits.ee.IEC}
+\usepackage{circuitikz}
+\usepackage{enumitem}
+\usepackage{setspace}
+\setstretch{1.2}
+\usepackage[font=small, labelfont=bf, justification=centering, singlelinecheck=false]{caption}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{csquotes}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,decorations.pathreplacing,arrows.meta}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage[normalem]{ulem}
+
+\sisetup{
+	per-mode = fraction,
+	separate-uncertainty = true
+}
+
+
+\title{Schwingungen und Wellen - Tepe}
+\author{Arthur Thiele}
+\date{Q2}
+
+\begin{document}
+
+	\maketitle
+	\newpage
+
+	\section{Schwingungen}
+	\textbf{Versuch: } Schwingung eines Feder-Masse-Pendels\\
+	\textbf{Fragestellung: } Von welchen Größen hängt die Periodendauer T der Schwingung ab?\\
+	\textbf{Hypothese:} Masse m, Federkonstante d, Amplitude A\\
+	\textbf{Aufbau: }\\
+
+	\begin{tikzpicture}[line cap=round, line join=round, >=Latex]
+		\hspace{2.5cm}
+		% ================== Parameter ==================
+		\def\xsys{1.4}      % Verschiebung des gesamten Feder-Haken-Gewicht-Systems nach rechts
+		\def\yruhe{-3.675}  % Höhe der Ruhelage (auf Höhe des Gewichts-Schwerpunkts)
+		\def\A{0.9}         % Amplitude (optisch)
+		\def\xamp{0.75}    % x-Position der Amplitudenpfeile (links neben Gewicht)
+		\def\xruheL{-2.5}   % Ruhelage-Strich: linkes Ende
+		\def\xruheR{0.5}   % Ruhelage-Strich: rechtes Ende (endet links vom Gewicht)
+
+		% ================== Decke ==================
+		\fill[gray!25] (-3,0) rectangle (3,0.5);
+		\draw (-3,0) -- (3,0);
+		\node[above] at (0,0.5) {Decke};
+
+		% ================== Maßband links (soll nichts berühren) ==================
+		\draw[line width=1pt] (-2.7,-0.2) rectangle (-2.3,-4.6);
+		\node[rotate=90] at (-2.5,-2.4) {};
+
+		% Skala: kleine und große Striche
+		\foreach \y in {-0.4,-0.6,...,-4.4} {
+			\draw (-2.3,\y) -- (-2.42,\y);
+		}
+		\foreach \y in {-0.4,-0.9,...,-4.4} {
+			\draw (-2.3,\y) -- (-2.52,\y);
+		}
+
+		% Optional: Markierung der Ruhelage am Maßband
+		\draw[thick] (-2.7,\yruhe) -- (-2.3,\yruhe);
+
+		% ================== Ruhelage (links neben dem Gewicht) ==================
+		\draw[thick] (\xruheL,\yruhe) -- (\xruheR,\yruhe);
+		\node[above left] at (\xruheR-0.5,\yruhe) {Ruhelage};
+
+		% ======= Amplituden-Pfeile (links neben dem Gewicht)
+		\draw[very thick,->] (\xamp,\yruhe) -- (\xamp,\yruhe+\A);
+		\draw[very thick,->] (\xamp,\yruhe) -- (\xamp,\yruhe-\A);
+		\node[left] at (\xamp,\yruhe+0.5*\A) {$A$};
+		\node[left] at (\xamp,\yruhe-0.5*\A) {Amplitude der Auslenkung $-A$};
+
+		% ================== Feder-Haken-Gewicht-System (nach rechts verschoben) ==================
+		\begin{scope}[shift={(\xsys,0)}]
+
+			% --- Haken ---
+			\draw[line width=1pt] (0,0) -- (0,-0.35);
+			\draw[line width=1pt] (0,-0.35) arc (180:360:0.18);
+			\draw[line width=1pt] (0.36,-0.35) -- (0.36,-0.65);
+
+			% --- Feder ---
+			\draw[
+			line width=1pt,
+			decorate,
+			decoration={coil,aspect=0.6,segment length=4mm,amplitude=2.2mm}
+			] (0.18,-0.65) -- (0.18,-3.2);
+
+			% --- Gewicht ---
+			\draw[line width=1pt] (-0.55,-3.2) rectangle (0.91,-4.15);
+
+			% Außenbeschriftung der Masse
+			\node[right] at (1.05,-3.675) {Masse $(m)$};
+
+		\end{scope}
+
+		% ================== Optionale Beschriftung Feder ==================
+		\node[right] at (\xsys+0.8,-1.9) {Schraubenfeder D};
+
+	\end{tikzpicture}
+	\vspace{0.5cm}
+	\\
+	\textbf{Durchführung:}
+	\begin{enumerate}
+		\item  Die Federkonstante wird bestimmt, indem die Ruhelage in Abhängigkeit vom aufgehängten Gewicht bestimmt wird:
+		\vspace{-\abovedisplayskip}
+		\begin{alignat}{1}
+			\hspace{1.5cm}
+			F = m \cdot g &= D \cdot \Delta x\\
+			\Delta x &= \frac{g}{D} \cdot m
+		\end{alignat}
+		\item Die Schwingungsdauer (Periodendauer) T wird in Abhängigkeit von\\
+		a) der angehängten Masse und\\
+		b) der \sout{Auslenkung} Amplitude \\
+		gemessen
+	\end{enumerate}
+	\vspace{0.5cm}
+	\textbf{Messwerte:}\\
+
+	\begin{tabular}{|c|c|}
+		\hline m(kg) & $\Delta$ x(cm)\\
+		\hline 0 & 0.0\\
+		\hline 0.5 & 0.05\\
+		\hline 1 & 0.10\\
+		\hline 1.5 & 0.14\\
+		\hline 2 & 0.20\\
+		\hline 2.5 & 0.24\\
+		\hline 3 & 0.28\\
+		\hline
+	\end{tabular}
+	\hspace{1.5cm}
+	\begin{tabular}{|c|c|}
+		\hline A(cm) & T(s)\\
+		\hline 2.5 & 0.6\\
+		\hline 5 & 0.6\\
+		\hline 7.5 & 0.6\\
+		\hline 10 & 0.59\\
+		\hline 12.5 & 0.58\\
+		\hline
+	\end{tabular}
+	\hspace{1.5cm}
+	\begin{tabular}{|c|c|}
+		\hline m(kg) & T(s)\\
+		\hline 0 & 0\\
+		\hline 0.5 & 0.46\\
+		\hline 1 & 0.6\\
+		\hline 1.5 & 0.78\\
+		\hline 2 & 0.85\\
+		\hline
+	\end{tabular}
+	\vspace{1cm}
+	\\
+
+	\newpage
+	\textbf{Auswertung wird noch verbessert:}
+	\begin{itemize}
+		\item Werte in Tabelle in TR übernehmen.
+		\item Diagramm anlegen.\\
+		- x-Achse: m(kg)\\
+		- y-Achse: x(cm)
+		\item Die Punkte verlaufen augenscheinlich entlang dem Graphen einer Gerade.\\
+		$\Rightarrow$ Linearregression: $y = 0.094x + 0.0029$
+		\item Im physikalischen Kontext: $\Delta x(kg) = 0.094 \frac{1}{kg} \cdot m$
+	\end{itemize}
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				xlabel={$m \, (\mathrm{kg})$},
+				ylabel={$\Delta x \, (\mathrm{cm})$},
+				grid=major,
+				width=12cm,
+				height=8cm,
+				legend pos=north west,
+				axis lines=middle,
+				xmin=0,
+				ymin=0,
+				legend style={
+					at={(0.2,0.9)},
+					anchor=north west
+				}
+				]
+
+				% Messpunkte
+				\addplot[only marks, mark=*,]
+				coordinates {
+					(0,0)
+					(0.5,5)
+					(1,10)
+					(1.5,14)
+					(2,20)
+					(2.5,24)
+					(3,28)
+				};
+
+				\addlegendentry{Messwerte}
+
+				% Regressionsgerade
+				\addplot[domain=0:3, samples=100]
+				{9.43*x + 0.29};
+
+				\addlegendentry{$\Delta x = 9.43\,cm + 0.29$}
+
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+
+
+	\newpage
+	\section{Die harmonische Schwingung}
+	z.B. Feder-Masse-Pendel (s.o.)
+
+	\noindent
+	\begin{minipage}{0.55\textwidth}
+		\begin{alignat}{1}
+			F_G &= g \cdot m\\
+			F_T &= m \cdot a =\\
+			F_D &= D \cdot x \qquad \text{x: Auslenkung (eig. } \Delta x)\\
+		\end{alignat}
+		\vspace{-1.5cm}
+		\begin{alignat}{1}
+			F_G + F_D &= F_T\\
+			-g m + D x &= m a\\
+			-gm + Dx &= m \ddot{x} \qquad \text{Inhomogene DGl 2. Ordnung}
+		\end{alignat}
+	\end{minipage}
+	\hfill
+	\fbox{
+		\begin{minipage}[t]{0.3\textwidth}
+			\textbf{Einschub}
+			\vspace{-0.3cm}
+			\begin{alignat}{1}
+				x(t) &= \frac{1}{2} a t^2 + v_0 t + s_0\\
+				v(t) &= \dot{x}(t) = at + v_0\\
+				a(t) &= \dot{v}(t) = \ddot{x}(t) = a
+			\end{alignat}
+		\end{minipage}
+	}
+	\vspace{1cm}\\
+	\textbf{Ansatz: } $x (t) = x_0 \sin (\omega t + \varphi)$\\
+	\vspace{-0.5cm}
+	\begin{alignat}{2}
+		\omega = 2\pi f &= \frac{2\pi}{T} &\quad&:\text{Winkelgeschwindigkeit}\\
+		f      &= \frac{1}{T}              &\quad&:\text{Frequenz}\\
+		& T  &\quad&:\text{Periodendauer}\\
+		& \varphi  &\quad&:\text{Phase}
+	\end{alignat}
+	\vspace{-1cm}
+	\begin{alignat}{1}
+		\dot{x} (t) &= x_0 \omega \cos (\omega t + \varphi)\\
+		\ddot{x} (t) &= -x_0 \omega^2 \sin (\omega t + \varphi)\\
+	\end{alignat}
+
+
+	\noindent
+	\textbf{Einsetzen} \\
+	$-g m + D x_0 \sin (\omega t + \varphi) = -m x_0 \omega^2 \sin (\omega t + \varphi)$
+	\vspace{0.2cm}\\
+	$\rightarrow$ So geht's nicht weiter, weil wir nicht nach $\omega$ auflösen können $\sqrt{-1}$\\
+	$\rightarrow$ Inhomogenität (nicht abhängig von x oder $\ddot{x}$) können wir auch nicht verarbeiten\\
+	Inhomogene DGL werden gelöst, indem man die homogene DGL löst und einen Spezialfall für die inhomogene hinzuaddiert.\\
+	Homogen mit richtigem Vorzeichen:
+	\begin{alignat}{1}
+		Dx - m \ddot{x} = 0 \quad \leftarrow \text{homogen}\\
+		Dx_0 \sin (\omega t + \varphi) - m x_0 \omega^2 \sin (\omega t + \varphi) &= 0\\
+		(D - m \omega^2) x_0 \sin (\omega t + \varphi) &= 0\\
+		D - m \omega^2 = 0 \qquad \vee \qquad x_0 \sin (\omega t + \varphi) &= 0 \qquad \text{(Laaangweilig, weil dann nichts schwingt)}\\
+	\end{alignat}
+	\vspace{-1cm}
+	\begin{alignat}{1}
+		\Rightarrow D &= m \omega^2\\
+		\Rightarrow \omega &= \sqrt{\frac{D}{m}}\\
+		\Rightarrow \frac{2 \pi}{T} &= \sqrt{\frac{D}{m}}\\
+		\Rightarrow T &= 2 \pi \sqrt{\frac{m}{D}}
+	\end{alignat}
+
+
+	\newpage
+	\noindent
+	Lösung der homogenen DGL \qquad $x(t) = x_0 \sin \Big( \sqrt{\frac{D}{m}} \cdot t + \varphi \Big)$\\
+	Lösung der inhomogenen DGL \qquad $x(t) = x_0 \sin \Big( \sqrt{\frac{D}{m}} t + \varphi \Big)$\\
+	\\
+	$Dx - mg + m \ddot{x} = 0$\\
+	``-mg'' muss beim Einsetzen von x(t) herauskommen\\
+	$\Rightarrow x(t) = x_0 \sin \Big( \sqrt{\frac{D}{m}} t + \varphi \Big) + \frac{mg}{D}$\\
+	\\
+	\textbf{Test durch Einsetzen:}\\
+	\begin{alignat}{1}
+		\dot{x}&=x_0\sqrt{\tfrac Dm}\cos \Big(\sqrt{\tfrac Dm}t+\varphi \Big)\\
+		\ddot{x}&=-x_0\frac Dm \sin \Big( \sqrt{\tfrac Dm}t+\varphi \Big)\\
+		Dx-mg+m\ddot{x}&=0\\
+		D\Big(x_0 \sin \Bigg( \sqrt{\tfrac Dm}t+\varphi \Bigg)+\frac{mg}D \Big)-mg+m \Big(-x_0\frac D m \sin \Bigg(\sqrt{\frac Dm}t+\varphi\Bigg) \Big)&=0\\
+		Dx_0 \sin \Big(\sqrt{\tfrac Dm}t+\varphi \Big)+mg-mg-x_0D \sin \Big(\sqrt{\tfrac Dm}t+\varphi \Big)&=0\\
+		0&=0\\
+	\end{alignat}
+	\vspace{0.5cm}\\
+	\subsection{Hausaufgabe:}
+	\vspace{-0.3cm}
+	\begin{minipage}[htpb]{0.6\textwidth}
+		\vspace{0pt}
+		\begin{alignat}{3}
+			& \hspace{1cm} & F_D &= F_G              &\hspace{1cm}& \mid F_G = -mg\\
+			&            & D x &= mg               &      & \\
+			\Leftrightarrow &  & x   &= \frac{mg}{D}     && \mid x = -\Delta x\\
+			\Rightarrow &      & x   &= -\frac{mg}{D}    &      &
+		\end{alignat}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[b]{0.4\textwidth}
+		\vspace{0pt}
+		\begin{alignat}{1}
+			F_D + F_G &= 0\\
+			D x - m g &= 0
+		\end{alignat}
+	\end{minipage}
+	\vspace{0.3cm}
+	\subsection{Definition: } Eine Schwingung heißt harmonisch, wenn die Rückstellkraft (hier $F_D = Dx$) proportional zur Auslenkung ist. Die dazugehörige DGL wird dann durch eine Sinus-(bzw. Kosinus-)Funktion gelöst.\\
+	\vspace{-0.3cm}\\
+	Unsere Lösung $x(t) = x_0 \sin \Big( \sqrt{\tfrac{D}{m}} t + \varphi \Big) + \frac{mg}{D}$ muss noch durch die Startbedingungen festgelegt werden\\
+
+	\newpage
+	\section{Energiebilanz beim Feder-Masse-Pendel}
+	(Auslenkung) $x_A = x_0 \sin (\omega t)$\\
+	$v = \dot{x}_A = x_0 \omega \cos (\omega t)$
+
+	\includegraphics[width=0.5\textwidth]{Images/Energiebilanz beim Feder-Masse-Pendel.png}
+
+	$ \Rightarrow x = x_R + x_A$ \hspace{2cm}
+	$ T = 2\pi \sqrt{\frac{m}{D}}$ \hspace{2cm}
+	$\omega = 2 \pi f = 2 \pi \frac{1}{T} = \sqrt{\frac{D}{m}}$\\
+	\begin{alignat}{1}
+		E_{pot} &= m \cdot g \cdot h = -m \cdot g \cdot x = - m \cdot g \cdot (x_R + x_A)\\
+		E_{kin} &= \frac{1}{2} \cdot m \cdot v^2\\
+		E_{span} &= \frac{1}{2} \cdot D \cdot x^2 = \frac{1}{2} \cdot D \cdot (x_R + x_A)^2\\
+		&= \frac{1}{2} \cdot D \cdot (x_R^2 + 2 x_R x_A + x_A^2)\\
+		&= \frac{1}{2} \cdot D x_R^2 + D \cdot x_R \cdot x_A + \frac{1}{2} \cdot D \cdot x_A^2
+	\end{alignat}
+	Für die Ruhelage gilt:
+	\begin{alignat}{1}
+		F_g &= F_D\\
+		m \cdot g &= D \cdot x_R \qquad \text{In $E_{pot}$ einsetzen}\\
+	\end{alignat}
+	\begin{alignat}{1}
+		E &= E_{pot} + E_{kin} + E_{span} \\
+		&= -D \cdot x_R \cdot (x_R + x_A) + \frac{1}{2} \cdot m \cdot v^2 + \frac{1}{2} \cdot D \cdot x_R^2 + D\cdot x_R \cdot x_A + \frac{1}{2} \cdot D \cdot x_A^2\\
+		&= -Dx_R^2 - Dx_R x_A + \frac{1}{2} mv^2 + \frac{1}{2} D x_R^2+ Dx_R  x_A + \frac{1}{2} D x_A^2\\
+		&= -\frac{1}{2} D x_R^2 + \frac12 m v^2 + \frac12 D x_A^2
+	\end{alignat}
+	$-\frac{1}{2} D x_R^2 \text{ = Konstante}$\\
+	$\frac12 m v^2 = E_{kin}$\\
+	$\frac12 D x_A^2 =$ Spannenergie bezogen auf die Ruhelage\\
+
+	\begin{tikzpicture}
+		\begin{axis}[
+			width=15cm,
+			height=8cm,
+			axis lines=center,
+			xlabel={$t$},
+			ylabel={$E$},
+			xmin=-0.5, xmax=14,
+			ymin=-1.4, ymax=1.8,
+			xtick=\empty,
+			ytick=\empty,
+			axis line style={-stealth, thick},
+			ylabel style={anchor=south, font=\large, at={(axis description cs:0.055,1)}},
+			xlabel style={anchor=north west, font=\large},
+			clip=false,
+		]
+
+		% x_A label near y-axis (amplitude indicator)
+		\node[anchor=south west] at (axis cs:0.1, 1.0) {$x_A$};
+
+		% Gray curve: cos(t) — velocity / phase-shifted oscillation
+		\addplot[gray!80, thick, domain=0:13.5, samples=400] {cos(deg(x))};
+
+		% x_A displacement: sin(t) — black, slow oscillation
+		\addplot[black, very thick, domain=0:13.5, samples=400] {sin(deg(x))};
+
+		% E_kin = cos^2(t) — kinetic energy (magenta), double frequency
+		\addplot[magenta, thick, domain=0:13.5, samples=400]
+			{0.8*(0.5 + 0.5*cos(deg(2*x)))};
+
+		% E_span = sin^2(t) — spring/potential energy (cyan), double frequency
+		\addplot[cyan, thick, domain=0:13.5, samples=400]
+			{0.8*(0.5 - 0.5*cos(deg(2*x)))};
+
+		% Right-side curve labels
+		\node[magenta, anchor=west, font=\small] at (axis cs:13.6, 0.25) {$E_\mathrm{kin}$};
+		\node[cyan,    anchor=west, font=\small] at (axis cs:13.6, 0.55) {$E_\mathrm{span}$};
+		\node[black,   anchor=west, font=\small] at (axis cs:13.6, 0.9) {$x_A$};
+		\node[gray,    anchor=west, font=\small] at (axis cs:13.6, 0.7)  {$v$};
+		\end{axis}
+	\end{tikzpicture}
+
+
+	\newpage
+	\section{Das Fadenpendel}
+
+	\begin{alignat}{1}
+		\alpha \text{ im Bogenmaß}\\
+		\Rightarrow b &= \alpha \cdot l\\
+		F_G &= m \cdot g\\
+		\sin \alpha &= \frac{F_{\perp}}{F_G}\\
+		F_{\perp} &= F_G \sin \alpha
+	\end{alignat}
+
+	Beschleunigung der Masse:
+
+	\begin{alignat}{1}
+		F &= ma\\
+		a &= \frac{F}{m} = \frac{F_G \cdot \sin \alpha}{m} = \frac{mg \cdot \sin \alpha}{m} = g \cdot \sin \alpha\\
+	\end{alignat}
+
+	\begin{alignat}{1}
+		F_a + F_{\perp} &= 0\\
+		m \cdot a + F_G \sin \alpha &= 0\\
+		m \cdot \ddot{b} + mg\sin \alpha &= 0\\
+		m \cdot \ddot{\alpha} \cdot l + m g \sin \alpha &= 0\\
+	\end{alignat}
+
+	\begin{alignat}{1}
+		a &= \ddot{b}\\
+		b &= \alpha \cdot l\\
+		\dot{b} &= \dot{\alpha} \cdot l\\
+		\ddot{b} &= \ddot{\alpha} \cdot l
+	\end{alignat}
+
+	Im Bogenmaß $\alpha \approx \sin \alpha$ für kleine $\alpha$
+
+	\begin{alignat}{1}
+		\Rightarrow m l \ddot{\alpha} + m g \alpha &= 0 \qquad \mid : m \\
+		l \ddot{\alpha} + g \alpha &= 0\\
+	\end{alignat}
+
+	\begin{alignat}{1}
+		\text{Lösungsansatz: } \alpha(t) &= \alpha_0 \sin(\omega t + \varphi)\\
+		\dot{\alpha}&=\alpha_0\omega \cos(\omega t+\varphi)\\ \ddot{\alpha}&=-\alpha_0\omega^2 \sin(\omega t+\varphi)\\
+		-\alpha_0\omega^2 \sin(\omega t+\varphi)l+g\alpha_0\sin(\omega t+\varphi)&=0\\
+		-\omega^2 l+g&=0\\
+		\omega^2&=\frac gl\\
+		\omega&=\sqrt{\frac gl} \\
+		-\alpha_0\omega^2 \sin(\omega t+\pi)l+g\alpha_0\sin(\omega t+\pi)&=0
+	\end{alignat}
+
+	\begin{alignat}{1}
+		T &= \frac{1}{f} = \frac{2 \pi}{\omega}\\
+		\Rightarrow T &= 2 \pi \sqrt{\tfrac{l}{g}}\\
+	\end{alignat}
+	Für Startbedingungen
+	\begin{alignat}{1}
+		\alpha (t = 0) &= \alpha_0\\
+		\alpha_0 \cdot \sin(\omega \cdot 0 + \varphi) &= \alpha_0\\
+		\sin (\varphi) &= 1\\
+		\Rightarrow \varphi &= \frac{\pi}{2}\\
+	\end{alignat}
+	\begin{alignat}{1}
+		\Rightarrow \alpha (t) &= \alpha_0 \sin\!\left(\omega t + \frac{\pi}{2}\right)\\
+		&= \alpha_0 \cos\!\left(\sqrt{\frac{g}{l}} \cdot t\right)\\
+	\end{alignat}
+
+	% Kurve: sin(x), x von 0 bis 2*pi (genau eine Periode)
+	% t=0 beim ersten Extrempunkt (x = pi/2 ≈ 1.5708)
+	% Klammer T von x=0 bis x=2*pi ≈ 6.2832
+	\begin{center}
+		\begin{tikzpicture}
+			% Achsen
+			\draw[-stealth, thick] (-0.4, 0) -- (7.5, 0) node[anchor=north west] {$t$};
+			\draw[-stealth, thick] (0, -1.4) -- (0, 1.4) node[anchor=south] {$\alpha$};
+
+			% Sinuskurve: genau eine Periode (x = 0 bis 2*pi)
+			\draw[thick, domain=0:6.2832, samples=300, smooth]
+				plot (\x, {0.9*sin(deg(\x))});
+
+			% t=0 Tick beim ersten Extrempunkt (x = pi/2 ≈ 1.5708)
+			\draw (1.5708, 0.07) -- (1.5708, -0.07) node[below] {$t=0$};
+
+			% Periodenklammer von x=0 bis x=2*pi, unterhalb des Graphen (y=-1.2)
+			\draw[decorate, decoration={brace, mirror, amplitude=6pt}]
+				(0, -1.2) -- (6.2832, -1.2)
+				node[midway, below=8pt] {$T$};
+		\end{tikzpicture}
+	\end{center}
+
+
+	\newpage
+
+	\section{Gedämpfte Schwingung}
+
+	Zeitabhängige Auslenkung eines gedämpften Feder-Masse-Pendels: $y (t) = \hat{y} \cdot e^{- \lambda t} \cdot \cos (\omega t)$ mit $\lambda = \frac{c}{2m}$: Abklingkonstante\\
+	c: Dämpfungskonstante $[c] = \frac{kg}{s}$\\
+	m: Masse\\
+	$f = \frac{1}{2\pi} \omega = \frac{1}{2 \pi} \sqrt{\omega_0^2 - \lambda^2}:$ Frequenz der gedämpften Schwingung\\
+	$f_0 =  \frac{1}{2 \pi} \omega_0 = \frac{1}{2 \pi} \sqrt{\frac{D}{m}}$: Frequenz der ungedämpften Schwingung.\\
+	D: Federkonstante\\
+	Herleitung siehe Blatt vom 13.04.26\\
+
+	\newpage
+	\section{erzwungene Schwingung}
+	Bsp.:\\
+
+	\vspace{0.5cm}
+	\begin{center}
+		\begin{tikzpicture}[line cap=round, line join=round, >=Latex]
+
+			% ===== Decke =====
+			\fill[gray!25] (-4.5, 0.5) rectangle (5.8, 0);
+			\draw[thick] (-4.5, 0) -- (5.8, 0);
+
+			% ===== Halterung Rädchen =====
+			\draw[line width=1.5pt] (0, 0) -- (0, -0.8);
+
+			% ===== Rädchen (Mittelpunkt (0,−1.5), Radius 0.7) =====
+			\draw[line width=2pt] (0, -1.5) circle (0.7);
+			\fill (0, -1.5) circle (0.08);
+			\foreach \a in {0, 60, 120, 180, 240, 300} {
+				\draw[line width=0.7pt] (0,-1.5) -- ({0.6*cos(\a)}, {-1.5+0.6*sin(\a)});
+			}
+
+			% ===== Seile =====
+			% Seil von Federanschluss (−2, −2.65) zum Tangentenpunkt (≈138°) am Rädchen
+			\draw[line width=1.8pt]
+				(-2, -2.65) -- ({0.7*cos(138)}, {-1.5+0.7*sin(138)});
+			% Seil um Rädchen gewickelt: Bogen 177° (138° CCW bis 315°)
+			% Verlauf: oben-links → links → unten → unten-rechts
+			\draw[line width=1.8pt]
+				({0.7*cos(138)}, {-1.5+0.7*sin(138)})
+				arc[start angle=138, end angle=315, radius=0.7];
+			% Seil vom Rädchen (315°) zum Motor
+			\draw[line width=1.8pt]
+				({0.7*cos(315)}, {-1.5+0.7*sin(315)}) -- (4.2, -3.6);
+			% ↔ neben dem Motor-Seil (seitlich versetzt, parallel zum Seil)
+			\node[rotate=-23, font=\normalsize] at (2.49, -2.47) {$\leftrightarrow$};
+
+			% ===== Wassertank (vor Feder/Masse zeichnen, damit diese sichtbar bleiben) =====
+			\fill[cyan!20] (-3.05, -4.2) rectangle (-0.95, -5.75);
+			\draw[line width=2pt]
+				(-3.05, -4.2) -- (-3.05, -5.75) -- (-0.95, -5.75) -- (-0.95, -4.2);
+			\node[cyan!60!black, font=\footnotesize] at (-2, -5.5) {Wasser};
+
+			% ===== Feder (mit Label D) – System bei x=−2 =====
+			\draw[line width=1pt, decorate,
+				  decoration={coil, aspect=0.6, segment length=5.5mm, amplitude=3mm}]
+				(-2, -2.65) -- (-2, -4.45);
+			% Verbindungslinie Feder → Masse (überbrückt Dezimalrest des Wendelprofils)
+			\draw[line width=1pt] (-2, -4.45) -- (-2, -4.5);
+			\node[right] at (-1.35, -3.55) {$D$};
+
+			% ===== Masse =====
+			\fill[white] (-2.45, -4.5) rectangle (-1.55, -5.3);
+			\draw[line width=1.2pt] (-2.45, -4.5) rectangle (-1.55, -5.3);
+			\node at (-2, -4.9) {$m$};
+
+			% ===== Motor =====
+			\draw[line width=2pt] (4.2, -4.35) circle (0.75);
+			\fill (4.2, -4.35) circle (0.08);
+			% Exzenter-Arm
+			\draw[line width=1.2pt] (4.2, -4.35) -- (4.2, -3.6);
+			\fill[white] (4.2, -3.6) circle (0.10);
+			\draw[line width=1pt] (4.2, -3.6) circle (0.10);
+			% Drehpfeil (im Uhrzeigersinn)
+			\draw[-stealth, line width=1.2pt]
+				(4.2, {-4.35+0.92})
+				arc[start angle=90, end angle=-180, radius=0.92];
+			% Motor-Beschriftung
+			\node[right, font=\small] at (5.05, -4.35) {Exzenter mit $\omega_E$};
+
+			% ===== Linke Beschriftung =====
+			\node[left, align=right, font=\small] at (-3.1, -3.4)
+				{Feder-Masse-Pendel\\ mit $\omega$ (s.o.)};
+
+		\end{tikzpicture}
+	\end{center}
+	
+	\noindent
+	$\omega =$ Durch m, D und c festgelegt\\
+	$\omega_E =$ Einstellbar\\
+	$\hat{y} =$ Amplitude der Auslenkung der Masse\\
+
+	\subsection{Resonanzkurve}
+	\begin{center}
+		\begin{tikzpicture}
+			\begin{axis}[
+				width=13cm, height=6cm,
+				axis lines=center,
+				xlabel={$\omega_E$},
+				ylabel={$\hat{y}$},
+				xmin=0, xmax=2.6,
+				ymin=0, ymax=4.8,
+				xtick=\empty,
+				ytick={1},
+				yticklabels={$0.5$},
+				clip=false,
+				axis line style={-stealth, thick},
+				xlabel style={anchor=north west, font=\normalsize},
+				ylabel style={anchor=south, font=\normalsize},
+				legend pos=north east,
+				legend style={font=\small},
+			]
+
+			% omega_0 gestrichelte senkrechte Linie
+			\addplot[gray!60, dashed, thin, forget plot] coordinates {(1,0)(1,4.7)};
+			\node[below=3pt, font=\small, xshift=6pt] at (axis cs:1, 0) {$\omega_0$};
+
+			% Gelb: c=0 (ungedämpft) – zwei Äste, auf Plotbereich beschränkt
+			\addplot[yellow!85!black, ultra thick, domain=0.02:0.965, samples=300,
+				restrict y to domain=0:4.7, forget plot]
+				{1/abs(1-x^2)};
+			\addplot[yellow!85!black, ultra thick, domain=1.035:2.55, samples=300,
+				restrict y to domain=0:4.7]
+				{1/abs(1-x^2)};
+			\addlegendentry{$c = 0$ (keine Dämpfung)}
+
+			% Orange: geringe Dämpfung, delta=0.25  ->  omega_res1 = sqrt(0.875) ≈ 0.9354
+			\addplot[orange, ultra thick, domain=0.02:2.55, samples=500]
+				{1/sqrt((1-x^2)^2 + 4*0.0625*x^2)};
+			\addlegendentry{geringe Dämpfung}
+
+			% Rot: starke Dämpfung, delta=0.40  ->  omega_res2 = sqrt(0.68) ≈ 0.8246
+			\addplot[red!85!black, ultra thick, domain=0.02:2.55, samples=300]
+				{1/sqrt((1-x^2)^2 + 4*0.16*x^2)};
+			\addlegendentry{starke Dämpfung}
+
+			% --- Peak-Markierungen ---
+			% Gelb: Pfeil nach oben an omega_0 (Pol -> unendlich)
+			\draw[-stealth, yellow!85!black, thick]
+				(axis cs:1, 4.0) -- (axis cs:1, 4.65);
+
+			% Orange: omega_res1 ≈ 0.9354  — Label tiefer gestaffelt
+			\addplot[orange!70, dashed, thin, forget plot]
+				coordinates {(0.9354,0)(0.9354,2.1)};
+			\node[below=3pt, orange!90!black, font=\scriptsize] at (axis cs:0.9354, 0)
+				{$\omega_R$};
+
+			% Rot: omega_res2 ≈ 0.8246  — Label normal
+			\addplot[red!70!black, dashed, thin, forget plot]
+				coordinates {(0.8246,0)(0.8246,1.56)};
+			\node[below=3pt, red!85!black, font=\scriptsize] at (axis cs:0.8246, 0)
+				{$\omega_R$};
+
+			% --- Geschweifte Klammer: Auslenkung des Erregers (y=0 bis y=1, links der y-Achse) ---
+			\draw[decorate, decoration={brace, amplitude=5pt}]
+				(axis cs:-0.18, 0) -- (axis cs:-0.18, 1)
+				node[midway, left=8pt, font=\small, align=right]
+				{Auslenkung\\des Erregers};
+
+			\end{axis}
+		\end{tikzpicture}
+	\end{center}
+
+	\noindent
+	mechanischer Erreger:
+	$\hat{y}(\omega_E) = \frac{\frac{F_0}{m}}{\sqrt{(\omega_0^2 - \omega_E^2)^2 + (2 \lambda \omega_E)^2}}$\\
+	\\
+	Resonanz tritt auf, wenn $\omega_E = \sqrt{\omega_0^2 - 2 \lambda^2}$ ist.\\
+
+	\newpage
+	\section*{Aufgabe 2}
+
+	Gegeben:
+	\begin{align*}
+		m &= 1500,\text{kg} \\
+		f_0 &= 0{,}2 \text{Hz}
+	\end{align*}
+
+	\subsection*{a) Federkonstanten}
+	\begin{align*}
+		f_0 &= \frac{1}{2\pi} \sqrt{\frac{D}{m}} \\
+		D &= m(2\pi f_0)^2 \\
+		D &= 1500 \cdot (2\pi \cdot 0{,}2)^2 \\
+		D &\approx 2370 \text{ N/m}
+	\end{align*}
+	\begin{align*}
+		D_{\text{Feder}} &= \frac{2370}{4} \\
+		D_{\text{Feder}} &\approx 592{,}5 \text{N/m}
+	\end{align*}
+
+	\subsection*{b) Resonanzgeschwindigkeit}
+	Anregungsfrequenz = eigene Frequenz
+	\begin{align*}
+		f &= \frac{v}{s} \\
+		f_0 &= \frac{v}{10} \\
+		v &= 10 \cdot 0{,}2\\
+		v &= 2\text{ m/s} \\
+		v &= 7{,}2 \text{ km/h}
+	\end{align*}
+
+	\newpage
+	\section{Der LC-Schwingkreis}
+
+	\begin{center}
+	\begin{circuitikz}[european, scale=1.3, line cap=round]
+
+		% ===== Linke Leitung =====
+		\draw (0,0) -- (0,5);
+		\filldraw (0,2.5) circle (0.05); % Knotenpunkt
+
+		% ===== Oben: Spannungsquelle =====
+		\draw (0,5) to[battery1, l=$U_0$] (5,5);
+
+		% ===== Unten: Spule =====
+		\draw (0,0) to[L, l=$L$] (5,0);
+
+		% ===== Mitte: Kondensator (horizontal) =====
+		\draw (0,2.5) to[C, l=$C$] (4,2.5);
+
+		% ===== Rechte Verbindungen zu den Schalter-Kontakten =====
+		\draw (5,5) -- (5,4);   % U0+ herunter zu Kontakt 1
+		\draw (5,0) -- (5,1);   % L-Ende herauf zu Kontakt 2
+
+		% ===== Schalter S (Umschalter) =====
+		\filldraw (4,2.5) circle (0.09);  % Drehpunkt (= rechter C-Anschluss)
+		\filldraw (5,4)   circle (0.08);  % Kontakt 1 – Ladestromkreis
+		\filldraw (5,1)   circle (0.08);  % Kontakt 2 – Schwingkreis
+		% Schalterarm obere Stellung (Laden, durchgezogen):
+		\draw[line width=1.8pt] (4,2.5) -- (5,4);
+		% Schalterarm untere Stellung (Schwingen, gestrichelt):
+		\draw[line width=1.2pt, dashed] (4,2.5) -- (5,1);
+
+		% ===== Beschriftungen =====
+		\node[right, font=\small] at (5.15, 2.5) {$S$};
+
+	\end{circuitikz}
+	\end{center}
+
+	\noindent
+	\textbf{Maschenregel für den Schwingkreis:}\\
+	\begin{minipage}[t]{0.3\textwidth}
+		\begin{align*}
+			U_C + U_L &= 0\\
+			\frac{Q}{C} + L \dot{I} &= 0\\
+			\frac{Q}{C} + L \ddot{Q} &= 0
+		\end{align*}
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.7\textwidth}
+		\begin{align*}
+			\textbf{Ansatz: } &Q(t) = \hat{Q} \sin (\omega t + \varphi)\\
+				       &\dot{Q}(t) = \hat{Q} \,\omega \cos(\omega t + \varphi)\\
+				       &\ddot{Q}(t) = -\hat{Q} \,\omega^2 \sin(\omega t + \varphi)\\
+		\end{align*}
+	\end{minipage}
+	
+	\vspace{0.5cm}
+	\noindent
+	\textbf{Differentialgleichung:}
+	\begin{align*}
+		\frac{\hat{Q} \sin(\omega t + \varphi)}{C} + L \left(-\hat{Q}\,\omega^2 \sin(\omega t + \varphi)\right) &= 0\\
+		\hat{Q} \sin(\omega t + \varphi) \left( \frac{1}{C} - L \omega^2 \right) &= 0\\
+		\frac{1}{C} - L \omega^2 &= 0\\
+		\omega^2 &= \frac{1}{LC}\\
+		\omega &= \frac{1}{\sqrt{LC}}
+	\end{align*}
+	\begin{align*}
+		2 \pi f &= \frac{1}{\sqrt{L C}}\\
+		f &= \frac{1}{2 \pi \sqrt{L C}} \text{: Thomsonsche Schwingungsgleichung}
+	\end{align*}
+
+	\newpage
+	\section*{Versuch: Eigenfrequenz des Schwingkreises/ Erzwungene Schwingung}
+	\textbf{Aufbau:}\\
+	
+	\begin{center}
+	\begin{circuitikz}[european, scale=1.4, line cap=round]
+		% Gelber Kasten (zuerst, damit er im Hintergrund liegt)
+		\draw[fill=yellow!25, draw=yellow!70!black, rounded corners=5pt, line width=1.2pt]
+			(3.2, -0.55) rectangle (6.8, 3.6);
+		\node[font=\small\bfseries, text=yellow!70!black] at (5, 3.95) {Funktionsgenerator};
+
+		% Linke Leitung
+		\draw (0,0) -- (0,3);
+		% Oben: Spule L, dann Kondensator C
+		\draw (0,3) to[L, l=$L$] (2,3) to[C, l=$C$] (4,3);
+		% Oszilloskop parallel zur Spule L (oberhalb)
+		\draw (0,3) -- (0,4.8);
+		\draw (2,3) -- (2,4.8);
+		\draw (0,4.8) -- (0.45,4.8);
+		\draw (1.55,4.8) -- (2,4.8);
+		\draw (1,4.8) circle (0.55);
+		\draw[thick] plot[domain=-0.38:0.38, samples=60, smooth, variable=\t]
+			({1+\t}, {4.8 + 0.3*sin(deg(\t/0.38*180))});
+		\node[above, font=\small\bfseries] at (1,5.38) {Oszilloskop};
+		% Untere Leitung
+		\draw (0,0) -- (6,0);
+		% Verbindung oben zwischen R und U
+		\draw (4,3) -- (6,3);
+		% Rechts, Ast 1: Widerstand R
+		\draw (4,3) to[R, l=$R$] (4,0);
+		% Rechts, Ast 2: Spannungsquelle U (parallel zu R)
+		\draw (6,3) to[V, l=$U$] (6,0);
+	\end{circuitikz}
+
+	\end{center}
+
+
+	\begin{align*}
+		L &= ?\\
+		\Rightarrow N &= 1200 \qquad \text{Eisenkern/ kein Eisenkern}\\
+		C &= 1000 nF \text{ oder } 33nF\\
+		R &= 50 \Omega\\
+	\end{align*}
+
+	\begin{enumerate}
+		\item Eigenfrequenz $\omega$, $\lambda$\\
+			$\omega_0$ über Thomsonsche Schwingungsgleichung
+	\end{enumerate}
+
+	Messungen:
+
+\begin{minipage}[b]{0.45\textwidth}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.45\textwidth}
+  \end{minipage}
+
+	\begin{center}
+		\begin{tabular}{|r|r|r|}
+			\hline
+			$n$ & $t$ ($\mu$s) & $U$ (V) \\
+			\hline
+			0 & 0    & 6{,}0 \\
+			1 & 450  & 4{,}1 \\
+			2 & 850  & 3{,}2 \\
+			3 & 1250 & 2{,}6 \\
+			4 & 1750 & 2{,}0 \\
+			5 & 2100 & 1{,}4 \\
+			6 & 2550 & 1{,}0 \\
+			7 & 2900 & 0{,}9 \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+	\newpage
+	\noindent
+	\textbf{Auswertung:}
+	$U \sim e^{- \lambda t}$\\
+	$ t (n) \sim T$
+
+	\begin{align*}
+		U(t) &= 5.78 V \cdot 0.99934^{\frac{t}{1 \mu s}}\\
+		t(n) &= 417.3 \mu s \cdot n + 20.83\\
+	\end{align*}
+	\begin{align*}
+		b^{\frac{t}{1 \mu s}} &= e^{\lambda t} \mid \ln\\
+		\Leftrightarrow \frac{t}{1 \mu s} \ln b &= - \lambda t\\
+		\overset{\Leftrightarrow}{t \neq 0} \lambda &= - \frac{\ln b}{1 \mu s}\\
+		&= \frac{0.000658}{\mu s}\\
+		&= 658 \, \mathrm{s}^{-1} \\
+		\omega &= 2 \pi f = 2 \pi \cdot \frac{1}{T}\\
+		       &= 15000 \text{ Hz}
+	\end{align*}
+	\begin{align*}
+		\omega_0 &= ?\\
+		\omega^2 &= \omega_0^2 - \Lambda^2\\
+		\omega_0 &= \sqrt{\omega^2 + \Lambda^2 }\\
+		&= 15073 \text{ Hz}\\
+	\end{align*}
+	\begin{align*}
+		f_0 &= \frac{\omega_0}{2 \pi} = 2398 \text{ Hz}\\
+		C &= 33 \text{ nF  (verwendeter Kondensator)}\\
+		\Rightarrow f_0 &= \frac{1}{2 \pi \sqrt{L C}}\\
+		\Rightarrow \frac{1}{\omega_0^2} &= L C\\
+		\Leftrightarrow L &= \frac{1}{\omega_0^2 C}\\
+		&= 0.133 \text{ H}\\
+	\end{align*}
+
+\end{document}
