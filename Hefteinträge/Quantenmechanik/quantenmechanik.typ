@@ -1,7 +1,18 @@
 
-#align(center)[
-  = Quantenmechanik
-  Herr Dr. Dr. Dr. Dr. Prof. Prof. Dr. Prof. Tepe
+#align(center + horizon)[
+  #text(size: 24pt, weight: "bold")[Quantenmechanik]
+
+  #v(1cm)
+  #text(
+    size: 14pt,
+    fill: gray,
+  )[ Herr Dr. Kurfürst Dr. Dr. Baron Inquisitor Dr. Prof. Erzbischof Prof. Graf Dr. Prof. Tepe]
+
+  #v(2cm)
+  #text(size: 12pt)[Arthur Thiele\ Matrixnummer: 476]
+
+  #v(1cm)
+  #text(size: 10pt)[Abgabedatum: #datetime.today().display("[day].[month].[year]")]
 ]
 
 
@@ -50,5 +61,32 @@
 
 *Def.: * Die kleinsten Lichteneergiepakete nennt man #underline[Photonen].
 
+#v(0.5em)
 $=>$ Die Natur des Lichts ist doppeldeutig:\
-Im Wellenmodell entspricht die Intensität  dem Amplituden-quadrat des E- oder B-Feldes. Im Photonenmodell ist die Anzahl der Photonen ein Maß für Lichtintensität.
+Im Wellenmodell entspricht die Intensität  dem Amplituden-quadrat des E- oder B-Feldes. Im Photonenmodell ist die Anzahl der Photonen ein Maß für Lichtintensität.\
+
+$*$ Die Wellenlängenabhängigkeit ergibt sich hier über die Mittelung über eine Periode der Welle.
+
+#pagebreak()
+
+
+== Versuch:
+
+
+
+== Durchführung:
+
+== Beobachtungen:
+
+#align(center)[
+  #table(
+    columns: (13%, 13%),
+
+    [*$lambda$ (nm)*], [*$U_0$ (V)*],
+    [436], [1,993],
+    [366], [1,436],
+    [405], [1,106],
+    [546], [0,443],
+    [576], [0.362],
+  )
+]
