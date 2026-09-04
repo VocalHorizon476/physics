@@ -212,6 +212,8 @@ Messung der Kennlinien:
   #table(
     columns: (10%, 15%, 15%, 15%, 20%),
     stroke: 0.5pt,
+    align: horizon,
+    fill: (x, y) => if x == 0 or y == 0 { gray },
     //(x, y) => (
     //top: if y == 0 { none } else { 0.5pt },
     //),
@@ -220,11 +222,16 @@ Messung der Kennlinien:
     table.cell(colspan: 2)[Ausgleichsgerade],
     table.cell(rowspan: 2)[$U_s = - B/A (V)$],
     [$A ( (m A)/U)$], [$B ( m A)$],
-    [grün], [514], [2,231], [-3,99], [1,79],
-    [rot], [632], [1,954], [-3,29], [1,68],
-    [blau], [463], [1,846], [-4,75], [2,57],
-    [UV], [399], [/], [/], [3,08],
-    [IR], [921], [1,950], [-1,94], [0.99],
+
+    [*grün:*], [514], [2,231], [-3,99], [1,79],
+
+    [*rot:*], [632], [1,954], [-3,29], [1,68],
+
+    [*blau:*], [463], [1,846], [-4,75], [2,57],
+
+    [*UV:*], [399], [/], [/], [3,08],
+
+    [*IR:*], [921], [1,950], [-1,94], [0.99],
   )]
 
 
@@ -275,5 +282,65 @@ $=>$ Das Ergebnis für h liegt nahe am Literaturwert von $h = 6.626 dot 10^(-34)
 #align(center)[#image("images/Interferenz am Kristallgitter.png", width: 70%)]
 
 $
-  l & =
+             l & = d sin theta.alt                       && theta.alt: "Glanzwinkel" \
+  n dot lambda & = 2 l \
+      n lambda & = #text(red)[2] dot d dot sin theta.alt
+$
+
+Bragg-Bedingung für Interferenzmaxima an Gitter#underline[ebenen]\
+#v(2em)
+
+
+== Beugung und Interferenz am Kritall
+#v(1em)
+#grid(
+  columns: (60%, 1fr),
+  align: horizon,
+  [
+    #image("images/Beugung und Interferenz am Kristall.png", width: 100%)
+  ],
+  [
+    $
+         tan (2 theta.alt) & = a/e \
+               2 theta.alt & = arctan a/e \
+                 theta.alt & = 1/2 arctan a/e \
+                           \
+      => quad n dot lambda & = 2 d sin ( 1/2 arctan a/e)
+    $
+  ],
+)
+
+#v(0.5em)
+#align(center)[
+  #table(
+    columns: (15%, 20%, 20%),
+    stroke: 0.7pt,
+    fill: (x, y) => if y == 0 or x == 0 { silver },
+    [U(V)], [$D_1$ (cm)], [$D_2$ (cm)],
+    [2500], [3,3], [5,8],
+    [3000], [3,0], [5,4],
+    [3500], [2,7], [4,9],
+    [4000], [2,6], [4,6],
+    [4500], [2,4], [4,2],
+    [5000], [2,1], [4,0],
+  )]
+
+#pagebreak()
+= Versuch: Elektronenbeugung
+#v(1em)
+#align(center)[#image("images/Elektronenbeugung.png", width: 70%)]
+
+
+Auf dem Schirm entstehen Ringe, die durch die Beugung, also einer interferenzerscheinung, der Elektronen erklärbar sind.\
+Es gibt einen inneren und einen äußeren Ring, die durch Beugung an verschiedenen Gitterebenen entstehen.\
+
+*Kristallgitter im Graphit:*
+
+#align(center)[#image("images/Kristallgitter im Graphit.png", width: 70%)]
+
+
+$
+  w: 7 & = 1,42 dot 10^(-10) m \
+   d_i & -> g_1 \
+   d_a & -> g_2 \
 $
