@@ -326,7 +326,7 @@ Bragg-Bedingung für Interferenzmaxima an Gitter#underline[ebenen]\
   )]
 
 #pagebreak()
-= Versuch: Elektronenbeugung
+== Versuch: Elektronenbeugung
 #v(1em)
 #align(center)[#image("images/Elektronenbeugung.png", width: 70%)]
 
@@ -339,8 +339,115 @@ Es gibt einen inneren und einen äußeren Ring, die durch Beugung an verschieden
 #align(center)[#image("images/Kristallgitter im Graphit.png", width: 70%)]
 
 
-$
-  w: 7 & = 1,42 dot 10^(-10) m \
-   d_i & -> g_1 \
-   d_a & -> g_2 \
-$
+
+#grid(
+  columns: (1fr, 1fr, 1fr),
+  align: top,
+
+  [
+    $
+      w: 7 & = 1,42 dot 10^(-10) m \
+       d_i & -> g_1 \
+       d_a & -> g_2 \
+    $
+  ],
+  [
+    $
+      g_1 & = w + w dot sin 30° \
+          & = (1/2 + 1) 2 = 3/2 w \
+          & = 2.13 dot 10^(-10) m \
+    $
+  ],
+  [
+    $
+      g_2 & = w dot sin 60° = sqrt(3)/2 dot w \
+          & = 1.23 dot 10^(-10) m
+    $
+  ],
+)
+
+
+#pagebreak()
+== Ergebnis aus den folgenden Diagrammen:
+
+#grid(
+  columns: (1fr, 1fr),
+  align: horizon,
+  [
+    #image("images/Diagramm Elektronenbeugung(1).png", width: 80%)
+  ],
+  [
+    $
+      => lambda tilde 1/sqrt(E)
+    $
+  ],
+)
+
+
+#grid(
+  columns: (1fr, 1fr),
+  align: horizon,
+  [
+    $
+               E & = 1/2 m v^2 \
+      => sqrt(E) & = sqrt(m/2) v \
+       => lambda & tilde sqrt(2/m) dot 1/v \
+    $
+  ],
+  [
+    $
+      v & = sqrt((2E)/m) \
+        & = sqrt((2U q)/m)
+    $
+  ],
+)
+
+
+
+
+
+#grid(
+  columns: (1fr, 1fr),
+  align: horizon,
+  [
+    #image("images/Diagramm Elektronenbeugung(2).png", width: 80%)
+  ],
+  [
+    $
+      lambda tilde 1/v
+    $
+  ],
+)
+
+
+Bei Betrachtung der Steigung des $1/v$-$lambda$-Diagramms lässt darauf schließen, dass der Faktor $1/m_e$ hier eine Rolle spielt.
+
+
+#v(1em)
+#grid(
+  columns: (5%, 1fr, 1fr),
+  align: horizon,
+  [
+    $=>$
+  ],
+  [
+    #image("images/Diagramm Elektronenbeugung(3).png", width: 100%)
+  ],
+  [
+    $
+      => lambda = h/p
+    $
+
+    $
+        p & = m_e dot v: "Implus der Elektronen" \
+      [p] & = k g m/s
+    $
+
+    $
+      h/p : "DeBroglie-Wellenlänge"
+    $
+  ],
+)
+
+
+
