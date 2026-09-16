@@ -8,13 +8,13 @@
   #text(
     size: 14pt,
     fill: gray,
-  )[ Herr Dr. Kurfürst Dr. Dr. Baron Inquisitor Dr. Prof. Erzbischof Prof. Graf Dr. Prof. Tepe]
+  )[ Herr Dr. Kurfürst Dr. Dr. Baron Inquisitor Dr. Prof. Erzbischof Prof. Graf Dr.\ Tepe]
 
   #v(2cm)
   #text(size: 12pt)[Arthur Thiele\ Matrixnummer: 476]
 
   #v(1cm)
-  #text(size: 10pt)[Abgabedatum: #datetime.today().display("[day].[month].[year]")]
+  #text(size: 10pt)[Abgabedatum: 14.04.1834]
 ]
 
 
@@ -87,7 +87,8 @@ Abhängig von der Wellenlänge des Farbfilters wird die Spannung U so veriiert, 
 #align(center)[
   #table(
     columns: (13%, 13%, auto, auto),
-    stroke: 0.5pt + gray,
+    stroke: 0.7pt,
+    fill: (x, y) => if y == 0 { silver },
 
     [*$lambda$ (nm)*], [*$U_0$ (V)*], [*$f$ ($10^14$ Hz)*], [*$E_("kin,max")$ (eV)*],
 
@@ -158,18 +159,6 @@ $
   h & = 6.626 dot 10^(-34) underbrace("Js", "Einheit einer 'Wirkung'")
 $
 
-== Auswertung:
-
-#table(
-  columns: (auto, auto, auto),
-  align: (left, right, left),
-  stroke: 0.5pt + gray,
-  inset: 7pt,
-  [*Größe*], [*Messwert*], [*Bemerkung*],
-  [Steigung $h$], [$5.73 dot 10^(-34) " J" dot "s"$], [Lit.: $6.626 dot 10^(-34)$, $-14 %$],
-  [Austrittsarbeit $W_A$], [$1.50 " eV"$], [$= 2.41 dot 10^(-19) " J"$],
-  [Grenzfrequenz $f_g$], [$4.20 dot 10^(14) " Hz"$], [$lambda_g = 713 " nm"$],
-)
 
 #pagebreak()
 = Messung des Planckschen Wirkungsquantums mit Leuchtdioden
@@ -213,7 +202,8 @@ Messung der Kennlinien:
     columns: (10%, 15%, 15%, 15%, 20%),
     stroke: 0.5pt,
     align: horizon,
-    fill: (x, y) => if x == 0 or y == 0 { gray },
+    fill: (x, y) => if x == 0 or y == 0 { silver },
+    // if x == 2 and y == 1 { silver },
     //(x, y) => (
     //top: if y == 0 { none } else { 0.5pt },
     //),
@@ -328,7 +318,7 @@ Bragg-Bedingung für Interferenzmaxima an Gitter#underline[ebenen]\
 #pagebreak()
 == Versuch: Elektronenbeugung
 #v(1em)
-#align(center)[#image("images/Elektronenbeugung.png", width: 70%)]
+#align(center)[#image("images/Elektronenbeugung.png", width: 80%)]
 
 
 Auf dem Schirm entstehen Ringe, die durch die Beugung, also einer interferenzerscheinung, der Elektronen erklärbar sind.\
@@ -450,4 +440,30 @@ Bei Betrachtung der Steigung des $1/v$-$lambda$-Diagramms lässt darauf schließ
 )
 
 
+#pagebreak()
+= Mach-Zehner-Interferometer
 
+#image("images/Reflexion Spiegel.png", width: 100%)
+
+Je nachdem, ob der halbdurchlässige Spiegel (2) vorhanden ist, oder nicht, beobachtet man auf dem Schirm ein Interferenzmuster oder einfach einen hellen Fleck.
+
+=== Delayed-Choice-Experiment
+
+Schaltet man den Spiegel erst nach Aussendung der Photonen, kurz vor Erreichen des HDS (2), ein oder aus, ergibt sich die gleiche Situation wie oben.\
+$=>$ Ob sich die Photonen auf dem Weg wir Wellen oder Teilchen verhalten wird erst bei der Beobachtung, dann aber "rückwirkend" für den gesamten Weg festgelegt.\
+Die Entscheidung (Choice) fällt also im Nachgang (delayed)\
+
+
+=== Materiewellen: Die quantenmechanische Wellenfunktion
+
+Die kopenhagener Deutung beschreibt die Wellenfunktion $Psi$ von Teilchen folgendermaßen:
+$
+  |Psi|^2 "beschreibt die Aufenthaltswahrscheinlichkeit eines Teilchens"
+$
+$
+  Psi = Psi (arrow(r), t)
+$
+Statistische Beschreibung:\
+Die Aufenthaltswahrscheinlichkeit eines Teilchens wird durch $Psi$ festgelegt. Im Moment einer Messung bricht die Welle zusammen und der Ort des Teilchens (und auch der Weg) liegt fest.\
+
+Interferenzmuster ergeben sich dann durch die Überlagerung aller gemessener Orte von identischen Teilchen.
