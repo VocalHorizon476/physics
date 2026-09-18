@@ -441,7 +441,7 @@ Bei Betrachtung der Steigung des $1/v$-$lambda$-Diagramms lässt darauf schließ
 
 
 #pagebreak()
-= Mach-Zehner-Interferometer
+= Mach-Zehnder-Interferometer
 
 #image("images/Reflexion Spiegel.png", width: 100%)
 
@@ -467,3 +467,23 @@ Statistische Beschreibung:\
 Die Aufenthaltswahrscheinlichkeit eines Teilchens wird durch $Psi$ festgelegt. Im Moment einer Messung bricht die Welle zusammen und der Ort des Teilchens (und auch der Weg) liegt fest.\
 
 Interferenzmuster ergeben sich dann durch die Überlagerung aller gemessener Orte von identischen Teilchen.
+
+
+#pagebreak()
+= Zustandspräparation
+#v(1em)
+#align(center)[#image("images/Zustandspräparation.png", width: 45%)]
+
+Der Gesamtdrehimpuls $j$ des Systems ist eine Erhaltungsgröße.\
+
+H-Atom im Zustand $2s^2 s_(1/2)$ auf Zustand $1s^2 s_(1/2)$ fallen lassen. $quad$
+($""^2:$ Spins |
+$s$: Bahnen |
+$1/2$: gesamt)
+
+$=>$ keine Drehimpulsänderung im Atom.\
+$=>$ Kein Drehimpuls wird weggetragen.\
+
+Da Photonen den Drehimpuls 1 haben, ist der $2s""^2 s_(1/2) -> 1s""^2 s_(1/2)$-Übergang.\
+
+$=>$ Der Übergang ist nur durch Aussendung zweier Photonen möglich. In der Kombination Atom + Photon 1 + Photon 2 muss auch nach dem Übergang der Gesamtdrehimpuls $1/2$ sein.
