@@ -477,13 +477,49 @@ Interferenzmuster ergeben sich dann durch die Überlagerung aller gemessener Ort
 Der Gesamtdrehimpuls $j$ des Systems ist eine Erhaltungsgröße.\
 
 H-Atom im Zustand $2s^2 s_(1/2)$ auf Zustand $1s^2 s_(1/2)$ fallen lassen. $quad$
-($""^2:$ Spins |
+_($""^2:$ Spins |
 $s$: Bahnen |
-$1/2$: gesamt)
+$1/2$: gesamt)_
 
-$=>$ keine Drehimpulsänderung im Atom.\
-$=>$ Kein Drehimpuls wird weggetragen.\
+$quad =>$ keine Drehimpulsänderung im Atom.\
+$quad =>$ Kein Drehimpuls wird weggetragen.\
 
-Da Photonen den Drehimpuls 1 haben, ist der $2s""^2 s_(1/2) -> 1s""^2 s_(1/2)$-Übergang.\
+Da Photonen den Drehimpuls 1 haben, ist der $2s^2 s_(1/2) -> 1s^2 s_(1/2)$-Übergang.\
 
 $=>$ Der Übergang ist nur durch Aussendung zweier Photonen möglich. In der Kombination Atom + Photon 1 + Photon 2 muss auch nach dem Übergang der Gesamtdrehimpuls $1/2$ sein.
+
+Das Anregen des $2s^2 S_(1/2)$-Zustandes ist gleichzeitig eine #underline[Präparation]:\
+Es wird ein definierter quantenmechanischer Zustand erzeugt.
+
+#v(1em)
+=== Nächster Schritt: Experimentelle Auswahl geeigneter "Abregungen"
+
+1. Präparation:
+#align(center)[#image("images/1. Präparation.png", width: 30%)]
+
+
+2. Auswahl:
+#align(center)[#image("images/2. Auswahl.png", width: 70%)]
+
+3. Präparation:
+#align(center)[#image("images/3. Präparation.png", width: 60%)]
+
+
+Verschränkt:\
+#pad(left: 2em)[
+  Der Zustand beider Photonen wird durch dieselbe Wellenfunktion $Psi$ beschrieben.\
+  Hier: Die Summe der Drehimpulse der Photonen (Polarisation) muss Null ergeben.\
+]
+
+#pagebreak()
+4. Messung
+Erreicht eines der Photonen einen Detektor und wird dort seine Polarisation gemessen, so bricht $Psi$ zusammen und der Drehimpulszustand beider Photonen wird festgelegt.\
+Achtung: Eigenschaften der Lichtwelle und der quantenmechanischen Wellenfunktion sind nicht identisch:
+
+
+$=>$ Konsequenzen:
+#pad(left: 2em)[
+  - Die Eigenschaften von P1 und P2 sind im präparierten Zustand nicht definiert. Es können nur Wahrscheinlichkeitsaussagen über die einzelnen Photonen gemacht werden.
+  - Die Einzelmessung legt den Zustand beider Photonen (auch über große Entfernungen) instantan fest. (Widerspruch zur Relativitätstheorie)
+  - Die Gesamtwellenfunktion $Psi$ ist eine Superposition aller möglichen Einzelzustände beider Photonen.
+]
