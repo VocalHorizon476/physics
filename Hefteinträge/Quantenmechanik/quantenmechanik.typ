@@ -494,32 +494,54 @@ Es wird ein definierter quantenmechanischer Zustand erzeugt.
 #v(1em)
 === Nächster Schritt: Experimentelle Auswahl geeigneter "Abregungen"
 
-1. Präparation:
+*1. Präparation:*
 #align(center)[#image("images/1. Präparation.png", width: 30%)]
 
 
-2. Auswahl:
+*2. Auswahl:*
 #align(center)[#image("images/2. Auswahl.png", width: 70%)]
 
-3. Präparation:
+*3. Präparation:*
 #align(center)[#image("images/3. Präparation.png", width: 60%)]
 
 
-Verschränkt:\
+*Verschränkt:*\
 #pad(left: 2em)[
   Der Zustand beider Photonen wird durch dieselbe Wellenfunktion $Psi$ beschrieben.\
   Hier: Die Summe der Drehimpulse der Photonen (Polarisation) muss Null ergeben.\
 ]
 
 #pagebreak()
-4. Messung
-Erreicht eines der Photonen einen Detektor und wird dort seine Polarisation gemessen, so bricht $Psi$ zusammen und der Drehimpulszustand beider Photonen wird festgelegt.\
-Achtung: Eigenschaften der Lichtwelle und der quantenmechanischen Wellenfunktion sind nicht identisch:
+*4. Messung*\
+#pad(left: 2em)[
+  Erreicht eines der Photonen einen Detektor und wird dort seine Polarisation gemessen, so bricht $Psi$ zusammen und der Drehimpulszustand beider Photonen wird festgelegt.\
+  Achtung: Eigenschaften der Lichtwelle und der quantenmechanischen Wellenfunktion sind nicht identisch:
+]
+
+#align(center)[#image("images/4. Zersammenfall.png", width: 60%)]
 
 
-$=>$ Konsequenzen:
+*$=>$ Konsequenzen:*
 #pad(left: 2em)[
   - Die Eigenschaften von P1 und P2 sind im präparierten Zustand nicht definiert. Es können nur Wahrscheinlichkeitsaussagen über die einzelnen Photonen gemacht werden.
   - Die Einzelmessung legt den Zustand beider Photonen (auch über große Entfernungen) instantan fest. (Widerspruch zur Relativitätstheorie)
   - Die Gesamtwellenfunktion $Psi$ ist eine Superposition aller möglichen Einzelzustände beider Photonen.
 ]
+
+#pagebreak()
+= Verschränkung
+
+Gegeben sei der quantenmechanische Zustand $Psi_1$. Geht dieser Zustand in einen Zweiteilchenzustand $Psi_2$ über, so beschreibt $Psi_2$ den Zustand aller daran beteiligten Teilchen. Man nennt diese Teilchen quantenmechanische verschränkt. \
+Die Beobachtung einer Eigenschaft eines Teilchen legt instantan die Eigenschaft auch für das andere Teilchen fest.\
+$Psi_2$ ist dann "zusammengebrochen" und die Verschränkung anschließend aufgehoben.
+
+#v(1em)
+=== Komplementarität
+Die Beschreibung von Quantenobjekten gelingt nicht, wenn man sich nur auf seine Wellen- #underline[oder] nur auf seine Teilcheneigenschaften beschränkt. Beide Eigenschaften sind zueinander komplementär: Sie ergänzen sich zur vollständigen Beschreibung des Objekts.
+
+
+#v(1em)
+== Die Heisenbergsche Unschärferelation
+$
+  Delta x dot Delta p = planck/2
+$
