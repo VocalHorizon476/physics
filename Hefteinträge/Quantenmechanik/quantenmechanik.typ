@@ -545,3 +545,19 @@ Die Beschreibung von Quantenobjekten gelingt nicht, wenn man sich nur auf seine 
 $
   Delta x dot Delta p = planck/2
 $
+
+
+#pagebreak()
+= Das Elektronenvolt
+#v(1em)
+#align(center)[#image("images/Elektronenvolt.png", width: 90%)]
+
+$
+          W & = q dot U \
+  "hier:" W & = e dot U \
+    "Ist" U & = 1V, "dann ist" \
+          W & = 1.602 dot 10^(-19) C dot 1V \
+            & = 1.602 dot 10^(-19) J \
+            & = 1 "Elektronenvolt" \
+            & = 1 e V
+$
