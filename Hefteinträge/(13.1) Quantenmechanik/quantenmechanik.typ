@@ -561,3 +561,52 @@ $
             & = 1 "Elektronenvolt" \
             & = 1 e V
 $
+
+== Vermessung des Wasserstoffspektrums
+
+=== Subjektive Methode:
+
+#align(center)[#image("images/Vermessung Wasserstoffspektrum.png", width: 90%)]
+
+$
+     alpha & = arctan (a/e) \
+  n lambda & = d sin (arctan a/e)
+$
+$
+                n & = 1 \
+                e & = (29.7 plus.minus 0.2) c m \
+                d & = 0.001/570 m \
+       tilde(a)_0 & = (20.2 plus.minus 0.1) c m \
+   tilde(a)_"rot" & = (7.7 plus.minus 0.5) c m \
+  tilde(a)_"blau" & = (11.3 plus.minus 0.4) c m
+$
+
+#pagebreak()
+$
+  a_"rot" & = tilde(a)_0 - tilde(a)_"rot" = (20.2 - 7.7) c m = 12.5 c m quad quad Delta a_"rot" = (0.1 + 0.5) c m = 0.6 c m \
+  a_"blau" & = tilde(a)_0 - tilde(a)_"blau" = (20.2 - 11.3) c m = 8.9 c m quad quad Delta a_"blau" = (0.1 + 0.4) c m = 0.5 c m
+$
+
+
+*Rote Linie:*
+$
+       lambda_"rot" & = 0.001/570 m dot sin(arctan 12.5/29.7) = 6.81 dot 10^(-7) m = 681 n m \
+  lambda_"rot, min" & = 0.001/570 m dot sin(arctan 11.9/29.9) = 6.49 dot 10^(-7) m = 649 n m \
+  lambda_"rot, max" & = 0.001/570 m dot sin(arctan 13.1/29.5) = 7.12 dot 10^(-7) m = 712 n m
+$
+
+*Blaue Linie:*
+$
+       lambda_"blau" & = 0.001/570 m dot sin(arctan 8.9/29.7) = 5.04 dot 10^(-7) m = 504 n m \
+  lambda_"blau, min" & = 0.001/570 m dot sin(arctan 8.4/29.9) = 4.75 dot 10^(-7) m = 475 n m \
+  lambda_"blau, max" & = 0.001/570 m dot sin(arctan 9.4/29.5) = 5.33 dot 10^(-7) m = 533 n m
+$
+
+
+#pagebreak()
+*Ergebnis:*
+$
+  649 n m <= & lambda_"rot" <= 712 n m quad quad                 && "Literatur" H_alpha: 656 n m \
+             & lambda_"blau" = (504 plus.minus 29) n m quad quad && "Literatur" H_beta: 486 n m
+$
+Beide Literaturwerte der Balmer-Serie liegen innerhalb der Fehlergrenzen.
