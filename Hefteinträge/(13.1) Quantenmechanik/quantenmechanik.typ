@@ -603,10 +603,18 @@ $
 $
 
 
+*Berechnet:*
+
+$
+   "rot, " n = 3 -> n = 2 & : 656n m \
+  "blau, " n = 4 -> n = 2 & : 486 n m
+$
+
+$=>$ Im Rahmen der Messungenauigkeit stimmen die Werte überein
+
+
 #pagebreak()
-*Ergebnis:*
-$
-  649 n m <= & lambda_"rot" <= 712 n m quad quad                 && "Literatur" H_alpha: 656 n m \
-             & lambda_"blau" = (504 plus.minus 29) n m quad quad && "Literatur" H_beta: 486 n m
-$
-Beide Literaturwerte der Balmer-Serie liegen innerhalb der Fehlergrenzen.
+= Absorptionsspektra
+#v(1em)
+#align(center)[#image("images/Absorptionsspektra.png", width: 100%)]
+
