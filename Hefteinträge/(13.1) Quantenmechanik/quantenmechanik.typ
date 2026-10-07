@@ -618,3 +618,42 @@ $=>$ Im Rahmen der Messungenauigkeit stimmen die Werte überein
 #v(1em)
 #align(center)[#image("images/Absorptionsspektra.png", width: 100%)]
 
+1. Lampe emittiert kontinuierliches Lichtspektrum (alle Farben des sichtbaren Lichts enthalten)
+2. In farbloser Flamme eines Brenners werden Natriumatome verdampft
+3. Das Licht der Lampe durchquert den Natriumdampf.
+4. Photonen mit passender Energie bzw. Wellenlänge können dabei Natriumatome anregen.
+5. Das bei der Abregung dieser Atome entstehende Licht wird in alle Richtungen abgestrahlt und folgt in der Regel nicht der Bahn des einfallenden Lichts der Lampe
+6. Im Spektrum entstehen so dunkle Linien, in denen alle Wellenlängen fehlen (bzw. mit niedriger Intensität einfallen), die auf dem Weg zum Schirm Anregungen bewirkt haben können.\
+Diese Linien heißen #underline[Absorptionslinien].
+
+#pagebreak()
+= Der unendlich tiefe Potentialtopf
+#v(1em)
+#align(center)[#image("images/Der unendlich tiefe Potentialtopf.png", width: 100%)]
+Zur Berechnung der Energieniveaus $E_n$ und der Wellenfunktion $Psi$ wird eine Gleichung benötigt, die diese Wellenfunktion quantenmechanisch beschreibt. \
+Eine mögliche Beschreibung ist die Schrödingergleichung:
+
+klassisch:
+$
+  H & = underbrace(p^2/(2m), "kin. E.") + underbrace(V (x, t), "pot. E.") "           Impuls: "p = m dot v
+$
+Schrödinger:
+$
+  p & -> hat(p) = - i planck partial/(partial x) \
+  H & -> hat(H) = - i planck partial/(partial t) \
+  x & -> hat(x) = x \
+  V & -> hat(V) = V
+$
+
+Im stationären Fall ist $hat(H) = E =$ konst.
+
+$
+  => hat(H) Psi & = hat(p)^2/(2m) Psi + V(x, t) Psi \
+                & = ((-i planck)^2)/(2m) dot partial^2/(partial x^2) dot Psi (x, t) + V (x, t) dot Psi (x,t) \
+                & = - planck^2/(2m) dot partial^2/(partial x^2) dot Psi (x, t) + V (x, t) dot Psi (x,t) \
+$
+
+Im stationären Fall:
+$
+  E Psi(x) & = - planck^2/(2m) dot d^2/(d x^2) dot Psi(x) + V(x) dot Psi(x)
+$
