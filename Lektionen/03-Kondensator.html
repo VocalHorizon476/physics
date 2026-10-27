@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 3 – Kondensator</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b6cb0; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #7fb3ff; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #7fb3ff; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { font-family: "Times New Roman", Georgia, serif; font-style: italic; font-size: 1.05em; white-space: nowrap; }
+  .formula { font-family: "Times New Roman", Georgia, serif; font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  input[type=number] { width: 90px; font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas, svg.vis { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Kapazität</a><a href="#s2">2 Dielektrikum</a><a href="#s3">3 Schaltungen</a><a href="#s4">4 Energie</a><a href="#s5">5 Laden/Entladen</a><a href="#s6">6 Klausur & Abitur</a><a href="#s7">7 Analogie-Trainer</a><a href="#s8">8 Aufgaben</a><a href="#s9">9 Nicht in FS</a><a href="#s10">10 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 3 · Der Kondensator</h1>
+  <p class="sub">Kapazität → Dielektrikum → Schaltungen → Energie → Laden und Entladen über einen Widerstand. Grundlage: Hefteinträge (12.1) Elektrodynamik, Klausur 2 (13.11.2025) Aufgaben 1, 2, 4, Abitur 2016 I und 2023 IIa aus der Mappe.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Kapazität als Ladung pro Spannung verstehen, aus Messwerten bestimmen, <span class="f">C = ε<sub>0</sub>·ε<sub>r</sub>·A/d</span> herleiten und anwenden.</li>
+    <li>Dielektrikum erklären (Polarisation, Gegenfeld) und die beiden Fälle „Quelle angeschlossen" / „Quelle getrennt" unterscheiden.</li>
+    <li>Reihen- und Parallelschaltung herleiten und gemischte Schaltungen rechnen (Klausur 2, Aufgabe 4).</li>
+    <li>Energie <span class="f">W = ½·C·U²</span> begründen.</li>
+    <li>Entlade- und Ladekurve: Differenzialgleichung aufstellen und lösen, <span class="f">τ = R·C</span>, Halbwertszeit, Regression in die e-Form umrechnen, Ladung als Fläche unter <span class="f">I(t)</span> (Klausur 2, Aufgabe 1).</li>
+  </ul>
+  <p class="small">Rote Kästen = so fragt die Klausur (mit echten Punkten). Orange Kästen = Verwechslungsgefahr und Fehler, die schon Punkte gekostet haben.</p>
+  <div class="note"><b>Nachtrag zu Lektion 2 (steht so in der Mappe):</b> Das Potenzial einer Punktladung ist <span class="f">φ(r) = Q/(4πε<sub>0</sub>·r)</span> (FS S. 26) mit der Vereinbarung <span class="f">φ(∞) = 0</span>. Flächen gleichen Potenzials (Äquipotenzialflächen, bei der Punktladung Kugeln) stehen senkrecht auf den Feldlinien; entlang einer solchen Fläche wird keine Arbeit verrichtet. Beispiel aus dem Heft: Im Erdfeld mit <span class="f">E</span> = 130 V/m liegt zwischen zwei Punkten in 1 m Höhenunterschied eine Spannung von 130 V.</div>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Kapazität</h2>
+  <h3>Definition: Ladung pro Spannung</h3>
+  <p>Ein Kondensator ist technisch gesehen ein Ladungsspeicher. Lädt man ihn mit der Spannung <span class="f">U</span>, sitzt auf jeder Platte die Ladung <span class="f">Q</span> (eine positiv, eine negativ). Versuch der Mappe: Kondensator über einen Umschalter mit <span class="f">U</span> laden, dann über einen Messverstärker entladen und <span class="f">Q</span> messen. Ergebnis: <span class="f">Q ∝ U</span>, die Punkte im <span class="f">Q</span>-<span class="f">U</span>-Diagramm liegen auf einer Ursprungsgeraden. Die Steigung ist die <b>Kapazität</b>:</p>
+  <div class="formula">C = Q / U,&nbsp;&nbsp; [C] = 1 C/V = 1 F (Farad) = 1 As/V</div>
+  <ul>
+    <li>Die Kapazität sagt, wie viel Ladung der Kondensator <b>pro Volt</b> speichert. Sie hängt nur von der Bauform ab (Fläche, Abstand, Füllmaterial), nicht von <span class="f">Q</span> oder <span class="f">U</span>.</li>
+    <li>1 F ist riesig. Technische Kondensatoren: pF (10<sup>−12</sup>) bis mF (10<sup>−3</sup>). Umrechnen üben: 220 nF = 2,2·10<sup>−7</sup> F, 44 µF = 4,4·10<sup>−5</sup> F.</li>
+    <li>Einsatzmöglichkeiten (Abitur 2016, 4 BE): Kurzzeit-Energiespeicher im Blitzgerät (schnell viel Ladung abgeben), Goldcap als Energiespeicher für die Fahrradbeleuchtung im Stand, Glättung von Spannungen in Netzteilen, Zeitglied in Schaltungen (RC-Glied), Sensor (Füllstandsanzeiger, Touchscreen).</li>
+  </ul>
+
+  <h3>Woher kommt C = ε<sub>0</sub>·A/d? (Herleitung aus dem Heft)</h3>
+  <ol>
+    <li><b>Flächenladungsdichte</b> <span class="f">σ = Q/A</span>: Ladung pro Plattenfläche. Versuch: feste Platten (<span class="f">A</span> = 0,047 m², <span class="f">d</span> = 1 cm), <span class="f">U</span> variieren, <span class="f">Q</span> messen, <span class="f">E = U/d</span> und <span class="f">σ = Q/A</span> berechnen. Das <span class="f">σ</span>-<span class="f">E</span>-Diagramm ist eine Ursprungsgerade: <span class="f">σ ∝ E</span>. Die Steigung ist eine Naturkonstante, die elektrische Feldkonstante: <span class="f">σ = ε<sub>0</sub>·E</span> mit <span class="f">ε<sub>0</sub> = 8,854·10<sup>−12</sup> As/(Vm)</span> (steht in der FS S. 26 als <span class="f">σ = ε<sub>0</sub>·ε<sub>r</sub>·E</span>).</li>
+    <li>Einsetzen: <span class="f">Q/A = ε<sub>0</sub>·U/d</span>.</li>
+    <li>Mit <span class="f">Q = C·U</span>: <span class="f">C·U/A = ε<sub>0</sub>·U/d</span> ⇒ <span class="f">C = ε<sub>0</sub>·A/d</span>. Mit Füllmaterial kommt <span class="f">ε<sub>r</sub></span> dazu (Abschnitt 2).</li>
+  </ol>
+  <div class="formula">C = ε<sub>0</sub>·ε<sub>r</sub>·A / d&nbsp;&nbsp;(Plattenkondensator; A = Fläche einer Platte, d = Abstand)</div>
+  <p>Abhängigkeiten, die man begründen können muss: große Fläche → mehr Platz für Ladung → <span class="f">C ∝ A</span>. Kleiner Abstand → bei gleichem <span class="f">Q</span> ist <span class="f">U = E·d</span> kleiner → <span class="f">C = Q/U</span> größer → <span class="f">C ∝ 1/d</span> (antiproportional). Im Abitur 2023 wurde genau das aus Diagrammen abgefragt: im <span class="f">C</span>-<span class="f">d</span>-Diagramm eine Hyperbel, im <span class="f">C</span>-(1/<span class="f">d</span>)-Diagramm eine Ursprungsgerade mit Steigung <span class="f">ε<sub>0</sub>·A</span>, daraus <span class="f">ε<sub>0</sub></span> = Steigung/<span class="f">A</span>.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>A <input type="range" id="cA" min="10" max="2000" value="400" step="10"> <span id="cAv"></span></label>
+        <label>d <input type="range" id="cD" min="0.5" max="20" value="3" step="0.5"> <span id="cDv"></span></label>
+        <label>Füllung <select id="cEps"><option value="1">Luft (ε_r = 1)</option><option value="2.2">Öl (2,2)</option><option value="2.6">Polystyrol (2,6)</option><option value="3.4">Plexiglas (3,4)</option><option value="6">Glas/Porzellan (6)</option><option value="81">Wasser (81)</option></select></label>
+        <label>U <input type="range" id="cU" min="0" max="500" value="300" step="10"> <span id="cUv"></span></label>
+      </div>
+      <div class="out" id="cOut"></div>
+    </div>
+    <div>
+      <canvas id="quCanvas" width="480" height="300"></canvas>
+      <p class="small"><span class="f">Q</span>-<span class="f">U</span>-Diagramm: Steigung = <span class="f">C</span>. Die schraffierte Fläche unter der Geraden bis zur eingestellten Spannung ist die gespeicherte Energie <span class="f">W = ½·Q·U</span> (Abschnitt 4).</p>
+    </div>
+  </div>
+  <div class="ex"><div class="t">Rechenbeispiel (Klausur 2, 2b)</div>
+    <p><span class="f">A</span> = 0,1 m², <span class="f">d</span> = 6 cm, Luft: <span class="f">C<sub>0</sub> = ε<sub>0</sub>·A/d = 8,854·10<sup>−12</sup> As/(Vm) · 0,1 m² / 0,06 m = 1,48·10<sup>−11</sup> F = 14,8 pF</span>. Einheiten-Check: As/(Vm) · m²/m = As/V = F.</p></div>
+  <div class="note warn"><b>Typische Fehler:</b> <span class="f">d</span> in cm statt m. <span class="f">A</span> in cm² statt m² (1 cm² = 10<sup>−4</sup> m², 400 cm² = 0,04 m²). Zehnerpotenzen bei pF/nF/µF. Und: <span class="f">C</span> ändert sich nicht, wenn man <span class="f">U</span> ändert, nur <span class="f">Q</span> ändert sich mit.</div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Das Dielektrikum</h2>
+  <h3>Was passiert, wenn man einen Isolator zwischen die Platten schiebt?</h3>
+  <ol>
+    <li>Das Feld <span class="f">E</span> der Platten <b>polarisiert</b> den Isolator: In jedem Molekül verschiebt sich die Elektronenhülle ein Stück gegen die Feldrichtung, die Moleküle werden Dipole (Lektion 1).</li>
+    <li>An der Oberfläche des Isolators bleibt netto Ladung übrig: zur positiven Platte hin negativ, zur negativen Platte hin positiv. Diese Oberflächenladungen erzeugen ein eigenes Feld <span class="f">E<sub>p</sub></span>, das dem Plattenfeld <b>entgegengerichtet</b> ist.</li>
+    <li>Gesamtfeld im Isolator: <span class="f">E<sub>ges</sub> = E − E<sub>p</sub> &lt; E</span>. Das Feld wird um den Faktor <span class="f">ε<sub>r</sub></span> geschwächt: <span class="f">E<sub>ges</sub> = E/ε<sub>r</sub></span>.</li>
+    <li>Bei gleicher Ladung <span class="f">Q</span> ist die Spannung <span class="f">U = E<sub>ges</sub>·d</span> kleiner, also <span class="f">C = Q/U</span> größer: <span class="f">C = ε<sub>r</sub>·C<sub>0</sub></span>. Im Heft: <span class="f">Q = ε<sub>r</sub>·ε<sub>0</sub>·A·E</span>.</li>
+  </ol>
+  <p><span class="f">ε<sub>r</sub></span> heißt relative Permittivität (Dielektrizitätszahl), eine Materialkonstante ohne Einheit: Vakuum 1, Luft ≈ 1, Gips 1,8, Öl 2,2, Paraffin 2,3, Polystyrol 2,6, Plexiglas 3,4, Porzellan 4,5–6,5, Silicium 12, Glycerin 43, Wasser 81 (Tabelle M3 aus dem Abitur 2016). <span class="f">ε<sub>0</sub></span> ist die Permittivität des Vakuums.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Dielektrikum <select id="dEps"><option value="1">keins (Luft)</option><option value="2.2">Öl (2,2)</option><option value="3.4">Plexiglas (3,4)</option><option value="6">Glas (6)</option></select></label>
+        <label>Quelle <select id="dMode"><option value="q">getrennt (Q konstant)</option><option value="u">angeschlossen (U konstant)</option></select></label>
+      </div>
+      <svg class="vis" id="dSvg" viewBox="0 0 480 260" aria-label="Dielektrikum im Kondensator"></svg>
+      <p class="small">Grün: Feld der Platten. Blau: Gegenfeld der Polarisationsladungen. Stärkeres <span class="f">ε<sub>r</sub></span> → mehr Gegenfeld → schwächeres Gesamtfeld.</p>
+    </div>
+    <div>
+      <div class="out" id="dOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr, die zwei Fälle:</b><br>
+        <b>Quelle getrennt</b> (Kondensator geladen, dann abgeklemmt): <span class="f">Q</span> bleibt, weil die Ladung nirgends hin kann. Dielektrikum rein → <span class="f">C</span> steigt → <span class="f">U = Q/C</span> sinkt. Abstand vergrößern → <span class="f">C</span> sinkt → <span class="f">U</span> steigt (Abitur 2023, 3.4).<br>
+        <b>Quelle angeschlossen</b>: <span class="f">U</span> bleibt (die Quelle hält sie). Dielektrikum rein → <span class="f">C</span> steigt → <span class="f">Q = C·U</span> steigt, es fließt Ladung nach. Erst klären, welcher Fall vorliegt, dann rechnen.</div>
+    </div>
+  </div>
+
+  <h3>Teilweise gefüllter Kondensator = Parallelschaltung (Klausur 2, 2d; Abitur 2016, 1.1 und 1.3)</h3>
+  <p>Platten der Höhe <span class="f">h</span> stehen bis zur Höhe <span class="f">f</span> im Öl. Der untere Teil ist ein Kondensator mit Öl, der obere ein Kondensator mit Luft. Beide haben <b>dieselbe Spannung</b> (es sind dieselben Platten), ihre Ladungen addieren sich → <b>Parallelschaltung</b>, Kapazitäten addieren sich. Jeder Teil hat seinen Flächenanteil:</p>
+  <div class="formula">C(f) = C<sub>0</sub>·(h − f)/h + C<sub>Öl</sub>·f/h&nbsp;&nbsp;⇒&nbsp;&nbsp;f(C) = h·(C − C<sub>0</sub>)/(C<sub>Öl</sub> − C<sub>0</sub>)</div>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Füllhöhe f/h <input type="range" id="fill" min="0" max="100" value="40"> <span id="fillv"></span></label>
+        <label>ε<sub>r</sub> (Öl) <input type="range" id="fillEps" min="1" max="6" value="2.2" step="0.1"> <span id="fillEpsv"></span></label>
+      </div>
+      <svg class="vis" id="fillSvg" viewBox="0 0 320 200" aria-label="Füllstand"></svg>
+    </div>
+    <div>
+      <div class="out" id="fillOut"></div>
+      <p>Bei links/rechts geteilten Materialien (Abitur 2016, M1: oben Material 2, unten Material 1, je halbe Fläche) genauso: <span class="f">C = C<sub>1</sub> + C<sub>2</sub> = ε<sub>0</sub>·ε<sub>r1</sub>·(A/2)/d + ε<sub>0</sub>·ε<sub>r2</sub>·(A/2)/d</span>, aufgelöst <span class="f">ε<sub>r1</sub> = 2·C·d/(A·ε<sub>0</sub>) − ε<sub>r2</sub></span>. Das war die Gleichung im Abitur. Begründung in der Klausur: gleiche Spannung an beiden Teilen, Flächenanteile.</p>
+      <div class="note warn"><b>Das kostete in Klausur 2 die Punkte (2d, 0/3):</b> nicht erkannt, dass der halb gefüllte Kondensator zwei parallele Teilkondensatoren sind. Merksatz: Material nebeneinander (Teile sehen beide Platten) = parallel. Material hintereinander (Schichten zwischen den Platten) = Reihe.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Reihen- und Parallelschaltung</h2>
+  <div class="grid2">
+    <div>
+      <h3>Parallel: Kapazitäten addieren</h3>
+      <p>Beide Kondensatoren liegen an derselben Spannung <span class="f">U</span>. Jeder speichert seine Ladung: <span class="f">Q<sub>1</sub> = C<sub>1</sub>·U</span>, <span class="f">Q<sub>2</sub> = C<sub>2</sub>·U</span>. Die Gesamtladung ist die Summe:</p>
+      <p><span class="f">Q<sub>ges</sub> = Q<sub>1</sub> + Q<sub>2</sub></span> ⇒ <span class="f">C<sub>ges</sub>·U = C<sub>1</sub>·U + C<sub>2</sub>·U</span> ⇒</p>
+      <div class="formula">C<sub>ges</sub> = C<sub>1</sub> + C<sub>2</sub></div>
+      <p>Anschaulich: Parallelschalten = Plattenfläche vergrößern. Die Gesamtkapazität ist größer als jede einzelne.</p>
+    </div>
+    <div>
+      <h3>Reihe: Kehrwerte addieren</h3>
+      <p>Die Ladung ist bei beiden gleich (die mittlere Verbindung ist isoliert, dort wird nur Ladung verschoben: <span class="f">Q<sub>1</sub> = Q<sub>2</sub> = Q</span>). Die Spannungen addieren sich:</p>
+      <p><span class="f">U<sub>ges</sub> = U<sub>1</sub> + U<sub>2</sub></span> ⇒ <span class="f">Q/C<sub>ges</sub> = Q/C<sub>1</sub> + Q/C<sub>2</sub></span> ⇒</p>
+      <div class="formula">1/C<sub>ges</sub> = 1/C<sub>1</sub> + 1/C<sub>2</sub></div>
+      <p>Anschaulich: Reihenschalten = Plattenabstand vergrößern. Die Gesamtkapazität ist kleiner als die kleinste einzelne. Zwei gleiche in Reihe: halbe Kapazität.</p>
+    </div>
+  </div>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> Bei Widerständen ist es genau umgekehrt (Reihe: addieren; parallel: Kehrwerte). Merke über die Physik: parallel = mehr Fläche = mehr Kapazität.</div>
+  <div class="controls">
+    <label>C<sub>1</sub> <input type="number" id="sc1" value="220" step="any"> nF</label>
+    <label>C<sub>2</sub> <input type="number" id="sc2" value="100" step="any"> nF</label>
+    <label><input type="radio" name="topo" value="p" checked> parallel</label>
+    <label><input type="radio" name="topo" value="s"> Reihe</label>
+  </div>
+  <div class="out" id="sOut"></div>
+  <h3>Klausur 2, Aufgabe 4 (8 BE): die vier Schaltungen</h3>
+  <details><summary>a) 220 nF und 100 nF parallel → C<sub>ges</sub>?</summary><p><span class="f">C<sub>ges</sub> = 220 nF + 100 nF = 320 nF</span>. (1/1)</p></details>
+  <details><summary>b) 220 nF und 100 nF in Reihe → C<sub>ges</sub>?</summary><p><span class="f">1/C<sub>ges</sub> = 1/220 nF + 1/100 nF</span> ⇒ <span class="f">C<sub>ges</sub> = 68,75 nF ≈ 69 nF</span>. TR-Doku: „mit solve im TR nach <span class="f">C<sub>ges</sub></span>". Ohne „nach C<sub>ges</sub>" gab es 1,5/2.</p></details>
+  <details><summary>c) C<sub>1</sub> parallel zu 0,1 mF, gesamt 660 µF → C<sub>1</sub>?</summary><p><span class="f">C<sub>1</sub> = C<sub>ges</sub> − C<sub>2</sub> = 660 µF − 100 µF = 560 µF</span>. Achtung Einheiten: 0,1 mF = 100 µF. (2/2)</p></details>
+  <details><summary>d) (44 µF in Reihe mit C<sub>2</sub>) parallel zu 44 µF, gesamt 66 µF → C<sub>2</sub>?</summary><p>Von außen nach innen: Der Reihenzweig muss <span class="f">66 µF − 44 µF = 22 µF</span> haben. In Reihe: <span class="f">1/22 = 1/44 + 1/C<sub>2</sub></span> ⇒ <span class="f">1/C<sub>2</sub> = 1/22 − 1/44 = 1/44</span> ⇒ <span class="f">C<sub>2</sub> = 44 µF</span>. (2,5/3, „solve nach C<sub>2</sub>" angeben.)</p></details>
+  <p>Beispiel aus dem Heft: 30 nF und 20 nF in Reihe (= 12 nF), dazu 10 nF parallel: <span class="f">C = 12 nF + 10 nF = 22 nF</span>.</p>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Energie im Kondensator</h2>
+  <p>Beim Laden muss jede weitere Ladungsportion gegen die schon vorhandene Spannung auf die Platte geschoben werden. Die Spannung wächst dabei von 0 auf <span class="f">U</span>. Im <span class="f">Q</span>-<span class="f">U</span>-Diagramm ist die Energie die Fläche unter der Geraden, ein Dreieck:</p>
+  <div class="formula">W = ½·Q·U = ½·C·U² = Q²/(2·C)</div>
+  <ul>
+    <li>Warum ½ und nicht <span class="f">Q·U</span>: <span class="f">Q·U</span> wäre die Energie, wenn die ganze Ladung bei voller Spannung transportiert würde. Tatsächlich ist die Spannung am Anfang 0 und steigt erst, im Mittel also <span class="f">U/2</span>.</li>
+    <li>Herleitung im Heft über die Leistung beim Laden: <span class="f">W = ∫P dt = ∫U<sub>C</sub>·I dt</span> von 0 bis ∞ mit den Ladekurven ergibt <span class="f">½·C·U<sub>0</sub>²</span>. In der FS steht das Ergebnis (S. 28).</li>
+    <li>Die Energie steckt im elektrischen Feld zwischen den Platten. Die Formel <span class="f">E = ½·C·U²</span> in der FS benutzt <span class="f">E</span> für Energie, nicht für Feldstärke.</li>
+  </ul>
+  <div class="ex"><div class="t">Rechenbeispiel: Blitzgerät</div>
+    <p><span class="f">C</span> = 1000 µF, <span class="f">U</span> = 300 V: <span class="f">W = ½ · 10<sup>−3</sup> F · (300 V)² = 45 J</span>. Entlädt sich das in 1 ms, ist die Leistung 45 kW. Deshalb der Kondensator: die Batterie könnte die Leistung nicht liefern, der Kondensator sammelt langsam und gibt schnell ab.</p></div>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> <span class="f">W = q·U</span> (Lektion 2) ist die Energie <b>eines Teilchens</b>, das die feste Spannung <span class="f">U</span> durchläuft. <span class="f">W = ½·C·U²</span> ist die Energie des <b>ganzen Kondensators</b>, bei dem die Spannung während des Ladens wächst.</div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Entladen und Laden über einen Widerstand</h2>
+  <h3>Qualitativ: warum exponentiell?</h3>
+  <p>Geladener Kondensator, Schalter um, Widerstand <span class="f">R</span> parallel. Strom <span class="f">I = U<sub>C</sub>/R</span>, und <span class="f">U<sub>C</sub> = Q/C</span>. Der Strom trägt Ladung ab, <span class="f">Q</span> sinkt, damit <span class="f">U<sub>C</sub></span>, damit <span class="f">I</span>. Die Abnahme ist in jedem Moment proportional zum Bestand: „je mehr noch da ist, desto schneller nimmt es ab". Das ist die Definition eines exponentiellen Zerfalls, wie radioaktiver Zerfall oder Bierschaum.</p>
+  <h3>Differenzialgleichung (Herleitung aus dem Heft, gibt Punkte)</h3>
+  <ol>
+    <li>Maschenregel beim Entladen: <span class="f">U<sub>C</sub> + U<sub>R</sub> = 0</span> (die beiden Spannungen gleichen sich aus; Vorzeichen je nach Zählrichtung).</li>
+    <li>Einsetzen: <span class="f">Q/C + R·I = 0</span>, und <span class="f">I = dQ/dt</span> (Strom = Ladungsänderung pro Zeit): <span class="f">Q/C + R·dQ/dt = 0</span>, also <span class="f">dQ/dt = −Q/(R·C)</span>. Genau diese Form steht in der FS (S. 28): „Änderung proportional zum Bestand, mit Faktor −1/(RC)".</li>
+    <li>Lösen durch Trennung der Variablen: <span class="f">dQ/Q = −dt/(RC)</span>, integrieren: <span class="f">ln(Q/Q<sub>0</sub>) = −t/(RC)</span>, also</li>
+  </ol>
+  <div class="formula">Q(t) = Q<sub>0</sub>·e<sup>−t/(RC)</sup>,&nbsp;&nbsp; U<sub>C</sub>(t) = U<sub>0</sub>·e<sup>−t/(RC)</sup>,&nbsp;&nbsp; I(t) = I<sub>0</sub>·e<sup>−t/(RC)</sup>&nbsp;&nbsp;mit&nbsp;&nbsp;τ = R·C</div>
+  <ul>
+    <li><b>Zeitkonstante</b> <span class="f">τ = R·C</span>. Einheiten-Check: Ω·F = (V/A)·(As/V) = s. Nach <span class="f">τ</span> sind noch <span class="f">e<sup>−1</sup></span> = 37 % da, nach <span class="f">5τ</span> unter 1 %. Großes <span class="f">R</span> (wenig Strom) oder großes <span class="f">C</span> (viel Ladung) → langsame Entladung.</li>
+    <li><b>Halbwertszeit</b>: Basiswechsel <span class="f">e<sup>−t/τ</sup> = 2<sup>−t/t½</sup></span>, Logarithmieren: <span class="f">t/τ = (t/t½)·ln 2</span> ⇒ <span class="f">t½ = ln 2 · R·C ≈ 0,69·τ</span>. Nach jeder Halbwertszeit halbiert sich alles (<span class="f">Q</span>, <span class="f">U</span>, <span class="f">I</span>).</li>
+    <li><b>Laden</b> (Quelle <span class="f">U<sub>0</sub></span>, Widerstand, leerer Kondensator): Maschenregel <span class="f">U<sub>0</sub> = U<sub>R</sub> + U<sub>C</sub></span> → gleiche Rechnung mit Substitution → <span class="f">U<sub>C</sub>(t) = U<sub>0</sub>·(1 − e<sup>−t/(RC)</sup>)</span>, der Strom fällt dabei wie beim Entladen: <span class="f">I(t) = I<sub>0</sub>·e<sup>−t/(RC)</sup></span> mit <span class="f">I<sub>0</sub> = U<sub>0</sub>/R</span> (FS S. 28).</li>
+  </ul>
+  <div class="controls">
+    <label>Vorgang <select id="rcMode"><option value="d">Entladen</option><option value="c">Laden</option></select></label>
+    <label>R <input type="range" id="rcR" min="1" max="100" value="10" step="1"> <span id="rcRv"></span></label>
+    <label>C <input type="range" id="rcC" min="0.1" max="100" value="10" step="0.1"> <span id="rcCv"></span></label>
+    <label>U<sub>0</sub> <input type="range" id="rcU" min="1" max="12" value="6" step="0.5"> <span id="rcUv"></span></label>
+  </div>
+  <canvas id="rcCanvas" width="720" height="320"></canvas>
+  <div class="out" id="rcOut"></div>
+  <p class="small">Blau: Spannung am Kondensator. Orange: Strom. Gestrichelt: <span class="f">τ</span> (37 % bzw. 63 %) und <span class="f">t½</span>. Die Fläche unter der Stromkurve ist die geflossene Ladung.</p>
+
+  <h3>Ladung als Fläche unter I(t)</h3>
+  <p>Bei konstantem Strom ist <span class="f">Q = I·Δt</span>, ein Rechteck im <span class="f">I</span>-<span class="f">t</span>-Diagramm. Bei veränderlichem Strom ist die Ladung die Fläche unter der Kurve: <span class="f">Q = ∫I(t) dt</span> (FS S. 24). Für die Entladekurve von 0 bis ∞:</p>
+  <div class="formula">Q = ∫<sub>0</sub><sup>∞</sup> I<sub>0</sub>·e<sup>−t/τ</sup> dt = I<sub>0</sub>·τ</div>
+  <p>Das ist die ganze Ladung, die auf dem Kondensator war. Daraus <span class="f">C = Q/U<sub>0</sub></span>. Alternativ im Abitur erlaubt: Kästchen zählen (Abitur 2023, 3.1: ein Kästchen = 10 µA · 1 s = 10 µC, etwa 35 Kästchen → 0,35 mC).</p>
+  <div class="note warn"><b>Das kostete in Klausur 2 Punkte (1c, „Ansatz unbewiesen"):</b> <span class="f">Q = I<sub>0</sub>·τ</span> einfach hingeschrieben. Erwartet: <span class="f">Q = ∫I dt</span> als Ansatz nennen, dann das Integral (im TR oder per Hand) ausrechnen. Und Einheiten: µA·µs = 10<sup>−12</sup> C = pC.</div>
+
+  <h3>TR-Regression in die e-Form umrechnen (Klausur 2, 1b–1d; Heft)</h3>
+  <p>Der TR liefert bei Exponentialregression <span class="f">y = a·b<sup>x</sup></span>. Physik will <span class="f">I(t) = I<sub>0</sub>·e<sup>−t/τ</sup></span>. Umrechnung: <span class="f">b<sup>t</sup> = e<sup>t·ln b</sup></span>, Vergleich der Exponenten: <span class="f">−1/τ = ln b</span> (pro Zeiteinheit der x-Werte), also</p>
+  <div class="formula">τ = −1/ln(b) · (Zeiteinheit),&nbsp;&nbsp; z. B. b = 0,989949 pro µs ⇒ τ = −1/ln(0,989949) µs = 99,0 µs</div>
+  <div class="grid2">
+    <div>
+      <table>
+        <tr><th>t in µs</th><td>0</td><td>50</td><td>100</td><td>150</td><td>200</td><td>250</td></tr>
+        <tr><th>U in V</th><td>6,1</td><td>3,8</td><td>2,3</td><td>1,4</td><td>0,8</td><td>0,5</td></tr>
+      </table>
+      <p class="small">Klausur 2, Aufgabe 1: Entladung über <span class="f">R</span> = 10 kΩ, Spannung am Widerstand gemessen. Umrechnung Beispiel: <span class="f">I = U/R = 6,1 V / 10 000 Ω = 610 µA</span>.</p>
+    </div>
+    <div class="out" id="expOut"></div>
+  </div>
+  <div class="note exam"><b>So will der Lehrer die Auswertung (Bewertungsbogen Klausur 2, 1b):</b> Vorgehen im TR (2), Umrechnung U→I mit Beispielrechnung dokumentiert (1), Diagramm vollständig (2), Regression begründet (1), Ergebnis physikalisch sinnvoll mit Einheiten (1). Begründung der Regression: „Die Entladung ist ein Vorgang, bei dem die Abnahme proportional zum Bestand ist, also exponentiell" oder „die Werte fallen in gleichen Zeitabständen etwa um den gleichen Faktor". Nur „Punkte liegen auf einer Kurve" reicht nicht.</div>
+
+  <h3>Oszilloskop ablesen (Heft)</h3>
+  <p>Die Angaben „V/Div" und „s/Div" (Volt bzw. Sekunden pro Kästchen) beziehen sich auf eine Kästchenhöhe bzw. -breite. Beispiel aus dem Heft: Ladekurve, Spannungsdifferenz 3 V, Halbwertszeit 70 µs abgelesen, <span class="f">R</span> = 10 kΩ: <span class="f">C = t½/(R·ln 2) = 70 µs/(10 kΩ · 0,693) = 1,01·10<sup>−8</sup> F = 10,1 nF</span>.</p>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Klausur 2 (Aufgaben 1, 2) und Abitur mit Lösungen</h2>
+  <details><summary>Klausur 2, Aufgabe 1: Entladekurve eines Kondensators [21 BE]</summary>
+    <p><b>a) Schaltplan [4]:</b> Kondensator <span class="f">C</span>, Widerstand <span class="f">R</span> = 10 kΩ und Voltmeter parallel; Schalter, über den <span class="f">C</span> vorher an der Quelle <span class="f">U<sub>0</sub></span> geladen wurde. Beschriftung aller Bauteile.</p>
+    <p><b>b) I(t) aus Messdaten [8]:</b> Werte in TR, <span class="f">I = U/R</span> mit Beispielrechnung (610 µA), Diagramm <span class="f">t</span> in µs gegen <span class="f">I</span> in µA mit Punkten, exponentielle Regression (Begründung: Abnahme proportional zum Bestand), TR: <span class="f">y = 622,6·0,989949<sup>x</sup></span>, physikalisch: <span class="f">I(t) = 622,6 µA · 0,989949<sup>t/µs</sup></span>. Kontrollergebnis stand in der Aufgabe.</p>
+    <p><b>c) Q und C [5]:</b> <span class="f">Q = ∫<sub>0</sub><sup>∞</sup> I(t) dt = I<sub>0</sub>·τ</span> mit <span class="f">τ = −1 µs/ln(0,989949) = 99,0 µs</span>: <span class="f">Q = 622,6 µA · 99,0 µs = 61,6 nC</span>. <span class="f">C = Q/U<sub>0</sub> = 61,6 nC / 6,1 V = 10,1 nF</span> (oder <span class="f">C = τ/R = 9,9 nF</span>; beides im Rahmen der Messgenauigkeit).</p>
+    <p><b>d) Anderer Kondensator, I(t) ∝ 0,90484<sup>t/ms</sup> [4]:</b> <span class="f">τ = −1 ms/ln(0,90484) = 10,0 ms</span> ⇒ <span class="f">C = τ/R = 10 ms / 10 kΩ = 1,0 µF</span>. Die Startspannung braucht man gar nicht, weil <span class="f">τ</span> nur von <span class="f">R</span> und <span class="f">C</span> abhängt.</p></details>
+  <details><summary>Klausur 2, Aufgabe 2: Kondensator mit Dielektrikum (Öl) [11 BE]</summary>
+    <p><b>a) [1]:</b> Die Kapazität steigt. Begründung dazuschreiben („gib an!"): Polarisation des Öls erzeugt ein Gegenfeld, bei gleicher Ladung sinkt die Spannung.</p>
+    <p><b>b) [2]:</b> <span class="f">C<sub>0</sub> = ε<sub>0</sub>·A/d = 8,854·10<sup>−12</sup> · 0,1/0,06 F = 1,48·10<sup>−11</sup> F</span>, bestätigt.</p>
+    <p><b>c) [5]:</b> <span class="f">t½ = ln 2 · R · C<sub>Öl</sub></span> ⇒ <span class="f">C<sub>Öl</sub> = t½/(R·ln 2) = 2,08·10<sup>−3</sup> s / (10<sup>8</sup> Ω · 0,693) = 3,00·10<sup>−11</sup> F</span>. <span class="f">ε<sub>r</sub> = C<sub>Öl</sub>/C<sub>0</sub> = 3,00/1,48 = 2,03</span> (Öl laut Tabelle 2,2, passt).</p>
+    <p><b>d) [3]:</b> Füllhöhe <span class="f">f</span>, Plattenhöhe <span class="f">h</span> = 1 m: <span class="f">C = C<sub>0</sub>·(h − f)/h + C<sub>Öl</sub>·f/h</span> ⇒ <span class="f">f(C) = h·(C − C<sub>0</sub>)/(C<sub>Öl</sub> − C<sub>0</sub>)</span>. Mit Zahlen: <span class="f">f = 0,0658 m/pF · C − 0,974 m</span>. Kontrolle: <span class="f">C = C<sub>0</sub></span> ⇒ <span class="f">f</span> = 0; <span class="f">C = C<sub>Öl</sub></span> ⇒ <span class="f">f = h</span>.</p></details>
+  <details><summary>Abitur 2016, Aufgabe I (Mappe) [30 BE]: Einsatz, Feldlinienbild, C(d), Materialbestimmung, Öltank</summary>
+    <p><b>1.1 [10]:</b> Zwei Einsatzmöglichkeiten (Blitzlicht, Goldcap). Feldlinienbild Plattenkondensator: innen homogen, am Rand inhomogen, Richtung + → −. Halb gefüllter Kondensator = zwei parallele Kondensatoren mit je <span class="f">A/2</span>: gleiche Spannung an beiden Plattenpaaren, gleich groß, parallel geschaltet.</p>
+    <p><b>1.2 [8]:</b> Messreihe <span class="f">C(d)</span> (44 pF bei 3 mm … 13 pF bei 10 mm): Potenzregression oder <span class="f">C</span> gegen 1/<span class="f">d</span>: <span class="f">C ≈ 1,32·10<sup>−13</sup> F·m · 1/d</span>. Fehlende Werte: <span class="f">C</span>(1 mm) ≈ 132 pF, <span class="f">C</span>(2 mm) ≈ 65 pF. Dokumentation nach dem 5-Schritte-Schema, Güte der Regression bewerten.</p>
+    <p><b>1.3 [8]:</b> Eine Hälfte Polystyrol (2,6), andere unbekannt: <span class="f">ε<sub>r1</sub> = 2·C·d/(A·ε<sub>0</sub>) − ε<sub>r2</sub></span> ⇒ <span class="f">ε<sub>r</sub> ≈ 3,4</span> → Plexiglas. Herleitung über <span class="f">C = C<sub>1</sub> + C<sub>2</sub></span> mit je <span class="f">A/2</span>.</p>
+    <p><b>1.4 [4]:</b> Platten 2 m hoch, 0,1 m breit (<span class="f">A</span> = 0,2 m²), <span class="f">d</span> = 1 cm: leer <span class="f">C = ε<sub>0</sub>·0,2/0,01 F = 177 pF</span>; bei 1,5 m Öl (¾ gefüllt): <span class="f">C = 177 pF · (¼ + ¾·2,2) = 336 pF</span>.</p></details>
+  <details><summary>Abitur 2023, Aufgabe IIa Nr. 3 (Mappe) [24 BE]: Ladung aus I(t), U-Q-Diagramme, C ∝ 1/d, Quelle getrennt</summary>
+    <p><b>3.1 [3]:</b> <span class="f">I(t) = 84,0 µA · e<sup>−0,239/s · t</sup></span> ⇒ <span class="f">Q = ∫<sub>0</sub><sup>∞</sup> I dt = 84,0 µA / 0,239 s<sup>−1</sup> = 351 µC ≈ 0,35 mC</span> (τ = 1/0,239 s = 4,18 s). Oder Kästchen zählen.</p>
+    <p><b>3.2 [11]:</b> Beide Messreihen Ursprungsgeraden → <span class="f">Q ∝ U</span>. Steigungen: <span class="f">C<sub>800</sub> ≈ 260 pF</span>, <span class="f">C<sub>400</sub> ≈ 130 pF</span>; doppelte Fläche, doppelte Kapazität. Rechnung: <span class="f">C = ε<sub>0</sub>·A/d</span> ergibt 236 pF und 118 pF, Abweichung etwa 10 %, im Rahmen der Messunsicherheit bestätigt. <span class="f">Q = 130 pF · 500 V = 65 nC</span>.</p>
+    <p><b>3.3 [5]:</b> Antiproportional, weil das <span class="f">C</span>-(1/<span class="f">d</span>)-Diagramm eine Ursprungsgerade ist. Steigung 340/480 pF·m = 0,708 pF·m = <span class="f">ε<sub>0</sub>·A</span> ⇒ <span class="f">ε<sub>0</sub> = 0,708·10<sup>−12</sup> F·m / 0,080 m² = 8,85·10<sup>−12</sup> F/m</span>.</p>
+    <p><b>3.4 [5]:</b> Quelle getrennt, <span class="f">Q</span> konstant. a) <span class="f">d</span> größer → <span class="f">C</span> kleiner → <span class="f">U = Q/C</span> steigt. b) Glasplatte (<span class="f">ε<sub>r</sub></span> 5–7) → <span class="f">C</span> größer → <span class="f">U</span> sinkt.</p></details>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Analogie-Trainer</h2>
+  <div class="cards">
+    <div class="acard"><h4>Kondensator ↔ Wassertank</h4><div class="l">Spannung = Füllhöhe, Ladung = Wassermenge, Kapazität = Grundfläche des Tanks: Q = C·U wie Volumen = Fläche · Höhe.</div></div>
+    <div class="acard"><h4>Parallel ↔ Tanks nebeneinander</h4><div class="l">Gleiche Füllhöhe (U), Grundflächen addieren sich (C). Reihe: wie ein schmalerer Durchlass, Gesamtkapazität kleiner.</div></div>
+    <div class="acard"><h4>Entladen ↔ Tank mit Loch</h4><div class="l">Abfluss ∝ Füllhöhe → Füllhöhe sinkt exponentiell. Enger Abfluss (großes R) oder großer Tank (großes C) → langsam: τ = R·C.</div></div>
+    <div class="acard"><h4>Energie ↔ Wasser hochpumpen</h4><div class="l">Je voller, desto höher muss man heben. Mittlere Höhe U/2, deshalb W = ½·Q·U.</div></div>
+    <div class="acard"><h4>Dielektrikum ↔ Schwamm im Tank</h4><div class="l">Bei gleicher Wassermenge steigt der Pegel weniger: mehr Fassungsvermögen pro Höhe. Die Analogie hinkt: physikalisch ist es das Gegenfeld der Dipole.</div></div>
+    <div class="acard"><h4>Wo die Analogie bricht</h4><div class="l">Wasser hat kein Vorzeichen. Die beiden Platten tragen +Q und −Q; „die Ladung des Kondensators" meint den Betrag auf einer Platte.</div></div>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Checkfragen und Aufgaben</h2>
+  <details><summary>Checkfrage 1: Warum ist bei der Reihenschaltung die Ladung auf beiden Kondensatoren gleich?</summary>
+    <p>Die Verbindung zwischen den beiden inneren Platten ist von außen isoliert. Dort kann keine Ladung hinein oder heraus, nur verschoben werden: Was auf der einen inneren Platte als +Q sitzt, fehlt der anderen als −Q. Beide Kondensatoren tragen denselben Betrag Q.</p></details>
+  <details><summary>Checkfrage 2: Ein geladener, abgeklemmter Kondensator wird auseinandergezogen. Was passiert mit Q, C, U, E und W?</summary>
+    <p><span class="f">Q</span> konstant (abgeklemmt). <span class="f">C = ε<sub>0</sub>A/d</span> sinkt. <span class="f">U = Q/C</span> steigt. <span class="f">E = σ/ε<sub>0</sub> = Q/(ε<sub>0</sub>A)</span> bleibt gleich (hängt nicht von d ab). <span class="f">W = Q²/(2C)</span> steigt: die Arbeit, die man gegen die Anziehung der Platten verrichtet, steckt jetzt im Feld.</p></details>
+  <details><summary>A1: C = 4,7 µF wird über R = 22 kΩ entladen, U<sub>0</sub> = 9,0 V. τ, t½, I<sub>0</sub>, Q<sub>0</sub>, W<sub>0</sub>, und wann sind noch 10 % der Spannung da?</summary>
+    <p><span class="f">τ = RC = 22 000 Ω · 4,7·10<sup>−6</sup> F = 0,103 s</span>; <span class="f">t½ = ln 2 · τ = 0,072 s</span>; <span class="f">I<sub>0</sub> = U<sub>0</sub>/R = 0,41 mA</span>; <span class="f">Q<sub>0</sub> = C·U<sub>0</sub> = 42 µC</span> (Kontrolle: <span class="f">I<sub>0</sub>·τ = 0,41 mA · 0,103 s = 42 µC</span> ✓); <span class="f">W<sub>0</sub> = ½·C·U<sub>0</sub>² = 0,19 mJ</span>; 10 %: <span class="f">e<sup>−t/τ</sup> = 0,1</span> ⇒ <span class="f">t = τ·ln 10 = 0,24 s</span>.</p></details>
+  <details><summary>A2: TR-Regression liefert I(t) = 2,4 mA · 0,9512<sup>t/ms</sup>. τ, Q und C bei U<sub>0</sub> = 12 V?</summary>
+    <p><span class="f">τ = −1 ms / ln(0,9512) = 20,0 ms</span>; <span class="f">Q = I<sub>0</sub>·τ = 2,4 mA · 20 ms = 48 µC</span>; <span class="f">C = Q/U<sub>0</sub> = 4,0 µF</span>; Widerstand: <span class="f">R = τ/C = 5,0 kΩ</span> (Kontrolle: <span class="f">U<sub>0</sub>/I<sub>0</sub> = 12 V/2,4 mA = 5 kΩ</span> ✓).</p></details>
+  <details><summary>A3: Plattenkondensator A = 200 cm², d = 2,0 mm, U = 100 V, Quelle bleibt angeschlossen. Dann wird eine Plexiglasplatte (ε<sub>r</sub> = 3,4) eingeschoben. Q vorher/nachher?</summary>
+    <p><span class="f">C<sub>0</sub> = ε<sub>0</sub>·0,020 m²/0,0020 m = 8,85·10<sup>−11</sup> F = 88,5 pF</span>; <span class="f">Q<sub>0</sub> = C<sub>0</sub>·U = 8,85 nC</span>. Mit Plexiglas: <span class="f">C = 3,4·C<sub>0</sub> = 301 pF</span>, <span class="f">U</span> bleibt 100 V, <span class="f">Q = 30,1 nC</span>: es fließen 21 nC nach. (Wäre die Quelle abgeklemmt: <span class="f">Q</span> bleibt 8,85 nC, <span class="f">U</span> fällt auf 100 V/3,4 = 29 V.)</p></details>
+  <details><summary>A4: Drei Kondensatoren: 10 µF und 40 µF in Reihe, dazu 12 µF parallel. C<sub>ges</sub>? Ladung bei 20 V?</summary>
+    <p>Reihe: <span class="f">1/C = 1/10 + 1/40 = 5/40</span> ⇒ 8 µF. Parallel: <span class="f">8 + 12 = 20 µF</span>. <span class="f">Q = 20 µF · 20 V = 400 µC</span>.</p></details>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · Nicht in der Formelsammlung (auswendig)</h2>
+  <ul>
+    <li>Kapazität als Steigung im <span class="f">Q</span>-<span class="f">U</span>-Diagramm; 1 F = 1 As/V; typische Werte pF bis mF; Einsatzmöglichkeiten.</li>
+    <li>Herleitung <span class="f">C = ε<sub>0</sub>A/d</span> aus <span class="f">σ = Q/A</span>, <span class="f">σ = ε<sub>0</sub>E</span>, <span class="f">E = U/d</span>. Begründung <span class="f">C ∝ A</span>, <span class="f">C ∝ 1/d</span>; Auswertung über das <span class="f">C</span>-(1/<span class="f">d</span>)-Diagramm, <span class="f">ε<sub>0</sub></span> = Steigung/<span class="f">A</span>.</li>
+    <li>Dielektrikum: Polarisation → Gegenfeld → <span class="f">E<sub>ges</sub> = E/ε<sub>r</sub></span> → <span class="f">C = ε<sub>r</sub>C<sub>0</sub></span>; <span class="f">ε<sub>r</sub></span>-Werte (Luft 1, Öl 2,2, Plexiglas 3,4, Glas 5–7, Wasser 81).</li>
+    <li>Zwei Fälle: Quelle getrennt (<span class="f">Q</span> konstant) vs. angeschlossen (<span class="f">U</span> konstant).</li>
+    <li>Teilgefüllt / nebeneinander = Parallelschaltung mit Flächenanteilen: <span class="f">C(f) = C<sub>0</sub>(h−f)/h + C<sub>Öl</sub>·f/h</span>; <span class="f">ε<sub>r1</sub> = 2Cd/(Aε<sub>0</sub>) − ε<sub>r2</sub></span>.</li>
+    <li>Herleitungen Reihe/Parallel (gleiche Spannung bzw. gleiche Ladung); Merkregel parallel = Fläche, Reihe = Abstand; Gegensatz zu Widerständen.</li>
+    <li>Energie: Fläche unter der <span class="f">Q</span>-<span class="f">U</span>-Geraden, warum ½; <span class="f">W = ½QU = Q²/(2C)</span> (FS hat nur <span class="f">½CU²</span>).</li>
+    <li>DGL-Herleitung über die Maschenregel und Lösung durch Trennung der Variablen; Name und Bedeutung von <span class="f">τ = RC</span> (37 %), Einheiten-Check Ω·F = s.</li>
+    <li>Halbwertszeit <span class="f">t½ = ln 2 · RC</span> mit Herleitung (Basiswechsel).</li>
+    <li>Regression <span class="f">a·b<sup>x</sup></span> → <span class="f">τ = −1/ln b</span> (pro Zeiteinheit); physikalische Begründung „exponentiell".</li>
+    <li><span class="f">Q = ∫I dt = I<sub>0</sub>τ</span> mit Ansatz; Kästchenzählen; µA·µs = pC.</li>
+    <li>Oszilloskop: V/Div, s/Div, Halbwertszeit ablesen → <span class="f">C = t½/(R ln 2)</span>.</li>
+  </ul>
+  <p class="small">In der FS: <span class="f">C = Q/U</span>, <span class="f">C = ε<sub>0</sub>ε<sub>r</sub>A/d</span>, <span class="f">E = ½CU²</span>, Lade-/Entladekurven für <span class="f">U</span>, <span class="f">I</span>, <span class="f">Q</span>, beide DGLs, Reihe/Parallel (S. 28/29); <span class="f">σ = ε<sub>0</sub>ε<sub>r</sub>E</span> (S. 26); <span class="f">Q = ∫I dt</span> (S. 24); <span class="f">ε<sub>0</sub></span> (S. 50).</p>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Merksätze, Verwechslungen, Fortschritt</h2>
+  <ol>
+    <li><span class="f">C = Q/U</span>: Ladung pro Volt, nur von der Bauform abhängig. Platten: <span class="f">C = ε<sub>0</sub>ε<sub>r</sub>A/d</span>.</li>
+    <li>Dielektrikum schwächt das Feld um <span class="f">ε<sub>r</sub></span> und erhöht <span class="f">C</span> um <span class="f">ε<sub>r</sub></span>. Erst fragen: Quelle dran oder nicht?</li>
+    <li>Parallel addieren (mehr Fläche), Reihe Kehrwerte (mehr Abstand). Nebeneinander gefüllt = parallel.</li>
+    <li><span class="f">W = ½CU²</span>, weil die Spannung beim Laden mitwächst.</li>
+    <li>Entladen: Abnahme ∝ Bestand ⇒ <span class="f">e<sup>−t/RC</sup></span>; <span class="f">τ = RC</span>, <span class="f">t½ = ln 2·RC</span>, <span class="f">Q = I<sub>0</sub>τ</span>.</li>
+  </ol>
+  <h3>Typische Verwechslungen und Punkteverluste</h3>
+  <table>
+    <tr><th>Das hier ...</th><th>... ist nicht das hier</th></tr>
+    <tr><td>Kondensatoren parallel: C addieren</td><td>Widerstände parallel: Kehrwerte addieren</td></tr>
+    <tr><td>Quelle getrennt: Q konstant, U ändert sich</td><td>Quelle angeschlossen: U konstant, Q ändert sich</td></tr>
+    <tr><td>τ = RC (37 %)</td><td>t½ = ln 2·RC (50 %); beides in Sekunden, aber verschiedene Zahlen</td></tr>
+    <tr><td>τ = −1/ln(b) aus der TR-Regression</td><td>b selbst oder 1/b als Zeitkonstante</td></tr>
+    <tr><td>Q = ∫I dt mit Ansatz (Fläche unter I(t))</td><td>Q = I₀·τ ohne Begründung („Ansatz unbewiesen", Klausur 2)</td></tr>
+    <tr><td>Energie des Kondensators ½CU²</td><td>Energie eines Teilchens qU</td></tr>
+    <tr><td>E (Energie) in der FS-Formel E = ½CU²</td><td>E (Feldstärke)</td></tr>
+    <tr><td>Teilgefüllt = zwei parallele Teilkondensatoren</td><td>irgendeine Mischformel (Klausur 2, 2d: 0/3)</td></tr>
+    <tr><td>Regression begründen: Abnahme ∝ Bestand</td><td>„Punkte liegen auf einer Kurve"</td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="a"> C = Q/U und C = ε₀εrA/d mit Herleitung und Begründungen</label>
+    <label><input type="checkbox" data-k="b"> Dielektrikum erklärt; Fall „Quelle getrennt/angeschlossen" sicher</label>
+    <label><input type="checkbox" data-k="c"> Reihe/Parallel hergeleitet, Klausur-Aufgabe 4 gelöst, teilgefüllter Kondensator</label>
+    <label><input type="checkbox" data-k="d"> Energie ½CU² begründet</label>
+    <label><input type="checkbox" data-k="e"> DGL hergeleitet und gelöst, τ, t½, Regression → e-Form, Q = ∫I dt</label>
+    <label><input type="checkbox" data-k="f"> Klausur-Aufgaben 1 und 2 sowie A1–A4 gelöst</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 3 · erstellt 27.10.2026 · Quellen: Hefteinträge Elektrodynamik (Kurs PH1, 12.1), Klausur 2 vom 13.11.2025 mit Korrektur und Bewertungsbogen, Zentralabitur 2016 Aufgabe I und 2023 Aufgabe IIa (Material + Erwartungshorizont in der Mappe), Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const sci = (x, sig) => {
+    if (x === 0) return '0';
+    const exp = Math.floor(Math.log10(Math.abs(x)));
+    let mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); return m + '·10<sup>' + (exp + 1) + '</sup>'; }
+    return m + '·10<sup>' + exp + '</sup>';
+  };
+  const unit = (x, u) => { // auto prefix
+    const ax = Math.abs(x);
+    if (ax === 0) return '0 ' + u;
+    const pre = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'µ'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+    let best = pre[0]; for (const p of pre) { if (ax >= p[0] * 0.9999) best = p; }
+    return de(x / best[0], 2) + ' ' + best[1] + u;
+  };
+  const $ = (id) => document.getElementById(id);
+  const eps0 = 8.854e-12;
+
+  /* ---------- 1 Kapazität ---------- */
+  (function kapazitaet() {
+    const sA = $('cA'), sD = $('cD'), sE = $('cEps'), sU = $('cU');
+    const cv = $('quCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function update() {
+      const A = parseFloat(sA.value) * 1e-4, d = parseFloat(sD.value) * 1e-3, er = parseFloat(sE.value), U = parseFloat(sU.value);
+      $('cAv').textContent = sA.value + ' cm²'; $('cDv').textContent = de(parseFloat(sD.value), 1) + ' mm'; $('cUv').textContent = U + ' V';
+      const C = eps0 * er * A / d, Q = C * U, Wn = 0.5 * C * U * U;
+      $('cOut').innerHTML = 'C = ε<sub>0</sub>·ε<sub>r</sub>·A/d = 8,854·10<sup>−12</sup> · ' + de(er, 1) + ' · ' + sci(A, 2) + ' m² / ' + sci(d, 2) + ' m = <b>' + unit(C, 'F') + '</b><br>Q = C·U = <b>' + unit(Q, 'C') + '</b><br>E = U/d = ' + sci(U / d, 2) + ' V/m, σ = Q/A = ' + sci(Q / A, 2) + ' C/m²<br>W = ½·C·U² = <b>' + unit(Wn, 'J') + '</b>';
+      ctx.clearRect(0, 0, W, H);
+      const pad = { l: 56, r: 16, t: 16, b: 40 };
+      const Qmax = eps0 * 6 * 2000e-4 / 0.5e-3 * 500; // for scaling: use current C up to 500 V
+      const qScale = C * 500;
+      const xs = (u) => pad.l + (u / 500) * (W - pad.l - pad.r), ys = (q) => H - pad.b - (q / qScale) * (H - pad.t - pad.b);
+      ctx.strokeStyle = css('--line'); ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.lineWidth = 1;
+      for (let u = 0; u <= 500; u += 100) { ctx.beginPath(); ctx.moveTo(xs(u), pad.t); ctx.lineTo(xs(u), H - pad.b); ctx.stroke(); ctx.fillText(String(u), xs(u) - 8, H - pad.b + 16); }
+      ctx.fillStyle = css('--fg'); ctx.fillText('U in V', W - pad.r - 40, H - 6); ctx.fillText('Q (bis ' + unit(qScale, 'C') + ')', 6, pad.t + 4);
+      // energy area
+      ctx.fillStyle = css('--pot'); ctx.globalAlpha = 0.25; ctx.beginPath(); ctx.moveTo(xs(0), ys(0)); ctx.lineTo(xs(U), ys(0)); ctx.lineTo(xs(U), ys(Q)); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xs(0), ys(0)); ctx.lineTo(xs(500), ys(qScale)); ctx.stroke();
+      ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(xs(U), ys(Q), 5, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillStyle = css('--fg'); ctx.fillText('Steigung = C', xs(300) + 6, ys(C * 300) - 8);
+    }
+    [sA, sD, sE, sU].forEach(s => s.addEventListener('input', update)); update();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', update);
+  })();
+
+  /* ---------- 2 Dielektrikum ---------- */
+  (function dielektrikum() {
+    const svg = $('dSvg'), NS = 'http://www.w3.org/2000/svg';
+    const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; };
+    el('rect', { x: 60, y: 30, width: 10, height: 200, fill: css('--pos') });
+    el('rect', { x: 410, y: 30, width: 10, height: 200, fill: css('--neg') });
+    const tp = el('text', { x: 58, y: 22, 'font-size': 14, fill: css('--fg') }); tp.textContent = '+';
+    const tn = el('text', { x: 411, y: 22, 'font-size': 14, fill: css('--fg') }); tn.textContent = '−';
+    const greens = []; for (let i = 0; i < 6; i++) greens.push(el('line', { x1: 76, x2: 404, y1: 45 + i * 34, y2: 45 + i * 34, stroke: css('--pot'), 'stroke-width': 1.5 }));
+    const block = el('rect', { x: 150, y: 40, width: 180, height: 180, fill: css('--soft'), stroke: css('--warn'), 'stroke-width': 1.5, rx: 6, opacity: 0 });
+    const dip = el('g', { opacity: 0 });
+    for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+      const x = 170 + c * 46, y = 60 + r * 46;
+      el('ellipse', { cx: x, cy: y, rx: 14, ry: 9, fill: 'none', stroke: css('--muted') }, dip);
+      const a = el('text', { x: x - 11, y: y + 4, 'font-size': 11, fill: css('--neg'), 'font-weight': 700 }, dip); a.textContent = '−';
+      const b = el('text', { x: x + 5, y: y + 4, 'font-size': 11, fill: css('--pos'), 'font-weight': 700 }, dip); b.textContent = '+';
+    }
+    const blues = []; for (let i = 0; i < 6; i++) blues.push(el('line', { x1: 320, x2: 320, y1: 62 + i * 34, y2: 62 + i * 34, stroke: css('--neg'), 'stroke-width': 2.5, opacity: 0 }));
+    const lbl = el('text', { x: 150, y: 250, 'font-size': 12, fill: css('--fg') });
+    const sE = $('dEps'), sM = $('dMode');
+    function update() {
+      const er = parseFloat(sE.value), mode = sM.value;
+      const on = er > 1;
+      block.setAttribute('opacity', on ? 1 : 0); dip.setAttribute('opacity', on ? 1 : 0);
+      const L = on ? Math.min(150, 160 * (1 - 1 / er)) : 0;
+      blues.forEach(l => { l.setAttribute('opacity', on ? 1 : 0); l.setAttribute('x1', 320); l.setAttribute('x2', 320 - L); });
+      lbl.textContent = on ? 'Gegenfeld E_p = E·(1 − 1/ε_r), Gesamtfeld innen E/ε_r = ' + de(100 / er, 0) + ' % von E' : 'ohne Dielektrikum: Feld E = U/d';
+      const C0 = 1, Q0 = 1, U0 = 1;
+      let html = 'ε<sub>r</sub> = ' + de(er, 1) + ' → C = ε<sub>r</sub>·C<sub>0</sub> = <b>' + de(er, 1) + '·C<sub>0</sub></b><br>';
+      if (mode === 'q') html += 'Quelle getrennt: Q bleibt. U = Q/C = <b>U<sub>0</sub>/' + de(er, 1) + ' = ' + de(100 / er, 0) + ' %</b> der alten Spannung. Feld innen sinkt auf ' + de(100 / er, 0) + ' %. Energie W = Q²/(2C) sinkt auf ' + de(100 / er, 0) + ' % (die Platte wird hineingezogen).';
+      else html += 'Quelle angeschlossen: U bleibt. Q = C·U = <b>' + de(er, 1) + '·Q<sub>0</sub></b>, es fließt Ladung nach. Feld E = U/d bleibt gleich (mehr Plattenladung gleicht das Gegenfeld aus). Energie W = ½CU² steigt auf das ' + de(er, 1) + '-fache.';
+      $('dOut').innerHTML = html;
+    }
+    [sE, sM].forEach(s => s.addEventListener('input', update)); update();
+  })();
+
+  /* ---------- 2b Füllstand ---------- */
+  (function fuellstand() {
+    const svg = $('fillSvg'), NS = 'http://www.w3.org/2000/svg';
+    const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); svg.appendChild(n); return n; };
+    el('rect', { x: 60, y: 20, width: 200, height: 160, fill: 'none', stroke: css('--fg'), 'stroke-width': 2 });
+    const oil = el('rect', { x: 62, y: 100, width: 196, height: 78, fill: css('--warn'), opacity: 0.35 });
+    el('rect', { x: 120, y: 30, width: 8, height: 150, fill: css('--pos') });
+    el('rect', { x: 192, y: 30, width: 8, height: 150, fill: css('--neg') });
+    const t = el('text', { x: 270, y: 110, 'font-size': 12, fill: css('--fg') });
+    const th = el('text', { x: 10, y: 110, 'font-size': 12, fill: css('--fg') }); th.textContent = 'h';
+    const sF = $('fill'), sE = $('fillEps');
+    const C0 = 14.8, h = 1;
+    function update() {
+      const f = parseFloat(sF.value) / 100, er = parseFloat(sE.value);
+      $('fillv').textContent = de(f * 100, 0) + ' %'; $('fillEpsv').textContent = de(er, 1);
+      const y = 180 - f * 150; oil.setAttribute('y', y); oil.setAttribute('height', 180 - y);
+      t.textContent = 'f = ' + de(f * h, 2) + ' m';
+      const Coel = er * C0, C = C0 * (1 - f) + Coel * f;
+      $('fillOut').innerHTML = 'Klausurwerte: C<sub>0</sub> = 14,8 pF (Luft), h = 1 m, C<sub>Öl</sub> = ε<sub>r</sub>·C<sub>0</sub> = ' + de(Coel, 1) + ' pF<br>C(f) = C<sub>0</sub>·(h−f)/h + C<sub>Öl</sub>·f/h = ' + de(C0 * (1 - f), 1) + ' pF + ' + de(Coel * f, 1) + ' pF = <b>' + de(C, 1) + ' pF</b><br>Umkehrung: f = h·(C − C<sub>0</sub>)/(C<sub>Öl</sub> − C<sub>0</sub>) = ' + de(h * (C - C0) / (Coel - C0), 2) + ' m ✓<br><span class="small">Linear in f: leerer Tank C<sub>0</sub>, voller Tank C<sub>Öl</sub>. So funktioniert ein kapazitiver Füllstandsanzeiger.</span>';
+    }
+    [sF, sE].forEach(s => s.addEventListener('input', update)); update();
+  })();
+
+  /* ---------- 3 Schaltungen ---------- */
+  (function schaltungen() {
+    const c1 = $('sc1'), c2 = $('sc2');
+    function update() {
+      const a = parseFloat(c1.value), b = parseFloat(c2.value); const topo = document.querySelector('input[name=topo]:checked').value;
+      if (!(a > 0) || !(b > 0)) { $('sOut').textContent = 'Bitte positive Werte eingeben.'; return; }
+      if (topo === 'p') $('sOut').innerHTML = 'Parallel: C<sub>ges</sub> = C<sub>1</sub> + C<sub>2</sub> = ' + de(a, 2) + ' nF + ' + de(b, 2) + ' nF = <b>' + de(a + b, 2) + ' nF</b> (größer als beide)';
+      else { const c = 1 / (1 / a + 1 / b); $('sOut').innerHTML = 'Reihe: 1/C<sub>ges</sub> = 1/' + de(a, 2) + ' + 1/' + de(b, 2) + ' ⇒ C<sub>ges</sub> = <b>' + de(c, 2) + ' nF</b> (kleiner als die kleinste: ' + de(Math.min(a, b), 2) + ' nF). Formel: C<sub>ges</sub> = C<sub>1</sub>·C<sub>2</sub>/(C<sub>1</sub> + C<sub>2</sub>)'; }
+    }
+    [c1, c2].forEach(i => i.addEventListener('input', update)); document.querySelectorAll('input[name=topo]').forEach(r => r.addEventListener('change', update)); update();
+  })();
+
+  /* ---------- 5 RC-Kurven ---------- */
+  (function rc() {
+    const cv = $('rcCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const sM = $('rcMode'), sR = $('rcR'), sC = $('rcC'), sU = $('rcU');
+    function update() {
+      const R = parseFloat(sR.value) * 1e3, C = parseFloat(sC.value) * 1e-6, U0 = parseFloat(sU.value), charge = sM.value === 'c';
+      $('rcRv').textContent = sR.value + ' kΩ'; $('rcCv').textContent = de(parseFloat(sC.value), 1) + ' µF'; $('rcUv').textContent = de(U0, 1) + ' V';
+      const tau = R * C, th = Math.LN2 * tau, I0 = U0 / R, Q0 = C * U0, W0 = 0.5 * C * U0 * U0;
+      const tmax = 5 * tau;
+      ctx.clearRect(0, 0, W, H);
+      const pad = { l: 56, r: 56, t: 20, b: 44 };
+      const xs = (t) => pad.l + (t / tmax) * (W - pad.l - pad.r), ys = (f) => H - pad.b - f * (H - pad.t - pad.b);
+      ctx.strokeStyle = css('--line'); ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.lineWidth = 1;
+      for (let k = 0; k <= 5; k++) { ctx.beginPath(); ctx.moveTo(xs(k * tau), pad.t); ctx.lineTo(xs(k * tau), H - pad.b); ctx.stroke(); ctx.fillText(k + 'τ = ' + unit(k * tau, 's'), xs(k * tau) - 24, H - pad.b + 16); }
+      for (let f = 0; f <= 1; f += 0.25) { ctx.beginPath(); ctx.moveTo(pad.l, ys(f)); ctx.lineTo(W - pad.r, ys(f)); ctx.stroke(); ctx.fillText(de(f * U0, 1) + ' V', 6, ys(f) + 4); ctx.fillText(unit(f * I0, 'A'), W - pad.r + 4, ys(f) + 4); }
+      ctx.fillStyle = css('--fg'); ctx.fillText('t', W - pad.r - 10, H - 6);
+      // area under I
+      ctx.fillStyle = css('--kin'); ctx.globalAlpha = 0.15; ctx.beginPath(); ctx.moveTo(xs(0), ys(0));
+      for (let i = 0; i <= 200; i++) { const t = tmax * i / 200; ctx.lineTo(xs(t), ys(Math.exp(-t / tau))); } ctx.lineTo(xs(tmax), ys(0)); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+      // U curve
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2.5; ctx.beginPath();
+      for (let i = 0; i <= 200; i++) { const t = tmax * i / 200; const f = charge ? 1 - Math.exp(-t / tau) : Math.exp(-t / tau); if (i === 0) ctx.moveTo(xs(t), ys(f)); else ctx.lineTo(xs(t), ys(f)); } ctx.stroke();
+      // I curve
+      ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2.5; ctx.beginPath();
+      for (let i = 0; i <= 200; i++) { const t = tmax * i / 200; const f = Math.exp(-t / tau); if (i === 0) ctx.moveTo(xs(t), ys(f)); else ctx.lineTo(xs(t), ys(f)); } ctx.stroke();
+      // markers
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(xs(tau), ys(0)); ctx.lineTo(xs(tau), ys(charge ? 1 - Math.exp(-1) : Math.exp(-1))); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(xs(th), ys(0)); ctx.lineTo(xs(th), ys(0.5)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = css('--fg'); ctx.fillText('τ: ' + (charge ? '63 %' : '37 %'), xs(tau) + 4, ys(charge ? 1 - Math.exp(-1) : Math.exp(-1)) - 6); ctx.fillText('t½: 50 %', xs(th) + 4, ys(0.5) + 14);
+      ctx.fillStyle = css('--accent'); ctx.fillText('U_C(t)', pad.l + 6, charge ? ys(0.1) : ys(0.95)); ctx.fillStyle = css('--kin'); ctx.fillText('I(t)', xs(1.2 * tau), ys(Math.exp(-1.2)) - 8);
+      $('rcOut').innerHTML = 'τ = R·C = ' + sci(R, 2) + ' Ω · ' + sci(C, 2) + ' F = <b>' + unit(tau, 's') + '</b> &nbsp; t½ = ln 2 · τ = <b>' + unit(th, 's') + '</b><br>I<sub>0</sub> = U<sub>0</sub>/R = ' + unit(I0, 'A') + ' &nbsp; Q<sub>0</sub> = C·U<sub>0</sub> = ' + unit(Q0, 'C') + ' = I<sub>0</sub>·τ ✓ &nbsp; W<sub>0</sub> = ½CU<sub>0</sub>² = ' + unit(W0, 'J') + '<br>' + (charge ? 'Laden: U<sub>C</sub>(t) = U<sub>0</sub>(1 − e<sup>−t/τ</sup>), I(t) = I<sub>0</sub>e<sup>−t/τ</sup>. Nach 5τ ist der Kondensator praktisch voll.' : 'Entladen: U<sub>C</sub>, I und Q fallen mit e<sup>−t/τ</sup>. Nach 5τ ist unter 1 % übrig.');
+    }
+    [sM, sR, sC, sU].forEach(s => s.addEventListener('input', update)); update();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', update);
+  })();
+
+  /* ---------- 5b Exponentialregression der Klausur-Tabelle ---------- */
+  (function expReg() {
+    const t = [0, 50, 100, 150, 200, 250], U = [6.1, 3.8, 2.3, 1.4, 0.8, 0.5], R = 1e4;
+    const I = U.map(u => u / R * 1e6); // µA
+    const ly = I.map(Math.log), n = t.length, mx = t.reduce((a, b) => a + b) / n, my = ly.reduce((a, b) => a + b) / n;
+    let sxy = 0, sxx = 0; for (let i = 0; i < n; i++) { sxy += (t[i] - mx) * (ly[i] - my); sxx += (t[i] - mx) ** 2; }
+    const k = sxy / sxx, a = Math.exp(my - k * mx), b = Math.exp(k);
+    const tau = -1 / Math.log(b), Q = a * tau, C = Q / 6.1, C2 = tau / R;
+    $('expOut').innerHTML = 'Umgerechnet: I in µA = ' + I.map(x => de(x, 0)).join(', ') + '<br>Exponentialregression (TR): y = <b>' + de(a, 1) + ' · ' + de(b, 6) + '<sup>x</sup></b> (Kontrollergebnis: 622,6 · 0,989949<sup>x</sup>)<br>Physikalisch: I(t) = ' + de(a, 1) + ' µA · ' + de(b, 6) + '<sup>t/µs</sup><br>e-Form: τ = −1/ln(' + de(b, 6) + ') µs = <b>' + de(tau, 1) + ' µs</b> → I(t) = ' + de(a, 1) + ' µA · e<sup>−t/' + de(tau, 1) + ' µs</sup><br>Q = ∫I dt = I<sub>0</sub>·τ = ' + de(a, 1) + ' µA · ' + de(tau, 1) + ' µs = ' + de(Q, 0) + ' pC = <b>' + de(Q / 1000, 1) + ' nC</b><br>C = Q/U<sub>0</sub> = ' + de(Q / 1000, 1) + ' nC / 6,1 V = <b>' + de(C / 1000, 1) + ' nF</b>; Kontrolle C = τ/R = ' + de(C2 * 1e3, 1) + ' nF &nbsp; t½ = ln 2·τ = ' + de(Math.LN2 * tau, 1) + ' µs';
+  })();
+
+  /* ---------- 7 Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Man verdoppelt die Spannung an einem Kondensator. Die Kapazität ...', o: ['verdoppelt sich', 'bleibt gleich', 'halbiert sich'], a: 1, e: 'C hängt nur von der Bauform ab. Die Ladung verdoppelt sich, C = Q/U bleibt.' },
+      { q: 'Geladener Kondensator, Quelle abgeklemmt, Plattenabstand verdoppelt. Die Spannung ...', o: ['halbiert sich', 'bleibt gleich', 'verdoppelt sich'], a: 2, e: 'Q bleibt, C halbiert sich, U = Q/C verdoppelt sich. Das Feld E = σ/ε₀ bleibt dabei gleich.' },
+      { q: 'Zwei gleiche Kondensatoren C in Reihe ergeben ...', o: ['2C', 'C/2', 'C'], a: 1, e: '1/C_ges = 1/C + 1/C = 2/C ⇒ C/2. Reihe = größerer Abstand.' },
+      { q: 'Nach einer Zeitkonstante τ sind beim Entladen noch ... der Spannung da.', o: ['50 %', '37 %', '10 %'], a: 1, e: 'e^(−1) = 0,37. 50 % sind nach t½ = 0,69·τ erreicht.' },
+      { q: 'Der TR liefert I = 5 mA · 0,95^(t/ms). Die Zeitkonstante ist ...', o: ['0,95 ms', '19,5 ms', '1/0,95 ms'], a: 1, e: 'τ = −1/ln(0,95) ms = 19,5 ms.' },
+      { q: 'Dielektrikum rein, Quelle bleibt angeschlossen. Was passiert?', o: ['U sinkt, Q bleibt', 'Q steigt, U bleibt', 'nichts'], a: 1, e: 'Die Quelle hält U. C steigt, also fließt Ladung nach: Q = C·U steigt.' },
+      { q: 'Die Energie eines Kondensators ist ½CU². Warum nicht CU² = Q·U?', o: ['weil die Hälfte als Wärme verloren geht', 'weil die Spannung beim Laden von 0 auf U wächst', 'weil nur eine Platte Ladung trägt'], a: 1, e: 'Fläche unter der Q-U-Geraden ist ein Dreieck: mittlere Spannung U/2.' },
+      { q: 'Ein Ölfüllstand wird mit einem Kondensator gemessen. Die Teile mit Öl und mit Luft sind ...', o: ['in Reihe geschaltet', 'parallel geschaltet', 'unabhängig'], a: 1, e: 'Gleiche Platten, gleiche Spannung, Ladungen addieren sich → parallel. C(f) ist linear in f.' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      dv.innerHTML = '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>';
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); b.textContent = txt;
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; fb.innerHTML = '<span class="right">Richtig.</span> ' + item.e; } else { fb.innerHTML = '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a] + '". ' + item.e; }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+
+  /* ---------- 10 Fortschritt ---------- */
+  (function progress() {
+    const key = 'physik-l3-progress'; let state = {};
+    try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { state = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => {
+      cb.checked = !!state[cb.dataset.k];
+      cb.addEventListener('change', () => { state[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) { /* kein Speicher */ } });
+    });
+  })();
+})();
+</script>
+</body>
+</html>
