@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 4 – Magnetfeld und Lorentzkraft</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { white-space: nowrap; }
+  .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  input[type=number] { width: 80px; font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+  .hand { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .hand { grid-template-columns: 1fr; } }
+  .hand div { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+</style>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="katex/katex.min.js"></script>
+  <script>
+    window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
+    // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
+    window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+  </script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS);"></script>
+  <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Ørsted</a><a href="#s2">2 Stromwaage</a><a href="#s3">3 Lorentzkraft</a><a href="#s4">4 Fadenstrahlrohr</a><a href="#s5">5 Spulen</a><a href="#s6">6 Wienfilter</a><a href="#s7">7 Massenspektrometer</a><a href="#s8">8 Hall</a><a href="#s9">9 Klausur & Abitur</a><a href="#s10">10 Analogie</a><a href="#s11">11 Aufgaben</a><a href="#s12">12 Nicht in FS</a><a href="#s13">13 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 4 · Magnetfeld und Lorentzkraft</h1>
+  <p class="sub">Ørsted → Stromwaage und Flussdichte → Lorentzkraft → Kreisbahn und Fadenstrahlrohr → Spulen → Wienfilter, Massenspektrometer, Hall-Effekt. Grundlage: Hefteinträge (12.2) Elektromagnetismus, Klausur 3 (Magnetfelder), Abitur 2021–2024.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Magnetfeld eines Stroms (Leiter, Spule) zeichnen und die Richtung mit der Faust-Regel bestimmen.</li>
+    <li>Stromwaage auswerten, <span class="f">\(F = B\cdot I\cdot l\)</span> und die Einheit Tesla begründen.</li>
+    <li>Lorentzkraft aus <span class="f">\(F = B\cdot I\cdot l\)</span> herleiten, Richtung mit der Drei-Finger-Regel, Eigenschaften (keine Arbeit, Kreisbahn).</li>
+    <li>Fadenstrahlrohr: Aufbau, <span class="f">\(r = m\cdot v/(q\cdot B)\)</span>, <span class="f">\(e/m = 2U_{B}/(r^{2}B^{2})\)</span>.</li>
+    <li>Spulenfeld <span class="f">\(B = \mu _{0}\cdot N\cdot I/l\)</span> mit Messung, Helmholtzspule, Eisenkern.</li>
+    <li>Wienfilter (<span class="f">\(v = E/B\)</span>), Massenspektrometer (<span class="f">\(m = qBr/v\)</span>), Hall-Effekt (<span class="f">\(U_{H} = v\cdot B\cdot b\)</span>) erklären, herleiten, rechnen.</li>
+  </ul>
+  <div class="note warn"><b>Zuerst die Konvention, sonst geht alles schief.</b><br>
+    <b>Physikalische Stromrichtung</b> = Bewegungsrichtung der Elektronen, von − nach +. <b>Technische Stromrichtung</b> = von + nach −. Dein Lehrer und die Abitur-Materialien arbeiten mit dem <b>Elektronenstrom</b> (Symbol <span class="f">\(\otimes\)</span> „Elektronen fließen ins Blatt", <span class="f">\(\odot\)</span> „aus dem Blatt heraus").<br>
+    Daraus folgt: alle Handregeln mit der <b>linken Hand</b> für Elektronen. Dieselbe Regel mit der <b>rechten Hand</b> gilt für positive Ladungen bzw. die technische Stromrichtung. Beide Varianten liefern dieselbe Feld- und Kraftrichtung. In der Klausur immer dazuschreiben, welche Richtung gemeint ist.</div>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Alle Simulationen rechnen mit den echten Formeln.</p>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Der Ørsted-Versuch: jeder Strom hat ein Magnetfeld</h2>
+  <h3>Versuch und Beobachtung</h3>
+  <p>Eine Kompassnadel liegt unter einem geraden Draht. Ohne Strom zeigt sie nach Norden. Fließt Strom, schlägt sie aus und stellt sich <b>quer (orthogonal) zum Draht</b>. Kehrt man die Stromrichtung um, dreht sich die Nadel um <span class="f">\(180^\circ\)</span>. Je größer die Stromstärke, desto stärker die Ausrichtung.</p>
+  <h3>Deutung</h3>
+  <ul>
+    <li>Der Leiter ist von einem <b>kreisförmigen Magnetfeld</b> umgeben. Die Feldlinien sind konzentrische Kreise um den Draht; sie haben keinen Anfang und kein Ende (Lektion 1: B-Feld ist quellenfrei).</li>
+    <li>Nahe am Draht liegen die Linien dichter: das Feld nimmt mit dem Abstand ab, <span class="f">\(B \propto 1/r\)</span>. Formel in der FS (S. 29): <span class="f">\(B = \mu _{0}\cdot I/(2\pi \cdot r)\)</span>. Abitur 2021 hat genau das mit einer Hallsonde gemessen (Abschnitt 9).</li>
+    <li><b>Faust-Regel (so im Heft):</b> Zeigt der Daumen der <b>linken</b> Faust in Richtung des Elektronenflusses, so zeigen die gekrümmten Finger die Richtung der Feldlinien. Mit der rechten Faust und der technischen Stromrichtung: gleiches Ergebnis.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Elektronenfluss <select id="oeDir"><option value="in">ins Blatt hinein (⊗)</option><option value="out">aus dem Blatt heraus (⊙)</option></select></label>
+      </div>
+      <canvas id="oeCanvas" width="480" height="340"></canvas>
+      <p class="small">Querschnitt durch den Leiter. Feldlinien kreisförmig, außen weniger dicht. Richtung ändert sich mit der Stromrichtung. Kontrolle: Elektronen ins Blatt → Feldlinien gegen den Uhrzeigersinn.</p>
+    </div>
+    <div>
+      <h3>Spule = Stabmagnet</h3>
+      <p>Wickelt man den Draht zu einer Spule, addieren sich die Kreisfelder der einzelnen Windungen. Innen entsteht ein (nahezu) <b>homogenes Feld</b> parallel zur Spulenachse, außen sieht das Feld aus wie das eines Stabmagneten: die Linien treten am <b>Nordpol</b> aus und am Südpol ein und schließen sich durch das Innere.</p>
+      <p><b>Wo ist Nord?</b> Finger der passenden Faust in Stromrichtung um die Windungen legen (linke Faust: Elektronenfluss), der Daumen zeigt zum Nordpol. Die Lage der Pole hängt also von <b>Stromrichtung und Wicklungsrichtung</b> ab (die beiden Skizzen im Heft: gleiche Stromrichtung an den Anschlüssen, andere Wicklung, Pole vertauscht).</p>
+      <div class="note"><b>Analogie:</b> Eine Spule ist ein Stabmagnet, den man an- und ausschalten und dessen Pole man umpolen kann. Ein Eisenkern verstärkt das Feld um den Faktor <span class="f">\(\mu _{r}\)</span> (Abschnitt 5).</div>
+    </div>
+  </div>
+  <div class="note exam"><b>So fragt die Klausur:</b> „Zeichnen Sie das Feldlinienbild des geraden Leiters / der Spule ein." Erwartet (Abitur 2021/2022, 2–3 BE): konzentrische Kreise bzw. Stabmagnetbild, <b>mit Richtungspfeilen</b>, Richtung passend zur angegebenen Elektronenflussrichtung. Ohne Pfeile keine volle Punktzahl.</div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Die Stromwaage: Kraft auf einen Leiter, Definition von B</h2>
+  <h3>Warum wirkt eine Kraft? (Feldüberlagerung)</h3>
+  <p>Ein stromdurchflossener Leiter liegt im homogenen Feld eines Hufeisenmagneten. Sein eigenes Kreisfeld überlagert sich mit dem äußeren Feld: auf der einen Seite des Leiters zeigen beide in dieselbe Richtung (Feldlinien dichter), auf der anderen Seite entgegengesetzt (dünner, „Summe der Kräfte ist 0", Bild im Heft). Der Leiter wird <b>von der dichten zur dünnen Seite</b> gedrückt. Bild: Feldlinien verhalten sich wie gespannte Gummibänder, die den Leiter aus dem Bereich hoher Dichte hinausschieben.</p>
+  <h3>Aufbau und Messung</h3>
+  <p>Leiterstück der Länge <span class="f">\(l\)</span> hängt an einer Balkenwaage mit Kraftsensor, im Feld eines Elektromagneten (Hufeisen). Gemessen wird die Kraft <span class="f">\(F\)</span> bei variabler Stromstärke <span class="f">\(I\)</span> (feste Länge) und bei variabler Länge <span class="f">\(l\)</span> (feste Stromstärke, Abitur: auswechselbare Leiterschleifen).</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Datensatz <select id="swSet"><option value="mappe">Mappe: F(I), l = 5,0 cm</option><option value="abi">Abitur 2022 I: F(I), l = 4 cm</option><option value="mappeL">Mappe: F(l), I = 4 A</option></select></label>
+      </div>
+      <canvas id="swCanvas" width="480" height="300"></canvas>
+    </div>
+    <div>
+      <div class="out" id="swOut"></div>
+      <p><b>Ergebnis:</b> <span class="f">\(F \propto I\)</span> bei festem <span class="f">\(l\)</span>, <span class="f">\(F \propto l\)</span> bei festem <span class="f">\(I\)</span>, also <span class="f">\(F \propto I\cdot l\)</span>. Der Proportionalitätsfaktor ist eine Eigenschaft des Feldes:</p>
+      <div class="formula">\[F = B\,I\,l\quad\Leftrightarrow\quad B = \frac{F}{I\,l}\]</div>
+      <p><span class="f">\(B\)</span> heißt <b>magnetische Flussdichte</b> (umgangssprachlich „Magnetfeld", im Abitur auch „magnetische Feldstärke" genannt). FS S. 29 schreibt <span class="f">\(B = F/(I\cdot s)\)</span> mit <span class="f">\(s\)</span> = wirksame Länge: nur der Teil des Leiters, der <b>senkrecht</b> zu den Feldlinien liegt, zählt. Allgemein <span class="f">\(F = B\cdot I\cdot l\cdot \sin \alpha\)</span>.</p>
+    </div>
+  </div>
+  <h3>Die Einheit Tesla</h3>
+  <div class="formula">\[1\,\mathrm{T} = 1\,\mathrm{\frac{N}{A\,m}} = 1\,\mathrm{\frac{kg}{A\,s^2}} = 1\,\mathrm{\frac{V\,s}{m^2}}\]</div>
+  <ul>
+    <li><b>Bedeutung:</b> In einem Feld von <span class="f">\(1\,\mathrm{T}\)</span> wirkt auf einen <span class="f">\(1\,\mathrm{m}\)</span> langen Leiter mit <span class="f">\(1\,\mathrm{A}\)</span> die Kraft <span class="f">\(1\,\mathrm{N}\)</span>.</li>
+    <li><b>Umrechnung</b> (Heft „Was bedeutet Tesla"): <span class="f">\(\mathrm{N} = \mathrm{kg\,m/s^2}\)</span>, also <span class="f">\(\mathrm{N/(A\,m)} = \mathrm{kg/(A\,s^2)}\)</span>. Und weil <span class="f">\(1\,\mathrm{V} = 1\,\mathrm{kg\,m^2/(A\,s^3)}\)</span>, ist <span class="f">\(1\,\mathrm{V\,s/m^2} = 1\,\mathrm{kg/(A\,s^2)}\)</span>. Beide Schreibweisen sind gleich; <span class="f">\(\mathrm{V\,s/m^2}\)</span> braucht man bei der Induktion.</li>
+    <li><b>Größenordnungen:</b> Erdmagnetfeld <span class="f">\(50\,\mathrm{\mu T}\)</span>, Hufeisenmagnet <span class="f">\(0{,}1\,\mathrm{T}\)</span> (Heft: <span class="f">\(0{,}13\,\mathrm{T}\)</span>), Helmholtzspule am Fadenstrahlrohr <span class="f">\(1\text{–}2\,\mathrm{mT}\)</span>, MRT <span class="f">\(1{,}5\text{–}3\,\mathrm{T}\)</span>.</li>
+  </ul>
+  <h3>Richtung der Kraft: Drei-Finger-Regel (UVW)</h3>
+  <div class="hand">
+    <div><b>Linke Hand (Elektronen, so im Heft)</b><br>Daumen = <b>U</b>rsache: Bewegungsrichtung der Elektronen (physikalische Stromrichtung, − → +)<br>Zeigefinger = <b>V</b>ermittlung: Magnetfeld, N → S<br>Mittelfinger = <b>W</b>irkung: Kraft</div>
+    <div><b>Rechte Hand (positive Ladung / technische Stromrichtung)</b><br>Daumen = technische Stromrichtung (+ → −) bzw. <span class="f">\(v\)</span> einer positiven Ladung<br>Zeigefinger = Magnetfeld<br>Mittelfinger = Kraft<br><span class="small">Gleiche Kraftrichtung wie links, weil Umkehrung der Ladung und Spiegelung der Hand sich aufheben.</span></div>
+  </div>
+  <div class="note warn"><b>Typischer Fehler:</b> rechte Hand mit Elektronenrichtung (oder linke Hand mit technischer Stromrichtung) → Kraft genau falsch herum. Vor jeder Richtungsaufgabe: Welche Ladung? Welche Hand?</div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2022 I, 3.2–3.4):</b> „Erläutern Sie, wie man aus den beiden Zusammenhängen zur Definitionsgleichung <span class="f">\(B = F/(I\cdot l)\)</span> gelangt." Erwartet: <span class="f">\(F \propto I\)</span> (bei <span class="f">\(l\)</span> konstant) und <span class="f">\(F \propto l\)</span> (bei <span class="f">\(I\)</span> konstant) ⇒ <span class="f">\(F \propto I\cdot l\)</span>, Proportionalitätsfaktor <span class="f">\(k = F/(I\cdot l)\)</span> wird als <span class="f">\(B\)</span> definiert. „Skizzieren Sie, wohin sich der Leiter bewegt" (Drei-Finger-Regel). „Wie muss die Stromrichtung sein, damit sich der Magnet nach links bewegt?" (Kraft auf den Leiter nach rechts, actio = reactio). „Unterschiedliche Leiterformen?" (gleiche wirksame Länge senkrecht zu <span class="f">\(B\)</span> ⇒ gleiche Kraft; Kräfte auf die Seitenstücke heben sich auf).</div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Die Lorentzkraft: Kraft auf eine bewegte Ladung</h2>
+  <h3>Herleitung aus der Stromwaage (steht so im Heft)</h3>
+  <p>Im Leiterstück der Länge <span class="f">\(l\)</span> fließt in der Zeit <span class="f">\(t\)</span> die Ladung <span class="f">\(Q\)</span> hindurch: <span class="f">\(I = Q/t\)</span>. Diese Ladung legt in der Zeit <span class="f">\(t\)</span> gerade die Strecke <span class="f">\(l\)</span> zurück: <span class="f">\(l = v\cdot t\)</span>. Einsetzen in <span class="f">\(F = B\cdot I\cdot l\)</span>:</p>
+  <div class="formula">\[F = B\cdot\frac{Q}{t}\cdot(v\,t) = B\,Q\,v\quad\Rightarrow\quad F_L = q\,v\,B\qquad(v \perp B)\]</div>
+  <ul>
+    <li>Allgemein <span class="f">\(F_{L} = q\cdot v\cdot B\cdot \sin \alpha\)</span> mit <span class="f">\(\alpha\)</span> = Winkel zwischen <span class="f">\(v\)</span> und <span class="f">\(B\)</span> (FS S. 29). Als Vektor: <span class="f">\(F = q\cdot (v \times B)\)</span>.</li>
+    <li><span class="f">\(F_{L} \perp v\)</span> und <span class="f">\(F_{L} \perp B\)</span>: die Kraft steht senkrecht auf Bewegung und Feld.</li>
+    <li>Keine Kraft, wenn <span class="f">\(v \parallel B\)</span> (<span class="f">\(\sin 0 = 0\)</span>) oder wenn die Ladung ruht (<span class="f">\(v = 0\)</span>). Das ist der Unterschied zum E-Feld, das auch ruhende Ladungen beschleunigt.</li>
+    <li><b>Die Lorentzkraft verrichtet keine Arbeit.</b> Sie steht immer senkrecht zum Weg, also <span class="f">\(W = F\cdot s\cdot \cos 90^\circ = 0\)</span>. Der Betrag von <span class="f">\(v\)</span> bleibt konstant, nur die Richtung ändert sich. Ein Magnetfeld kann ein Teilchen <b>ablenken, aber nie schneller machen</b>.</li>
+    <li>Negative Ladung: Kraft genau entgegengesetzt zur Kraft auf eine positive Ladung (Vorzeichen von <span class="f">\(q\)</span>).</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Ladung <select id="dfQ"><option value="-">Elektron (−)</option><option value="+">positiv (+)</option></select></label>
+        <label>v <select id="dfV"><option value="r">→ rechts</option><option value="l">← links</option><option value="u">↑ oben</option><option value="d">↓ unten</option></select></label>
+        <label>B <select id="dfB"><option value="in">⊗ ins Blatt</option><option value="out">⊙ aus dem Blatt</option></select></label>
+      </div>
+      <canvas id="dfCanvas" width="480" height="320"></canvas>
+    </div>
+    <div>
+      <div class="out" id="dfOut"></div>
+      <p class="small">Trainer: Richtung erst mit der Hand bestimmen, dann prüfen. Elektron → linke Hand: Daumen in <span class="f">\(v\)</span>, Zeigefinger in <span class="f">\(B\)</span> (<span class="f">\(\otimes\)</span> = vom Betrachter weg, <span class="f">\(\odot\)</span> = zum Betrachter), Mittelfinger zeigt <span class="f">\(F\)</span>.</p>
+      <div class="note"><b>Analogie:</b> Lorentzkraft wirkt wie ein Steuermann, der das Boot nur dreht, nie Gas gibt. Das E-Feld ist dagegen der Motor: es beschleunigt längs der Feldlinien.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Kreisbahn im Magnetfeld und das Fadenstrahlrohr</h2>
+  <h3>Warum eine Kreisbahn?</h3>
+  <p>Tritt ein Teilchen senkrecht zu den Feldlinien in ein homogenes Magnetfeld, ist die Lorentzkraft immer senkrecht zur Geschwindigkeit und immer gleich groß (<span class="f">\(v\)</span> bleibt konstant). Eine Kraft mit konstantem Betrag, die stets senkrecht zur Bewegung zeigt, ist eine <b>Zentripetalkraft</b>: das Teilchen läuft auf einem Kreis. Die Lorentzkraft übernimmt die Rolle der Zentripetalkraft:</p>
+  <div class="formula">\[F_L = F_Z\quad\Rightarrow\quad q\,v\,B = \frac{m\,v^2}{r}\quad\Rightarrow\quad r = \frac{m\,v}{q\,B}\]</div>
+  <ul>
+    <li><span class="f">\(r \propto v\)</span> (schneller → größerer Kreis), <span class="f">\(r \propto 1/B\)</span> (stärkeres Feld → engerer Kreis), <span class="f">\(r \propto m/q\)</span> (das nutzt das Massenspektrometer). Die beiden Skizzen im Heft: <span class="f">\(r(v)\)</span> Gerade durch den Ursprung, <span class="f">\(r(B)\)</span> Hyperbel.</li>
+    <li>Umlaufzeit <span class="f">\(T = 2\pi \cdot r/v = 2\pi \cdot m/(q\cdot B)\)</span>: unabhängig von <span class="f">\(v\)</span>. Schnelle Teilchen laufen größere Kreise in derselben Zeit (Prinzip des Zyklotrons, Zusatzwissen).</li>
+    <li>Tritt das Teilchen schräg ein, bleibt die Komponente parallel zu <span class="f">\(B\)</span> unverändert: Schraubenbahn.</li>
+  </ul>
+  <h3>Das Fadenstrahlrohr (Aufbau zeichnen können)</h3>
+  <ol>
+    <li><b>Glühwendel</b> mit Heizspannung <span class="f">\(U_{H}\)</span>: Elektronen treten aus (glühelektrischer Effekt).</li>
+    <li><b>Lochblende</b> mit Beschleunigungsspannung <span class="f">\(U_{B}\)</span>: Elektronen bekommen <span class="f">\(v = \sqrt{2\cdot e\cdot U_{B}/m_{e}}\)</span> (Lektion 2).</li>
+    <li><b>Glaskolben mit verdünntem Gas</b> (Wasserstoff oder Helium, wenige Pa): Die Elektronen stoßen gelegentlich mit Gasatomen, regen sie an, die Atome leuchten beim Zurückfallen: die Bahn wird als <b>Leuchtfaden</b> sichtbar. (Im Gegensatz zur Ablenkröhre, die Vakuum braucht: hier ist etwas Gas gewollt, die Stöße sind selten genug, um die Bahn kaum zu stören.)</li>
+    <li><b>Helmholtzspulenpaar</b>: erzeugt ein homogenes Magnetfeld <b>senkrecht</b> zur Elektronenbahn (im Heftbild: Feld zeigt zum Betrachter, <span class="f">\(\odot\)</span>).</li>
+    <li><b>Elektronenstrahl</b>: Kreisbahn, Radius mit Messmarken oder Spiegelskala ablesbar.</li>
+  </ol>
+  <h3>Bestimmung der spezifischen Ladung <span class="f">\(e/m_e\)</span></h3>
+  <p>Zwei Gleichungen, zwei Unbekannte (<span class="f">\(v\)</span> und <span class="f">\(e/m_{e}\)</span>): aus der Kreisbahn <span class="f">\(e/m_{e} = v/(B\cdot r)\)</span>, aus der Beschleunigung <span class="f">\(v = \sqrt{2\cdot e\cdot U_{B}/m_{e}}\)</span>. Einsetzen und quadrieren:</p>
+  <div class="formula">\[\frac{e}{m_e} = \frac{2\,U_B}{r^2\,B^2}\]</div>
+  <p>Messung im Heft: <span class="f">\(I = 2\,\mathrm{A}\)</span> (Spulenstrom), <span class="f">\(B = 1{,}5\,\mathrm{mT}\)</span>, <span class="f">\(r = 3{,}75\,\mathrm{cm}\)</span>, <span class="f">\(U_B = 300\,\mathrm{V}\)</span> ⇒ <span class="f">\(e/m_{e} = 2\cdot 300 \,\mathrm{V}/((0{,}0375 \,\mathrm{m})^{2}\cdot (0{,}0015 \,\mathrm{T})^{2}) = 1{,}9\cdot 10^{11} \,\mathrm{C/kg}\)</span>, Literaturwert <span class="f">\(1{,}7588\cdot 10^{11}\,\mathrm{C/kg}\)</span> (Abweichung 8 %, Radius-Ablesung und Feldinhomogenität). Daraus <span class="f">\(m_{e} = e/(e/m_{e}) = 8{,}4\cdot 10^{-31} \,\mathrm{kg}\)</span> (Hausaufgabe im Heft).</p>
+  <p>Umgekehrt löst man nach <span class="f">\(r\)</span> auf: <span class="f">\(r = (1/B)\cdot \sqrt{2\cdot m_{e}\cdot U_{B}/e}\)</span>, also <span class="f">\(r \propto \sqrt{U}_{B}\)</span> bei festem <span class="f">\(B\)</span> und <span class="f">\(r \propto 1/B\)</span> bei festem <span class="f">\(U_{B}\)</span>. Abitur 2016 verlangte genau das: „Bestätigen Sie <span class="f">\(r \propto \sqrt{U}_{B}\)</span> unter Verwendung aller Messwerte" (Potenzregression, Exponent 0,5 erwartet, oder <span class="f">\(r\)</span> gegen <span class="f">\(\sqrt{U}_{B}\)</span> auftragen).</p>
+  <div class="controls">
+    <label><span class="f">\(U_B\)</span> <input type="range" id="ftU" min="50" max="500" value="300" step="10"> <span id="ftUv"></span></label>
+    <label><span class="f">\(B\)</span> <input type="range" id="ftB" min="0.3" max="3" value="1.5" step="0.1"> <span id="ftBv"></span></label>
+  </div>
+  <div class="grid2">
+    <div><canvas id="ftCanvas" width="480" height="360"></canvas><p class="small">Glaskolben Ø <span class="f">\(16\,\mathrm{cm}\)</span>. Elektronenkanone rechts, Strahl nach oben, Feld <span class="f">\(\odot\)</span> (zum Betrachter) → Kraft nach links, Kreis gegen den Uhrzeigersinn. Wird der Kreis größer als der Kolben, trifft der Strahl die Glaswand.</p></div>
+    <div><div class="out" id="ftOut"></div>
+      <div class="ex"><div class="t">Hausaufgabe aus dem Heft: Welche <span class="f">\(U_B\)</span> für <span class="f">\(r = 10\,\mathrm{cm}\)</span> bei <span class="f">\(B = 2\,\mathrm{mT}\)</span>?</div><p><span class="f">\(e/m_{e} = 2U_{B}/(r^{2}B^{2})\)</span> ⇒ <span class="f">\(U_{B} = (e/m_{e})\cdot r^{2}B^{2}/2 = 1{,}7588\cdot 10^{11} \,\mathrm{C/kg} \cdot (0{,}1 \,\mathrm{m})^{2}\cdot (0{,}002 \,\mathrm{T})^{2}/2 = 3518 \,\mathrm{V}\)</span>. Einheiten-Check: <span class="f">\(\mathrm{C/kg}\cdot\mathrm{m^2}\cdot\mathrm{T^2} = \mathrm{C/kg}\cdot\mathrm{m^2}\cdot\mathrm{kg^2/(C^2\,s^2)} = \mathrm{kg\,m^2/(C\,s^2)} = \mathrm{J/C} = \mathrm{V}\)</span> ✓.</p></div>
+    </div>
+  </div>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> Ablenkröhre (Lektion 2): E-Feld, Parabel, <span class="f">\(y \propto 1/U_{B}\)</span>, Vakuum. Fadenstrahlrohr: B-Feld, Kreis, <span class="f">\(r \propto \sqrt{U}_{B}\)</span>, verdünntes Gas. Und: <span class="f">\(B\)</span> muss senkrecht zu <span class="f">\(v\)</span> stehen, sonst Schraubenbahn.</div>
+  <div class="note exam"><b>So fragt die Klausur:</b> „Zeichnen Sie den beschrifteten Aufbau eines Fadenstrahlrohrs" (Abitur 2016, Aufgabe 2.1, in deiner Mappe). „Begründen Sie die Kreisbahn" (Lorentzkraft stets senkrecht zu <span class="f">\(v\)</span>, konstanter Betrag, als Zentripetalkraft). „Leiten Sie <span class="f">\(r = m v/(qB)\)</span> her" (Abitur 2024, 3 BE: Ansatz <span class="f">\(F_{L} = F_{Z}\)</span> nennen, umstellen). „Warum leuchtet die Bahn?" (Stöße mit Gasatomen, Anregung, Lichtaussendung).</div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Das Magnetfeld von Spulen, quantitativ</h2>
+  <h3>Messung im Heft (Hallsonde in der Spule)</h3>
+  <p>Vier Messreihen: <span class="f">\(B(I)\)</span> bei festem <span class="f">\(N = 1200\)</span> und <span class="f">\(l = 29{,}5\,\mathrm{cm}\)</span> (Gerade, <span class="f">\(4{,}76\,\mathrm{mT/A}\)</span>); <span class="f">\(B(l)\)</span> bei festem <span class="f">\(I\)</span>, <span class="f">\(N\)</span> (kürzere Spule → stärkeres Feld, <span class="f">\(B \propto 1/l\)</span>); <span class="f">\(B(N)\)</span> (<span class="f">\(B \propto N\)</span>); <span class="f">\(B(R)\)</span> (bei langer Spule unabhängig vom Radius). Zusammen: <span class="f">\(B \propto N\cdot I/l\)</span>, Proportionalitätsfaktor <span class="f">\(k = \mu _{0}\)</span>, die <b>magnetische Feldkonstante</b> (Permeabilität des Vakuums), Messwerte <span class="f">\(1{,}17\text{–}1{,}33\cdot 10^{-6}\)</span>, Literaturwert <span class="f">\(\mu _{0} = 1{,}2566\cdot 10^{-6} \,\mathrm{V\,s/(A\,m)}\)</span> (<span class="f">\(= \mathrm{N/A^2} = \mathrm{T\,m/A}\)</span>). Es gilt <span class="f">\(\mu _{0} = 1/(\varepsilon _{0}\cdot c^{2})\)</span>: die beiden Feldkonstanten hängen über die Lichtgeschwindigkeit zusammen.</p>
+  <div class="formula">\[B = \mu_0\,\frac{N\,I}{l}\qquad(\text{lange Spule, } l \gg R,\ \text{im Inneren})\]</div>
+  <ul>
+    <li><b>Lange Spule</b>: Formel in der FS (S. 29), mit <span class="f">\(\mu _{r}\)</span> für einen Kern: <span class="f">\(B = \mu _{0}\cdot \mu _{r}\cdot N\cdot I/l\)</span>. Eisen: <span class="f">\(\mu_r \approx 2000\)</span> (bis zur Sättigung). Das Feld hängt nicht vom Radius ab, solange <span class="f">\(l \gg R\)</span>; zu den Enden hin nimmt es ab (an der Stirnfläche auf die Hälfte).</li>
+    <li><b>Kurze Spule</b> (Heft): <span class="f">\(B = \mu _{0}\cdot N\cdot I / \sqrt{l^{2} + (2R)^{2}}\)</span>; für <span class="f">\(l \gg R\)</span> geht das in die obige Formel über. Heft-Beispiel: <span class="f">\(N = 1200\)</span>, <span class="f">\(I = 0{,}9\,\mathrm{A}\)</span>, <span class="f">\(l = 6{,}5\,\mathrm{cm}\)</span>, <span class="f">\(R = 2{,}75\,\mathrm{cm}\)</span>: „lang" ergibt <span class="f">\(20{,}9\,\mathrm{mT}\)</span>, „kurz" <span class="f">\(16{,}0\,\mathrm{mT}\)</span>.</li>
+    <li><b>Helmholtzspule</b>: zwei gleiche flache Spulen im Abstand <span class="f">\(R\)</span> = Spulenradius. Dazwischen ist das Feld sehr homogen (deshalb am Fadenstrahlrohr): <span class="f">\(B = (8/(5\sqrt{5}))\cdot \mu _{0}\cdot N\cdot I/R \approx 0{,}716\cdot \mu _{0}\cdot N\cdot I/R\)</span>. Nicht in der FS; wenn sie gebraucht wird, steht sie im Aufgabenmaterial. (Im Heft steht einmal <span class="f">\(R\)</span>, einmal „<span class="f">\(d\)</span>: Durchmesser"; physikalisch richtig ist der Spulenradius.)</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(N\)</span> <input type="range" id="spN" min="100" max="2000" value="1200" step="50"> <span id="spNv"></span></label>
+        <label><span class="f">\(l\)</span> <input type="range" id="spL" min="3" max="40" value="29.5" step="0.5"> <span id="spLv"></span></label>
+        <label><span class="f">\(I\)</span> <input type="range" id="spI" min="0.1" max="3" value="0.9" step="0.1"> <span id="spIv"></span></label>
+        <label><span class="f">\(R\)</span> <input type="range" id="spR" min="1" max="8" value="2.75" step="0.25"> <span id="spRv"></span></label>
+        <label>Kern <select id="spMu"><option value="1">Luft (μr = 1)</option><option value="500">Eisen, ungesättigt (μr = 500)</option><option value="2000">Eisen (μr = 2000)</option></select></label>
+      </div>
+      <div class="out" id="spOut"></div>
+    </div>
+    <div>
+      <h4>Abitur 2021 II b, 3.3: Feld eines geraden Leiters, <span class="f">\(I = 17{,}0\,\mathrm{A}\)</span></h4>
+      <table>
+        <tr><th><span class="f">\(r\)</span> in <span class="f">\(\mathrm{cm}\)</span></th><td>1,0</td><td>2,0</td><td>3,0</td><td>4,0</td><td>5,0</td><td>6,0</td><td>7,0</td><td>8,0</td></tr>
+        <tr><th><span class="f">\(B\)</span> in <span class="f">\(\mathrm{mT}\)</span></th><td>0,344</td><td>0,172</td><td>0,110</td><td>0,082</td><td>0,064</td><td>0,050</td><td>0,042</td><td>0,038</td></tr>
+      </table>
+      <div class="controls"><label>Auswertung <select id="lrMethod"><option value="lin">Linearisierung: B gegen 1/r, lineare Regression</option><option value="pow">Potenzregression B = a·r^b</option></select></label></div>
+      <div class="out" id="lrOut"></div>
+      <p class="small">Theorie: <span class="f">\(B = \mu _{0}\cdot I/(2\pi \cdot r)\)</span>, also Steigung <span class="f">\(k = \mu _{0}\cdot I/(2\pi )\)</span> ⇒ <span class="f">\(\mu _{0} = 2\pi \cdot k/I\)</span>. Messunsicherheit laut Aufgabe 8 %. EWH: <span class="f">\(B \approx 3{,}55\cdot 10^{-6} \,\mathrm{T\,m}/r\)</span>, <span class="f">\(\mu _{0} \approx 1{,}31\cdot 10^{-6}\)</span>, bestätigt. Beachte: die Potenzregression liefert je nach Einheit (cm oder m) andere Zahlen; wenn die Theorie <span class="f">\(\propto 1/r\)</span> sagt, ist die Linearisierung der sauberere Weg.</p>
+    </div>
+  </div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2022 II b, 3.3):</b> Spule <span class="f">\(N = 1200\)</span>, <span class="f">\(l = 6{,}3\,\mathrm{cm}\)</span>, gemessene Steigung des <span class="f">\(I\)</span>-<span class="f">\(B\)</span>-Diagramms <span class="f">\(k_{\mathrm{exp}} = 18{,}4\,\mathrm{mT/A}\)</span>, Unsicherheit 9 %. Theorie: <span class="f">\(k = \mu _{0}\cdot N/l = 1{,}2566\cdot 10^{-6}\cdot 1200/0{,}063 = 23{,}9 \,\mathrm{mT/A}\)</span>. Intervall <span class="f">\(16{,}7\text{–}20{,}1\,\mathrm{mT/A}\)</span> enthält <span class="f">\(23{,}9\,\mathrm{mT/A}\)</span> nicht ⇒ <b>die Formel für lange Spulen gilt hier nicht</b> (Spule zu kurz, <span class="f">\(l\)</span> nicht <span class="f">\(\gg R\)</span>). Diskussion der Hallsonde: verdreht → nur die senkrechte Komponente von <span class="f">\(B\)</span> wird gemessen; zu nah am Spulenende → Feld fällt ab. Das ist das Muster „Messunsicherheit beurteilen": Intervall bilden, Theoriewert vergleichen, Schluss ziehen.</div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Der Wienfilter: Geschwindigkeitsfilter</h2>
+  <p><b>Aufbau:</b> Plattenkondensator (E-Feld) und Magnetfeld senkrecht zueinander, beide senkrecht zur Flugrichtung (<span class="f">\(E \perp B \perp v\)</span>). Teilchen fliegen hindurch; eine Lochblende dahinter lässt nur die geradlinig fliegenden durch.</p>
+  <p><b>Kräfte:</b> elektrische Kraft <span class="f">\(F_{\mathrm{el}} = q\cdot E\)</span> (unabhängig von <span class="f">\(v\)</span>), Lorentzkraft <span class="f">\(F_{L} = q\cdot v\cdot B\)</span> (wächst mit <span class="f">\(v\)</span>). Die Felder sind so gepolt, dass beide Kräfte entgegengesetzt wirken. Geradlinig fliegt das Teilchen nur bei Kräftegleichgewicht:</p>
+  <div class="formula">\[q\,E = q\,v\,B\quad\Rightarrow\quad v = \frac{E}{B} = \frac{U}{B\,d}\]</div>
+  <ul>
+    <li><span class="f">\(q\)</span> kürzt sich: der Filter wirkt auf <b>alle</b> Ladungen gleich, egal welche Masse und welche Ladung. Nur die Geschwindigkeit zählt.</li>
+    <li><b>Schneller</b> als <span class="f">\(E/B\)</span>: <span class="f">\(F_{L} > F_{\mathrm{el}}\)</span> ⇒ Ablenkung zur Seite der Lorentzkraft. <b>Langsamer</b>: <span class="f">\(F_{\mathrm{el}} > F_{L}\)</span> ⇒ Ablenkung zur Seite der elektrischen Kraft. Beide treffen die Blende und werden aussortiert.</li>
+    <li>Heft-Beispiel: <span class="f">\(v = 10\,000\,\mathrm{m/s}\)</span>, <span class="f">\(E = 2\,\mathrm{kV/m}\)</span> ⇒ <span class="f">\(B_{W} = E/v = 0{,}2 \,\mathrm{T}\)</span>. Abitur 2024: <span class="f">\(B = 125\,\mathrm{mT}\)</span>, <span class="f">\(U_A = 1200\,\mathrm{V}\)</span>, <span class="f">\(d = 2{,}0\,\mathrm{cm}\)</span> ⇒ <span class="f">\(v = U/(B\cdot d) = 1200/(0{,}125\cdot 0{,}020) \,\mathrm{m/s} = 480 \,\mathrm{km/s}\)</span>.</li>
+  </ul>
+  <div class="controls">
+    <label>Teilchen <select id="wfP"><option value="a">α (q = 2e, m = 6,64·10⁻²⁷ kg)</option><option value="p">Proton</option><option value="e">Elektron</option></select></label>
+    <label><span class="f">\(E\)</span> <input type="range" id="wfE" min="10" max="120" value="60" step="1"> <span id="wfEv"></span></label>
+    <label><span class="f">\(B\)</span> <input type="range" id="wfB" min="50" max="300" value="125" step="5"> <span id="wfBv"></span></label>
+    <label><span class="f">\(v\)</span> <input type="range" id="wfV" min="100" max="1000" value="480" step="10"> <span id="wfVv"></span></label>
+  </div>
+  <canvas id="wfCanvas" width="720" height="300"></canvas>
+  <div class="out" id="wfOut"></div>
+  <div class="note"><b>Analogie:</b> Ein Boot im Fluss mit Gegenwind: die Strömung (elektrische Kraft) schiebt immer gleich stark, der Fahrtwind (Lorentzkraft) wächst mit der Geschwindigkeit. Nur bei einer Geschwindigkeit heben sich beide auf und das Boot fährt geradeaus.</div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2024, 3.2, 9 BE):</b> „Erläutern Sie, dass nur Teilchen einer bestimmten Geschwindigkeit den Filter geradlinig durchlaufen" (Kräftegleichgewicht; <span class="f">\(F_{L}\)</span> hängt von <span class="f">\(v\)</span> ab, <span class="f">\(F_{\mathrm{el}}\)</span> nicht). „Bestätigen Sie <span class="f">\(v = 480\,\mathrm{km/s}\)</span>" (einsetzen). „Begründen Sie, dass schnellere Teilchen nach oben abgelenkt werden" (<span class="f">\(F_{L}\)</span> größer als <span class="f">\(F_{\mathrm{el}}\)</span>, Richtung der Lorentzkraft angeben).</div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Das Massenspektrometer</h2>
+  <p><b>Prinzip:</b> Ionen aus der Teilchenquelle (Geschwindigkeit unbekannt) → <b>Wienfilter</b> legt <span class="f">\(v = E/B_{W}\)</span> fest → Lochblende → reines Magnetfeld <span class="f">\(B_{S}\)</span>: Halbkreis mit <span class="f">\(r = m\cdot v/(q\cdot B_{S})\)</span> → Detektor im Abstand <span class="f">\(2r\)</span> von der Blende. Teilchen mit verschiedenem <span class="f">\(m/q\)</span> landen an verschiedenen Stellen: <b>Trennung nach Masse pro Ladung</b>.</p>
+  <div class="formula">\[m = \frac{q\,B_S\,r}{v} = \frac{q\,B_S\,B_W\,r}{E}\]</div>
+  <ul>
+    <li>Heft-Beispiel: <span class="f">\(v = 10\,000\,\mathrm{m/s}\)</span>, <span class="f">\(r = 10\,\mathrm{cm}\)</span>, <span class="f">\(B_S = 0{,}5\,\mathrm{T}\)</span>, <span class="f">\(q = e\)</span> ⇒ <span class="f">\(m = 8{,}0\cdot 10^{-25} \,\mathrm{kg}\)</span> („sehr großes Molekül", <span class="f">\(\approx 480\,\mathrm{u}\)</span>). Passende Werte für ein Proton: <span class="f">\(v = 10^{5}\,\mathrm{m/s}\)</span>, <span class="f">\(r = 10\,\mathrm{cm}\)</span> ⇒ <span class="f">\(B_{S} = m\cdot v/(q\cdot r) = 10{,}4 \,\mathrm{mT}\)</span>.</li>
+    <li>Abitur 2024, 3.3: α-Teilchen, <span class="f">\(v = 480\,\mathrm{km/s}\)</span>, <span class="f">\(B = 125\,\mathrm{mT}\)</span>: <span class="f">\(r = 6{,}64\cdot 10^{-27}\cdot 4{,}8\cdot 10^{5}/(2\cdot 1{,}602\cdot 10^{-19}\cdot 0{,}125) \,\mathrm{m} = 7{,}96 \,\mathrm{cm}\)</span>, Abstand zum Detektor <span class="f">\(2r \approx 15{,}9 \,\mathrm{cm}\)</span>. 3.4: Teilchen mit halbem Abstand ⇒ halbes <span class="f">\(m/q\)</span>: Protonen (Masse ¼, Ladung ½ ⇒ <span class="f">\(m/q\)</span> halb so groß).</li>
+    <li>Klausur 3 (Lehrer): Messreihe <span class="f">\(r(v)\)</span> bei festem <span class="f">\(B = 1\,\mathrm{T}\)</span>. Lineare Regression <span class="f">\(r = 1{,}27\cdot 10^{-6} \,\mathrm{s} \cdot v\)</span> (Ursprungsgerade im Rahmen der Messgenauigkeit). Vergleich mit <span class="f">\(r = (m/(qB))\cdot v\)</span>: Steigung <span class="f">\(k = m/(qB)\)</span> ⇒ <span class="f">\(m = k\cdot q\cdot B = 1{,}27\cdot 10^{-6}\cdot 1{,}602\cdot 10^{-19}\cdot 1 \,\mathrm{kg} = 2{,}03\cdot 10^{-25} \,\mathrm{kg}\)</span>. Teil d: größere Ladung ändert im Wienfilter nichts (<span class="f">\(v = E/B\)</span>), im Spektrometer wird <span class="f">\(r \propto 1/q\)</span> kleiner.</li>
+  </ul>
+  <div class="controls">
+    <label>Teilchen <select id="msP"><option value="p">Proton</option><option value="d">Deuteron (2 u, e)</option><option value="a">α (4 u, 2e)</option><option value="e">Elektron</option><option value="c">eigenes:</option></select></label>
+    <label><span class="f">\(m\)</span> <input type="number" id="msM" value="12" step="any"> <span class="f">\(\mathrm{u}\)</span></label>
+    <label><span class="f">\(q\)</span> <input type="number" id="msQ" value="1" step="1"> <span class="f">\(e\)</span></label>
+    <label><span class="f">\(v\)</span> <input type="range" id="msV" min="50" max="1000" value="480" step="10"> <span id="msVv"></span></label>
+    <label><span class="f">\(B_S\)</span> <input type="range" id="msB" min="20" max="300" value="125" step="5"> <span id="msBv"></span></label>
+  </div>
+  <div class="grid2">
+    <div><canvas id="msCanvas" width="480" height="360"></canvas><p class="small">Blende links oben, Feld <span class="f">\(\odot\)</span> (zum Betrachter), positive Teilchen werden nach unten gelenkt, Detektorlinie am linken Rand. Blass: α-Teilchen zum Vergleich.</p></div>
+    <div><div class="out" id="msOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> Wienfilter sortiert nach <span class="f">\(v\)</span> (unabhängig von <span class="f">\(m\)</span>, <span class="f">\(q\)</span>). Das Magnetfeld dahinter sortiert nach <span class="f">\(m/q\)</span> (bei gleichem <span class="f">\(v\)</span>). Ein doppelt geladenes Ion gleicher Masse landet beim halben Radius. Und: <span class="f">\(r\)</span> ist der Bahnradius, der Detektor sitzt bei <span class="f">\(2r\)</span>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Der Hall-Effekt und die Hallsonde</h2>
+  <h3>Was passiert (Erläuterung, 4 BE im Abitur)</h3>
+  <ol>
+    <li>Durch ein flaches Plättchen (Länge <span class="f">\(l\)</span>, Breite <span class="f">\(b\)</span>, Dicke <span class="f">\(d\)</span>) fließt der Strom <span class="f">\(I\)</span>; die Ladungsträger driften mit der Driftgeschwindigkeit <span class="f">\(v\)</span>.</li>
+    <li>Ein Magnetfeld <span class="f">\(B\)</span> steht senkrecht auf dem Plättchen. Auf jeden Ladungsträger wirkt die Lorentzkraft <span class="f">\(F_{L} = e\cdot v\cdot B\)</span>, quer zur Stromrichtung.</li>
+    <li>Die Ladungsträger werden an <b>einen Rand</b> gedrängt. Dort sammelt sich Ladung, am gegenüberliegenden Rand fehlt sie: Ladungstrennung quer zum Strom.</li>
+    <li>Zwischen den Rändern entsteht ein elektrisches Feld <span class="f">\(E = U_{H}/b\)</span>, das auf die nachfolgenden Ladungsträger die elektrische Kraft <span class="f">\(F_{\mathrm{el}} = e\cdot U_{H}/b\)</span> <b>entgegen</b> der Lorentzkraft ausübt.</li>
+    <li>Die Trennung wächst, bis Kräftegleichgewicht herrscht. Die dann messbare Querspannung heißt <b>Hallspannung</b> <span class="f">\(U_{H}\)</span>.</li>
+  </ol>
+  <h3>Herleitung</h3>
+  <div class="formula">\[F_{\mathrm{el}} = F_L\ \Rightarrow\ e\,\frac{U_H}{b} = e\,v\,B\ \Rightarrow\ U_H = v\,B\,b\]</div>
+  <p>(Abitur nennt die Breite <span class="f">\(h\)</span>: <span class="f">\(U_{H} = v\cdot B\cdot h\)</span>.) Die Driftgeschwindigkeit ist winzig: Abitur 2022, <span class="f">\(h = 2{,}0\,\mathrm{cm}\)</span>, <span class="f">\(B = 270\,\mathrm{mT}\)</span>, <span class="f">\(U_H = 18\,\mathrm{\mu V}\)</span> ⇒ <span class="f">\(v = U_{H}/(B\cdot h) = 3{,}3 \,\mathrm{mm/s}\)</span>. Mit <span class="f">\(I = n\cdot e\cdot A\cdot v\)</span> (<span class="f">\(n\)</span> = Ladungsträgerdichte, <span class="f">\(A = b\cdot d\)</span> Querschnitt) wird daraus die Messformel (Heft):</p>
+  <div class="formula">\[U_H = \frac{B\,I}{n\,e\,d} = R_H\,\frac{B\,I}{d},\qquad R_H = \frac{1}{n\,e}\ \text{Hall-Konstante (Materialkonstante)}\]</div>
+  <ul>
+    <li><b>Hallsonde:</b> <span class="f">\(R_{H}\)</span>, <span class="f">\(d\)</span> bekannt, <span class="f">\(I\)</span> eingestellt, <span class="f">\(U_{H}\)</span> gemessen ⇒ <span class="f">\(B = U_{H}\cdot d/(R_{H}\cdot I)\)</span>. So wurden alle Spulenfelder in Abschnitt 5 gemessen.</li>
+    <li><b>Vorzeichen:</b> Elektronen und positive Ladungsträger werden an <b>denselben</b> Rand gedrängt (Umkehr von <span class="f">\(v\)</span> und von <span class="f">\(q\)</span> heben sich auf), tragen dort aber entgegengesetzte Ladung. Das Vorzeichen von <span class="f">\(U_{H}\)</span> verrät die Ladungsträgerart (Metalle: Elektronen; manche Halbleiter: positive „Löcher").</li>
+    <li><b>Größe:</b> Metalle haben riesiges <span class="f">\(n\)</span> (Kupfer <span class="f">\(8{,}5\cdot 10^{28}\,\mathrm{m^{-3}}\)</span>) ⇒ <span class="f">\(U_{H}\)</span> im <span class="f">\(\mathrm{\mu V}\)</span>-Bereich (Heft: Aluminium, <span class="f">\(R_H = 99\cdot 10^{-12}\,\mathrm{m^3/C}\)</span>, <span class="f">\(d = 1\,\mathrm{mm}\)</span>, <span class="f">\(I = 0{,}5\,\mathrm{A}\)</span>, <span class="f">\(B = 20\,\mathrm{mT}\)</span> ⇒ <span class="f">\(1\,\mathrm{nV}\)</span>). Halbleiter haben kleines <span class="f">\(n\)</span> ⇒ <span class="f">\(\mathrm{mV}\)</span>. Deshalb sind Hallsonden aus Halbleitern.</li>
+    <li><b>Orientierung:</b> Nur die Komponente von <span class="f">\(B\)</span> <b>senkrecht</b> zum Plättchen erzeugt Hallspannung. Verdrehte Sonde: kleinere Werte (Abitur 2021: Abstandsabhängigkeit trotzdem messbar, weil der Faktor konstant bleibt; Abitur 2022: verfälscht die Messung).</li>
+  </ul>
+  <div class="controls">
+    <label>Ladungsträger <select id="hlQ"><option value="-">Elektronen (Metall)</option><option value="+">positive Löcher (p-Halbleiter)</option></select></label>
+    <label>Material <select id="hlM"><option value="al">Aluminium (R_H = 99·10⁻¹² m³/C, Heft)</option><option value="cu">Kupfer (n = 8,5·10²⁸ 1/m³)</option><option value="sc">Halbleiter (n = 1·10²² 1/m³)</option></select></label>
+    <label><span class="f">\(B\)</span> <input type="range" id="hlB" min="0" max="500" value="20" step="5"> <span id="hlBv"></span></label>
+    <label><span class="f">\(I\)</span> <input type="range" id="hlI" min="0" max="1" value="0.5" step="0.05"> <span id="hlIv"></span></label>
+    <label><span class="f">\(d\)</span> <input type="range" id="hlD" min="0.1" max="2" value="1" step="0.1"> <span id="hlDv"></span></label>
+  </div>
+  <div class="grid2">
+    <div><canvas id="hlCanvas" width="480" height="300"></canvas><p class="small">Technischer Strom von links nach rechts, Feld <span class="f">\(\otimes\)</span> (ins Blatt). Beide Ladungsträgerarten werden zum oberen Rand gedrängt; Vorzeichen der Spannung unterscheidet sich.</p></div>
+    <div><div class="out" id="hlOut"></div></div>
+  </div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2021 und 2022, je 8–11 BE):</b> „Erläutern Sie anhand der Skizze die Entstehung der Hallspannung" (Kernpunkte: Stromfluss, Lorentzkraft, Ladungsverschiebung, elektrische Gegenkraft, Kräftegleichgewicht). „Leiten Sie <span class="f">\(U_{H} = v\cdot B\cdot h\)</span> begründet her" (Kraftansatz <span class="f">\(F_{L} = F_{\mathrm{el}}\)</span>, <span class="f">\(E = U_{H}/h\)</span>). „Berechnen Sie die Driftgeschwindigkeit." „Beurteilen Sie die gedrehte Ausrichtung der Sonde."</div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · Klausur 3 und Abituraufgaben mit Lösungen</h2>
+  <details><summary>Klausur 3 (Lehrer), Aufgabe 1: Massenspektrometer</summary>
+    <p><b>a) Welche Kräfte wirken?</b> Im Wienfilter die elektrische Kraft <span class="f">\(q\cdot E\)</span> und die Lorentzkraft <span class="f">\(q\cdot v\cdot B\)</span> (entgegengesetzt); im Spektrometerfeld nur die Lorentzkraft, als Zentripetalkraft.</p>
+    <p><b>b) Herleitung:</b> <span class="f">\(F_{L} = F_{Z}\)</span> ⇒ <span class="f">\(q\cdot v\cdot B = m\cdot v^{2}/r\)</span> ⇒ <span class="f">\(r = m\cdot v/(q\cdot B)\)</span>.</p>
+    <p><b>c) Auswertung <span class="f">\(r(v)\)</span>:</b> 1. Werte in TR. 2. Diagramm <span class="f">\(v\)</span> in <span class="f">\(\mathrm{m/s}\)</span> gegen <span class="f">\(r\)</span> in <span class="f">\(\mathrm{mm}\)</span>. 3. Punkte augenscheinlich auf einer Geraden, Theorie sagt <span class="f">\(r \propto v\)</span> → lineare Regression: <span class="f">\(y = 0{,}00127\cdot x + 12{,}90\)</span>. 4. Physikalisch: <span class="f">\(r(v) = 1{,}27\cdot 10^{-6} \,\mathrm{s} \cdot v + 12{,}9 \,\mathrm{mm}\)</span>; der Achsenabschnitt wird nicht erwartet (<span class="f">\(v = 0\)</span> ⇒ <span class="f">\(r = 0\)</span>) und liegt im Rahmen der Messgenauigkeit, also <span class="f">\(r = 1{,}27\cdot 10^{-6} \,\mathrm{s} \cdot v\)</span>. 5. Vergleich mit <span class="f">\(r = (m/(qB))\cdot v\)</span>: <span class="f">\(k = m/(qB)\)</span> ⇒ <span class="f">\(m = k\cdot q\cdot B = 1{,}27\cdot 10^{-6} \,\mathrm{s} \cdot 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 1 \,\mathrm{T} = 2{,}03\cdot 10^{-25} \,\mathrm{kg}\)</span> (<span class="f">\(\approx 122\,\mathrm{u}\)</span>, ein schweres Ion).</p>
+    <p><b>d) Größere Ladung <span class="f">\(q\)</span>:</b> Im Wienfilter ändert sich nichts, weil <span class="f">\(v = E/B\)</span> nicht von <span class="f">\(q\)</span> abhängt. Im Spektrometer wird der Radius kleiner, <span class="f">\(r \propto 1/q\)</span>.</p></details>
+  <details><summary>Abitur 2024 II, Aufgabe 3: Wien-Filter und Massenspektrometer [24 BE]</summary>
+    <p><b>3.1 [5]:</b> E-Feld: Parabel, Ablenkung zur negativen Platte (konstante Kraft quer zur Bewegung, wie waagerechter Wurf). B-Feld (ins Blatt): Kreisbogen, Lorentzkraft senkrecht zu <span class="f">\(v\)</span>, Richtung mit Drei-Finger-Regel (rechte Hand, <span class="f">\(\alpha\)</span> positiv).</p>
+    <p><b>3.2 [9]:</b> Kräftegleichgewicht <span class="f">\(F_{L} = F_{\mathrm{el}}\)</span>; <span class="f">\(F_{L}\)</span> geschwindigkeitsabhängig, <span class="f">\(F_{\mathrm{el}}\)</span> nicht ⇒ nur eine Geschwindigkeit. <span class="f">\(v = E/B = U_{A}/(B\cdot d) = 1200 \,\mathrm{V}/(0{,}125 \,\mathrm{T} \cdot 0{,}020 \,\mathrm{m}) = 4{,}8\cdot 10^{5} \,\mathrm{m/s} = 480 \,\mathrm{km/s}\)</span> ✓. Schneller ⇒ <span class="f">\(F_{L} > F_{\mathrm{el}}\)</span> ⇒ Ablenkung in Richtung der Lorentzkraft (nach oben).</p>
+    <p><b>3.3 [6]:</b> Herleitung wie oben. <span class="f">\(r = m\cdot v/(q\cdot B) = 6{,}64\cdot 10^{-27} \,\mathrm{kg} \cdot 4{,}8\cdot 10^{5} \,\mathrm{m/s} / (3{,}204\cdot 10^{-19} \,\mathrm{C} \cdot 0{,}125 \,\mathrm{T}) = 0{,}0796 \,\mathrm{m}\)</span>; Abstand Blende–Detektor <span class="f">\(2r = 15{,}9 \,\mathrm{cm}\)</span>.</p>
+    <p><b>3.4 [4]:</b> Halber Abstand bei gleichem <span class="f">\(v\)</span> und <span class="f">\(B\)</span> ⇒ <span class="f">\(m/q\)</span> halb so groß wie bei α (<span class="f">\(4\,\mathrm{u}/2e = 2\,\mathrm{u}/e\)</span>) ⇒ <span class="f">\(1\,\mathrm{u}/e\)</span>: <b>Protonen</b> (Masse ein Viertel, Ladung die Hälfte).</p></details>
+  <details><summary>Abitur 2022 I, Aufgabe 3: Stromwaage [24 BE]</summary>
+    <p><b>3.1 [8]:</b> Messwerte (<span class="f">\(l = 4\,\mathrm{cm}\)</span>): <span class="f">\(I = 0,\ 1,\ 2,\ 3,\ 4\,\mathrm{A}\)</span>; <span class="f">\(F = 0;\ 3{,}63;\ 7{,}75;\ 10{,}70;\ 13{,}93\,\mathrm{mN}\)</span>. Diagramm, Ursprungsgerade, Steigung <span class="f">\(\approx 3{,}5\,\mathrm{mN/A}\)</span> ⇒ <span class="f">\(F \approx 3{,}5 \,\mathrm{mN/A} \cdot I\)</span> bestätigt.</p>
+    <p><b>3.2 [7]:</b> Aus <span class="f">\(F \propto I\)</span> (bei <span class="f">\(l = \text{const}\)</span>) und <span class="f">\(F \propto l\)</span> (bei <span class="f">\(I = \text{const}\)</span>, M3c) folgt <span class="f">\(F \propto I\cdot l\)</span>; der Proportionalitätsfaktor <span class="f">\(k = F/(I\cdot l)\)</span> wird als <span class="f">\(B\)</span> definiert. <span class="f">\(B = 3{,}5 \,\mathrm{mN/A} / 0{,}04 \,\mathrm{m} = 0{,}0875 \,\mathrm{T} \approx 88 \,\mathrm{mT}\)</span>.</p>
+    <p><b>3.3 [5]:</b> Leiter bewegt sich nach rechts bzw. links (Drei-Finger-Regel mit der angegebenen Elektronenflussrichtung). Soll sich der Magnet nach links bewegen, muss die Kraft auf den Leiter nach rechts zeigen (actio = reactio) ⇒ Stromrichtung entsprechend wählen (z. B. ins Blatt hinein).</p>
+    <p><b>3.4 [4]:</b> Verschieden geformte Leiter mit gleicher wirksamer Länge senkrecht zu <span class="f">\(B\)</span> erfahren dieselbe Kraft; die Kräfte auf die schrägen oder seitlichen Teilstücke heben sich gegenseitig auf.</p></details>
+  <details><summary>Abitur 2022 II b, Aufgabe 3: Spule und Hallsonde [24 BE]</summary>
+    <p><b>3.1 [3]:</b> Feldlinienbilder einer Windung (Kreise um den Draht, innen gleichgerichtet) und einer Spule (innen parallel, außen Stabmagnet), mit Pfeilen.</p>
+    <p><b>3.2 [11]:</b> Erläuterung Hallspannung (5 Kernpunkte, Abschnitt 8). Herleitung aus <span class="f">\(F_{L} = F_{\mathrm{el}}\)</span>: <span class="f">\(e\cdot v\cdot B = e\cdot U_{H}/h\)</span> ⇒ <span class="f">\(U_{H} = v\cdot B\cdot h\)</span>. Driftgeschwindigkeit <span class="f">\(v = U_{H}/(B\cdot h) = 18\cdot 10^{-6} \,\mathrm{V}/(0{,}27 \,\mathrm{T} \cdot 0{,}020 \,\mathrm{m}) = 3{,}3\cdot 10^{-3} \,\mathrm{m/s}\)</span>.</p>
+    <p><b>3.3 [10]:</b> Steigung des <span class="f">\(I\)</span>-<span class="f">\(B\)</span>-Diagramms <span class="f">\(k_{\mathrm{exp}} \approx 18{,}4\,\mathrm{mT/A}\)</span>, mit 9 %: <span class="f">\(16{,}7\text{–}20{,}1\,\mathrm{mT/A}\)</span>. Theorie <span class="f">\(\mu_0 N/l = 23{,}9\,\mathrm{mT/A}\)</span> liegt außerhalb ⇒ Gleichung gilt für diese (kurze) Spule nicht. Diskussion: verdrehte Sonde misst nur die senkrechte Komponente; nahe den Spulenenden nimmt <span class="f">\(B\)</span> ab; beides verfälscht.</p></details>
+  <details><summary>Abitur 2021 II b, Aufgabe 3: gerader Leiter mit Hallsonde [26 BE]</summary>
+    <p><b>3.1 [2]:</b> konzentrische Kreise mit Richtung (Elektronenfluss aus dem Blatt ⇒ Feldlinien im Uhrzeigersinn).</p>
+    <p><b>3.2 [8]:</b> Erläuterung und Herleitung <span class="f">\(U_{H} = v\cdot B\cdot h\)</span> wie oben.</p>
+    <p><b>3.3 [12]:</b> Messwerte aus Abschnitt 5, <span class="f">\(I = 17{,}0\,\mathrm{A}\)</span>. <span class="f">\(r\)</span>-<span class="f">\(B\)</span>-Diagramm: Hyperbel. Auswertung (Linearisierung oder Potenzregression) ⇒ <span class="f">\(B \approx 3{,}55\cdot 10^{-6} \,\mathrm{T\,m} / r\)</span>. Vergleich mit <span class="f">\(B = \mu _{0}\cdot I/(2\pi \cdot r)\)</span>: <span class="f">\(\mu _{0} = 2\pi \cdot k/I = 2\pi \cdot 3{,}55\cdot 10^{-6}/17{,}0 = 1{,}31\cdot 10^{-6} \,\mathrm{T\,m/A}\)</span>, Abweichung vom Literaturwert 4 % &lt; 8 % ⇒ bestätigt.</p>
+    <p><b>3.4 [4]:</b> Gedrehte Sonde: nur die senkrechte Komponente von <span class="f">\(B\)</span> wird erfasst, alle Werte um denselben Faktor kleiner ⇒ Abstandsabhängigkeit prinzipiell weiterhin untersuchbar.</p></details>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Analogie-Trainer</h2>
+  <div class="cards">
+    <div class="acard"><h4>E-Feld ↔ B-Feld</h4><div class="l">E: Kraft parallel zum Feld, auch auf ruhende Ladung, beschleunigt. B: Kraft senkrecht zu Feld und Bewegung, nur auf bewegte Ladung, lenkt nur ab.</div></div>
+    <div class="acard"><h4>Kreisbahn ↔ Stein an der Schnur</h4><div class="l">Die Schnur zieht immer zur Mitte und ändert nur die Richtung. Lorentzkraft = Schnur: <span class="f">\(q v B = m v^{2}/r\)</span>.</div></div>
+    <div class="acard"><h4>Wienfilter ↔ Strömung gegen Fahrtwind</h4><div class="l">Strömung (elektrische Kraft) konstant, Fahrtwind (Lorentzkraft) wächst mit der Geschwindigkeit. Nur bei einem Tempo Gleichgewicht.</div></div>
+    <div class="acard"><h4>Massenspektrometer ↔ Kurvenfahrt</h4><div class="l">Gleiche Seitenkraft, gleiches Tempo: der schwere LKW braucht die weitere Kurve. <span class="f">\(r \propto m/q\)</span>.</div></div>
+    <div class="acard"><h4>Hall-Effekt ↔ Fluss mit Seitenwind</h4><div class="l">Wind drückt Wasser ans Ufer, bis der Pegelunterschied (Querspannung) den Wind ausgleicht.</div></div>
+    <div class="acard"><h4>Wo die Analogien brechen</h4><div class="l">Das B-Feld verrichtet nie Arbeit; es gibt keine „magnetische Ladung" und keinen Monopol. Die Kraft hängt von der Richtung ab (Kreuzprodukt), nicht nur vom Betrag.</div></div>
+  </div>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <h2>11 · Checkfragen und Aufgaben</h2>
+  <details><summary>Checkfrage 1: Warum kann ein Magnetfeld ein Elektron nicht schneller machen?</summary><p>Die Lorentzkraft steht immer senkrecht zur Geschwindigkeit. Arbeit ist Kraft mal Weg in Kraftrichtung; der Weg hat keine Komponente in Kraftrichtung ⇒ <span class="f">\(W = 0\)</span>. Die kinetische Energie und damit der Betrag von <span class="f">\(v\)</span> bleiben konstant, nur die Richtung ändert sich.</p></details>
+  <details><summary>Checkfrage 2: Warum ist die Filtergeschwindigkeit im Wienfilter unabhängig von <span class="f">\(q\)</span> und <span class="f">\(m\)</span>?</summary><p>Beide Kräfte sind proportional zu <span class="f">\(q\)</span>: <span class="f">\(q E = q v B\)</span>, <span class="f">\(q\)</span> kürzt sich. Die Masse kommt gar nicht vor, weil keine Beschleunigung berechnet wird, sondern ein Kräftegleichgewicht.</p></details>
+  <details><summary>Checkfrage 3: Fadenstrahlrohr braucht Gas, die Ablenkröhre Vakuum. Widerspruch?</summary><p>Nein. Im Fadenstrahlrohr soll die Bahn sichtbar werden: seltene Stöße regen Gasatome an, sie leuchten. Der Gasdruck ist so klein, dass die Bahn kaum gestört wird. In der Ablenkröhre würden Stöße die Elektronen abbremsen und die Bahn verfälschen (Klausur 2, 3e); dort wird keine Leuchtspur gebraucht, der Strahl trifft einen Leuchtschirm.</p></details>
+  <details><summary>Checkfrage 4: Elektronen und positive Ladungsträger werden an denselben Rand gedrängt. Warum unterscheidet sich die Hallspannung trotzdem?</summary><p>Umkehr des Ladungsvorzeichens und Umkehr der Bewegungsrichtung (bei gleicher technischer Stromrichtung) heben sich in <span class="f">\(F = q\cdot (v \times B)\)</span> auf: gleiche Kraftrichtung. Am Rand sammelt sich aber einmal negative, einmal positive Ladung ⇒ Vorzeichen von <span class="f">\(U_{H}\)</span> umgekehrt.</p></details>
+  <details><summary>A1: Fadenstrahlrohr, <span class="f">\(U_B = 250\,\mathrm{V}\)</span>, <span class="f">\(B = 1{,}2\,\mathrm{mT}\)</span>, <span class="f">\(r = 4{,}4\,\mathrm{cm}\)</span>. Spezifische Ladung, Geschwindigkeit; welches <span class="f">\(B\)</span> für <span class="f">\(r = 2{,}2\,\mathrm{cm}\)</span>?</summary><p><span class="f">\(e/m = 2U_{B}/(r^{2}B^{2}) = 500/((0{,}044)^{2}\cdot (0{,}0012)^{2}) \,\mathrm{C/kg} = 1{,}79\cdot 10^{11} \,\mathrm{C/kg}\)</span> (Literatur <span class="f">\(1{,}76\cdot 10^{11}\)</span> ✓). <span class="f">\(v = \sqrt{2eU_{B}/m_{e}} = 9{,}4\cdot 10^{6} \,\mathrm{m/s}\)</span>. <span class="f">\(r \propto 1/B\)</span>: halber Radius ⇒ doppeltes Feld, <span class="f">\(2{,}4\,\mathrm{mT}\)</span>.</p></details>
+  <details><summary>A2: Wienfilter <span class="f">\(E = 40\,\mathrm{kV/m}\)</span>, <span class="f">\(B = 100\,\mathrm{mT}\)</span>; dahinter <span class="f">\(B_S = 100\,\mathrm{mT}\)</span>. Radius und Detektorabstand für Protonen und Deuteronen?</summary><p><span class="f">\(v = E/B = 4{,}0\cdot 10^{5} \,\mathrm{m/s}\)</span>. Proton: <span class="f">\(r = m\cdot v/(e\cdot B_{S}) = 1{,}673\cdot 10^{-27}\cdot 4\cdot 10^{5}/(1{,}602\cdot 10^{-19}\cdot 0{,}1) \,\mathrm{m} = 4{,}2 \,\mathrm{cm}\)</span>, Detektor bei <span class="f">\(8{,}4\,\mathrm{cm}\)</span>. Deuteron (doppelte Masse, gleiche Ladung): <span class="f">\(8{,}4\,\mathrm{cm}\)</span>, Detektor bei <span class="f">\(16{,}7\,\mathrm{cm}\)</span>.</p></details>
+  <details><summary>A3: Kupferstreifen <span class="f">\(d = 0{,}10\,\mathrm{mm}\)</span>, <span class="f">\(I = 2{,}0\,\mathrm{A}\)</span>, <span class="f">\(B = 0{,}50\,\mathrm{T}\)</span>, <span class="f">\(n = 8{,}5\cdot 10^{28}\,\mathrm{m^{-3}}\)</span>. Hallspannung?</summary><p><span class="f">\(U_{H} = B\cdot I/(n\cdot e\cdot d) = 0{,}5\cdot 2{,}0/(8{,}5\cdot 10^{28}\cdot 1{,}602\cdot 10^{-19}\cdot 1{,}0\cdot 10^{-4}) \,\mathrm{V} = 7{,}3\cdot 10^{-7} \,\mathrm{V} = 0{,}73 \,\mathrm{\mu V}\)</span>. Winzig: deshalb Halbleiter mit kleinem <span class="f">\(n\)</span> für Hallsonden.</p></details>
+  <details><summary>A4: Lange Spule <span class="f">\(N = 500\)</span>, <span class="f">\(l = 20\,\mathrm{cm}\)</span>, <span class="f">\(I = 1{,}5\,\mathrm{A}\)</span>. Feld? Kraft und Bahnradius eines Elektrons mit <span class="f">\(v = 2{,}0\cdot 10^{6}\,\mathrm{m/s}\)</span> senkrecht zum Feld?</summary><p><span class="f">\(B = \mu _{0}N I/l = 1{,}2566\cdot 10^{-6}\cdot 500\cdot 1{,}5/0{,}20 \,\mathrm{T} = 4{,}7 \,\mathrm{mT}\)</span>. <span class="f">\(F_{L} = e v B = 1{,}602\cdot 10^{-19}\cdot 2\cdot 10^{6}\cdot 4{,}7\cdot 10^{-3} \,\mathrm{N} = 1{,}5\cdot 10^{-15} \,\mathrm{N}\)</span>. <span class="f">\(r = m_{e}v/(eB) = 9{,}109\cdot 10^{-31}\cdot 2\cdot 10^{6}/(1{,}602\cdot 10^{-19}\cdot 4{,}7\cdot 10^{-3}) \,\mathrm{m} = 2{,}4 \,\mathrm{mm}\)</span>. Mit Eisenkern (<span class="f">\(\mu_r = 500\)</span>): <span class="f">\(B = 2{,}4\,\mathrm{T}\)</span>, <span class="f">\(r = 4{,}7\,\mathrm{\mu m}\)</span>.</p></details>
+</section>
+
+<!-- 12 -->
+<section class="card" id="s12">
+  <h2>12 · Nicht in der Formelsammlung (auswendig)</h2>
+  <ul>
+    <li>Konventionen: physikalische vs. technische Stromrichtung; linke Hand für Elektronen, rechte für positive Ladungen; Faust-Regel; UVW-Finger-Regel; Spulenpole.</li>
+    <li>Ørsted-Beobachtung und Deutung; Spule = Stabmagnet; Feldlinienbilder mit Pfeilen.</li>
+    <li>Stromwaage: Aufbau, Feldüberlagerung als Kraftursache, <span class="f">\(F \propto I\)</span>, <span class="f">\(F \propto l\)</span> ⇒ <span class="f">\(F = B I l\)</span>, Definition von <span class="f">\(B\)</span>, wirksame Länge.</li>
+    <li>Tesla: Bedeutung, <span class="f">\(1 \,\mathrm{T} = 1 \,\mathrm{N/(Am)} = 1 \,\mathrm{kg/(As^2)} = 1 \,\mathrm{Vs/m^2}\)</span>, Größenordnungen.</li>
+    <li>Herleitung <span class="f">\(F_{L} = q v B\)</span> aus <span class="f">\(F = B I l\)</span>; Eigenschaften (<span class="f">\(\perp v\)</span>, <span class="f">\(\perp B\)</span>, keine Arbeit, keine Kraft bei <span class="f">\(v \parallel B\)</span>).</li>
+    <li>Kreisbahn: <span class="f">\(F_{L} = F_{Z}\)</span> ⇒ <span class="f">\(r = m v/(qB)\)</span>, Proportionalitäten, <span class="f">\(T = 2\pi m/(qB)\)</span>.</li>
+    <li>Fadenstrahlrohr: Aufbau (5 Teile), Gasfüllung, <span class="f">\(e/m = 2U_{B}/(r^{2}B^{2})\)</span> mit Herleitung, <span class="f">\(r \propto \sqrt{U}_{B}\)</span>.</li>
+    <li>Spulen: Bedingung <span class="f">\(l \gg R\)</span>, kurze Spule, Helmholtzformel (gegeben), <span class="f">\(\mu _{0}\)</span>-Bedeutung und Messung, Eisenkern <span class="f">\(\mu _{r}\)</span>.</li>
+    <li>Wienfilter: Aufbau, <span class="f">\(v = E/B = U/(Bd)\)</span> mit Herleitung, Argument schneller/langsamer, unabhängig von <span class="f">\(q\)</span> und <span class="f">\(m\)</span>.</li>
+    <li>Massenspektrometer: <span class="f">\(m = qB_{S}r/v\)</span>, Detektor bei <span class="f">\(2r\)</span>, Auswertung <span class="f">\(r(v)\)</span> ⇒ <span class="f">\(k = m/(qB)\)</span>.</li>
+    <li>Hall: 5 Kernpunkte der Erläuterung, Herleitung <span class="f">\(U_{H} = vBb\)</span>, Messformel mit <span class="f">\(R_{H} = 1/(ne)\)</span>, Vorzeichen, Orientierung, Metall vs. Halbleiter.</li>
+    <li>Abitur-Muster: Messunsicherheit als Intervall, Theoriewert vergleichen; Bahnformen E vs. B; wirksame Länge; actio = reactio.</li>
+  </ul>
+  <p class="small">In der FS: <span class="f">\(B = F/(I\cdot s)\)</span>, Leiter <span class="f">\(\mu _{0}I/(2\pi r)\)</span>, Spule <span class="f">\(\mu _{0}N I/l\)</span>, <span class="f">\(H\)</span> (S. 29); <span class="f">\(F_{L} = q\cdot (v \times B)\)</span>, <span class="f">\(q v B\cdot \sin \alpha\)</span> (S. 29); Hall-Formeln (S. 30); Radialkraft <span class="f">\(m v^{2}/r\)</span> (S. 15); <span class="f">\(\mu _{0}\)</span> (S. 50).</p>
+</section>
+
+<!-- 13 -->
+<section class="card" id="s13">
+  <h2>13 · Merksätze, Verwechslungen, Fortschritt</h2>
+  <ol>
+    <li>Jeder Strom hat ein kreisförmiges Magnetfeld; Richtung mit der Faust (linke Hand bei Elektronen).</li>
+    <li><span class="f">\(F = B I l\)</span> definiert <span class="f">\(B\)</span>; <span class="f">\(1\,\mathrm{T} = 1\,\mathrm{N}\)</span> pro <span class="f">\(\mathrm{A}\)</span> und <span class="f">\(\mathrm{m}\)</span>.</li>
+    <li><span class="f">\(F_{L} = q v B\)</span>, senkrecht zu <span class="f">\(v\)</span> und <span class="f">\(B\)</span>, verrichtet keine Arbeit ⇒ Kreis mit <span class="f">\(r = m v/(qB)\)</span>.</li>
+    <li>Fadenstrahlrohr: <span class="f">\(e/m = 2U_{B}/(r^{2}B^{2})\)</span>. Spule: <span class="f">\(B = \mu _{0}N I/l\)</span>.</li>
+    <li>Wienfilter <span class="f">\(v = E/B\)</span>; Spektrometer <span class="f">\(m = qBr/v\)</span>; Hall <span class="f">\(U_{H} = vBb = R_{H}BI/d\)</span>.</li>
+  </ol>
+  <h3>Typische Verwechslungen</h3>
+  <table>
+    <tr><th>Das hier ...</th><th>... ist nicht das hier</th></tr>
+    <tr><td>Elektronenfluss (− → +), linke Hand</td><td>technische Stromrichtung (+ → −), rechte Hand</td></tr>
+    <tr><td>E-Feld: Kraft <span class="f">\(\parallel E\)</span>, Parabel, beschleunigt</td><td>B-Feld: Kraft <span class="f">\(\perp v\)</span> und <span class="f">\(B\)</span>, Kreis, lenkt nur ab</td></tr>
+    <tr><td>Fadenstrahlrohr: <span class="f">\(r \propto \sqrt{U_B}\)</span>, Gas</td><td>Ablenkröhre: <span class="f">\(y \propto 1/U_B\)</span>, Vakuum</td></tr>
+    <tr><td><span class="f">\(B\)</span> in Tesla (Flussdichte, im Abitur auch „Feldstärke")</td><td><span class="f">\(H\)</span> in <span class="f">\(\mathrm{A/m}\)</span> (magnetische Feldstärke in der FS)</td></tr>
+    <tr><td>Wienfilter: <span class="f">\(v = E/B\)</span>, unabhängig von <span class="f">\(q\)</span>, <span class="f">\(m\)</span></td><td>Spektrometer: <span class="f">\(r \propto m/q\)</span> bei gleichem <span class="f">\(v\)</span></td></tr>
+    <tr><td>Detektorabstand <span class="f">\(2r\)</span></td><td>Bahnradius <span class="f">\(r\)</span></td></tr>
+    <tr><td><span class="f">\(U_H = v\cdot B\cdot b\)</span>, <span class="f">\(b\)</span> = Breite quer zu <span class="f">\(I\)</span> und <span class="f">\(B\)</span></td><td><span class="f">\(d\)</span> = Dicke in <span class="f">\(B\)</span>-Richtung in <span class="f">\(R_H\cdot B\cdot I/d\)</span></td></tr>
+    <tr><td>lange Spule (<span class="f">\(l \gg R\)</span>): <span class="f">\(B = \mu_0 N I/l\)</span> gilt</td><td>kurze Spule: gemessenes <span class="f">\(k\)</span> kleiner als Theorie (Abitur 2022)</td></tr>
+    <tr><td>Feldlinienbild mit Richtungspfeilen</td><td>Kreise ohne Pfeile (Punktabzug)</td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="a"> Konventionen und Handregeln sicher (Trainer in Abschnitt 3 fehlerfrei)</label>
+    <label><input type="checkbox" data-k="b"> Stromwaage, <span class="f">\(F = B I l\)</span>, Tesla, Abitur 2022 I Aufgabe 3 gelöst</label>
+    <label><input type="checkbox" data-k="c"> <span class="f">\(F_L = q v B\)</span> hergeleitet, Kreisbahn, Fadenstrahlrohr mit <span class="f">\(e/m\)</span></label>
+    <label><input type="checkbox" data-k="d"> Spulenformeln, <span class="f">\(\mu_0\)</span>, Abitur 2021/2022 Hallsonde gelöst</label>
+    <label><input type="checkbox" data-k="e"> Wienfilter, Massenspektrometer (Abitur 2024, Klausur 3), Hall-Effekt mit Herleitung</label>
+    <label><input type="checkbox" data-k="f"> Checkfragen + A1–A4 gelöst</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 4 · erstellt 27.10.2026 · Quellen: Hefteinträge Elektromagnetismus (Kurs PH1, 12.2), Klausur 3 „Magnetfelder und Schwingungen" (eigene Lösung), Zentralabitur 2021 IIb, 2022 I, 2022 IIb, 2024 II (jeweils Aufgabe 3) mit Erwartungshorizont, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const sci = (x, sig) => {
+    if (x === 0) return '0';
+    const exp = Math.floor(Math.log10(Math.abs(x)));
+    let mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); return m + '·10<sup>' + (exp + 1) + '</sup>'; }
+    return m + '·10<sup>' + exp + '</sup>';
+  };
+  const unit = (x, u) => {
+    const ax = Math.abs(x); if (ax === 0) return '0 ' + u;
+    const pre = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'µ'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+    let best = pre[0]; for (const p of pre) { if (ax >= p[0] * 0.9999) best = p; }
+    return de(x / best[0], 2) + ' ' + best[1] + u;
+  };
+  // TeX-Varianten für KaTeX-Ausgaben: Komma als {,}, Zehnerpotenzen als \cdot 10^{n}, Einheiten in \mathrm{}.
+  const deT = (x, d) => de(x, d).replace(',', '{,}');
+  const sciT = (x, sig) => {
+    if (x === 0) return '0';
+    let exp = Math.floor(Math.log10(Math.abs(x)));
+    const mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); exp += 1; }
+    m = m.replace(',', '{,}');
+    return exp === 0 ? m : m + '\\cdot 10^{' + exp + '}';
+  };
+  const unitT = (x, u) => {
+    const uT = u.replace('Ω', '\\Omega').replace('µ', '\\mu ');
+    const ax = Math.abs(x); if (ax === 0) return '0\\,\\mathrm{' + uT + '}';
+    const pre = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, '\\mu '], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+    let best = pre[0]; for (const p of pre) { if (ax >= p[0] * 0.9999) best = p; }
+    return deT(x / best[0], 2) + '\\,\\mathrm{' + best[1] + uT + '}';
+  };
+  const $ = (id) => document.getElementById(id);
+  const e0 = 1.602e-19, me = 9.109e-31, mp = 1.673e-27, mu0 = 1.2566e-6, u = 1.6605e-27;
+  function arrowAt(ctx, x, y, ux, uy, color) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(uy, ux)); ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-6, 5); ctx.lineTo(-6, -5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function arrowLine(ctx, x1, y1, x2, y2, color, w) { ctx.strokeStyle = color; ctx.lineWidth = w || 2.5; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); const dx = x2 - x1, dy = y2 - y1, m = Math.hypot(dx, dy) || 1; arrowAt(ctx, x2, y2, dx / m, dy / m, color); }
+  function bSymbol(ctx, x, y, out, color) { ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, 7, 0, 2 * Math.PI); ctx.stroke(); if (out) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 2, 0, 2 * Math.PI); ctx.fill(); } else { ctx.beginPath(); ctx.moveTo(x - 4, y - 4); ctx.lineTo(x + 4, y + 4); ctx.moveTo(x + 4, y - 4); ctx.lineTo(x - 4, y + 4); ctx.stroke(); } }
+  function linreg(X, Y) { const n = X.length, mx = X.reduce((a, b) => a + b) / n, my = Y.reduce((a, b) => a + b) / n; let sxy = 0, sxx = 0; for (let i = 0; i < n; i++) { sxy += (X[i] - mx) * (Y[i] - my); sxx += (X[i] - mx) ** 2; } const m = sxy / sxx; return { m, b: my - m * mx }; }
+  const onTheme = (fn) => window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fn);
+
+  /* ---------- 1 Ørsted ---------- */
+  (function oersted() {
+    const cv = $('oeCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sel = $('oeDir');
+    function draw() {
+      const into = sel.value === 'in'; ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, cy = H / 2;
+      [26, 48, 76, 110, 150].forEach((r) => {
+        ctx.strokeStyle = css('--field'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, r, 0, 2 * Math.PI); ctx.stroke();
+        [0, Math.PI / 2, Math.PI, 1.5 * Math.PI].forEach((a) => { const s = into ? -1 : 1; const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a); arrowAt(ctx, x, y, s * (-Math.sin(a)), s * Math.cos(a), css('--field')); });
+      });
+      ctx.fillStyle = css('--card'); ctx.beginPath(); ctx.arc(cx, cy, 14, 0, 2 * Math.PI); ctx.fill();
+      bSymbolBig(cx, cy, !into);
+      ctx.fillStyle = css('--fg'); ctx.font = '13px system-ui';
+      ctx.fillText(into ? 'Elektronen ⊗ ins Blatt = technischer Strom ⊙ heraus' : 'Elektronen ⊙ heraus = technischer Strom ⊗ hinein', 12, 20);
+      ctx.fillText(into ? 'Feldlinien gegen den Uhrzeigersinn' : 'Feldlinien im Uhrzeigersinn', 12, H - 12);
+      ctx.fillStyle = css('--muted'); ctx.fillText('Leiter (Querschnitt)', cx + 20, cy + 5);
+    }
+    function bSymbolBig(x, y, out) { ctx.strokeStyle = css('--fg'); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, 14, 0, 2 * Math.PI); ctx.stroke(); if (out) { ctx.fillStyle = css('--fg'); ctx.beginPath(); ctx.arc(x, y, 4, 0, 2 * Math.PI); ctx.fill(); } else { ctx.beginPath(); ctx.moveTo(x - 8, y - 8); ctx.lineTo(x + 8, y + 8); ctx.moveTo(x + 8, y - 8); ctx.lineTo(x - 8, y + 8); ctx.stroke(); } }
+    sel.addEventListener('input', draw); draw(); onTheme(draw);
+  })();
+
+  /* ---------- 2 Stromwaage ---------- */
+  (function stromwaage() {
+    const sets = {
+      mappe: { x: [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4], y: [-0.8, 2.2, 5.4, 8.8, 12.3, 15.5, 18.7, 22.5, 25.3], xl: 'I in A', l: 0.05, I: null, note: 'Achsenabschnitt \\(-0{,}8\\,\\mathrm{mN}\\): Kraftmesser war falsch genullt (steht so im Heft).' },
+      abi: { x: [0, 1, 2, 3, 4], y: [0, 3.63, 7.75, 10.70, 13.93], xl: 'I in A', l: 0.04, I: null, note: 'Ursprungsgerade → \\(F \\propto I\\) bestätigt (Abitur 2022 I, 3.1).' },
+      mappeL: { x: [5, 7.5, 10], y: [26.4, 40.5, 54], xl: 'l in cm', l: null, I: 4, note: '\\(F \\propto l\\) bei \\(I = 4\\,\\mathrm{A}\\). Steigung in \\(\\mathrm{mN/cm} = \\mathrm{N/m}\\) geteilt durch \\(I\\) ergibt \\(B\\).' }
+    };
+    const cv = $('swCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sel = $('swSet');
+    function update() {
+      const s = sets[sel.value], r = linreg(s.x, s.y);
+      let B, txt;
+      if (s.l !== null) { B = r.m * 1e-3 / s.l; txt = 'Lineare Regression: \\(F = \\htmlClass{hl}{' + deT(r.m, 2) + '\\,\\mathrm{mN/A}}\\cdot I ' + (r.b < 0 ? '- ' : '+ ') + deT(Math.abs(r.b), 2) + '\\,\\mathrm{mN}\\)<br>\\(B = \\text{Steigung}/l = ' + deT(r.m, 2) + '\\cdot 10^{-3}\\,\\mathrm{N/A} / ' + deT(s.l, 2) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}}\\)'; }
+      else { B = r.m * 1e-3 / 1e-2 / s.I; txt = 'Lineare Regression: \\(F = \\htmlClass{hl}{' + deT(r.m, 2) + '\\,\\mathrm{mN/cm}}\\cdot l ' + (r.b < 0 ? '- ' : '+ ') + deT(Math.abs(r.b), 2) + '\\,\\mathrm{mN}\\)<br>\\(B = \\text{Steigung}/I = ' + deT(r.m * 0.1, 3) + '\\,\\mathrm{N/m} / ' + s.I + '\\,\\mathrm{A} = \\htmlClass{hl}{' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}}\\)'; }
+      texHTML($('swOut'), txt + '<br><span class="small">' + s.note + '</span>');
+      ctx.clearRect(0, 0, W, H);
+      const pad = { l: 50, r: 16, t: 16, b: 40 }, xmax = Math.max(...s.x) * 1.1, ymax = Math.max(...s.y) * 1.1;
+      const xs = (x) => pad.l + (x / xmax) * (W - pad.l - pad.r), ys = (y) => H - pad.b - (y / ymax) * (H - pad.t - pad.b);
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
+      for (let i = 0; i <= 5; i++) { const x = xmax * i / 5, y = ymax * i / 5; ctx.beginPath(); ctx.moveTo(xs(x), pad.t); ctx.lineTo(xs(x), H - pad.b); ctx.stroke(); ctx.fillText(de(x, 1), xs(x) - 8, H - pad.b + 16); ctx.beginPath(); ctx.moveTo(pad.l, ys(y)); ctx.lineTo(W - pad.r, ys(y)); ctx.stroke(); ctx.fillText(de(y, 0), 8, ys(y) + 4); }
+      ctx.fillStyle = css('--fg'); ctx.fillText(s.xl, W - pad.r - 40, H - 6); ctx.fillText('F in mN', pad.l + 4, pad.t + 4);
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xs(0), ys(r.b)); ctx.lineTo(xs(xmax), ys(r.m * xmax + r.b)); ctx.stroke();
+      ctx.fillStyle = css('--pos'); s.x.forEach((x, i) => { ctx.beginPath(); ctx.arc(xs(x), ys(s.y[i]), 5, 0, 2 * Math.PI); ctx.fill(); });
+    }
+    sel.addEventListener('input', update); update(); onTheme(update);
+  })();
+
+  /* ---------- 3 Drei-Finger-Trainer ---------- */
+  (function dreifinger() {
+    const cv = $('dfCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sQ = $('dfQ'), sV = $('dfV'), sB = $('dfB');
+    function update() {
+      const q = sQ.value === '+' ? 1 : -1, out = sB.value === 'out', Bz = out ? 1 : -1;
+      const vd = { r: [1, 0], l: [-1, 0], u: [0, -1], d: [0, 1] }[sV.value];
+      const vx = vd[0], vy = -vd[1];                      // physikalisch: y nach oben
+      const fx = q * (vy * Bz), fy = q * (-vx * Bz);      // F = q·(v × B), B = (0,0,Bz)
+      const fsx = fx, fsy = -fy;                          // zurück in Bildschirmkoordinaten
+      ctx.clearRect(0, 0, W, H);
+      for (let x = 30; x < W; x += 60) for (let y = 30; y < H; y += 60) bSymbol(ctx, x, y, out, css('--field'));
+      const cx = W / 2, cy = H / 2;
+      arrowLine(ctx, cx, cy, cx + vd[0] * 90, cy + vd[1] * 90, css('--neg'), 3);
+      ctx.fillStyle = css('--neg'); ctx.font = 'bold 14px system-ui'; ctx.fillText('v', cx + vd[0] * 100 - 4, cy + vd[1] * 100 + 5);
+      arrowLine(ctx, cx, cy, cx + fsx * 90, cy + fsy * 90, css('--arrow'), 3);
+      ctx.fillStyle = css('--arrow'); ctx.fillText('F', cx + fsx * 104 - 4, cy + fsy * 104 + 5);
+      ctx.beginPath(); ctx.arc(cx, cy, 11, 0, 2 * Math.PI); ctx.fillStyle = q > 0 ? css('--pos') : css('--neg'); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 16px system-ui'; ctx.fillText(q > 0 ? '+' : '−', cx - 5, cy + 6);
+      const dirName = (x, y) => (x > 0 ? 'rechts' : x < 0 ? 'links' : y < 0 ? 'oben' : 'unten');
+      texHTML($('dfOut'), 'Ladung ' + (q > 0 ? 'positiv' : 'negativ (Elektron)') + ', \\(v\\) nach ' + dirName(vd[0], vd[1]) + ', \\(B\\) ' + (out ? 'aus dem Blatt (\\(\\odot\\))' : 'ins Blatt (\\(\\otimes\\))') + '<br>Kraft \\(F = q\\cdot(v \\times B)\\) zeigt nach <b>' + dirName(fsx, fsy) + '</b>.<br><span class="small">' + (q > 0 ? 'Rechte Hand: Daumen \\(v\\), Zeigefinger \\(B\\), Mittelfinger \\(F\\).' : 'Linke Hand: Daumen \\(v\\) (Elektron), Zeigefinger \\(B\\), Mittelfinger \\(F\\). Oder: rechte Hand liefert die Kraft auf eine positive Ladung, dann umdrehen.') + ' Die Kraft steht senkrecht auf \\(v\\) und \\(B\\); auf einer Kreisbahn zeigt sie immer zum Mittelpunkt.</span>');
+    }
+    [sQ, sV, sB].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
+  })();
+
+  /* ---------- 4 Fadenstrahlrohr ---------- */
+  (function fadenstrahl() {
+    const cv = $('ftCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sU = $('ftU'), sB = $('ftB');
+    const Rt = 0.08, scale = 150 / Rt;
+    function update() {
+      const U = parseFloat(sU.value), B = parseFloat(sB.value) * 1e-3;
+      texHTML($('ftUv'), '\\(' + deT(U, 0) + '\\,\\mathrm{V}\\)'); texHTML($('ftBv'), '\\(' + deT(B * 1e3, 1) + '\\,\\mathrm{mT}\\)');
+      const v = Math.sqrt(2 * e0 * U / me), r = me * v / (e0 * B), T = 2 * Math.PI * me / (e0 * B), em = 2 * U / (r * r * B * B);
+      const hits = r > 0.0745;
+      texHTML($('ftOut'), '\\(v = \\sqrt{2eU_B/m_e} = \\htmlClass{hl}{' + sciT(v, 3) + '\\,\\mathrm{m/s}}\\)<br>\\(r = m_e\\cdot v/(e\\cdot B) = \\htmlClass{hl}{' + deT(r * 100, 2) + '\\,\\mathrm{cm}}\\) ' + (hits ? '<span class="pos">→ Strahl trifft die Glaswand (Kolbenradius \\(8\\,\\mathrm{cm}\\))</span>' : '') + '<br>Umlaufzeit \\(T = 2\\pi m_e/(eB) = ' + sciT(T, 3) + '\\,\\mathrm{s}\\) (unabhängig von \\(v\\))<br>Kontrolle: \\(2U_B/(r^2B^2) = ' + sciT(em, 4) + '\\,\\mathrm{C/kg} = e/m_e\\) ✓<br><span class="small">Heft: \\(r = 3{,}75\\,\\mathrm{cm}\\) abgelesen statt \\(3{,}9\\,\\mathrm{cm}\\) → \\(1{,}9\\cdot 10^{11}\\) statt \\(1{,}76\\cdot 10^{11}\\,\\mathrm{C/kg}\\). Ein 4 % kleinerer Radius macht 8 % mehr \\(e/m_e\\) (Quadrat!).</span>');
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, cy = H / 2, Rp = Rt * scale;
+      ctx.strokeStyle = css('--muted'); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx, cy, Rp, 0, 2 * Math.PI); ctx.stroke();
+      for (let x = cx - 120; x <= cx + 120; x += 60) for (let y = cy - 120; y <= cy + 120; y += 60) if (Math.hypot(x - cx, y - cy) < Rp - 12) bSymbol(ctx, x, y, true, css('--field'));
+      const gx = cx + 110, gy = cy;
+      ctx.fillStyle = css('--muted'); ctx.fillRect(gx - 6, gy - 2, 12, 26); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Kanone', gx - 22, gy + 40);
+      ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, Rp - 2, 0, 2 * Math.PI); ctx.clip();
+      const rp = r * scale; ctx.strokeStyle = css('--arrow'); ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(gx - rp, gy, rp, 0, 2 * Math.PI); ctx.stroke();
+      ctx.restore();
+      arrowAt(ctx, gx, gy - Math.min(rp, 20), 0, -1, css('--arrow'));
+      ctx.fillStyle = css('--fg'); ctx.fillText('B ⊙ zum Betrachter', 12, 20); ctx.fillText('r = ' + de(r * 100, 1) + ' cm', 12, H - 12);
+    }
+    [sU, sB].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
+  })();
+
+  /* ---------- 5a Spulenrechner ---------- */
+  (function spulen() {
+    const sN = $('spN'), sL = $('spL'), sI = $('spI'), sR = $('spR'), sMu = $('spMu');
+    function update() {
+      const N = parseFloat(sN.value), l = parseFloat(sL.value) * 1e-2, I = parseFloat(sI.value), R = parseFloat(sR.value) * 1e-2, mur = parseFloat(sMu.value);
+      $('spNv').textContent = N; texHTML($('spLv'), '\\(' + deT(l * 100, 1) + '\\,\\mathrm{cm}\\)'); texHTML($('spIv'), '\\(' + deT(I, 1) + '\\,\\mathrm{A}\\)'); texHTML($('spRv'), '\\(' + deT(R * 100, 2) + '\\,\\mathrm{cm}\\)');
+      const Blang = mur * mu0 * N * I / l, Bkurz = mur * mu0 * N * I / Math.sqrt(l * l + 4 * R * R), Bh = mur * mu0 * N * I * 8 / (5 * Math.sqrt(5)) / R;
+      texHTML($('spOut'), 'lange Spule: \\(B = \\mu_r\\cdot\\mu_0\\cdot N\\cdot I/l = \\htmlClass{hl}{' + unitT(Blang, 'T') + '}\\)' + (l < 4 * R ? ' <span class="small">(\\(l\\) nur \\(' + deT(l / R, 1) + '\\cdot R\\): Bedingung \\(l \\gg R\\) verletzt)</span>' : '') + '<br>kurze Spule: \\(B = \\mu_r\\cdot\\mu_0\\cdot N\\cdot I/\\sqrt{l^2 + (2R)^2} = \\htmlClass{hl}{' + unitT(Bkurz, 'T') + '}\\) (' + de(100 * Bkurz / Blang, 0) + ' % der Langspulenformel)<br>Helmholtz (gleiches \\(N\\) und \\(I\\), Radius \\(R\\)): \\(B = 0{,}716\\cdot\\mu_r\\cdot\\mu_0\\cdot N\\cdot I/R = ' + unitT(Bh, 'T') + '\\)<br>' + (mur > 1 ? '<span class="small">Eisenkern: reale Werte sättigen bei etwa \\(1\\)–\\(2\\,\\mathrm{T}\\).</span>' : '<span class="small">Heft-Messung mit \\(N = 1200\\), \\(l = 29{,}5\\,\\mathrm{cm}\\), \\(I = 0{,}9\\,\\mathrm{A}\\): \\(4{,}3\\,\\mathrm{mT}\\) (gemessen \\(4{,}8\\,\\mathrm{mT/A}\\cdot 0{,}9\\,\\mathrm{A}\\)).</span>'));
+    }
+    [sN, sL, sI, sR, sMu].forEach((s) => s.addEventListener('input', update)); update();
+  })();
+
+  /* ---------- 5b Abitur 2021: B(r) ---------- */
+  (function leiterRegression() {
+    const r = [1, 2, 3, 4, 5, 6, 7, 8], B = [0.344, 0.172, 0.110, 0.082, 0.064, 0.050, 0.042, 0.038], I = 17.0, sel = $('lrMethod');
+    function update() {
+      let k, head;
+      if (sel.value === 'lin') { const reg = linreg(r.map((x) => 1 / x), B); k = reg.m; head = '\\(B\\) gegen \\(1/r\\): lineare Regression \\(B = \\htmlClass{hl}{' + deT(reg.m, 3) + '\\,\\mathrm{mT\\cdot cm}}\\cdot(1/r) ' + (reg.b < 0 ? '- ' : '+ ') + deT(Math.abs(reg.b), 3) + '\\,\\mathrm{mT}\\) (Achsenabschnitt \\(\\approx 0\\), wie erwartet)'; }
+      else { const reg = linreg(r.map(Math.log), B.map(Math.log)); k = Math.exp(reg.b); head = 'Potenzregression \\(B = \\htmlClass{hl}{' + deT(k, 3) + '\\,\\mathrm{mT\\cdot cm^{' + deT(-reg.m, 2) + '}}}\\cdot r^{' + deT(reg.m, 3) + '}\\) (Exponent \\(\\approx -1\\) wie die Theorie)'; }
+      const kSI = k * 1e-5, mu = 2 * Math.PI * kSI / I, dev = 100 * (mu - mu0) / mu0;
+      texHTML($('lrOut'), head + '<br>\\(k = ' + deT(k, 3) + '\\,\\mathrm{mT\\cdot cm} = ' + sciT(kSI, 3) + '\\,\\mathrm{T\\cdot m}\\) → \\(\\mu_0 = 2\\pi\\cdot k/I = 2\\pi\\cdot ' + sciT(kSI, 3) + '/17{,}0 = \\htmlClass{hl}{' + sciT(mu, 3) + '\\,\\mathrm{T\\cdot m/A}}\\)<br>Abweichung vom Literaturwert \\(1{,}257\\cdot 10^{-6}\\): <b>' + de(Math.abs(dev), 1) + ' %</b> → ' + (Math.abs(dev) <= 8 ? '<span class="right">innerhalb der 8 % Messunsicherheit, Literaturwert bestätigt</span>' : '<span class="wrong">außerhalb der 8 % (Methode liefert zu große Konstante; Theorie sagt Exponent \\(-1\\), also linearisieren)</span>'));
+    }
+    sel.addEventListener('input', update); update();
+  })();
+
+  /* ---------- 6 Wienfilter ---------- */
+  (function wien() {
+    const cv = $('wfCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sP = $('wfP'), sE = $('wfE'), sB = $('wfB'), sV = $('wfV');
+    const P = { a: { q: 2 * e0, m: 6.64e-27, n: 'α-Teilchen' }, p: { q: e0, m: mp, n: 'Proton' }, e: { q: -e0, m: me, n: 'Elektron' } };
+    function update() {
+      const p = P[sP.value], E = parseFloat(sE.value) * 1e3, B = parseFloat(sB.value) * 1e-3, v = parseFloat(sV.value) * 1e3;
+      texHTML($('wfEv'), '\\(' + deT(E / 1e3, 0) + '\\,\\mathrm{kV/m}\\)'); texHTML($('wfBv'), '\\(' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}\\)'); texHTML($('wfVv'), '\\(' + deT(v / 1e3, 0) + '\\,\\mathrm{km/s}\\)');
+      const vpass = E / B, Fel = Math.abs(p.q) * E, FL = Math.abs(p.q) * v * B, sgn = p.q > 0 ? 1 : -1;
+      const a = sgn * (FL - Fel) / p.m;           // + = nach oben (Lorentzseite für positive Ladung)
+      const L = 0.10, half = 0.01, scale = 4000;  // px pro m
+      const x0 = 140, yc = H / 2;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = css('--pos'); ctx.fillRect(x0, yc - half * scale - 8, L * scale, 8); ctx.fillStyle = css('--neg'); ctx.fillRect(x0, yc + half * scale, L * scale, 8);
+      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('+ Platte', x0, yc - half * scale - 12); ctx.fillText('− Platte', x0, yc + half * scale + 22);
+      for (let x = x0 + 30; x < x0 + L * scale; x += 60) for (let y = yc - 22; y <= yc + 22; y += 44) bSymbol(ctx, x, y, false, css('--field'));
+      for (let x = x0 + 60; x < x0 + L * scale; x += 120) arrowLine(ctx, x, yc - half * scale + 4, x, yc + half * scale - 4, css('--efield'), 1.2);
+      ctx.fillStyle = css('--efield'); ctx.fillText('E', x0 + 64, yc + 4);
+      ctx.fillStyle = css('--muted'); ctx.fillRect(x0 + L * scale + 20, yc - 60, 6, 52); ctx.fillRect(x0 + L * scale + 20, yc + 8, 6, 52); ctx.fillStyle = css('--fg'); ctx.fillText('Blende', x0 + L * scale + 10, yc - 66);
+      ctx.strokeStyle = css('--arrow'); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(20, yc); ctx.lineTo(x0, yc);
+      let hit = false, xEnd = L;
+      for (let i = 1; i <= 80; i++) { const x = L * i / 80, t = x / v, y = 0.5 * a * t * t; if (Math.abs(y) > half) { hit = true; xEnd = x; break; } ctx.lineTo(x0 + x * scale, yc - y * scale); }
+      if (!hit) { const t = L / v, y = 0.5 * a * t * t, vy = a * t; const xs = (W - 10 - x0) / scale - L; ctx.lineTo(x0 + (L + xs) * scale, yc - (y + vy / v * xs) * scale); }
+      ctx.stroke();
+      const straight = Math.abs(FL - Fel) < 0.02 * Fel;
+      texHTML($('wfOut'), p.n + ': \\(F_{el} = |q|\\cdot E = ' + sciT(Fel, 3) + '\\,\\mathrm{N}\\), \\(F_L = |q|\\cdot v\\cdot B = ' + sciT(FL, 3) + '\\,\\mathrm{N}\\)<br>Filtergeschwindigkeit \\(v = E/B = \\htmlClass{hl}{' + deT(vpass / 1e3, 0) + '\\,\\mathrm{km/s}}\\)' + (straight ? ' → <span class="right">Kräftegleichgewicht, Teilchen fliegt geradeaus durch die Blende</span>' : (FL > Fel ? ' → <span class="wrong">\\(v\\) zu groß: \\(F_L\\) überwiegt, Ablenkung zur Lorentzseite (' + (sgn > 0 ? 'oben' : 'unten') + ')' + (hit ? ', trifft die Platte nach \\(' + deT(xEnd * 100, 1) + '\\,\\mathrm{cm}\\)' : '') + '</span>' : ' → <span class="wrong">\\(v\\) zu klein: \\(F_{el}\\) überwiegt, Ablenkung zur elektrischen Seite (' + (sgn > 0 ? 'unten' : 'oben') + ')' + (hit ? ', trifft die Platte nach \\(' + deT(xEnd * 100, 1) + '\\,\\mathrm{cm}\\)' : '') + '</span>')) + '<br><span class="small">Für Elektronen sind beide Kräfte umgedreht (\\(q\\) negativ), die Bedingung \\(v = E/B\\) bleibt dieselbe.</span>');
+    }
+    [sP, sE, sB, sV].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
+  })();
+
+  /* ---------- 7 Massenspektrometer ---------- */
+  (function massenspektrometer() {
+    const cv = $('msCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sP = $('msP'), iM = $('msM'), iQ = $('msQ'), sV = $('msV'), sB = $('msB');
+    const P = { p: [mp, e0, 'Proton'], d: [2 * u, e0, 'Deuteron'], a: [6.64e-27, 2 * e0, 'α-Teilchen'], e: [me, e0, 'Elektron'] };
+    function update() {
+      let m, q, name; if (sP.value === 'c') { m = Math.abs(parseFloat(iM.value) || 1) * u; q = Math.max(1, Math.abs(parseInt(iQ.value) || 1)) * e0; name = 'Ion (\\(' + deT(m / u, 1) + '\\,\\mathrm{u}\\), \\(' + Math.round(q / e0) + 'e\\))'; } else { [m, q, name] = P[sP.value]; }
+      const v = parseFloat(sV.value) * 1e3, B = parseFloat(sB.value) * 1e-3;
+      texHTML($('msVv'), '\\(' + deT(v / 1e3, 0) + '\\,\\mathrm{km/s}\\)'); texHTML($('msBv'), '\\(' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}\\)');
+      const r = m * v / (q * B), ra = 6.64e-27 * v / (2 * e0 * B);
+      const scale = 1200, ex = 60, ey = 40;
+      ctx.clearRect(0, 0, W, H);
+      for (let x = ex + 30; x < W - 10; x += 60) for (let y = 30; y < H - 10; y += 60) bSymbol(ctx, x, y, true, css('--field'));
+      ctx.fillStyle = css('--muted'); ctx.fillRect(ex - 12, 10, 6, H - 20); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Blende / Detektorlinie', ex - 8, H - 6);
+      ctx.fillStyle = css('--card'); ctx.fillRect(ex - 12, ey - 6, 6, 12);
+      arrowLine(ctx, 10, ey, ex - 8, ey, css('--muted'), 2);
+      const arc = (rad, color, w) => { const rp = rad * scale; ctx.save(); ctx.beginPath(); ctx.rect(ex - 6, 0, W, H); ctx.clip(); ctx.strokeStyle = color; ctx.lineWidth = w; ctx.beginPath(); ctx.arc(ex, ey + rp, rp, -Math.PI / 2, Math.PI / 2, false); ctx.stroke(); ctx.restore(); };
+      if (sP.value !== 'a') arc(ra, css('--line'), 2);
+      arc(r, css('--arrow'), 3);
+      const yDet = ey + 2 * r * scale;
+      if (yDet < H) { ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(ex - 9, yDet, 5, 0, 2 * Math.PI); ctx.fill(); ctx.fillStyle = css('--fg'); ctx.fillText('2r = ' + de(2 * r * 100, 1) + ' cm', ex + 6, yDet + 4); }
+      texHTML($('msOut'), name + ', \\(m/q = ' + sciT(m / q, 3) + '\\,\\mathrm{kg/C}\\)<br>\\(r = m\\cdot v/(q\\cdot B) = \\htmlClass{hl}{' + deT(r * 100, 2) + '\\,\\mathrm{cm}}\\), Detektor bei \\(2r = \\htmlClass{hl}{' + deT(2 * r * 100, 1) + '\\,\\mathrm{cm}}\\)' + (yDet >= H ? ' <span class="small">(außerhalb des Bildes)</span>' : '') + '<br>zum Vergleich α: \\(r = ' + deT(ra * 100, 2) + '\\,\\mathrm{cm}\\) (Abitur 2024: \\(7{,}96\\,\\mathrm{cm}\\) bei \\(480\\,\\mathrm{km/s}\\), \\(125\\,\\mathrm{mT}\\))<br><span class="small">Gleiches \\(v\\) für alle, also sortiert das Feld nach \\(m/q\\). Elektronen fliegen bei positivem Feld in die andere Richtung; hier nur der Betrag.</span>');
+    }
+    [sP, iM, iQ, sV, sB].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
+  })();
+
+  /* ---------- 8 Hall-Effekt ---------- */
+  (function hall() {
+    const cv = $('hlCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sQ = $('hlQ'), sM = $('hlM'), sB = $('hlB'), sI = $('hlI'), sD = $('hlD');
+    const mats = { al: { RH: 99e-12, n: 'Aluminium (Heft)' }, cu: { RH: 1 / (8.5e28 * e0), n: 'Kupfer' }, sc: { RH: 1 / (1e22 * e0), n: 'Halbleiter' } };
+    let phase = 0, anim = null;
+    function update() {
+      const neg = sQ.value === '-', mat = mats[sM.value], B = parseFloat(sB.value) * 1e-3, I = parseFloat(sI.value), d = parseFloat(sD.value) * 1e-3;
+      texHTML($('hlBv'), '\\(' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}\\)'); texHTML($('hlIv'), '\\(' + deT(I, 2) + '\\,\\mathrm{A}\\)'); texHTML($('hlDv'), '\\(' + deT(d * 1e3, 1) + '\\,\\mathrm{mm}\\)');
+      const UH = mat.RH * B * I / d, n = 1 / (mat.RH * e0);
+      texHTML($('hlOut'), mat.n + ': \\(R_H = 1/(n\\cdot e) = ' + sciT(mat.RH, 2) + '\\,\\mathrm{m^3/C}\\) (\\(n = ' + sciT(n, 2) + '\\,\\mathrm{m^{-3}}\\))<br>\\(U_H = R_H\\cdot B\\cdot I/d = ' + sciT(mat.RH, 2) + '\\cdot ' + deT(B, 3) + '\\,\\mathrm{T}\\cdot ' + deT(I, 2) + '\\,\\mathrm{A} / ' + sciT(d, 1) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + (neg ? '-' : '+') + unitT(UH, 'V') + '}\\)<br>Vorzeichen: oberer Rand ' + (neg ? 'negativ (Elektronen gesammelt)' : 'positiv (Löcher gesammelt)') + '<br><span class="small">Hallsonde: \\(B = U_H\\cdot d/(R_H\\cdot I)\\). Metalle: \\(\\mathrm{\\mu V}\\), Halbleiter: \\(\\mathrm{mV}\\).</span>');
+      draw(neg, B, I);
+    }
+    function draw(neg, B, I) {
+      ctx.clearRect(0, 0, W, H);
+      const x0 = 70, y0 = 90, w = 340, h = 120;
+      ctx.fillStyle = css('--soft'); ctx.fillRect(x0, y0, w, h); ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.5; ctx.strokeRect(x0, y0, w, h);
+      for (let x = x0 + 30; x < x0 + w; x += 70) for (let y = y0 + 30; y < y0 + h; y += 60) bSymbol(ctx, x, y, false, css('--field'));
+      arrowLine(ctx, 10, y0 + h / 2, x0 - 4, y0 + h / 2, css('--kin'), 3); arrowLine(ctx, x0 + w + 4, y0 + h / 2, W - 10, y0 + h / 2, css('--kin'), 3);
+      ctx.fillStyle = css('--kin'); ctx.font = 'bold 13px system-ui'; ctx.fillText('I (technisch)', 10, y0 + h / 2 - 10);
+      const dir = neg ? -1 : 1, col = neg ? css('--neg') : css('--pos'), strength = Math.min(1, B * I * 4);
+      for (let k = 0; k < 7; k++) { const x = x0 + 25 + ((k * 50 + dir * phase) % w + w) % w; const y = y0 + h / 2 - strength * 38; ctx.beginPath(); ctx.arc(x, y, 5, 0, 2 * Math.PI); ctx.fillStyle = col; ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = 'bold 9px system-ui'; ctx.fillText(neg ? '−' : '+', x - 3, y + 3); }
+      if (strength > 0.05) { arrowLine(ctx, x0 + w / 2, y0 + h / 2 + 10, x0 + w / 2, y0 + h / 2 - 30, css('--arrow'), 2); ctx.fillStyle = css('--arrow'); ctx.font = '12px system-ui'; ctx.fillText('F_L', x0 + w / 2 + 6, y0 + h / 2 - 12); }
+      ctx.fillStyle = col; ctx.font = 'bold 16px system-ui'; for (let x = x0 + 20; x < x0 + w; x += 45) ctx.fillText(neg ? '−' : '+', x, y0 + 16);
+      ctx.fillStyle = neg ? css('--pos') : css('--neg'); for (let x = x0 + 20; x < x0 + w; x += 45) ctx.fillText(neg ? '+' : '−', x, y0 + h - 5);
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0 + w / 2 + 60, y0); ctx.lineTo(x0 + w / 2 + 60, y0 - 40); ctx.lineTo(x0 + w / 2 + 110, y0 - 40); ctx.lineTo(x0 + w / 2 + 110, y0 + h + 40); ctx.lineTo(x0 + w / 2 + 60, y0 + h + 40); ctx.lineTo(x0 + w / 2 + 60, y0 + h); ctx.stroke();
+      ctx.fillStyle = css('--card'); ctx.beginPath(); ctx.arc(x0 + w / 2 + 110, y0 + h / 2, 16, 0, 2 * Math.PI); ctx.fill(); ctx.stroke(); ctx.fillStyle = css('--fg'); ctx.font = '13px system-ui'; ctx.fillText('V', x0 + w / 2 + 105, y0 + h / 2 + 5);
+      ctx.fillText('U_H', x0 + w / 2 + 125, y0 + h / 2 + 5); ctx.fillText('b', x0 - 16, y0 + h / 2 + 4); ctx.fillText('B ⊗', x0 + w - 36, y0 + h + 22);
+    }
+    function loop() { phase = (phase + 0.8) % 1000; draw(sQ.value === '-', parseFloat(sB.value) * 1e-3, parseFloat(sI.value)); anim = requestAnimationFrame(loop); }
+    [sQ, sM, sB, sI, sD].forEach((s) => s.addEventListener('input', update)); update(); loop();
+  })();
+
+  /* ---------- 10 Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Ein Elektron fliegt nach rechts, das Magnetfeld zeigt ins Blatt. Wohin zeigt die Lorentzkraft?', o: ['nach oben', 'nach unten', 'nach links'], a: 1, e: 'Linke Hand: Daumen rechts, Zeigefinger ins Blatt, Mittelfinger nach unten. Eine positive Ladung würde nach oben gedrückt.' },
+      { q: 'Was macht ein reines Magnetfeld mit dem Betrag der Geschwindigkeit eines Teilchens?', o: ['vergrößert ihn', 'verkleinert ihn', 'lässt ihn gleich'], a: 2, e: 'Die Lorentzkraft steht senkrecht zum Weg und verrichtet keine Arbeit. Nur die Richtung ändert sich.' },
+      { q: 'Im Fadenstrahlrohr wird \\(U_B\\) vervierfacht (\\(B\\) fest). Der Radius ...', o: ['vervierfacht sich', 'verdoppelt sich', 'bleibt gleich'], a: 1, e: '\\(r \\propto v \\propto \\sqrt{U_B}\\). Vierfache Spannung → doppelte Geschwindigkeit → doppelter Radius.' },
+      { q: 'Teilchen mit \\(v > E/B\\) im Wienfilter werden ...', o: ['zur Seite der Lorentzkraft abgelenkt', 'zur Seite der elektrischen Kraft abgelenkt', 'nicht abgelenkt'], a: 0, e: '\\(F_L = qvB\\) wächst mit \\(v\\), \\(F_{el} = qE\\) nicht. Schnelle Teilchen: Lorentzkraft gewinnt.' },
+      { q: 'Proton und α-Teilchen mit gleichem \\(v\\) im gleichen Feld. Radius des Protons?', o: ['gleich', 'halb so groß', 'doppelt so groß'], a: 1, e: '\\(r \\propto m/q\\). Proton: \\(m/4\\), \\(q/2\\) → \\(m/q\\) halb so groß → halber Radius (Abitur 2024, 3.4).' },
+      { q: '1 Tesla bedeutet ...', o: ['\\(1\\,\\mathrm{N}\\) auf \\(1\\,\\mathrm{m}\\) Leiter bei \\(1\\,\\mathrm{A}\\)', '\\(1\\,\\mathrm{V}\\) pro Meter', '\\(1\\,\\mathrm{A}\\) pro Meter'], a: 0, e: 'Aus \\(F = B\\cdot I\\cdot l\\): \\(B = F/(I\\cdot l)\\), \\(1\\,\\mathrm{T} = 1\\,\\mathrm{N/(A\\cdot m)}\\).' },
+      { q: 'Bei gleichem \\(B\\), \\(I\\) und \\(d\\) hat die größere Hallspannung ...', o: ['ein Metall', 'ein Halbleiter', 'beide gleich'], a: 1, e: '\\(U_H = B\\cdot I/(n\\cdot e\\cdot d)\\). Halbleiter haben viel kleinere Ladungsträgerdichte \\(n\\) → größeres \\(U_H\\).' },
+      { q: 'Lange Spule: Länge verdoppelt, \\(N\\) und \\(I\\) gleich. Das Feld innen ...', o: ['verdoppelt sich', 'halbiert sich', 'bleibt gleich'], a: 1, e: '\\(B = \\mu_0\\cdot N\\cdot I/l\\). Die gleichen Windungen verteilen sich auf die doppelte Länge.' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      dv.innerHTML = '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>';
+      if (window.renderMathInElement) renderMathInElement(dv, window.KATEX_OPTS);
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); texHTML(b, txt);
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; texHTML(fb, '<span class="right">Richtig.</span> ' + item.e); } else { texHTML(fb, '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a] + '". ' + item.e); }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+
+  /* ---------- 13 Fortschritt ---------- */
+  (function progress() {
+    const key = 'physik-l4-progress'; let state = {};
+    try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { state = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => {
+      cb.checked = !!state[cb.dataset.k];
+      cb.addEventListener('change', () => { state[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(state)); } catch (e) { /* kein Speicher */ } });
+    });
+  })();
+})();
+</script>
+</body>
+</html>
