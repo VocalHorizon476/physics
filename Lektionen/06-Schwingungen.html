@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 6 – Schwingungen</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { white-space: nowrap; }
+  .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; overflow-x: auto; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+</style>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="katex/katex.min.js"></script>
+  <script>
+    window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
+    // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
+    window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+  </script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS);"></script>
+  <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Begriffe</a><a href="#s2">2 Versuch Federpendel</a><a href="#s3">3 DGL</a><a href="#s4">4 Energie</a><a href="#s5">5 Fadenpendel</a><a href="#s6">6 Zeiger</a><a href="#s7">7 Dämpfung</a><a href="#s8">8 Resonanz</a><a href="#s9">9 Schwingkreis</a><a href="#s10">10 Klausur & Abitur</a><a href="#s11">11 Analogie</a><a href="#s12">12 Aufgaben</a><a href="#s13">13 Nicht in FS</a><a href="#s14">14 Quiz</a><a href="#s15">15 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 6 · Schwingungen</h1>
+  <p class="sub">Begriffe → Versuch Feder-Masse-Pendel → Differentialgleichung und Lösung → Energie → Fadenpendel → Zeigerformalismus → gedämpfte Schwingung → erzwungene Schwingung und Resonanz → LC-Schwingkreis. Grundlage: Hefteinträge (12.2) Schwingungen und Wellen (Tepe, S. 1–15), Arbeitsblatt „Gedämpfte Schwingungen" (13.4.26), Klausur 3 Aufgabe 3, Abitur 2022 IIa Aufgabe 2, Abitur 2023 IIa Aufgabe 2.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Die Begriffe Auslenkung, Amplitude, Periodendauer, Frequenz, Kreisfrequenz, Phase und <b>harmonische Schwingung</b> sauber erklären (Abitur 2022, 4 BE nur dafür).</li>
+    <li>Den Heft-Versuch zum Feder-Masse-Pendel beschreiben, auswerten (Federkonstante aus <span class="f">\(\Delta x(m)\)</span>, Periodendauer aus <span class="f">\(T(m)\)</span> mit Linearisierung) und ein solches Experiment planen.</li>
+    <li>Die Differentialgleichung <span class="f">\(m\,\ddot y + D\,y = 0\)</span> aufstellen, mit dem Ansatz <span class="f">\(y = \hat y\sin(\omega t + \varphi)\)</span> lösen und <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> <b>bestätigen</b> (Klausur 3, Aufgabe 3a).</li>
+    <li>Startbedingungen in die Phase <span class="f">\(\varphi\)</span> übersetzen, Geschwindigkeit und Beschleunigung aus <span class="f">\(y(t)\)</span> ableiten, Energieumwandlung beschreiben.</li>
+    <li>Fadenpendel: Kleinwinkelnäherung, <span class="f">\(T = 2\pi\sqrt{l/g}\)</span>, warum <span class="f">\(m\)</span> keine Rolle spielt.</li>
+    <li>Zeigerdarstellung lesen und benutzen (Vorbereitung auf Wellen und Interferenz).</li>
+    <li>Dämpfung: <span class="f">\(\lambda = c/(2m)\)</span>, <span class="f">\(\omega = \sqrt{\omega_0^2 - \lambda^2}\)</span>, Einhüllende, Auswertung per Regression. Resonanz: Resonanzkurve, <span class="f">\(\omega_R\)</span>. Schwingkreis: Thomson-Gleichung und der Heft-Versuch zur Bestimmung von <span class="f">\(L\)</span>.</li>
+  </ul>
+  <div class="note warn"><b>Ein Satz, der die ganze Lektion trägt:</b> <b>Harmonisch</b> heißt: Die Rückstellkraft ist proportional zur Auslenkung, <span class="f">\(F = -D\cdot y\)</span>. Alles andere folgt daraus: der Sinus-Verlauf, <span class="f">\(\omega = \sqrt{D/m}\)</span>, und dass die Periodendauer <b>nicht</b> von der Amplitude abhängt. Wer in der Klausur eine Schwingung „harmonisch" nennt, muss genau diesen Satz liefern.</div>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Simulationen rechnen mit den echten Formeln und den echten Heft-Messwerten.</p>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Die Begriffe, mit denen alles beschrieben wird</h2>
+  <p>Eine <b>Schwingung</b> ist eine Bewegung, die sich um eine <b>Ruhelage</b> (Gleichgewichtslage) hin und her wiederholt. Zwei Zutaten braucht jede Schwingung: eine Kraft, die den Körper zur Ruhelage <b>zurücktreibt</b>, und <b>Trägheit</b>, durch die er über die Ruhelage hinausschießt. Fehlt die Rückstellkraft, bleibt der Körper liegen; fehlt die Trägheit, kriecht er nur zur Ruhelage zurück.</p>
+  <table>
+    <tr><th style="width:28%">Größe</th><th>Bedeutung</th><th style="width:26%">Formel / Einheit</th></tr>
+    <tr><td>Auslenkung <span class="f">\(y(t)\)</span> (Elongation; FS: <span class="f">\(s\)</span>)</td><td>Momentaner Abstand von der Ruhelage, <b>mit Vorzeichen</b> (oben/unten, links/rechts).</td><td><span class="f">\([y] = 1\,\mathrm{m}\)</span></td></tr>
+    <tr><td>Amplitude <span class="f">\(\hat y\)</span> (Heft: <span class="f">\(y_0\)</span>; FS: <span class="f">\(s_{\mathrm{max}}\)</span>)</td><td>Größte Auslenkung, ein Betrag, immer positiv. Nicht der Abstand zwischen den Umkehrpunkten (das wären <span class="f">\(2\hat y\)</span>).</td><td><span class="f">\(\hat y \gt 0\)</span></td></tr>
+    <tr><td>Periodendauer <span class="f">\(T\)</span></td><td>Zeit für <b>eine volle</b> Schwingung: hin und zurück, bis derselbe Zustand mit derselben Bewegungsrichtung wieder erreicht ist. Messen: <span class="f">\(n\)</span> Schwingungen stoppen, <span class="f">\(T = t/n\)</span>.</td><td><span class="f">\([T] = 1\,\mathrm{s}\)</span></td></tr>
+    <tr><td>Frequenz <span class="f">\(f\)</span></td><td>Schwingungen pro Sekunde.</td><td><span class="f">\(f = 1/T = n/t\)</span>, <span class="f">\(1\,\mathrm{Hz} = 1/\mathrm{s}\)</span></td></tr>
+    <tr><td>Kreisfrequenz <span class="f">\(\omega\)</span></td><td>Drehgeschwindigkeit des zugehörigen Zeigers (Abschnitt 6): Winkel pro Zeit. Pro Periode ein voller Umlauf <span class="f">\(2\pi\)</span>.</td><td><span class="f">\(\omega = 2\pi f = 2\pi/T\)</span>, <span class="f">\([\omega] = 1/\mathrm{s}\)</span></td></tr>
+    <tr><td>Phasenwinkel <span class="f">\(\alpha(t) = \omega t + \varphi\)</span></td><td>Das Argument des Sinus. <span class="f">\(\varphi\)</span> (FS: <span class="f">\(\varphi_0\)</span>, Nullphasenwinkel) sagt, wo die Schwingung bei <span class="f">\(t = 0\)</span> startet.</td><td>im <b>Bogenmaß</b></td></tr>
+    <tr><td><b>Harmonische Schwingung</b></td><td>Rückstellkraft proportional zur Auslenkung: <span class="f">\(F = -D\cdot y\)</span>. Dann (und nur dann) ist der Zeitverlauf eine Sinus-/Kosinusfunktion.</td><td><span class="f">\(y(t) = \hat y\sin(\omega t + \varphi)\)</span></td></tr>
+  </table>
+  <div class="formula">\[y(t) = \hat y\,\sin(\omega t + \varphi),\qquad \omega = 2\pi f = \frac{2\pi}{T},\qquad f = \frac{1}{T}\]</div>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(\hat y\)</span> <input type="range" id="swA" min="1" max="10" value="5" step="0.5"> <span id="swAv"></span></label>
+        <label><span class="f">\(T\)</span> <input type="range" id="swT" min="0.5" max="4" value="2" step="0.1"> <span id="swTv"></span></label>
+        <label><span class="f">\(\varphi\)</span> <input type="range" id="swPhi" min="0" max="360" value="0" step="15"> <span id="swPhiv"></span></label>
+      </div>
+      <canvas id="swCanvas" width="480" height="260"></canvas>
+      <p class="small">Blau: <span class="f">\(y(t)\)</span>. Markiert: Amplitude (senkrecht), Periodendauer (waagerecht), Startwert <span class="f">\(y(0)\)</span> (Punkt). <span class="f">\(\varphi = 90^\circ\)</span> macht aus dem Sinus einen Kosinus: Start im Umkehrpunkt.</p>
+    </div>
+    <div>
+      <div class="out" id="swOut"></div>
+      <div class="note"><b>Warum Bogenmaß:</b> Im Argument <span class="f">\(\omega t\)</span> steht ein Produkt aus <span class="f">\(1/\mathrm{s}\)</span> und <span class="f">\(\mathrm{s}\)</span>, also eine reine Zahl. Diese Zahl ist ein Winkel im Bogenmaß (<span class="f">\(2\pi\)</span> = ein Umlauf). Taschenrechner auf RAD. Wer mit DEG rechnet, bekommt bei <span class="f">\(\sin(4{,}07)\)</span> den Wert 0,07 statt −0,80 und damit Unsinn.</div>
+      <div class="note warn"><b>Verwechslungsgefahr <span class="f">\(\omega\)</span> und <span class="f">\(f\)</span>:</b> Beide haben die Einheit <span class="f">\(1/\mathrm{s}\)</span>, aber <span class="f">\(\omega\)</span> ist <span class="f">\(2\pi\)</span>-mal so groß wie <span class="f">\(f\)</span>. Im Heft steht beim Schwingkreis „<span class="f">\(\omega = 15000\,\mathrm{Hz}\)</span>"; in der Klausur schreibst du <span class="f">\(\omega = 15000\,\mathrm{s^{-1}}\)</span> und <span class="f">\(f = \omega/(2\pi) = 2390\,\mathrm{Hz}\)</span>. Hz ist für Frequenzen reserviert.</div>
+    </div>
+  </div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2022 IIa, 2.1, 4 BE):</b> „Erläutern Sie am Beispiel des Feder-Masse-Pendels die Begriffe Amplitude, Periodendauer, Frequenz und harmonische Schwingung." Erwartet (EWH): Definition <b>und</b> Bezug auf die konkrete Situation. Musterantwort: „Die Amplitude ist die maximale Auslenkung der Masse aus der Gleichgewichtslage, hier die 4 cm, um die das Pendel nach unten gezogen wurde. Die Periodendauer ist die Zeit, die die Masse für eine vollständige Schwingung braucht, also vom unteren Umkehrpunkt bis zum nächsten unteren Umkehrpunkt. Die Frequenz ist die Zahl der Schwingungen pro Sekunde, <span class="f">\(f = 1/T\)</span>. Harmonisch heißt die Schwingung, weil die Rückstellkraft der Feder proportional zur Auslenkung ist (<span class="f">\(F = -D\,y\)</span>); deshalb ist der Zeitverlauf sinusförmig." Vier Begriffe, vier Sätze, je ein konkreter Bezug.</div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Der Heft-Versuch: Wovon hängt <span class="f">\(T\)</span> beim Feder-Masse-Pendel ab?</h2>
+  <p><b>Fragestellung (Heft):</b> Von welchen Größen hängt die Periodendauer <span class="f">\(T\)</span> ab? <b>Hypothese:</b> von der Masse <span class="f">\(m\)</span>, der Federkonstante <span class="f">\(D\)</span> und der Amplitude <span class="f">\(A\)</span>. Der Versuch prüft alle drei. Aufbau: Schraubenfeder an der Decke, Masse unten, Ruhelage markiert, Auslenkung nach unten um <span class="f">\(A\)</span>.</p>
+  <h3>Teil 1: Federkonstante bestimmen</h3>
+  <p>Verschiedene Massen anhängen und jeweils die neue Ruhelage messen. Im Gleichgewicht hält die Feder das Gewicht: <span class="f">\(F_G = F_D\)</span>, also <span class="f">\(m\,g = D\,\Delta x\)</span>, umgestellt</p>
+  <div class="formula">\[\Delta x = \frac{g}{D}\cdot m\qquad\text{(Ursprungsgerade im } m\text{-}\Delta x\text{-Diagramm, Steigung } g/D\text{)}\]</div>
+  <table>
+    <tr><th><span class="f">\(m\)</span> in kg</th><td><span class="f">\(0\)</span></td><td><span class="f">\(0{,}5\)</span></td><td><span class="f">\(1\)</span></td><td><span class="f">\(1{,}5\)</span></td><td><span class="f">\(2\)</span></td><td><span class="f">\(2{,}5\)</span></td><td><span class="f">\(3\)</span></td></tr>
+    <tr><th><span class="f">\(\Delta x\)</span> in m</th><td><span class="f">\(0\)</span></td><td><span class="f">\(0{,}05\)</span></td><td><span class="f">\(0{,}10\)</span></td><td><span class="f">\(0{,}14\)</span></td><td><span class="f">\(0{,}20\)</span></td><td><span class="f">\(0{,}24\)</span></td><td><span class="f">\(0{,}28\)</span></td></tr>
+  </table>
+  <p>Heft-Auswertung (TR-Schema): Werte in den TR, Diagramm <span class="f">\(m\)</span> (kg) gegen <span class="f">\(\Delta x\)</span> (m), „die Punkte verlaufen augenscheinlich entlang einer Geraden" ⇒ lineare Regression <span class="f">\(y = 0{,}094\,x + 0{,}0029\)</span>, physikalisch <span class="f">\(\Delta x(m) = 0{,}094\,\mathrm{m/kg}\cdot m + 0{,}0029\,\mathrm{m}\)</span>. Die Steigung ist <span class="f">\(g/D\)</span>, also <span class="f">\(D = g/0{,}094\,\mathrm{m/kg} = 104\,\mathrm{N/m}\)</span>. Der Achsenabschnitt (0,3 cm) müsste 0 sein: ohne Masse keine Dehnung. Abweichung = Messungenauigkeit beim Ablesen der Ruhelage.</p>
+  <h3>Teil 2: Hängt <span class="f">\(T\)</span> von der Amplitude ab?</h3>
+  <table>
+    <tr><th><span class="f">\(A\)</span> in cm</th><td><span class="f">\(2{,}5\)</span></td><td><span class="f">\(5\)</span></td><td><span class="f">\(7{,}5\)</span></td><td><span class="f">\(10\)</span></td><td><span class="f">\(12{,}5\)</span></td></tr>
+    <tr><th><span class="f">\(T\)</span> in s</th><td><span class="f">\(0{,}6\)</span></td><td><span class="f">\(0{,}6\)</span></td><td><span class="f">\(0{,}6\)</span></td><td><span class="f">\(0{,}59\)</span></td><td><span class="f">\(0{,}58\)</span></td></tr>
+  </table>
+  <p><b>Ergebnis:</b> <span class="f">\(T\)</span> ist im Rahmen der Messgenauigkeit <b>unabhängig von der Amplitude</b>. Das ist das Kennzeichen einer harmonischen Schwingung: Größere Auslenkung bedeutet größere Rückstellkraft, der Körper wird entsprechend schneller, und beides gleicht sich genau aus. (Beim Fadenpendel mit großen Winkeln gilt das nicht mehr, Abschnitt 5.)</p>
+  <h3>Teil 3: Hängt <span class="f">\(T\)</span> von der Masse ab?</h3>
+  <table>
+    <tr><th><span class="f">\(m\)</span> in kg</th><td><span class="f">\(0{,}5\)</span></td><td><span class="f">\(1\)</span></td><td><span class="f">\(1{,}5\)</span></td><td><span class="f">\(2\)</span></td></tr>
+    <tr><th><span class="f">\(T\)</span> in s</th><td><span class="f">\(0{,}46\)</span></td><td><span class="f">\(0{,}60\)</span></td><td><span class="f">\(0{,}78\)</span></td><td><span class="f">\(0{,}85\)</span></td></tr>
+  </table>
+  <p>Doppelte Masse gibt <b>nicht</b> die doppelte Periodendauer (0,46 s → 0,60 s → 0,85 s). Die Kurve ist gebogen wie eine Wurzel. Zwei Wege, das zu zeigen:</p>
+  <ol>
+    <li><b>Potenzregression</b> <span class="f">\(T = a\cdot m^{b}\)</span>: Der Exponent liegt nahe <span class="f">\(0{,}5\)</span>, also <span class="f">\(T \propto \sqrt m\)</span>.</li>
+    <li><b>Linearisierung</b> (im Abitur die sichere Doku): Aus <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> folgt <span class="f">\(T^2 = \frac{4\pi^2}{D}\cdot m\)</span>. Trägt man <span class="f">\(T^2\)</span> gegen <span class="f">\(m\)</span> auf, muss eine <b>Ursprungsgerade</b> entstehen, Steigung <span class="f">\(4\pi^2/D\)</span>. Aus der Steigung folgt <span class="f">\(D\)</span>, und das muss zum Wert aus Teil 1 passen.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="fmBtn1" class="active">Teil 1: <span class="f">\(\Delta x\)</span> über <span class="f">\(m\)</span></button>
+        <button id="fmBtn2">Teil 3: <span class="f">\(T\)</span> über <span class="f">\(m\)</span></button>
+        <button id="fmBtn3"><span class="f">\(T^2\)</span> über <span class="f">\(m\)</span> (linearisiert)</button>
+      </div>
+      <canvas id="fmCanvas" width="480" height="300"></canvas>
+    </div>
+    <div>
+      <div class="out" id="fmOut"></div>
+      <div class="note"><b>Was die drei Ansichten zeigen:</b> Teil 1 liefert <span class="f">\(D\)</span> aus der Statik (Feder hält Gewicht). Teil 3 zeigt die Wurzelkurve. Die linearisierte Ansicht macht aus der Kurve eine Gerade, deren Steigung wieder <span class="f">\(D\)</span> liefert, diesmal aus der Dynamik. Zwei unabhängige Messungen, ein Wert: so bestätigt man eine Formel.</div>
+    </div>
+  </div>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2022 IIa, 2.2 und 2.3; Abitur 2023 IIa, 2.2):</b> „Planen Sie ein Experiment, mit dem man die Abhängigkeit der Periodendauer von der Masse möglichst genau untersuchen kann." EWH: Masse um eine bestimmte Strecke auslenken und loslassen, Zeit für <span class="f">\(n\)</span> Schwingungen messen, mit verschiedenen Massen wiederholen. Für „möglichst genau" dazu: <span class="f">\(n = 10\)</span> oder mehr Schwingungen stoppen (Reaktionsfehler verteilt sich auf <span class="f">\(n\)</span> Perioden), Stoppuhr im <b>Nulldurchgang</b> starten (dort ist die Masse am schnellsten, der Zeitpunkt am schärfsten), Messung wiederholen und mitteln, Lichtschranke statt Hand. „Bestätigen Sie den Zusammenhang <span class="f">\(T = 1{,}80\,\mathrm{s/\sqrt{kg}}\cdot\sqrt m\)</span> und dokumentieren Sie in der aus dem Unterricht bekannten Weise": Werte in den TR, <span class="f">\(T^2\)</span>-<span class="f">\(m\)</span>-Diagramm, „Punkte liegen auf einer Ursprungsgeraden ⇒ lineare Regression", Formel mit Einheiten, Steigung physikalisch deuten. Ohne diese fünf Schritte fehlen Punkte, egal ob die Zahl stimmt.</div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Die Differentialgleichung und ihre Lösung (Klausur 3, Aufgabe 3a)</h2>
+  <p>Jetzt wird aus der Messung eine Theorie. Auf die Masse wirkt die Federkraft, und nach Hooke ist sie proportional zur Dehnung. Misst man die Auslenkung <span class="f">\(y\)</span> von der <b>Ruhelage</b> aus, dann wirkt die Rückstellkraft <span class="f">\(F = -D\,y\)</span>: Das Minus sagt „immer zur Ruhelage hin". Newton: <span class="f">\(F = m\,a = m\,\ddot y\)</span>. Zusammen:</p>
+  <div class="formula">\[m\,\ddot y = -D\,y\qquad\Longleftrightarrow\qquad m\,\ddot y + D\,y = 0\qquad\text{(FS S. 21: } \ddot s + \tfrac{D}{m}\,s = 0\text{)}\]</div>
+  <p>Das ist eine <b>Differentialgleichung (DGL)</b>: Gesucht ist nicht eine Zahl, sondern eine <b>Funktion</b> <span class="f">\(y(t)\)</span>, deren zweite Ableitung bis auf den Faktor <span class="f">\(-D/m\)</span> wieder die Funktion selbst ist. Man löst sie nicht durch Umstellen, sondern durch einen <b>Ansatz</b>: eine Funktion raten, deren Eigenschaften passen, einsetzen, prüfen. Welche Funktion ergibt zweimal abgeleitet wieder sich selbst mit Minus? Sinus und Kosinus.</p>
+  <h3>Der Lösungsweg, wie er in der Klausur stehen muss</h3>
+  <ol>
+    <li><b>Ansatz:</b> <span class="f">\(y(t) = \hat y\,\sin(\omega t + \varphi)\)</span>.</li>
+    <li><b>Ableiten</b> (Kettenregel, innere Ableitung <span class="f">\(\omega\)</span>): <span class="f">\(\dot y = \hat y\,\omega\cos(\omega t + \varphi)\)</span>, <span class="f">\(\ddot y = -\hat y\,\omega^2\sin(\omega t + \varphi)\)</span>.</li>
+    <li><b>Einsetzen:</b> <span class="f">\(-m\,\hat y\,\omega^2\sin(\omega t+\varphi) + D\,\hat y\sin(\omega t + \varphi) = 0\)</span>, ausklammern: <span class="f">\((D - m\omega^2)\cdot\hat y\sin(\omega t + \varphi) = 0\)</span>.</li>
+    <li><b>Das entscheidende Argument:</b> Die Gleichung muss <b>für alle Zeiten</b> <span class="f">\(t\)</span> gelten. Der Sinus ist nur zu einzelnen Zeitpunkten null, <span class="f">\(\hat y = 0\)</span> wäre „keine Schwingung" (Heft: „laaangweilig"). Also muss die Klammer verschwinden: <span class="f">\(D - m\omega^2 = 0\)</span>.</li>
+    <li><b>Ergebnis:</b> <span class="f">\(\omega = \sqrt{D/m}\)</span> und mit <span class="f">\(\omega = 2\pi/T\)</span>: <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>.</li>
+  </ol>
+  <div class="formula">\[\omega = \sqrt{\frac{D}{m}},\qquad T = 2\pi\sqrt{\frac{m}{D}},\qquad f = \frac{1}{2\pi}\sqrt{\frac{D}{m}}\]</div>
+  <p><b>Einheiten-Check:</b> <span class="f">\(\sqrt{\mathrm{(N/m)/kg}} = \sqrt{\mathrm{kg\,m\,s^{-2}\,m^{-1}\,kg^{-1}}} = \sqrt{\mathrm{s^{-2}}} = \mathrm{s^{-1}}\)</span> ✓. Plausibilität: große Masse ⇒ träge ⇒ langsam (<span class="f">\(T\)</span> groß); harte Feder ⇒ starke Rückstellkraft ⇒ schnell (<span class="f">\(T\)</span> klein). Vervierfacht man <span class="f">\(m\)</span>, verdoppelt sich <span class="f">\(T\)</span> (Abitur 2022, 2.2: Skizze mit <span class="f">\(2T\)</span>).</p>
+  <div class="note exam"><b>So fragt die Klausur (Klausur 3, Aufgabe 3a; Abitur 2023 IIa, 2.4):</b> „Bestätigen Sie die Formel <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>." Dein Lehrer schrieb dazu: „Formel bestätigen, im Abitur Punktabzug", gemeint: Wer nur die Formel hinschreibt oder nur Zahlen einsetzt, bekommt Abzug. Erwartet ist der vollständige Weg oben: Ansatz, beide Ableitungen, Einsetzen, das „für alle <span class="f">\(t\)</span>"-Argument, Auflösen nach <span class="f">\(\omega\)</span>, dann <span class="f">\(T\)</span>. Bei einer <b>vorgegebenen</b> Richtgröße (Abitur 2023: <span class="f">\(D = 2mg/l\)</span>) zusätzlich einsetzen und vereinfachen: <span class="f">\(T = 2\pi\sqrt{m/(2mg/l)} = 2\pi\sqrt{l/(2g)}\)</span>, die Masse kürzt sich.</div>
+  <h3>Was ist mit der Schwerkraft? (Heft S. 4–5)</h3>
+  <p>Beim senkrechten Federpendel wirkt zusätzlich <span class="f">\(F_G = m\,g\)</span>. Das Heft stellt zuerst die Gleichung mit <span class="f">\(x\)</span> ab der <b>entspannten</b> Feder auf: <span class="f">\(m\,\ddot x = m\,g - D\,x\)</span>. Die Konstante <span class="f">\(mg\)</span> stört, die DGL heißt dann <b>inhomogen</b>, und der reine Sinus-Ansatz scheitert („so geht's nicht weiter"). Lösung: Die Konstante verschiebt nur die Ruhelage. Setze <span class="f">\(x = x_R + y\)</span> mit <span class="f">\(x_R = mg/D\)</span> (dort ist <span class="f">\(mg = D\,x_R\)</span>, Gleichgewicht). Dann ist <span class="f">\(\ddot x = \ddot y\)</span> und <span class="f">\(m\,\ddot y = mg - D x_R - D y = -D\,y\)</span>: die Schwerkraft ist verschwunden. Heft-Formulierung: Lösung der inhomogenen DGL = Lösung der homogenen DGL plus die Konstante <span class="f">\(mg/D\)</span>, geprüft durch Einsetzen („<span class="f">\(0 = 0\)</span>").</p>
+  <div class="note ok"><b>Merke:</b> Misst du die Auslenkung von der Ruhelage (hängende Masse in Ruhe) aus, kannst du die Schwerkraft vergessen. Deshalb hängt <span class="f">\(T\)</span> nicht von <span class="f">\(g\)</span> ab, und das senkrechte Pendel verhält sich wie ein waagerechtes. Genau das nutzt das Abitur 2022 beim horizontalen Federschwinger.</div>
+  <h3>Startbedingungen legen <span class="f">\(\varphi\)</span> fest (Klausur 3, Aufgabe 3b)</h3>
+  <p>Die DGL liefert <span class="f">\(\omega\)</span>, aber nicht <span class="f">\(\hat y\)</span> und <span class="f">\(\varphi\)</span>. Die kommen aus dem Start. Zwei Standardfälle:</p>
+  <ul>
+    <li><b>Auslenken und loslassen:</b> <span class="f">\(y(0) = \hat y\)</span>. Einsetzen: <span class="f">\(\hat y\sin(\varphi) = \hat y\)</span> ⇒ <span class="f">\(\sin\varphi = 1\)</span> ⇒ <span class="f">\(\varphi = \pi/2\)</span> (allgemein <span class="f">\(\pi/2 + n\cdot 2\pi\)</span>). Also <span class="f">\(y(t) = \hat y\sin(\omega t + \pi/2) = \hat y\cos(\omega t)\)</span>. Deshalb rechnet die FS beim gedämpften Fall mit dem Kosinus: „für einen bei <span class="f">\(t = 0\)</span> ausgelenkten Schwinger".</li>
+    <li><b>Aus der Ruhelage anstoßen:</b> <span class="f">\(y(0) = 0\)</span>, Bewegung nach oben ⇒ <span class="f">\(\varphi = 0\)</span>, reiner Sinus. Nach unten angestoßen ⇒ <span class="f">\(\varphi = \pi\)</span>.</li>
+  </ul>
+  <h3>Geschwindigkeit und Beschleunigung</h3>
+  <div class="formula">\[y = \hat y\sin(\omega t+\varphi),\quad v = \dot y = \hat y\,\omega\cos(\omega t + \varphi),\quad a = \ddot y = -\hat y\,\omega^2\sin(\omega t+\varphi) = -\omega^2\,y\]</div>
+  <ul>
+    <li><span class="f">\(v_{\mathrm{max}} = \hat y\,\omega\)</span> im <b>Nulldurchgang</b> (dort ist die Auslenkung 0, die Geschwindigkeit maximal). <span class="f">\(a_{\mathrm{max}} = \hat y\,\omega^2\)</span> in den <b>Umkehrpunkten</b> (dort <span class="f">\(v = 0\)</span>, aber die Federkraft ist am größten).</li>
+    <li><span class="f">\(a = -\omega^2 y\)</span>: Beschleunigung ist stets der Auslenkung entgegengesetzt und proportional zu ihr. Das ist die DGL in anderer Schreibweise.</li>
+    <li>Phasen: <span class="f">\(v\)</span> eilt <span class="f">\(y\)</span> um <span class="f">\(90^\circ\)</span> (eine Viertelperiode) voraus, <span class="f">\(a\)</span> ist gegenphasig zu <span class="f">\(y\)</span>. Gleiches Muster wie Fluss und Induktionsspannung in Lektion 5: Ableiten verschiebt um eine Viertelperiode.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(m\)</span> <input type="range" id="hoM" min="0.1" max="3" value="1" step="0.1"> <span id="hoMv"></span></label>
+        <label><span class="f">\(D\)</span> <input type="range" id="hoD" min="5" max="200" value="104" step="1"> <span id="hoDv"></span></label>
+        <label><span class="f">\(\hat y\)</span> <input type="range" id="hoA" min="1" max="10" value="5" step="0.5"> <span id="hoAv"></span></label>
+        <button id="hoPlay">Pause</button>
+      </div>
+      <canvas id="hoCanvas" width="480" height="320"></canvas>
+      <p class="small">Links die Feder mit Masse (Start: ausgelenkt und losgelassen, also Kosinus). Rechts <span class="f">\(y\)</span> (blau), <span class="f">\(v\)</span> (orange) und <span class="f">\(a\)</span> (grün) über der Zeit, jeweils auf ihr Maximum normiert. Der Punkt zeigt den aktuellen Zeitpunkt.</p>
+    </div>
+    <div>
+      <div class="out" id="hoOut"></div>
+      <div class="note"><b>Lies im Widget ab:</b> Wo <span class="f">\(y\)</span> maximal ist, ist <span class="f">\(v = 0\)</span> und <span class="f">\(a\)</span> minimal (maximal negativ). Wo <span class="f">\(y = 0\)</span>, ist <span class="f">\(|v|\)</span> maximal und <span class="f">\(a = 0\)</span>. Ändere <span class="f">\(\hat y\)</span>: <span class="f">\(T\)</span> bleibt gleich, nur <span class="f">\(v_{\mathrm{max}}\)</span> und <span class="f">\(a_{\mathrm{max}}\)</span> wachsen. Ändere <span class="f">\(m\)</span> oder <span class="f">\(D\)</span>: <span class="f">\(T\)</span> ändert sich mit der Wurzel.</div>
+    </div>
+  </div>
+  <h3>Wenn die Rückstellkraft nicht proportional ist (Klausur 3, Aufgabe 3c)</h3>
+  <p>Gilt <span class="f">\(F \neq -D\,y\)</span>, zum Beispiel <span class="f">\(F = -(D_1 y + D_2 y^2 + D_3 y^3 + \dots)\)</span>, dann ist die Schwingung <b>nicht harmonisch</b>: Der Sinus-Ansatz löst die DGL nicht (beim Einsetzen entstehen Terme mit <span class="f">\(\sin^2\)</span>, <span class="f">\(\sin^3\)</span>, die sich nicht gegen den <span class="f">\(\ddot y\)</span>-Term kürzen), die Bewegung ist periodisch, aber nicht sinusförmig, und <span class="f">\(T\)</span> hängt von der Amplitude ab. Deine Klausur-Antwort war genau richtig: Rückstellkraft nicht proportional ⇒ keine harmonische Schwingung ⇒ Ansatz <span class="f">\(y \sim \sin(\omega t + \varphi)\)</span> ungeeignet. Ein Lösungsansatz wäre eine Summe von Sinusfunktionen verschiedener Frequenzen (Fourier-Reihe); das reicht als Ausblick.</p>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> (1) <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>, nicht <span class="f">\(\sqrt{D/m}\)</span>. Merke über die Plausibilität: mehr Masse ⇒ länger. (2) Die Amplitude steht <b>nicht</b> in <span class="f">\(T\)</span>, aber in <span class="f">\(v_{\mathrm{max}} = \hat y\omega\)</span>. (3) <span class="f">\(\ddot y\)</span> hat den Faktor <span class="f">\(\omega^2\)</span>, nicht <span class="f">\(\omega\)</span>: zweimal innere Ableitung. (4) Beim Ableiten von <span class="f">\(\sin\)</span> kommt <span class="f">\(+\cos\)</span>, beim Ableiten von <span class="f">\(\cos\)</span> kommt <span class="f">\(-\sin\)</span>; beim zweiten Ableiten landet man so oder so bei „minus die Ausgangsfunktion".</div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Energie: Was pendelt da eigentlich hin und her?</h2>
+  <p>Bei einer ungedämpften Schwingung bleibt die Gesamtenergie konstant; sie wandert nur zwischen zwei Formen. Beim Feder-Masse-Pendel sind das die <b>Spannenergie</b> der Feder und die <b>Bewegungsenergie</b> der Masse (beide in der FS S. 18/19):</p>
+  <div class="formula">\[E_{\mathrm{span}} = \tfrac12\,D\,y^2,\qquad E_{\mathrm{kin}} = \tfrac12\,m\,v^2,\qquad E_{\mathrm{ges}} = \tfrac12\,D\,\hat y^{\,2} = \tfrac12\,m\,v_{\mathrm{max}}^2 = \text{konstant}\]</div>
+  <ul>
+    <li><b>Umkehrpunkt</b> (<span class="f">\(y = \pm\hat y\)</span>, <span class="f">\(v = 0\)</span>): alles Spannenergie. <b>Nulldurchgang</b> (<span class="f">\(y = 0\)</span>, <span class="f">\(|v| = v_{\mathrm{max}}\)</span>): alles Bewegungsenergie. Dazwischen Mischung, Summe konstant.</li>
+    <li>Die Energie schwingt <b>doppelt so schnell</b> wie die Auslenkung: Pro Periode gibt es zwei Umkehrpunkte und zwei Nulldurchgänge. <span class="f">\(E_{\mathrm{kin}}(t) \propto \cos^2(\omega t)\)</span> hat die Periode <span class="f">\(T/2\)</span>.</li>
+    <li><b>Zweiter Weg zu <span class="f">\(v_{\mathrm{max}}\)</span>:</b> Energieerhaltung <span class="f">\(\tfrac12 D\hat y^2 = \tfrac12 m v_{\mathrm{max}}^2\)</span> ⇒ <span class="f">\(v_{\mathrm{max}} = \hat y\sqrt{D/m} = \hat y\,\omega\)</span>. Dasselbe Ergebnis wie aus der Ableitung in Abschnitt 3. Zwei Wege, ein Ergebnis: gutes Kontrollwerkzeug in der Klausur.</li>
+  </ul>
+  <h3>Und die Lageenergie beim senkrechten Pendel? (Heft S. 6)</h3>
+  <p>Das Heft rechnet es vor: Mit <span class="f">\(x = x_R + y\)</span> (Ruhelage <span class="f">\(x_R = mg/D\)</span>, Schwingungsanteil <span class="f">\(y\)</span>) ist <span class="f">\(E = E_{\mathrm{pot}} + E_{\mathrm{kin}} + E_{\mathrm{span}} = -m g (x_R + y) + \tfrac12 m v^2 + \tfrac12 D (x_R + y)^2\)</span>. Ausmultiplizieren und <span class="f">\(mg = D x_R\)</span> einsetzen: Die gemischten Terme <span class="f">\(-D x_R y\)</span> und <span class="f">\(+D x_R y\)</span> heben sich auf, übrig bleibt</p>
+  <div class="formula">\[E = \underbrace{-\tfrac12\,D\,x_R^2}_{\text{Konstante}} + \tfrac12\,m\,v^2 + \tfrac12\,D\,y^2\]</div>
+  <p>Die Lageenergie und die Vordehnung der Feder verschmelzen zu einer Konstanten, die nichts mit der Schwingung zu tun hat. Was übrig bleibt, ist genau die Energiebilanz des waagerechten Pendels, nur dass <span class="f">\(\tfrac12 D y^2\)</span> jetzt „Spannenergie <b>bezogen auf die Ruhelage</b>" heißt. Gleiche Botschaft wie in Abschnitt 3: Ruhelage als Nullpunkt wählen, dann verschwindet die Schwerkraft aus der Rechnung.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(D\)</span> <input type="range" id="enD" min="5" max="200" value="104" step="1"> <span id="enDv"></span></label>
+        <label><span class="f">\(m\)</span> <input type="range" id="enM" min="0.1" max="3" value="1" step="0.1"> <span id="enMv"></span></label>
+        <label><span class="f">\(\hat y\)</span> <input type="range" id="enA" min="1" max="10" value="5" step="0.5"> <span id="enAv"></span></label>
+      </div>
+      <canvas id="enCanvas" width="480" height="260"></canvas>
+      <p class="small">Grün: Spannenergie <span class="f">\(\tfrac12 D y^2\)</span>, orange: Bewegungsenergie <span class="f">\(\tfrac12 m v^2\)</span>, grau gestrichelt: Summe. Darunter die Auslenkung zum Vergleich der Perioden.</p>
+    </div>
+    <div>
+      <div class="out" id="enOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2022 IIa, 2.3, 3 BE):</b> „Beschreiben Sie den Schwingungsvorgang anhand von Energieumwandlungen." EWH: Auslenkung ⇒ Spannenergie; beim Loslassen Umwandlung in Bewegungsenergie, maximal im Nulldurchgang; danach wieder Spannenergie am anderen Umkehrpunkt; ohne Reibung bleibt die Summe konstant. Nenne beide Energieformen, beide Extremlagen und die Erhaltung.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Das Fadenpendel: harmonisch nur für kleine Winkel (Heft S. 8–9)</h2>
+  <p>Eine Masse <span class="f">\(m\)</span> hängt an einem Faden der Länge <span class="f">\(l\)</span> und wird um den Winkel <span class="f">\(\alpha\)</span> ausgelenkt. Der zurückgelegte Weg auf dem Kreisbogen ist <span class="f">\(b = \alpha\cdot l\)</span> (<span class="f">\(\alpha\)</span> im Bogenmaß, sonst stimmt die Formel nicht). Die Gewichtskraft <span class="f">\(F_G = mg\)</span> zerlegt man in einen Anteil längs des Fadens (wird vom Faden gehalten, bewirkt nichts) und einen Anteil <b>tangential</b> zur Bahn: <span class="f">\(F_\perp = -F_G\sin\alpha = -mg\sin\alpha\)</span>, rücktreibend zur Ruhelage. Newton längs der Bahn: <span class="f">\(m\,\ddot b = -mg\sin\alpha\)</span>, mit <span class="f">\(\ddot b = l\,\ddot\alpha\)</span>:</p>
+  <div class="formula">\[l\,\ddot\alpha + g\,\sin\alpha = 0\qquad\text{(exakt, aber nicht harmonisch: } \sin\alpha \not\propto \alpha\text{)}\]</div>
+  <p><b>Kleinwinkelnäherung:</b> Für kleine Winkel im Bogenmaß ist <span class="f">\(\sin\alpha \approx \alpha\)</span>. Dann wird die Gleichung harmonisch:</p>
+  <div class="formula">\[l\,\ddot\alpha + g\,\alpha = 0\quad\Rightarrow\quad \omega = \sqrt{\frac{g}{l}},\qquad T = 2\pi\sqrt{\frac{l}{g}}\]</div>
+  <p>Der Lösungsweg ist derselbe wie in Abschnitt 3 (Ansatz <span class="f">\(\alpha = \alpha_0\sin(\omega t + \varphi)\)</span>, zweimal ableiten, einsetzen, <span class="f">\(-\omega^2 l + g = 0\)</span>). Startbedingung „auslenken und loslassen": <span class="f">\(\alpha(0) = \alpha_0\)</span> ⇒ <span class="f">\(\varphi = \pi/2\)</span> ⇒ <span class="f">\(\alpha(t) = \alpha_0\cos\!\left(\sqrt{g/l}\,t\right)\)</span>.</p>
+  <table>
+    <tr><th><span class="f">\(\alpha\)</span></th><td><span class="f">\(5^\circ\)</span></td><td><span class="f">\(10^\circ\)</span></td><td><span class="f">\(20^\circ\)</span></td><td><span class="f">\(30^\circ\)</span></td><td><span class="f">\(45^\circ\)</span></td><td><span class="f">\(60^\circ\)</span></td></tr>
+    <tr><th><span class="f">\(\alpha\)</span> im Bogenmaß</th><td><span class="f">\(0{,}0873\)</span></td><td><span class="f">\(0{,}1745\)</span></td><td><span class="f">\(0{,}349\)</span></td><td><span class="f">\(0{,}524\)</span></td><td><span class="f">\(0{,}785\)</span></td><td><span class="f">\(1{,}047\)</span></td></tr>
+    <tr><th><span class="f">\(\sin\alpha\)</span></th><td><span class="f">\(0{,}0872\)</span></td><td><span class="f">\(0{,}1736\)</span></td><td><span class="f">\(0{,}342\)</span></td><td><span class="f">\(0{,}500\)</span></td><td><span class="f">\(0{,}707\)</span></td><td><span class="f">\(0{,}866\)</span></td></tr>
+    <tr><th>Fehler der Näherung</th><td><span class="f">\(0{,}1\,\%\)</span></td><td><span class="f">\(0{,}5\,\%\)</span></td><td><span class="f">\(2\,\%\)</span></td><td><span class="f">\(4{,}7\,\%\)</span></td><td><span class="f">\(11\,\%\)</span></td><td><span class="f">\(21\,\%\)</span></td></tr>
+  </table>
+  <ul>
+    <li><span class="f">\(T\)</span> hängt <b>nicht von der Masse</b> ab: Die Masse steht in der Trägheit (<span class="f">\(m\ddot b\)</span>) und in der Rückstellkraft (<span class="f">\(mg\sin\alpha\)</span>) und kürzt sich. Schwere und leichte Kugel am gleichen Faden schwingen gleich schnell, wie beim freien Fall.</li>
+    <li><span class="f">\(T\)</span> hängt <b>nicht von der Amplitude</b> ab, solange die Winkel klein sind. Bei großen Winkeln wird die Rückstellkraft kleiner als „proportional" (<span class="f">\(\sin\alpha \lt \alpha\)</span>), das Pendel wird langsamer, <span class="f">\(T\)</span> wächst. Bei <span class="f">\(60^\circ\)</span> schon um 7 %. Das Widget rechnet die exakte Bewegung.</li>
+    <li><b><span class="f">\(g\)</span> messen:</b> <span class="f">\(T^2 = \frac{4\pi^2}{g}\cdot l\)</span>. Verschiedene Längen, <span class="f">\(T^2\)</span> gegen <span class="f">\(l\)</span> auftragen, Ursprungsgerade, Steigung <span class="f">\(4\pi^2/g\)</span>. Gleiche Linearisierungsidee wie beim Federpendel. Eine Länge für <span class="f">\(T = 2\,\mathrm{s}\)</span> („Sekundenpendel"): <span class="f">\(l = gT^2/(4\pi^2) = 0{,}994\,\mathrm{m}\)</span>.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(l\)</span> <input type="range" id="fpL" min="0.2" max="2" value="1" step="0.05"> <span id="fpLv"></span></label>
+        <label><span class="f">\(\alpha_0\)</span> <input type="range" id="fpA0" min="5" max="85" value="10" step="5"> <span id="fpA0v"></span></label>
+        <label><span class="f">\(g\)</span> <select id="fpG"><option value="9.81">Erde (9,81)</option><option value="1.62">Mond (1,62)</option><option value="3.71">Mars (3,71)</option></select></label>
+      </div>
+      <canvas id="fpCanvas" width="480" height="300"></canvas>
+      <p class="small">Die Simulation integriert die <b>exakte</b> Gleichung <span class="f">\(l\ddot\alpha = -g\sin\alpha\)</span>. Grau: die harmonische Näherung <span class="f">\(\alpha_0\cos(\sqrt{g/l}\,t)\)</span> daneben. Bei großen Winkeln laufen beide auseinander.</p>
+    </div>
+    <div>
+      <div class="out" id="fpOut"></div>
+      <div class="note"><b>Analogie:</b> Das Fadenpendel ist eine „Feder aus Schwerkraft": Die Rückstellkraft <span class="f">\(mg\sin\alpha \approx mg\,\alpha = (mg/l)\cdot b\)</span> hat die Form <span class="f">\(D\cdot b\)</span> mit der <b>Richtgröße</b> <span class="f">\(D = mg/l\)</span>. Einsetzen in <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> gibt sofort <span class="f">\(T = 2\pi\sqrt{l/g}\)</span>. Dieselbe Idee löst die Fahrradketten-Aufgabe im Abitur 2023 (Abschnitt 10): Richtgröße aus der Kraft ablesen, in die Federpendel-Formel einsetzen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Zeigerformalismus: die Schwingung als rotierender Pfeil (Heft S. 1)</h2>
+  <p>Ein Zeiger der Länge <span class="f">\(\hat y\)</span> dreht sich mit der Winkelgeschwindigkeit <span class="f">\(\omega\)</span> gegen den Uhrzeigersinn. Sein Winkel zur <span class="f">\(x\)</span>-Achse ist der <b>Phasenwinkel</b> <span class="f">\(\alpha(t) = \omega t + \varphi\)</span>. Die <b>Projektion auf die <span class="f">\(y\)</span>-Achse</b> ist die Auslenkung:</p>
+  <div class="formula">\[y(t) = \hat y\,\sin\alpha(t) = \hat y\,\sin(\omega t + \varphi)\]</div>
+  <p>Heft-Satz: „Die Zeigerdarstellung trennt Auslenkung (<span class="f">\(\hat y\)</span>) vom Phasenwinkel <span class="f">\(\alpha(t)\)</span> darstellerisch. Der Phasenwinkel setzt sich aus einer konstanten Phase <span class="f">\(\varphi\)</span> und einem zeitabhängigen Anteil <span class="f">\(\omega t\)</span> zusammen. Sinus-/Kosinusdarstellung und Zeigerdarstellung bilden eine Schwingung vollständig ab." Warum man das lernt: Bei Wellen und Interferenz (Lektion 7/8) addiert man Schwingungen; mit Zeigern geht das wie Vektoraddition, mit Sinusfunktionen ist es mühsam.</p>
+  <h3>Heft-Beispiel, nachgerechnet</h3>
+  <p><span class="f">\(m = 1\,\mathrm{kg}\)</span>, <span class="f">\(D = 1\,\mathrm{kg/s^2} = 1\,\mathrm{N/m}\)</span>, <span class="f">\(\hat y = 5\,\mathrm{cm}\)</span>, <span class="f">\(\varphi = \pi/2\)</span> (ausgelenkt losgelassen), <span class="f">\(t = 2{,}5\,\mathrm{s}\)</span>. Dann <span class="f">\(\omega = \sqrt{D/m} = 1\,\mathrm{s^{-1}}\)</span>, <span class="f">\(\alpha = \omega t + \varphi = 2{,}5 + 1{,}571 = 4{,}07\)</span> (Bogenmaß) <span class="f">\(= 233^\circ\)</span>, <span class="f">\(y = 5\,\mathrm{cm}\cdot\sin(4{,}07) = -4{,}0\,\mathrm{cm}\)</span>.</p>
+  <div class="note warn"><b>Vorzeichen im Heft:</b> Das Heft schreibt <span class="f">\(y(2{,}5) = 3{,}99\,\mathrm{cm}\)</span>. Der Betrag stimmt, das Vorzeichen fehlt: Bei <span class="f">\(233^\circ\)</span> zeigt der Zeiger nach <b>unten</b> (dritter Quadrant), die Projektion ist negativ. Kontrolle mit der Kosinus-Form: <span class="f">\(5\,\mathrm{cm}\cdot\cos(2{,}5) = -4{,}0\,\mathrm{cm}\)</span>. Und: Taschenrechner auf RAD, sonst erhältst du <span class="f">\(\sin(4{,}07^\circ) = 0{,}07\)</span>.</div>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(\hat y\)</span> <input type="range" id="zgA" min="1" max="10" value="5" step="0.5"> <span id="zgAv"></span></label>
+        <label><span class="f">\(\omega\)</span> <input type="range" id="zgW" min="0.2" max="3" value="1" step="0.1"> <span id="zgWv"></span></label>
+        <label><span class="f">\(\varphi\)</span> <input type="range" id="zgPhi" min="0" max="360" value="90" step="15"> <span id="zgPhiv"></span></label>
+        <button id="zgPlay">Pause</button><button id="zgHeft">Heft-Beispiel (<span class="f">\(t = 2{,}5\,\mathrm{s}\)</span>)</button>
+      </div>
+      <canvas id="zgCanvas" width="480" height="260"></canvas>
+      <p class="small">Links der Zeiger (blau) mit Phasenwinkel (Bogen) und seiner Projektion (rot). Rechts die entstehende Sinuskurve: Jeder Punkt der Kurve ist die Zeigerspitze zu diesem Zeitpunkt, auf die Höhe projiziert.</p>
+    </div>
+    <div>
+      <div class="out" id="zgOut"></div>
+      <div class="note"><b>Phase ablesen:</b> <span class="f">\(\varphi = 0\)</span>: Start im Nulldurchgang, Zeiger waagerecht. <span class="f">\(\varphi = 90^\circ\)</span>: Start oben im Umkehrpunkt, Zeiger senkrecht, Kurve beginnt als Kosinus. <span class="f">\(\varphi = 180^\circ\)</span>: Nulldurchgang nach unten. Zwei Schwingungen mit gleichem <span class="f">\(\omega\)</span> und verschiedenem <span class="f">\(\varphi\)</span> sind „phasenverschoben": Ihre Zeiger laufen mit festem Winkelabstand hintereinander her. Genau diesen Winkelabstand (Gangunterschied) braucht die Interferenz.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Gedämpfte Schwingung (Arbeitsblatt 13.4.26, Heft S. 10)</h2>
+  <p>Reale Pendel kommen zur Ruhe: Luftwiderstand, innere Reibung der Feder, Wasser als Bremse. Der einfachste Ansatz für eine Reibungskraft: proportional zur Geschwindigkeit und ihr entgegengesetzt, <span class="f">\(F_c = -c\cdot\dot y\)</span>, mit der <b>Dämpfungskonstante</b> <span class="f">\(c\)</span>, <span class="f">\([c] = \mathrm{kg/s}\)</span>. Sie kommt als dritter Term in die DGL:</p>
+  <div class="formula">\[m\,\ddot y + c\,\dot y + D\,y = 0\qquad\text{(FS S. 22: } \ddot s + 2\delta\,\dot s + \tfrac{D}{m}\,s = 0,\ \text{also } 2\delta = c/m\text{)}\]</div>
+  <h3>Warum der alte Ansatz scheitert und welcher funktioniert</h3>
+  <p>Mit <span class="f">\(y = \hat y\sin(\omega t)\)</span> liefern <span class="f">\(y\)</span> und <span class="f">\(\ddot y\)</span> Sinusterme, aber <span class="f">\(\dot y\)</span> einen Kosinusterm. Ein einzelner Kosinusterm kann nicht für alle <span class="f">\(t\)</span> von Sinustermen aufgehoben werden; sein Vorfaktor müsste null sein, und das hieße <span class="f">\(c = 0\)</span>. Der richtige Ansatz baut das Abklingen direkt ein:</p>
+  <div class="formula">\[y(t) = \hat y\,e^{-\lambda t}\cos(\omega t)\qquad\text{(Einhüllende } \hat y\,e^{-\lambda t}\text{, Abklingkonstante } \lambda\text{)}\]</div>
+  <p><b>Lösungsweg (Arbeitsblatt):</b> Mit Produkt- und Kettenregel ableiten: <span class="f">\(\dot y = -\hat y\lambda e^{-\lambda t}\cos(\omega t) - \hat y\omega e^{-\lambda t}\sin(\omega t)\)</span> und <span class="f">\(\ddot y = \hat y\lambda^2 e^{-\lambda t}\cos(\omega t) + 2\hat y\lambda\omega e^{-\lambda t}\sin(\omega t) - \hat y\omega^2 e^{-\lambda t}\cos(\omega t)\)</span>. In die DGL einsetzen, durch <span class="f">\(\hat y e^{-\lambda t}\)</span> teilen (nie null), dann <b>Sinus- und Kosinusterme getrennt</b> sammeln. Weil Sinus und Kosinus zu verschiedenen Zeiten null sind, muss jede der beiden Vorfaktorsummen für sich verschwinden:</p>
+  <ul>
+    <li>Sinusterme: <span class="f">\(2m\lambda\omega - c\omega = 0\)</span> ⇒ <span class="f">\(\lambda = \dfrac{c}{2m}\)</span>.</li>
+    <li>Kosinusterme: <span class="f">\(m\lambda^2 - m\omega^2 - c\lambda + D = 0\)</span>, <span class="f">\(\lambda\)</span> einsetzen ⇒ <span class="f">\(\omega^2 = \dfrac{D}{m} - \dfrac{c^2}{4m^2} = \omega_0^2 - \lambda^2\)</span>.</li>
+  </ul>
+  <div class="formula">\[\lambda = \frac{c}{2m},\qquad \omega = \sqrt{\omega_0^2 - \lambda^2}\ \text{ mit }\ \omega_0 = \sqrt{\frac{D}{m}},\qquad y(t) = \hat y\,e^{-\frac{c}{2m}t}\cos\!\left(\sqrt{\tfrac{D}{m} - \tfrac{c^2}{4m^2}}\;t\right)\]</div>
+  <ul>
+    <li><b>Einhüllende:</b> Die Amplitude fällt exponentiell, <span class="f">\(\hat y(t) = \hat y\,e^{-\lambda t}\)</span>. Halbwertszeit der Amplitude <span class="f">\(t_{1/2} = \ln 2/\lambda\)</span>, Zeitkonstante <span class="f">\(\tau = 1/\lambda\)</span> (nach <span class="f">\(\tau\)</span> noch 37 %). Gleiche Mathematik wie RC- und RL-Glied in Lektion 3 und 5.</li>
+    <li><b>Frequenz:</b> Die gedämpfte Schwingung ist etwas <b>langsamer</b> als die ungedämpfte (<span class="f">\(\omega \lt \omega_0\)</span>), bei schwacher Dämpfung kaum messbar. Die Dämpfung ändert also beides: Amplitude stark, Frequenz schwach.</li>
+    <li><b>Energie:</b> <span class="f">\(E \propto \hat y^2 \propto e^{-2\lambda t}\)</span>, fällt doppelt so schnell wie die Amplitude.</li>
+    <li>Ist <span class="f">\(\lambda \ge \omega_0\)</span>, wird die Wurzel null oder imaginär: keine Schwingung mehr, nur Kriechen zur Ruhelage (aperiodischer Grenzfall, Kriechfall; z. B. Stoßdämpfer). Im Heft nur erwähnt, nicht gerechnet.</li>
+  </ul>
+  <p><b>Arbeitsblatt-Beispiel:</b> <span class="f">\(D = 10\,\mathrm{N/m}\)</span>, <span class="f">\(m = 150\,\mathrm{g}\)</span>, <span class="f">\(c = 0{,}1\,\mathrm{kg/s}\)</span>: <span class="f">\(\omega_0 = \sqrt{10/0{,}15} = 8{,}165\,\mathrm{s^{-1}}\)</span>, <span class="f">\(\lambda = 0{,}1/(2\cdot 0{,}15) = 0{,}333\,\mathrm{s^{-1}}\)</span>, <span class="f">\(\omega = \sqrt{66{,}67 - 0{,}111} = 8{,}158\,\mathrm{s^{-1}}\)</span>, <span class="f">\(T = 0{,}770\,\mathrm{s}\)</span> (ungedämpft 0,769 s), <span class="f">\(t_{1/2} = 2{,}08\,\mathrm{s}\)</span>.</p>
+  <h3>So wertet man eine gedämpfte Schwingung aus (Muster für den Schwingkreis, Abschnitt 9)</h3>
+  <ol>
+    <li><b>Maxima</b> (Zeit, Höhe) aus dem Oszilloskop- oder Messbild ablesen, Tabelle <span class="f">\(n\)</span>, <span class="f">\(t_n\)</span>, <span class="f">\(\hat y_n\)</span>.</li>
+    <li><b>Abklingen:</b> <span class="f">\(\hat y_n\)</span> gegen <span class="f">\(t_n\)</span>, Punkte fallen exponentiell ⇒ Exponentialregression <span class="f">\(\hat y = a\cdot b^{t}\)</span> ⇒ <span class="f">\(\lambda = -\ln b\)</span> pro Zeiteinheit (wie <span class="f">\(\tau = -1/\ln b\)</span> beim Kondensator; <span class="f">\(\lambda = 1/\tau\)</span>).</li>
+    <li><b>Periodendauer:</b> <span class="f">\(t_n\)</span> gegen <span class="f">\(n\)</span>, Gerade, Steigung <span class="f">\(= T\)</span> (genauer als ein einzelner Abstand, weil über alle Perioden gemittelt). Daraus <span class="f">\(\omega = 2\pi/T\)</span> und <span class="f">\(\omega_0 = \sqrt{\omega^2 + \lambda^2}\)</span>.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(c\)</span> <input type="range" id="dmC" min="0" max="2" value="0.1" step="0.02"> <span id="dmCv"></span></label>
+        <label><span class="f">\(m\)</span> <input type="range" id="dmM" min="0.05" max="1" value="0.15" step="0.05"> <span id="dmMv"></span></label>
+        <label><span class="f">\(D\)</span> <input type="range" id="dmD" min="2" max="50" value="10" step="1"> <span id="dmDv"></span></label>
+      </div>
+      <canvas id="dmCanvas" width="480" height="280"></canvas>
+      <p class="small">Blau: <span class="f">\(y(t)\)</span>, rot gestrichelt: Einhüllende <span class="f">\(\pm\hat y e^{-\lambda t}\)</span>, grau: ungedämpfte Schwingung zum Vergleich. Punkte: die Maxima, aus denen die Regression unten rechnet.</p>
+    </div>
+    <div>
+      <div class="out" id="dmOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr Symbole:</b> Das Heft nennt die Abklingkonstante <span class="f">\(\lambda\)</span>, die FS <span class="f">\(\delta\)</span> („Abklingkoeffizient"). Das Heft nennt die gedämpfte Kreisfrequenz <span class="f">\(\omega\)</span> und die ungedämpfte <span class="f">\(\omega_0\)</span>; die FS schreibt <span class="f">\(\omega_D\)</span> und <span class="f">\(\omega\)</span>. Und ab Lektion 7 ist <span class="f">\(\lambda\)</span> die Wellenlänge. In der Klausur: Symbol einmal definieren („<span class="f">\(\lambda\)</span>: Abklingkonstante"), dann konsequent verwenden. Die FS-Formel <span class="f">\(\omega_D = \sqrt{\omega^2 - \delta^2}\)</span> ist dieselbe wie die Heft-Formel <span class="f">\(\omega = \sqrt{\omega_0^2 - \lambda^2}\)</span>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Erzwungene Schwingung und Resonanz (Heft S. 11–12)</h2>
+  <p>Bisher schwang das Pendel von allein mit seiner <b>Eigenfrequenz</b> <span class="f">\(\omega_0\)</span> (durch <span class="f">\(m\)</span> und <span class="f">\(D\)</span> festgelegt). Jetzt treibt ein <b>Erreger</b> an: Im Heft ein Exzenter, der die Aufhängung der Feder mit einstellbarer Kreisfrequenz <span class="f">\(\omega_E\)</span> auf und ab bewegt; die Masse hängt zur Dämpfung in Wasser. Beobachtung nach dem Einschwingen:</p>
+  <ul>
+    <li>Das Pendel schwingt mit der <b>Erregerfrequenz</b> <span class="f">\(\omega_E\)</span>, nicht mit <span class="f">\(\omega_0\)</span>. Es wird gezwungen.</li>
+    <li>Die <b>Amplitude</b> <span class="f">\(\hat y\)</span> hängt von <span class="f">\(\omega_E\)</span> ab: klein bei sehr langsamem und sehr schnellem Antrieb, maximal in der Nähe von <span class="f">\(\omega_0\)</span>. Das ist <b>Resonanz</b>.</li>
+  </ul>
+  <div class="formula">\[\hat y(\omega_E) = \frac{F_0/m}{\sqrt{(\omega_0^2 - \omega_E^2)^2 + (2\lambda\,\omega_E)^2}},\qquad \omega_R = \sqrt{\omega_0^2 - 2\lambda^2}\ \ (\text{Resonanz: Amplitude maximal})\]</div>
+  <ul>
+    <li><b>Resonanzkurve</b> (Heft-Skizze): Amplitude gegen <span class="f">\(\omega_E\)</span>. Ohne Dämpfung (<span class="f">\(c = 0\)</span>) wächst die Amplitude bei <span class="f">\(\omega_E = \omega_0\)</span> über alle Grenzen („Resonanzkatastrophe": Brücke, zerspringendes Glas). Geringe Dämpfung: hoher, schmaler Berg knapp unterhalb von <span class="f">\(\omega_0\)</span>. Starke Dämpfung: flacher, breiter, Maximum weiter links.</li>
+    <li>Für <span class="f">\(\omega_E \to 0\)</span> folgt die Masse einfach dem Erreger (Amplitude = Erregeramplitude, in der Heft-Skizze 0,5). Für <span class="f">\(\omega_E \gg \omega_0\)</span> kommt die träge Masse nicht mehr mit, Amplitude gegen null.</li>
+    <li>Die Resonanzfrequenz <span class="f">\(\omega_R\)</span> liegt noch etwas <b>unter</b> der gedämpften Eigenfrequenz <span class="f">\(\omega = \sqrt{\omega_0^2 - \lambda^2}\)</span>: Faktor 2 vor <span class="f">\(\lambda^2\)</span>. Bei schwacher Dämpfung sind alle drei praktisch gleich, und man sagt einfach „Resonanz bei der Eigenfrequenz".</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Dämpfung <span class="f">\(c\)</span> <input type="range" id="rsC" min="0" max="3" value="0.3" step="0.05"> <span id="rsCv"></span></label>
+      </div>
+      <canvas id="rsCanvas" width="480" height="260"></canvas>
+      <p class="small">Resonanzkurven für <span class="f">\(m = 1\,\mathrm{kg}\)</span>, <span class="f">\(D = 25\,\mathrm{N/m}\)</span> (<span class="f">\(\omega_0 = 5\,\mathrm{s^{-1}}\)</span>), Erregeramplitude 0,5 cm. Grau: ohne Dämpfung (Pol bei <span class="f">\(\omega_0\)</span>). Blau: mit der eingestellten Dämpfung, Maximum markiert.</p>
+    </div>
+    <div>
+      <div class="out" id="rsOut"></div>
+      <div class="note exam"><b>Heft-Aufgabe 2 (Auto auf Bodenwellen):</b> Auto <span class="f">\(m = 1500\,\mathrm{kg}\)</span>, Eigenfrequenz <span class="f">\(f_0 = 0{,}2\,\mathrm{Hz}\)</span>. a) Federkonstante: <span class="f">\(f_0 = \frac{1}{2\pi}\sqrt{D/m}\)</span> ⇒ <span class="f">\(D = m(2\pi f_0)^2 = 1500\cdot(1{,}257)^2\,\mathrm{N/m} \approx 2370\,\mathrm{N/m}\)</span>; vier Federn tragen gemeinsam, also je <span class="f">\(D_{\mathrm{Feder}} = 2370/4 \approx 593\,\mathrm{N/m}\)</span>. b) Resonanz, wenn die Anregung (Bodenwellen im Abstand <span class="f">\(s = 10\,\mathrm{m}\)</span>) die Eigenfrequenz trifft: Anregungsfrequenz <span class="f">\(f = v/s\)</span> ⇒ <span class="f">\(v = s\cdot f_0 = 10\,\mathrm{m}\cdot 0{,}2\,\mathrm{Hz} = 2\,\mathrm{m/s} = 7{,}2\,\mathrm{km/h}\)</span>. Bei dieser Geschwindigkeit schaukelt sich das Auto auf; Stoßdämpfer (Dämpfung) begrenzen die Amplitude.</div>
+    </div>
+  </div>
+  <div class="note"><b>Analogie:</b> Schaukel anschubsen. Schubst du im Takt der Schaukel (Erregerfrequenz = Eigenfrequenz), wird die Amplitude groß: Resonanz. Schubst du zu schnell oder zu langsam, bremst du zeitweise: kleine Amplitude. Reibung (Luft, Lager) begrenzt, wie hoch es maximal geht.</div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · Der LC-Schwingkreis: dieselbe DGL, andere Bauteile (Heft S. 13–15)</h2>
+  <p>Ein geladener Kondensator <span class="f">\(C\)</span> wird über eine Spule <span class="f">\(L\)</span> entladen. Der Strom baut in der Spule ein Magnetfeld auf; wenn der Kondensator leer ist, treibt die Selbstinduktion (Lektion 5) den Strom weiter und lädt ihn umgekehrt auf. Dann läuft alles rückwärts: eine elektrische Schwingung. <b>Maschenregel</b>: <span class="f">\(U_C + U_L = 0\)</span>, mit <span class="f">\(U_C = Q/C\)</span> und <span class="f">\(U_L = L\,\dot I = L\,\ddot Q\)</span> (weil <span class="f">\(I = \dot Q\)</span>):</p>
+  <div class="formula">\[L\,\ddot Q + \frac{1}{C}\,Q = 0\qquad\text{vergleiche}\qquad m\,\ddot y + D\,y = 0\]</div>
+  <p>Gleiche Struktur, also gleiche Lösung. Ansatz <span class="f">\(Q(t) = \hat Q\sin(\omega t + \varphi)\)</span>, <span class="f">\(\ddot Q = -\hat Q\omega^2\sin(\omega t + \varphi)\)</span>, einsetzen: <span class="f">\(\left(\tfrac1C - L\omega^2\right)\hat Q\sin(\omega t+\varphi) = 0\)</span> für alle <span class="f">\(t\)</span> ⇒ <span class="f">\(\omega^2 = \frac{1}{LC}\)</span>:</p>
+  <div class="formula">\[\omega = \frac{1}{\sqrt{LC}},\qquad f = \frac{1}{2\pi\sqrt{LC}},\qquad T = 2\pi\sqrt{LC}\quad\text{(Thomsonsche Schwingungsgleichung, FS S. 32)}\]</div>
+  <table>
+    <tr><th>Feder-Masse-Pendel</th><th>Schwingkreis</th><th>Rolle</th></tr>
+    <tr><td>Auslenkung <span class="f">\(y\)</span></td><td>Ladung <span class="f">\(Q\)</span></td><td>die schwingende Größe</td></tr>
+    <tr><td>Geschwindigkeit <span class="f">\(v = \dot y\)</span></td><td>Strom <span class="f">\(I = \dot Q\)</span></td><td>Änderungsrate</td></tr>
+    <tr><td>Masse <span class="f">\(m\)</span></td><td>Induktivität <span class="f">\(L\)</span></td><td>Trägheit (wehrt sich gegen Änderung)</td></tr>
+    <tr><td>Federkonstante <span class="f">\(D\)</span></td><td><span class="f">\(1/C\)</span></td><td>Rückstellgröße (kleines <span class="f">\(C\)</span> = harte Feder)</td></tr>
+    <tr><td>Dämpfung <span class="f">\(c\)</span></td><td>Widerstand <span class="f">\(R\)</span></td><td>Energieverlust; FS: <span class="f">\(\delta = R/(2L)\)</span> wie <span class="f">\(\lambda = c/(2m)\)</span></td></tr>
+    <tr><td><span class="f">\(\tfrac12 D y^2 \leftrightarrow \tfrac12 m v^2\)</span></td><td><span class="f">\(\tfrac12 C U^2 \leftrightarrow \tfrac12 L I^2\)</span></td><td>Energie pendelt zwischen Feld des Kondensators und Feld der Spule</td></tr>
+  </table>
+  <h3>Heft-Versuch: Eigenfrequenz des Schwingkreises, <span class="f">\(L\)</span> bestimmen</h3>
+  <p><b>Aufbau:</b> Spule (<span class="f">\(N = 1200\)</span>, <span class="f">\(L\)</span> unbekannt), Kondensator <span class="f">\(C = 33\,\mathrm{nF}\)</span>, Widerstand <span class="f">\(R = 50\,\Omega\)</span>, Funktionsgenerator stößt an, Oszilloskop zeigt die abklingende Schwingung. <b>Messung:</b> Zeiten und Höhen der Maxima:</p>
+  <table>
+    <tr><th><span class="f">\(n\)</span></th><td><span class="f">\(0\)</span></td><td><span class="f">\(1\)</span></td><td><span class="f">\(2\)</span></td><td><span class="f">\(3\)</span></td><td><span class="f">\(4\)</span></td><td><span class="f">\(5\)</span></td><td><span class="f">\(6\)</span></td><td><span class="f">\(7\)</span></td></tr>
+    <tr><th><span class="f">\(t\)</span> in µs</th><td><span class="f">\(0\)</span></td><td><span class="f">\(450\)</span></td><td><span class="f">\(850\)</span></td><td><span class="f">\(1250\)</span></td><td><span class="f">\(1750\)</span></td><td><span class="f">\(2100\)</span></td><td><span class="f">\(2550\)</span></td><td><span class="f">\(2900\)</span></td></tr>
+    <tr><th><span class="f">\(U\)</span> in V</th><td><span class="f">\(6{,}0\)</span></td><td><span class="f">\(4{,}1\)</span></td><td><span class="f">\(3{,}2\)</span></td><td><span class="f">\(2{,}6\)</span></td><td><span class="f">\(2{,}0\)</span></td><td><span class="f">\(1{,}4\)</span></td><td><span class="f">\(1{,}0\)</span></td><td><span class="f">\(0{,}9\)</span></td></tr>
+  </table>
+  <p><b>Auswertung (Heft, Schritt für Schritt):</b></p>
+  <ol>
+    <li><span class="f">\(U\)</span> gegen <span class="f">\(t\)</span>: exponentiell fallend ⇒ Exponentialregression <span class="f">\(U(t) = 5{,}78\,\mathrm{V}\cdot 0{,}99934^{\,t/\mathrm{\mu s}}\)</span>. Vergleich mit <span class="f">\(U = \hat U e^{-\lambda t}\)</span>: <span class="f">\(b^{t/\mathrm{\mu s}} = e^{-\lambda t}\)</span> ⇒ <span class="f">\(\lambda = -\ln b/\mathrm{\mu s} = 6{,}58\cdot 10^{-4}/\mathrm{\mu s} = 658\,\mathrm{s^{-1}}\)</span> (mit dem gerundeten <span class="f">\(b = 0{,}99934\)</span> kämen 660 heraus; der TR rechnet mit allen Stellen weiter, deshalb nie mit gerundeten Zwischenwerten rechnen).</li>
+    <li><span class="f">\(t\)</span> gegen <span class="f">\(n\)</span>: Gerade <span class="f">\(t(n) = 417{,}3\,\mathrm{\mu s}\cdot n + 20{,}8\,\mathrm{\mu s}\)</span>. Steigung = Periodendauer <span class="f">\(T = 417{,}3\,\mathrm{\mu s}\)</span> ⇒ <span class="f">\(\omega = 2\pi/T = 15\,056\,\mathrm{s^{-1}}\)</span> (Heft schreibt „15000 Hz").</li>
+    <li>Das ist die <b>gedämpfte</b> Kreisfrequenz. Ungedämpft: <span class="f">\(\omega_0 = \sqrt{\omega^2 + \lambda^2} = 15\,070\,\mathrm{s^{-1}}\)</span>, <span class="f">\(f_0 = \omega_0/(2\pi) = 2398\,\mathrm{Hz}\)</span>. (Die Korrektur ist winzig, weil <span class="f">\(\lambda \ll \omega\)</span>; sie zeigt aber, dass du die Dämpfung bedacht hast.)</li>
+    <li>Thomson nach <span class="f">\(L\)</span> auflösen: <span class="f">\(\omega_0^2 = 1/(LC)\)</span> ⇒ <span class="f">\(L = \dfrac{1}{\omega_0^2\,C} = \dfrac{1}{(15\,070\,\mathrm{s^{-1}})^2\cdot 33\cdot 10^{-9}\,\mathrm{F}} = 0{,}133\,\mathrm{H}\)</span>.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="lcBtn1" class="active"><span class="f">\(U\)</span> über <span class="f">\(t\)</span> (Abklingen)</button>
+        <button id="lcBtn2"><span class="f">\(t\)</span> über <span class="f">\(n\)</span> (Periode)</button>
+        <button id="lcBtn3">Rekonstruierte Schwingung</button>
+      </div>
+      <canvas id="lcCanvas" width="480" height="300"></canvas>
+    </div>
+    <div>
+      <div class="out" id="lcOut"></div>
+      <div class="note"><b>Was die Ansichten zeigen:</b> Die Exponentialregression läuft im Widget live über die Heft-Werte (TR-Ergebnis zum Vergleich: <span class="f">\(5{,}78\cdot 0{,}99934^{x}\)</span>). Die Gerade <span class="f">\(t(n)\)</span> mittelt die Periodendauer über alle sieben Perioden. Die dritte Ansicht zeichnet <span class="f">\(U(t) = \hat U e^{-\lambda t}\cos(\omega t)\)</span> mit den gefundenen Werten durch die Messpunkte: Die Maxima treffen die Punkte, also passt das Modell.</div>
+    </div>
+  </div>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> (1) Thomson: <span class="f">\(T = 2\pi\sqrt{LC}\)</span>, <span class="f">\(L\)</span> und <span class="f">\(C\)</span> beide unter der Wurzel im Produkt, nicht als Quotient wie bei <span class="f">\(m/D\)</span>. Merke: <span class="f">\(1/C\)</span> spielt die Rolle von <span class="f">\(D\)</span>, also <span class="f">\(m/D \to L/(1/C) = LC\)</span>. (2) Die Spannung am Kondensator ist <span class="f">\(U_C = Q/C\)</span>, sie schwingt wie <span class="f">\(Q\)</span>; der Strom ist um eine Viertelperiode verschoben (wie <span class="f">\(v\)</span> zu <span class="f">\(y\)</span>). (3) Einheiten-Check: <span class="f">\(\sqrt{\mathrm{H\cdot F}} = \sqrt{\mathrm{(Vs/A)(As/V)}} = \mathrm{s}\)</span> ✓.</div>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Klausur und Abitur: die drei Aufgaben zu dieser Lektion</h2>
+  <h3>Klausur 3, Aufgabe 3 (Schwingungen), deine Lösung mit Kommentar</h3>
+  <div class="ex"><span class="t">a) Bestätige <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> über die DGL.</span><br>
+    Deine Lösung: Ansatz <span class="f">\(y = y_0\sin(\omega t + \varphi)\)</span>, <span class="f">\(\dot y\)</span>, <span class="f">\(\ddot y\)</span>, einsetzen, „soll für alle <span class="f">\(t\)</span> gelten" ⇒ <span class="f">\(m\omega^2 = D\)</span> ⇒ <span class="f">\(\omega = \sqrt{D/m} = 2\pi/T\)</span> ⇒ <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>. Vollständig. Der Satz „soll für alle <span class="f">\(t\)</span> gelten" ist der Punktbringer; ohne ihn ist das Kürzen des Sinus unbegründet. Zum Abschluss ein Satz: „Die Formel wurde bestätigt."</div>
+  <div class="ex"><span class="t">b) Startbedingung <span class="f">\(y(0) = y_0\)</span>.</span><br>
+    <span class="f">\(y_0\sin\varphi = y_0\)</span> ⇒ <span class="f">\(\sin\varphi = 1\)</span> ⇒ <span class="f">\(\varphi = \pi/2 + n\cdot 2\pi\)</span> ⇒ <span class="f">\(y(t) = y_0\sin(\omega t + \pi/2) = y_0\cos(\omega t)\)</span>. Richtig; die Umformung zum Kosinus dazuschreiben zeigt, dass du die Bedeutung verstanden hast.</div>
+  <div class="ex"><span class="t">c) Rückstellkraft nicht proportional zur Auslenkung.</span><br>
+    Deine Antwort: keine harmonische Schwingung ⇒ Sinus-Ansatz ungeeignet; Kraft z. B. <span class="f">\(D_1 y + D_2 y^2 + D_3 y^3 + \dots\)</span>; Lösungsansatz Summe von Sinusfunktionen. Vollständig und mehr als erwartet. Ergänzung für den Erwartungshorizont: „Die Periodendauer hängt dann von der Amplitude ab."</div>
+
+  <h3>Abitur 2022 IIa, Aufgabe 2: Feder-Masse-Pendel und Federschwinger (24 BE)</h3>
+  <p><b>Material:</b> Feder-Masse-Pendel, <span class="f">\(D = 6{,}1\,\mathrm{N/m}\)</span>, Masse unbekannt; Zeit-Auslenkung-Diagramm nach Auslenkung um 4 cm. Horizontaler Federschwinger mit zwei Federn <span class="f">\(D_1 = D_2 = 6{,}1\,\mathrm{N/m}\)</span>; Messtabelle <span class="f">\(m\)</span> = 0,05 / 0,10 / 0,15 / 0,20 kg, <span class="f">\(T\)</span> = 0,40 / 0,58 / 0,72 / 0,79 s.</p>
+  <ul>
+    <li><b>2.1 (4 BE)</b> Begriffe: Musterantwort in Abschnitt 1.</li>
+    <li><b>2.2 (9 BE)</b> Experiment planen (3 BE): Abschnitt 2. Masse aus dem Diagramm (4 BE): Periodendauer über mehrere Perioden ablesen, <span class="f">\(T \approx 1{,}03\,\mathrm{s}\)</span>; <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> nach <span class="f">\(m\)</span> auflösen: <span class="f">\(m = \dfrac{D\,T^2}{4\pi^2} = \dfrac{6{,}1\,\mathrm{N/m}\cdot(1{,}03\,\mathrm{s})^2}{4\pi^2} = 0{,}164\,\mathrm{kg}\)</span>. Skizze (2 BE): Masse vervierfacht ⇒ <span class="f">\(T\)</span> verdoppelt (<span class="f">\(2{,}06\,\mathrm{s}\)</span>), Amplitude 3 cm (eA) bzw. 4 cm (gA), Start im unteren Umkehrpunkt wie die Originalkurve.</li>
+    <li><b>2.3 (11 BE)</b> Energieumwandlungen (3 BE): Abschnitt 4. Zusammenhang <span class="f">\(T = C\sqrt m\)</span> (4 BE): Linearisieren, <span class="f">\(T^2\)</span> gegen <span class="f">\(m\)</span>: Werte 0,160 / 0,336 / 0,518 / 0,624 s² ⇒ Ursprungsgerade, Steigung <span class="f">\(3{,}26\,\mathrm{s^2/kg}\)</span> ⇒ <span class="f">\(C = \sqrt{3{,}26} = 1{,}80\,\mathrm{s/\sqrt{kg}}\)</span>; Doku nach Schema. Hypothese zu <span class="f">\(K\)</span> (4 BE): <span class="f">\(2\pi\sqrt{m/K} = C\sqrt m\)</span> ⇒ <span class="f">\(K = 4\pi^2/C^2 = 12{,}2\,\mathrm{N/m}\)</span>; das ist <span class="f">\(2D\)</span>. Begründung: Wird die Masse nach links ausgelenkt, wird die linke Feder gestaucht und die rechte gedehnt; <b>beide</b> Kräfte zeigen zur Ruhelage und addieren sich: <span class="f">\(F = -(D_1 + D_2)\,y\)</span>, also <span class="f">\(K = D_1 + D_2 = 2D\)</span>.</li>
+  </ul>
+
+  <h3>Abitur 2023 IIa, Aufgabe 2: schwingende Fahrradkette (24 BE)</h3>
+  <p><b>Material:</b> Kette der Länge <span class="f">\(l\)</span> und Masse <span class="f">\(m\)</span> hängt über einer Rolle, beide Enden auf gleicher Höhe. Auslenkung <span class="f">\(s\)</span>: eine Seite hängt um <span class="f">\(s\)</span> tiefer, die andere um <span class="f">\(s\)</span> höher. Diagramm <span class="f">\(s(t)\)</span> für <span class="f">\(l = 94{,}5\,\mathrm{cm}\)</span>; Tabelle:</p>
+  <table>
+    <tr><th><span class="f">\(l\)</span> in m</th><td><span class="f">\(0{,}183\)</span></td><td><span class="f">\(0{,}335\)</span></td><td><span class="f">\(0{,}488\)</span></td><td><span class="f">\(0{,}640\)</span></td><td><span class="f">\(0{,}793\)</span></td><td><span class="f">\(0{,}945\)</span></td><td><span class="f">\(1{,}098\)</span></td><td><span class="f">\(1{,}250\)</span></td></tr>
+    <tr><th><span class="f">\(T\)</span> in s</th><td><span class="f">\(0{,}61\)</span></td><td><span class="f">\(0{,}83\)</span></td><td><span class="f">\(0{,}98\)</span></td><td><span class="f">\(1{,}13\)</span></td><td><span class="f">\(1{,}27\)</span></td><td>aus 2.1</td><td><span class="f">\(1{,}48\)</span></td><td><span class="f">\(1{,}57\)</span></td></tr>
+  </table>
+  <ul>
+    <li><b>2.1 (3 BE)</b> „möglichst genau": nicht eine Periode ablesen, sondern mehrere: <span class="f">\(3T = 4{,}1\,\mathrm{s}\)</span> ⇒ <span class="f">\(T = 1{,}37\,\mathrm{s}\)</span>.</li>
+    <li><b>2.2 (9 BE)</b> <span class="f">\(l\)</span>-<span class="f">\(T\)</span>-Diagramm mit Ausgleichskurve (4 BE); funktionaler Zusammenhang (5 BE): Potenzregression <span class="f">\(T \approx 1{,}41\cdot l^{0{,}493}\)</span> ⇒ Exponent <span class="f">\(\approx 0{,}5\)</span> ⇒ <span class="f">\(T \approx 1{,}41\,\mathrm{s/\sqrt m}\cdot\sqrt l\)</span>, Dokumentation nach Schema (Werte, Diagramm, Regressionstyp mit Begründung „Wurzelkurve, Exponent nahe 0,5", Formel mit Einheiten, Konstante deuten).</li>
+    <li><b>2.3 (3 BE)</b> Rückstellkraft: Bei Auslenkung <span class="f">\(s\)</span> steht auf der schweren Seite ein Kettenstück der Länge <span class="f">\(2s\)</span> über (eine Seite <span class="f">\(+s\)</span>, die andere <span class="f">\(-s\)</span>). Masse gleichmäßig verteilt ⇒ dieses Stück hat die Masse <span class="f">\(\frac{2s}{l}\cdot m\)</span>. Seine Gewichtskraft ist unausgeglichen und zieht zur Ruhelage zurück: <span class="f">\(F_R = -\frac{2s(t)}{l}\,m\,g\)</span>. Minus: entgegen der Auslenkung.</li>
+    <li><b>2.4 (9 BE)</b> Vergleich mit <span class="f">\(F_R = -D\,s\)</span> ⇒ <span class="f">\(D = \dfrac{2mg}{l}\)</span> (3 BE). Einsetzen: <span class="f">\(T = 2\pi\sqrt{\dfrac{m}{2mg/l}} = 2\pi\sqrt{\dfrac{l}{2g}}\)</span>, die Masse kürzt sich (2 BE). Prüfung (4 BE): <span class="f">\(k_{\mathrm{theo}} = \dfrac{2\pi}{\sqrt{2g}} = \dfrac{6{,}283}{4{,}429} = 1{,}42\,\mathrm{s/\sqrt m}\)</span>, Experiment <span class="f">\(1{,}41\)</span>: bestätigt. Alternativ <span class="f">\(T\)</span> für jede Länge berechnen und mit der Tabelle vergleichen (z. B. <span class="f">\(l = 0{,}640\,\mathrm{m}\)</span>: <span class="f">\(T = 1{,}135\,\mathrm{s}\)</span>, gemessen 1,13 s).</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="kcBtn1" class="active"><span class="f">\(T\)</span> über <span class="f">\(l\)</span> mit Potenzregression</button>
+        <button id="kcBtn2"><span class="f">\(T^2\)</span> über <span class="f">\(l\)</span> (linearisiert)</button>
+      </div>
+      <canvas id="kcCanvas" width="480" height="300"></canvas>
+    </div>
+    <div>
+      <div class="out" id="kcOut"></div>
+      <div class="note exam"><b>Muster der Abitur-Schwingungsaufgaben 2022 und 2023:</b> (1) Begriffe erläutern, (2) Experiment planen oder Periodendauer „möglichst genau" ablesen, (3) Messreihe nach dem TR-Schema auswerten, meist mit Wurzel oder Linearisierung, (4) Rückstellkraft aus der Situation herleiten ⇒ Richtgröße <span class="f">\(D\)</span> ⇒ in <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> einsetzen ⇒ mit dem Experiment vergleichen. Wer die Kette aus Abschnitt 3 und 5 kann, kann alle vier Teile.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <h2>11 · Analogie-Trainer</h2>
+  <div class="cards">
+    <div class="acard"><h4>Richtgröße erkennen</h4><div class="l">Feder: <span class="f">\(D\)</span>. Fadenpendel: <span class="f">\(mg/l\)</span>. Kette: <span class="f">\(2mg/l\)</span>. Schwingkreis: <span class="f">\(1/C\)</span>.</div><p>Immer dieselbe Frage: Welche Kraft zieht zurück, und wie hängt sie von der Auslenkung ab? Der Faktor vor <span class="f">\(-y\)</span> ist <span class="f">\(D\)</span>. Dann <span class="f">\(T = 2\pi\sqrt{\text{Trägheit}/\text{Richtgröße}}\)</span>.</p></div>
+    <div class="acard"><h4>Trägheit ↔ Induktivität</h4><div class="l"><span class="f">\(m\)</span> wehrt sich gegen Änderung von <span class="f">\(v\)</span>, <span class="f">\(L\)</span> gegen Änderung von <span class="f">\(I\)</span></div><p>Deshalb <span class="f">\(m \to L\)</span> und <span class="f">\(\tfrac12 m v^2 \to \tfrac12 L I^2\)</span>. Die Spule ist die „Masse" des Schwingkreises, der Kondensator die „Feder".</p></div>
+    <div class="acard"><h4>Zeiger ↔ Uhrzeiger</h4><div class="l">Phase = Stellung des Zeigers</div><p>Ein Uhrzeiger dreht sich gleichmäßig; seine Höhe über der Mitte schwingt sinusförmig. Zwei Uhren mit gleicher Geschwindigkeit, aber verschieden gestellt: Phasenverschiebung.</p></div>
+    <div class="acard"><h4>Schaukel ↔ Resonanz</h4><div class="l">Anschubsen im Takt</div><p>Erregerfrequenz gleich Eigenfrequenz ⇒ jede Portion Energie kommt zur rechten Zeit, die Amplitude wächst, bis die Reibung so viel wegnimmt wie zugeführt wird.</p></div>
+    <div class="acard"><h4>Stoßdämpfer ↔ Dämpfung</h4><div class="l"><span class="f">\(F = -c\,v\)</span></div><p>Je schneller, desto stärker bremst der Dämpfer. Ohne ihn hüpft das Auto nach jeder Bodenwelle lange nach (kleines <span class="f">\(\lambda\)</span>); mit ihm klingt es in einer Periode ab.</p></div>
+    <div class="acard"><h4>Tank-Analogie aus Lektion 3, erweitert</h4><div class="l">Exponentielles Abklingen</div><p><span class="f">\(\tau = -1/\ln b\)</span> beim Kondensator, <span class="f">\(\lambda = -\ln b\)</span> bei der Amplitude: dieselbe Regression, Kehrwert. Wer das eine kann, kann das andere.</p></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="card" id="s12">
+  <h2>12 · Aufgaben zum Selbstrechnen (erst rechnen, dann aufklappen)</h2>
+  <details><summary>A1: Feder-Masse-Pendel, <span class="f">\(m = 250\,\mathrm{g}\)</span>, <span class="f">\(D = 20\,\mathrm{N/m}\)</span>, um <span class="f">\(3{,}0\,\mathrm{cm}\)</span> ausgelenkt und losgelassen. a) <span class="f">\(\omega\)</span>, <span class="f">\(T\)</span>, <span class="f">\(f\)</span>; b) <span class="f">\(y(t)\)</span>; c) <span class="f">\(v_{\mathrm{max}}\)</span>, <span class="f">\(a_{\mathrm{max}}\)</span>; d) Gesamtenergie; e) Wann ist <span class="f">\(y\)</span> zum ersten Mal null?</summary>
+    <p>a) <span class="f">\(\omega = \sqrt{D/m} = \sqrt{20/0{,}25}\,\mathrm{s^{-1}} = 8{,}94\,\mathrm{s^{-1}}\)</span>, <span class="f">\(T = 2\pi/\omega = 0{,}703\,\mathrm{s}\)</span>, <span class="f">\(f = 1{,}42\,\mathrm{Hz}\)</span>.<br>
+    b) Ausgelenkt losgelassen ⇒ <span class="f">\(\varphi = \pi/2\)</span> ⇒ <span class="f">\(y(t) = 3{,}0\,\mathrm{cm}\cdot\cos(8{,}94\,\mathrm{s^{-1}}\cdot t)\)</span>.<br>
+    c) <span class="f">\(v_{\mathrm{max}} = \hat y\omega = 0{,}030\cdot 8{,}94\,\mathrm{m/s} = 0{,}27\,\mathrm{m/s}\)</span>; <span class="f">\(a_{\mathrm{max}} = \hat y\omega^2 = 0{,}030\cdot 80\,\mathrm{m/s^2} = 2{,}4\,\mathrm{m/s^2}\)</span>.<br>
+    d) <span class="f">\(E = \tfrac12 D\hat y^2 = \tfrac12\cdot 20\cdot 0{,}030^2\,\mathrm{J} = 9{,}0\,\mathrm{mJ}\)</span>; Kontrolle: <span class="f">\(\tfrac12 m v_{\mathrm{max}}^2 = \tfrac12\cdot 0{,}25\cdot 0{,}268^2\,\mathrm{J} = 9{,}0\,\mathrm{mJ}\)</span> ✓.<br>
+    e) Kosinus wird nach einer Viertelperiode null: <span class="f">\(t = T/4 = 0{,}176\,\mathrm{s}\)</span>. Rechnerisch <span class="f">\(\cos(\omega t) = 0\)</span> ⇒ <span class="f">\(\omega t = \pi/2\)</span> ⇒ <span class="f">\(t = \pi/(2\omega)\)</span>.</p></details>
+  <details><summary>A2: Fadenpendel. a) Welche Länge hat ein Pendel mit <span class="f">\(T = 2{,}00\,\mathrm{s}\)</span> auf der Erde? b) Dasselbe Pendel auf dem Mond (<span class="f">\(g = 1{,}62\,\mathrm{m/s^2}\)</span>): <span class="f">\(T\)</span>? c) Warum spielt die Masse der Kugel keine Rolle?</summary>
+    <p>a) <span class="f">\(T = 2\pi\sqrt{l/g}\)</span> ⇒ <span class="f">\(l = \dfrac{g\,T^2}{4\pi^2} = \dfrac{9{,}81\cdot 4{,}00}{39{,}48}\,\mathrm{m} = 0{,}994\,\mathrm{m}\)</span>.<br>
+    b) <span class="f">\(T = 2\pi\sqrt{0{,}994/1{,}62}\,\mathrm{s} = 4{,}92\,\mathrm{s}\)</span>; Faktor <span class="f">\(\sqrt{9{,}81/1{,}62} = 2{,}46\)</span> langsamer.<br>
+    c) Die Masse steht in der Trägheit <span class="f">\(m\ddot b\)</span> und in der Rückstellkraft <span class="f">\(mg\sin\alpha\)</span>; sie kürzt sich aus der DGL <span class="f">\(l\ddot\alpha + g\alpha = 0\)</span>. Physikalisch: Eine schwerere Kugel wird stärker zurückgezogen, ist aber genauso viel träger.</p></details>
+  <details><summary>A3: Bestätige mit dem Ansatz <span class="f">\(y = \hat y\cos(\omega t)\)</span>, dass die DGL <span class="f">\(m\ddot y + Dy = 0\)</span> gelöst wird, und gib <span class="f">\(\omega\)</span> an. Formuliere das „für alle <span class="f">\(t\)</span>"-Argument.</summary>
+    <p><span class="f">\(\dot y = -\hat y\omega\sin(\omega t)\)</span>, <span class="f">\(\ddot y = -\hat y\omega^2\cos(\omega t)\)</span>. Einsetzen: <span class="f">\(-m\hat y\omega^2\cos(\omega t) + D\hat y\cos(\omega t) = (D - m\omega^2)\,\hat y\cos(\omega t) = 0\)</span>. Das muss für alle <span class="f">\(t\)</span> gelten; <span class="f">\(\cos(\omega t)\)</span> ist nicht identisch null und <span class="f">\(\hat y \neq 0\)</span> (sonst keine Schwingung), also <span class="f">\(D - m\omega^2 = 0\)</span> ⇒ <span class="f">\(\omega = \sqrt{D/m}\)</span>. Die Phase (sin oder cos) ändert nichts an <span class="f">\(\omega\)</span>: Sie wird durch den Start festgelegt, nicht durch die DGL.</p></details>
+  <details><summary>A4: Gedämpft: <span class="f">\(m = 0{,}50\,\mathrm{kg}\)</span>, <span class="f">\(D = 50\,\mathrm{N/m}\)</span>, <span class="f">\(c = 0{,}40\,\mathrm{kg/s}\)</span>. a) <span class="f">\(\lambda\)</span>, <span class="f">\(\omega_0\)</span>, <span class="f">\(\omega\)</span>, <span class="f">\(T\)</span>; b) Halbwertszeit der Amplitude; c) Nach welcher Zeit sind noch 10 % der Anfangsamplitude übrig? d) Wie groß müsste <span class="f">\(c\)</span> sein, damit gar nicht mehr geschwungen wird?</summary>
+    <p>a) <span class="f">\(\lambda = c/(2m) = 0{,}40\,\mathrm{s^{-1}}\)</span>; <span class="f">\(\omega_0 = \sqrt{50/0{,}5}\,\mathrm{s^{-1}} = 10{,}0\,\mathrm{s^{-1}}\)</span>; <span class="f">\(\omega = \sqrt{100 - 0{,}16}\,\mathrm{s^{-1}} = 9{,}99\,\mathrm{s^{-1}}\)</span>; <span class="f">\(T = 0{,}629\,\mathrm{s}\)</span>.<br>
+    b) <span class="f">\(t_{1/2} = \ln 2/\lambda = 1{,}73\,\mathrm{s}\)</span>.<br>
+    c) <span class="f">\(e^{-\lambda t} = 0{,}1\)</span> ⇒ <span class="f">\(t = \ln(10)/\lambda = 5{,}76\,\mathrm{s}\)</span>, etwa 9 Schwingungen.<br>
+    d) Schwingung nur für <span class="f">\(\lambda \lt \omega_0\)</span>, also <span class="f">\(c/(2m) \lt \omega_0\)</span> ⇒ <span class="f">\(c \lt 2m\omega_0 = 2\sqrt{mD} = 10\,\mathrm{kg/s}\)</span>. Ab <span class="f">\(c = 10\,\mathrm{kg/s}\)</span> kriecht die Masse nur noch zur Ruhelage.</p></details>
+  <details><summary>A5: Schwingkreis mit <span class="f">\(L = 0{,}133\,\mathrm{H}\)</span> (Heft-Spule). a) <span class="f">\(f_0\)</span> mit <span class="f">\(C = 33\,\mathrm{nF}\)</span>; b) welches <span class="f">\(C\)</span> für <span class="f">\(f_0 = 1{,}00\,\mathrm{kHz}\)</span>? c) <span class="f">\(T\)</span> mit dem anderen Heft-Kondensator <span class="f">\(C = 1000\,\mathrm{nF}\)</span>.</summary>
+    <p>a) <span class="f">\(f_0 = \dfrac{1}{2\pi\sqrt{LC}} = \dfrac{1}{2\pi\sqrt{0{,}133\cdot 33\cdot 10^{-9}}}\,\mathrm{Hz} = 2{,}40\,\mathrm{kHz}\)</span> (Heft: 2398 Hz ✓).<br>
+    b) <span class="f">\(C = \dfrac{1}{4\pi^2 f_0^2 L} = \dfrac{1}{39{,}48\cdot 10^{6}\cdot 0{,}133}\,\mathrm{F} = 1{,}9\cdot 10^{-7}\,\mathrm{F} = 190\,\mathrm{nF}\)</span>.<br>
+    c) <span class="f">\(T = 2\pi\sqrt{0{,}133\cdot 10^{-6}}\,\mathrm{s} = 2{,}29\,\mathrm{ms}\)</span>; 30-mal mehr Kapazität ⇒ <span class="f">\(\sqrt{30} = 5{,}5\)</span>-mal längere Periode.</p></details>
+  <details><summary>A6: Transfer. a) Fahrradkette (Abitur 2023), <span class="f">\(l = 0{,}640\,\mathrm{m}\)</span>: <span class="f">\(T\)</span> theoretisch, Vergleich mit 1,13 s. b) Um welchen Faktor ändert sich <span class="f">\(T\)</span>, wenn beim Federpendel <span class="f">\(m\)</span> vervierfacht wird? Wenn beim Fadenpendel <span class="f">\(l\)</span> verdoppelt wird? Wenn im Schwingkreis <span class="f">\(C\)</span> halbiert wird?</summary>
+    <p>a) <span class="f">\(T = 2\pi\sqrt{l/(2g)} = 2\pi\sqrt{0{,}640/19{,}62}\,\mathrm{s} = 1{,}135\,\mathrm{s}\)</span>; Messung 1,13 s, Abweichung 0,4 %: bestätigt.<br>
+    b) <span class="f">\(T \propto \sqrt m\)</span>: Faktor 2. <span class="f">\(T \propto \sqrt l\)</span>: Faktor <span class="f">\(\sqrt 2 = 1{,}41\)</span>. <span class="f">\(T \propto \sqrt C\)</span>: Faktor <span class="f">\(1/\sqrt 2 = 0{,}71\)</span>.</p></details>
+</section>
+
+<!-- 13 -->
+<section class="card" id="s13">
+  <h2>13 · Was nicht in der Formelsammlung steht (auswendig, siehe Typst-Datei)</h2>
+  <ul>
+    <li><b>Herleitung</b> von <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> aus der DGL: Ansatz, beide Ableitungen, Einsetzen, „muss für alle <span class="f">\(t\)</span> gelten" ⇒ Klammer null. Startbedingungen ⇒ <span class="f">\(\varphi\)</span> (Loslassen aus <span class="f">\(\hat y\)</span>: <span class="f">\(\varphi = \pi/2\)</span>, Kosinus). Die FS gibt nur die Lösungsfunktionen und die Pendelformeln.</li>
+    <li><span class="f">\(v_{\mathrm{max}} = \hat y\omega\)</span> im Nulldurchgang, <span class="f">\(a_{\mathrm{max}} = \hat y\omega^2\)</span> im Umkehrpunkt, <span class="f">\(a = -\omega^2 y\)</span>; <span class="f">\(E_{\mathrm{ges}} = \tfrac12 D\hat y^2 = \tfrac12 m v_{\mathrm{max}}^2\)</span>; Energie schwingt mit <span class="f">\(T/2\)</span>; Schwerkraft verschwindet bei Messung ab Ruhelage.</li>
+    <li><b>Linearisierung</b> <span class="f">\(T^2 = \frac{4\pi^2}{D}\,m\)</span> bzw. <span class="f">\(T^2 = \frac{4\pi^2}{g}\,l\)</span>; Potenzregression mit Exponent <span class="f">\(\approx 0{,}5\)</span>; Versuchsplanung (<span class="f">\(n\)</span> Schwingungen, Start im Nulldurchgang, Mittelwert).</li>
+    <li><b>Fadenpendel-Herleitung:</b> tangentiale Kraft <span class="f">\(-mg\sin\alpha\)</span>, <span class="f">\(b = \alpha l\)</span>, Kleinwinkelnäherung <span class="f">\(\sin\alpha \approx \alpha\)</span> (Bogenmaß), Richtgröße <span class="f">\(mg/l\)</span>; Masse kürzt sich; große Winkel ⇒ <span class="f">\(T\)</span> wächst.</li>
+    <li><b>Richtgröße aus der Situation ablesen:</b> Faktor vor <span class="f">\(-y\)</span> in der Rückstellkraft (Kette <span class="f">\(2mg/l\)</span>, zwei Federn <span class="f">\(K = D_1 + D_2\)</span>), dann in <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>.</li>
+    <li><b>Zeiger:</b> Phasenwinkel <span class="f">\(\alpha = \omega t + \varphi\)</span>, Auslenkung = Projektion <span class="f">\(\hat y\sin\alpha\)</span>, Taschenrechner RAD, Vorzeichen aus dem Quadranten.</li>
+    <li><b>Dämpfung:</b> <span class="f">\(F = -c\dot y\)</span>, <span class="f">\(\lambda = c/(2m)\)</span> (FS kennt nur <span class="f">\(\delta\)</span>, nicht <span class="f">\(c\)</span>), <span class="f">\(t_{1/2} = \ln 2/\lambda\)</span>, Auswertung: Maxima ⇒ Exponentialregression ⇒ <span class="f">\(\lambda = -\ln b\)</span>; Zeiten der Maxima ⇒ Gerade ⇒ <span class="f">\(T\)</span>; <span class="f">\(\omega_0 = \sqrt{\omega^2 + \lambda^2}\)</span>; keine Schwingung ab <span class="f">\(\lambda \ge \omega_0\)</span>.</li>
+    <li><b>Resonanz:</b> System schwingt mit <span class="f">\(\omega_E\)</span>; Amplitudenformel; <span class="f">\(\omega_R = \sqrt{\omega_0^2 - 2\lambda^2}\)</span>; Kurvenschar (Dämpfung ⇒ niedriger, breiter, nach links); Resonanzkatastrophe; Bodenwellen <span class="f">\(v = s\cdot f_0\)</span>.</li>
+    <li><b>Schwingkreis:</b> Herleitung über Maschenregel <span class="f">\(Q/C + L\ddot Q = 0\)</span>, Analogietabelle, Versuchsauswertung bis <span class="f">\(L = 1/(\omega_0^2 C)\)</span>. In der FS: nur Thomson, <span class="f">\(U(t)\)</span>, <span class="f">\(I(t)\)</span>, <span class="f">\(Q(t)\)</span>, DGL, <span class="f">\(\delta = R/(2L)\)</span>.</li>
+    <li><b>Steht in der FS (nur Fundort):</b> <span class="f">\(T = 1/f\)</span>, <span class="f">\(f = n/t\)</span>, <span class="f">\(\omega = 2\pi f\)</span>, <span class="f">\(F = -Ds\)</span>, <span class="f">\(s(t)\)</span>, <span class="f">\(v(t)\)</span>, <span class="f">\(a(t)\)</span> mit <span class="f">\(\varphi_0\)</span>, beide DGLs, gedämpfte Lösung mit <span class="f">\(\delta\)</span>, <span class="f">\(\omega_D\)</span> (S. 21/22); Feder- und Fadenpendel (S. 22); <span class="f">\(E_{\mathrm{kin}}\)</span>, <span class="f">\(E_{\mathrm{span}}\)</span> (S. 18/19); Thomson, Schwingkreis-DGL, <span class="f">\(\delta = R/(2L)\)</span> (S. 32); <span class="f">\(\tfrac12 CU^2\)</span>, <span class="f">\(\tfrac12 LI^2\)</span> (S. 28/31).</li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="card" id="s14">
+  <h2>14 · Quiz</h2>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 15 -->
+<section class="card" id="s15">
+  <h2>15 · Merksätze und Fortschritt</h2>
+  <ol>
+    <li>Harmonisch ⇔ <span class="f">\(F = -D\,y\)</span> ⇔ Sinusverlauf ⇔ <span class="f">\(T\)</span> unabhängig von der Amplitude.</li>
+    <li><span class="f">\(\omega = \sqrt{D/m}\)</span>, <span class="f">\(T = 2\pi\sqrt{m/D}\)</span>: mehr Masse ⇒ langsamer, härtere Feder ⇒ schneller. Vierfache Masse ⇒ doppelte Periodendauer.</li>
+    <li>Die DGL liefert <span class="f">\(\omega\)</span>; Amplitude und Phase kommen aus dem Start. Loslassen aus der Auslenkung ⇒ Kosinus.</li>
+    <li>Nulldurchgang: <span class="f">\(v_{\mathrm{max}} = \hat y\omega\)</span>, alles Bewegungsenergie. Umkehrpunkt: <span class="f">\(a_{\mathrm{max}} = \hat y\omega^2\)</span>, alles Spannenergie.</li>
+    <li>Fadenpendel: <span class="f">\(T = 2\pi\sqrt{l/g}\)</span>, nur für kleine Winkel, Masse egal.</li>
+    <li>Messreihen: Wurzel vermuten ⇒ <span class="f">\(T^2\)</span> auftragen ⇒ Ursprungsgerade ⇒ Steigung deuten. Fünf Schritte dokumentieren.</li>
+    <li>Dämpfung: <span class="f">\(\lambda = c/(2m)\)</span>, Einhüllende <span class="f">\(e^{-\lambda t}\)</span>, <span class="f">\(\omega = \sqrt{\omega_0^2 - \lambda^2}\)</span>. Resonanz nahe <span class="f">\(\omega_0\)</span>, Dämpfung macht den Berg flach und breit.</li>
+    <li>Schwingkreis = Federpendel mit <span class="f">\(L \leftrightarrow m\)</span>, <span class="f">\(1/C \leftrightarrow D\)</span>: <span class="f">\(T = 2\pi\sqrt{LC}\)</span>.</li>
+  </ol>
+  <h3>Typische Verwechslungen</h3>
+  <table>
+    <tr><th>Das</th><th>ist nicht das</th></tr>
+    <tr><td>Amplitude <span class="f">\(\hat y\)</span> (Betrag, vom Nullpunkt)</td><td>Abstand der Umkehrpunkte (<span class="f">\(2\hat y\)</span>)</td></tr>
+    <tr><td><span class="f">\(\omega\)</span> in <span class="f">\(\mathrm{s^{-1}}\)</span> (Kreisfrequenz)</td><td><span class="f">\(f\)</span> in Hz (Frequenz); Faktor <span class="f">\(2\pi\)</span></td></tr>
+    <tr><td><span class="f">\(T = 2\pi\sqrt{m/D}\)</span></td><td><span class="f">\(2\pi\sqrt{D/m}\)</span> (das ist <span class="f">\(2\pi\,\omega\)</span>, Unsinn)</td></tr>
+    <tr><td>Phase legt den Start fest (<span class="f">\(\varphi\)</span>)</td><td>Phase ändert die Frequenz (tut sie nicht)</td></tr>
+    <tr><td>Heft: <span class="f">\(\lambda\)</span> Abklingkonstante, <span class="f">\(\omega_0\)</span> ungedämpft, <span class="f">\(\omega\)</span> gedämpft</td><td>FS: <span class="f">\(\delta\)</span>, <span class="f">\(\omega\)</span>, <span class="f">\(\omega_D\)</span>; und <span class="f">\(\lambda\)</span> = Wellenlänge ab Lektion 7</td></tr>
+    <tr><td>Erzwungene Schwingung: System schwingt mit <span class="f">\(\omega_E\)</span></td><td>mit <span class="f">\(\omega_0\)</span> (nur die Amplitude „weiß" von <span class="f">\(\omega_0\)</span>)</td></tr>
+    <tr><td>Thomson <span class="f">\(T = 2\pi\sqrt{L\cdot C}\)</span> (Produkt)</td><td><span class="f">\(\sqrt{L/C}\)</span> (Quotient)</td></tr>
+    <tr><td>Bogenmaß im Argument (<span class="f">\(\omega t\)</span>, Kleinwinkelnäherung)</td><td>Gradmaß (TR auf DEG ⇒ falsche Werte)</td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="p1"> Begriffe erläutern wie in Abitur 2022 2.1 (vier Sätze mit Bezug)</label>
+    <label><input type="checkbox" data-k="p2"> Heft-Versuch beschreiben, <span class="f">\(D\)</span> aus <span class="f">\(\Delta x(m)\)</span>, <span class="f">\(T^2\)</span>-Linearisierung, Experiment planen</label>
+    <label><input type="checkbox" data-k="p3"> <span class="f">\(T = 2\pi\sqrt{m/D}\)</span> aus der DGL herleiten mit „für alle <span class="f">\(t\)</span>" (Klausur 3, 3a) und Startbedingung (3b)</label>
+    <label><input type="checkbox" data-k="p4"> Energieumwandlung beschreiben, <span class="f">\(v_{\mathrm{max}}\)</span> auf zwei Wegen</label>
+    <label><input type="checkbox" data-k="p5"> Fadenpendel herleiten (Kleinwinkel), Richtgröße aus der Kraft (Kette 2023)</label>
+    <label><input type="checkbox" data-k="p6"> Zeiger: Phasenwinkel, Projektion, Heft-Beispiel mit Vorzeichen</label>
+    <label><input type="checkbox" data-k="p7"> Dämpfung: <span class="f">\(\lambda\)</span>, <span class="f">\(\omega\)</span>, Einhüllende, Auswertung per Regression; Resonanzkurve erklären</label>
+    <label><input type="checkbox" data-k="p8"> Schwingkreis: Thomson herleiten, Heft-Versuch bis <span class="f">\(L = 0{,}133\,\mathrm{H}\)</span> nachrechnen</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 6 · erstellt 28.10.2026 · Quellen: Hefteinträge (12.2) Schwingungen und Wellen (Tepe, S. 1–15: Versuch, harmonische Schwingung, Energiebilanz, Fadenpendel, gedämpfte und erzwungene Schwingung, LC-Schwingkreis), Arbeitsblatt „Gedämpfte Schwingungen" (13.4.26), Typst-Heft (Zeigerformalismus), Klausur 3 „Magnetfelder und Schwingungen" (eigene Lösung), Zentralabitur 2022 IIa Aufgabe 2 und 2023 IIa Aufgabe 2 mit Erwartungshorizont, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const deT = (x, d) => de(x, d).replace(',', '{,}');
+  const sciT = (x, sig) => {
+    if (x === 0) return '0';
+    let exp = Math.floor(Math.log10(Math.abs(x)));
+    const mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); exp += 1; }
+    m = m.replace(',', '{,}');
+    return exp === 0 ? m : m + '\\cdot 10^{' + exp + '}';
+  };
+  const texUnit = (u) => '\\mathrm{' + u.replace(/µ/g, '\\mu ').replace(/Ω/g, '\\Omega ') + '}';
+  const unitT = (x, u) => {
+    const ax = Math.abs(x); if (ax === 0) return '0\\,' + texUnit(u);
+    const pre = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'µ'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
+    let best = pre[0]; for (const p of pre) { if (ax >= p[0] * 0.9999) best = p; }
+    return deT(x / best[0], 2) + '\\,' + texUnit(best[1] + u);
+  };
+  const $ = (id) => document.getElementById(id);
+  const onTheme = (fn) => window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fn);
+  function arrowAt(ctx, x, y, ux, uy, color) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(uy, ux)); ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-6, 5); ctx.lineTo(-6, -5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function arrowLine(ctx, x1, y1, x2, y2, color, w) { ctx.strokeStyle = color; ctx.lineWidth = w || 2; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); const dx = x2 - x1, dy = y2 - y1, m = Math.hypot(dx, dy) || 1; arrowAt(ctx, x2, y2, dx / m, dy / m, color); }
+  function linreg(X, Y) { const n = X.length; let sx = 0, sy = 0; for (let i = 0; i < n; i++) { sx += X[i]; sy += Y[i]; } const mx = sx / n, my = sy / n; let sxx = 0, sxy = 0, syy = 0; for (let i = 0; i < n; i++) { sxx += (X[i] - mx) ** 2; sxy += (X[i] - mx) * (Y[i] - my); syy += (Y[i] - my) ** 2; } const m = sxy / sxx; return { m, b: my - m * mx, r: sxy / Math.sqrt(sxx * syy) }; }
+  function powreg(X, Y) { const r = linreg(X.map(Math.log), Y.map(Math.log)); return { a: Math.exp(r.b), b: r.m, r: r.r }; }
+  function expreg(X, Y) { const r = linreg(X, Y.map(Math.log)); return { a: Math.exp(r.b), base: Math.exp(r.m), k: r.m, r: r.r }; }
+  function ellipK(k) { let a = 1, b = Math.sqrt(1 - k * k); for (let i = 0; i < 40; i++) { const an = (a + b) / 2, bn = Math.sqrt(a * b); a = an; b = bn; if (Math.abs(a - b) < 1e-15) break; } return Math.PI / (2 * a); }
+  function niceStep(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
+  // Koordinatensystem mit Ticks; gibt Abbildungen X(x), Y(y) zurück
+  function frame(ctx, W, H, pad, x0, x1, y0, y1, xl, yl, opts) {
+    opts = opts || {};
+    ctx.clearRect(0, 0, W, H);
+    const X = (x) => pad.l + (x - x0) / (x1 - x0) * (W - pad.l - pad.r);
+    const Y = (y) => H - pad.b - (y - y0) / (y1 - y0) * (H - pad.t - pad.b);
+    const xs = opts.xs || niceStep((x1 - x0) / 5), ys = opts.ys || niceStep((y1 - y0) / 4);
+    ctx.font = '11px system-ui'; ctx.fillStyle = css('--muted'); ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+    const dx = Math.max(0, -Math.floor(Math.log10(xs))), dy = Math.max(0, -Math.floor(Math.log10(ys)));
+    for (let x = Math.ceil(x0 / xs) * xs; x <= x1 + 1e-9; x += xs) { ctx.beginPath(); ctx.moveTo(X(x), pad.t); ctx.lineTo(X(x), H - pad.b); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(de(x, dx), X(x), H - pad.b + 14); }
+    for (let y = Math.ceil(y0 / ys) * ys; y <= y1 + 1e-9; y += ys) { ctx.beginPath(); ctx.moveTo(pad.l, Y(y)); ctx.lineTo(W - pad.r, Y(y)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(de(y, dy), pad.l - 4, Y(y) + 4); }
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.2;
+    if (y0 <= 0 && y1 >= 0) { ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.stroke(); }
+    if (x0 <= 0 && x1 >= 0) { ctx.beginPath(); ctx.moveTo(X(0), pad.t); ctx.lineTo(X(0), H - pad.b); ctx.stroke(); }
+    ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'right'; ctx.fillText(xl, W - pad.r, H - pad.b + 28); ctx.textAlign = 'left'; ctx.fillText(yl, pad.l + 4, pad.t - 4);
+    return { X, Y };
+  }
+  function curve(ctx, map, f, x0, x1, color, w, dash, n) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); n = n || 300; for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; const y = f(x); if (!isFinite(y)) continue; const px = map.X(x), py = map.Y(y); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke(); ctx.restore(); }
+  function dot(ctx, x, y, color, r) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r || 4, 0, 2 * Math.PI); ctx.fill(); }
+  const g0 = 9.81;
+
+  /* ---------- 1 Begriffe: Sinus ---------- */
+  (function sinus() {
+    const cv = $('swCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function update() {
+      const A = parseFloat($('swA').value), T = parseFloat($('swT').value), phiD = parseFloat($('swPhi').value), phi = phiD * Math.PI / 180, w = 2 * Math.PI / T;
+      texHTML($('swAv'), '\\(' + deT(A, 1) + '\\,\\mathrm{cm}\\)'); texHTML($('swTv'), '\\(' + deT(T, 1) + '\\,\\mathrm{s}\\)'); texHTML($('swPhiv'), '\\(' + phiD + '^\\circ\\)');
+      const tmax = 2.5 * T, y = (t) => A * Math.sin(w * t + phi);
+      const map = frame(ctx, W, H, { l: 44, r: 12, t: 14, b: 34 }, 0, tmax, -11, 11, 't in s', 'y in cm', { ys: 5 });
+      curve(ctx, map, y, 0, tmax, css('--accent'), 2.5);
+      // Amplitude am ersten Maximum
+      const t1 = ((Math.PI / 2 - phi) / w + 10 * T) % T; // erstes Maximum
+      arrowLine(ctx, map.X(t1), map.Y(0), map.X(t1), map.Y(A), css('--pos'), 2); ctx.fillStyle = css('--pos'); ctx.font = '13px system-ui'; ctx.textAlign = 'left'; ctx.fillText('ŷ', map.X(t1) + 6, map.Y(A / 2));
+      // Periodendauer zwischen zwei Maxima
+      const t2 = t1 + T; if (t2 <= tmax) { ctx.strokeStyle = css('--ok'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(map.X(t1), map.Y(A) - 10); ctx.lineTo(map.X(t2), map.Y(A) - 10); ctx.stroke(); arrowAt(ctx, map.X(t2), map.Y(A) - 10, 1, 0, css('--ok')); arrowAt(ctx, map.X(t1), map.Y(A) - 10, -1, 0, css('--ok')); ctx.fillStyle = css('--ok'); ctx.textAlign = 'center'; ctx.fillText('T', map.X((t1 + t2) / 2), map.Y(A) - 16); }
+      dot(ctx, map.X(0), map.Y(y(0)), css('--kin'), 5);
+      const f = 1 / T;
+      texHTML($('swOut'), '\\(y(t) = ' + deT(A, 1) + '\\,\\mathrm{cm}\\cdot\\sin(' + deT(w, 2) + '\\,\\mathrm{s^{-1}}\\cdot t + ' + deT(phi, 2) + ')\\)<br>\\(f = 1/T = \\htmlClass{hl}{' + deT(f, 2) + '\\,\\mathrm{Hz}}\\), \\(\\omega = 2\\pi f = \\htmlClass{hl}{' + deT(w, 2) + '\\,\\mathrm{s^{-1}}}\\)<br>Startwert \\(y(0) = \\hat y\\sin\\varphi = ' + deT(y(0), 2) + '\\,\\mathrm{cm}\\)' + (phiD === 90 ? ' (Start im Umkehrpunkt: Kosinus)' : phiD === 0 ? ' (Start im Nulldurchgang: Sinus)' : '') + '<br>\\(v_{\\mathrm{max}} = \\hat y\\,\\omega = ' + deT(A * w, 1) + '\\,\\mathrm{cm/s}\\), \\(a_{\\mathrm{max}} = \\hat y\\,\\omega^2 = ' + deT(A * w * w, 1) + '\\,\\mathrm{cm/s^2}\\)');
+    }
+    ['swA', 'swT', 'swPhi'].forEach((id) => $(id).addEventListener('input', update)); onTheme(update); update();
+  })();
+
+  /* ---------- 2 Heft-Versuch Feder-Masse-Pendel ---------- */
+  (function versuch() {
+    const cv = $('fmCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const M1 = [0, 0.5, 1, 1.5, 2, 2.5, 3], DX = [0, 0.05, 0.10, 0.14, 0.20, 0.24, 0.28];
+    const M3 = [0.5, 1, 1.5, 2], T3 = [0.46, 0.60, 0.78, 0.85];
+    let mode = 1;
+    const r1 = linreg(M1, DX), D1 = g0 / r1.m;
+    const T2 = T3.map((t) => t * t), r3 = linreg([0].concat(M3), [0].concat(T2)), D3 = 4 * Math.PI * Math.PI / r3.m;
+    const pr = powreg(M3, T3);
+    function draw() {
+      const pad = { l: 50, r: 14, t: 16, b: 36 };
+      if (mode === 1) {
+        const map = frame(ctx, W, H, pad, 0, 3.2, 0, 0.32, 'm in kg', 'Δx in m', { xs: 0.5, ys: 0.05 });
+        curve(ctx, map, (m) => r1.m * m + r1.b, 0, 3.2, css('--accent'), 2);
+        M1.forEach((m, i) => dot(ctx, map.X(m), map.Y(DX[i]), css('--pos'), 4));
+        texHTML($('fmOut'), '<b>Teil 1, TR-Schema:</b> (1) Werte in den TR. (2) Diagramm \\(m\\) in kg gegen \\(\\Delta x\\) in m. (3) Punkte liegen augenscheinlich auf einer Geraden ⇒ lineare Regression: \\(y = ' + deT(r1.m, 4) + '\\,x + ' + deT(r1.b, 4) + '\\). (4) Physikalisch: \\(\\Delta x(m) = ' + deT(r1.m, 3) + '\\,\\mathrm{m/kg}\\cdot m + ' + deT(r1.b * 100, 2) + '\\,\\mathrm{cm}\\); Achsenabschnitt sollte 0 sein (ohne Masse keine Dehnung), Abweichung = Messungenauigkeit. (5) Steigung \\(= g/D\\) ⇒ \\(D = g/' + deT(r1.m, 3) + '\\,\\mathrm{m/kg} = \\htmlClass{hl}{' + deT(D1, 0) + '\\,\\mathrm{N/m}}\\).');
+      } else if (mode === 2) {
+        const map = frame(ctx, W, H, pad, 0, 2.2, 0, 1.0, 'm in kg', 'T in s', { xs: 0.5, ys: 0.2 });
+        curve(ctx, map, (m) => 2 * Math.PI * Math.sqrt(m / D1), 0.001, 2.2, css('--muted'), 1.5, [5, 4]);
+        curve(ctx, map, (m) => pr.a * Math.pow(m, pr.b), 0.001, 2.2, css('--accent'), 2);
+        M3.forEach((m, i) => dot(ctx, map.X(m), map.Y(T3[i]), css('--pos'), 4));
+        texHTML($('fmOut'), '<b>Teil 3:</b> Die Punkte liegen auf einer gebogenen Kurve (doppelte Masse ⇒ nicht doppelte Zeit). Potenzregression (blau): \\(T = ' + deT(pr.a, 3) + '\\cdot m^{' + deT(pr.b, 3) + '}\\), Exponent \\(\\approx 0{,}5\\) ⇒ \\(T \\propto \\sqrt m\\). Grau gestrichelt: Theorie \\(T = 2\\pi\\sqrt{m/D}\\) mit \\(D = ' + deT(D1, 0) + '\\,\\mathrm{N/m}\\) aus Teil 1. Sie trifft die Messpunkte ohne jede Anpassung: Statik und Dynamik passen zusammen.');
+      } else {
+        const map = frame(ctx, W, H, pad, 0, 2.2, 0, 0.9, 'm in kg', 'T² in s²', { xs: 0.5, ys: 0.2 });
+        curve(ctx, map, (m) => r3.m * m + r3.b, 0, 2.2, css('--accent'), 2);
+        M3.forEach((m, i) => dot(ctx, map.X(m), map.Y(T2[i]), css('--pos'), 4));
+        texHTML($('fmOut'), '<b>Linearisiert:</b> Aus \\(T = 2\\pi\\sqrt{m/D}\\) folgt \\(T^2 = \\frac{4\\pi^2}{D}\\,m\\): Ursprungsgerade. Lineare Regression: \\(T^2 = ' + deT(r3.m, 3) + '\\,\\mathrm{s^2/kg}\\cdot m + ' + deT(r3.b, 3) + '\\,\\mathrm{s^2}\\) (\\(r = ' + deT(r3.r, 3) + '\\)). Steigung \\(= 4\\pi^2/D\\) ⇒ \\(D = 4\\pi^2/' + deT(r3.m, 3) + '\\,\\mathrm{s^2/kg} = \\htmlClass{hl}{' + deT(D3, 0) + '\\,\\mathrm{N/m}}\\). Teil 1 ergab \\(' + deT(D1, 0) + '\\,\\mathrm{N/m}\\): Abweichung \\(' + deT(Math.abs(D3 - D1) / D1 * 100, 1) + '\\,\\%\\), im Rahmen der Messgenauigkeit (Stoppuhr von Hand). Die Formel ist bestätigt.');
+      }
+      ['fmBtn1', 'fmBtn2', 'fmBtn3'].forEach((id, i) => $(id).classList.toggle('active', mode === i + 1));
+    }
+    ['fmBtn1', 'fmBtn2', 'fmBtn3'].forEach((id, i) => $(id).addEventListener('click', () => { mode = i + 1; draw(); }));
+    onTheme(draw); draw();
+  })();
+
+  /* ---------- 3 Harmonische Schwingung: Animation ---------- */
+  (function harmonisch() {
+    const cv = $('hoCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let t = 0, running = true, last = null;
+    function params() { return { m: parseFloat($('hoM').value), D: parseFloat($('hoD').value), A: parseFloat($('hoA').value) / 100 }; }
+    function draw() {
+      const { m, D, A } = params(); const w = Math.sqrt(D / m), T = 2 * Math.PI / w;
+      texHTML($('hoMv'), '\\(' + deT(m, 1) + '\\,\\mathrm{kg}\\)'); texHTML($('hoDv'), '\\(' + D + '\\,\\mathrm{N/m}\\)'); texHTML($('hoAv'), '\\(' + deT(A * 100, 1) + '\\,\\mathrm{cm}\\)');
+      const y = A * Math.cos(w * t), v = -A * w * Math.sin(w * t), a = -A * w * w * Math.cos(w * t);
+      ctx.clearRect(0, 0, W, H);
+      // Feder links
+      const x0 = 70, top = 16, rest = 150, yp = rest + y * 600; // 6 px pro cm (Auslenkung nach unten positiv)
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x0 - 30, top); ctx.lineTo(x0 + 30, top); ctx.stroke();
+      ctx.lineWidth = 2; ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(x0, top); const n = 12, len = yp - top - 18; for (let i = 0; i <= n; i++) { const yy = top + 8 + len * i / n; const xx = x0 + (i === 0 || i === n ? 0 : (i % 2 ? 14 : -14)); ctx.lineTo(xx, yy); } ctx.lineTo(x0, yp); ctx.stroke();
+      ctx.fillStyle = css('--accent'); ctx.fillRect(x0 - 18, yp, 36, 28);
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = css('--line'); ctx.beginPath(); ctx.moveTo(20, rest + 14); ctx.lineTo(130, rest + 14); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Ruhelage', 22, rest + 10);
+      arrowLine(ctx, 115, rest + 14, 115, yp + 14, css('--pos'), 1.5); ctx.fillStyle = css('--pos'); ctx.fillText('y', 119, (rest + yp) / 2 + 14);
+      // drei Graphen rechts
+      const gx = 165, gw = W - gx - 10, strips = [['y', y / A, css('--accent'), (tt) => Math.cos(w * tt)], ['v', v / (A * w), css('--kin'), (tt) => -Math.sin(w * tt)], ['a', a / (A * w * w), css('--pot'), (tt) => -Math.cos(w * tt)]];
+      const sh = 96, tw = 2 * T;
+      strips.forEach((s, i) => {
+        const yc = 16 + i * sh + sh / 2 - 6, amp = sh / 2 - 14;
+        ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(gx, yc); ctx.lineTo(gx + gw, yc); ctx.stroke();
+        ctx.strokeStyle = s[2]; ctx.lineWidth = 2; ctx.beginPath(); for (let k = 0; k <= 200; k++) { const tt = tw * k / 200; const px = gx + gw * k / 200, py = yc - amp * s[3](tt); if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+        const tm = t % tw; dot(ctx, gx + gw * tm / tw, yc - amp * s[1], s[2], 5);
+        ctx.fillStyle = s[2]; ctx.font = 'bold 13px system-ui'; ctx.textAlign = 'left'; ctx.fillText(s[0], gx + 4, yc - amp - 2);
+        if (i === 2) { ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('t (zwei Perioden)', gx + gw, yc + amp + 12); }
+      });
+      texHTML($('hoOut'), '\\(\\omega = \\sqrt{D/m} = \\htmlClass{hl}{' + deT(w, 2) + '\\,\\mathrm{s^{-1}}}\\), \\(T = 2\\pi/\\omega = \\htmlClass{hl}{' + deT(T, 3) + '\\,\\mathrm{s}}\\), \\(f = ' + deT(1 / T, 2) + '\\,\\mathrm{Hz}\\)<br>\\(v_{\\mathrm{max}} = \\hat y\\omega = ' + deT(A * w, 3) + '\\,\\mathrm{m/s}\\), \\(a_{\\mathrm{max}} = \\hat y\\omega^2 = ' + deT(A * w * w, 2) + '\\,\\mathrm{m/s^2}\\)<br>jetzt: \\(t = ' + deT(t % T, 2) + '\\,\\mathrm{s}\\), \\(y = ' + deT(y * 100, 2) + '\\,\\mathrm{cm}\\), \\(v = ' + deT(v, 3) + '\\,\\mathrm{m/s}\\), \\(a = ' + deT(a, 2) + '\\,\\mathrm{m/s^2}\\)<br>Probe \\(a/y = ' + (Math.abs(y) > 1e-4 ? deT(a / y, 1) : '\\text{–}') + '\\,\\mathrm{s^{-2}} = -\\omega^2 = ' + deT(-w * w, 1) + '\\,\\mathrm{s^{-2}}\\) ✓');
+    }
+    function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; if (running) t += dt; draw(); requestAnimationFrame(loop); }
+    ['hoM', 'hoD', 'hoA'].forEach((id) => $(id).addEventListener('input', () => { t = 0; draw(); }));
+    $('hoPlay').addEventListener('click', () => { running = !running; $('hoPlay').textContent = running ? 'Pause' : 'Weiter'; });
+    requestAnimationFrame(loop);
+  })();
+
+  /* ---------- 4 Energie ---------- */
+  (function energie() {
+    const cv = $('enCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const D = parseFloat($('enD').value), m = parseFloat($('enM').value), A = parseFloat($('enA').value) / 100;
+      texHTML($('enDv'), '\\(' + D + '\\,\\mathrm{N/m}\\)'); texHTML($('enMv'), '\\(' + deT(m, 1) + '\\,\\mathrm{kg}\\)'); texHTML($('enAv'), '\\(' + deT(A * 100, 1) + '\\,\\mathrm{cm}\\)');
+      const w = Math.sqrt(D / m), T = 2 * Math.PI / w, Eg = 0.5 * D * A * A, tw = 2 * T;
+      ctx.clearRect(0, 0, W, H);
+      const pad = { l: 50, r: 12, t: 14, b: 8 }, gh = 150;
+      const X = (t) => pad.l + t / tw * (W - pad.l - pad.r), Y = (E) => pad.t + gh - E / Eg * (gh - 10);
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t + gh); ctx.lineTo(W - pad.r, pad.t + gh); ctx.stroke();
+      ctx.setLineDash([5, 4]); ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(pad.l, Y(Eg)); ctx.lineTo(W - pad.r, Y(Eg)); ctx.stroke(); ctx.setLineDash([]);
+      const n = 240; const span = (t) => 0.5 * D * Math.pow(A * Math.cos(w * t), 2), kin = (t) => 0.5 * m * Math.pow(A * w * Math.sin(w * t), 2);
+      [[span, css('--pot')], [kin, css('--kin')]].forEach((s) => { ctx.strokeStyle = s[1]; ctx.lineWidth = 2.2; ctx.beginPath(); for (let k = 0; k <= n; k++) { const t = tw * k / n; const px = X(t), py = Y(s[0](t)); if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke(); });
+      ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillStyle = css('--pot'); ctx.fillText('E_span', pad.l + 6, pad.t + 14); ctx.fillStyle = css('--kin'); ctx.fillText('E_kin', pad.l + 60, pad.t + 14); ctx.fillStyle = css('--muted'); ctx.fillText('E_ges', W - pad.r - 44, Y(Eg) - 4);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('E in mJ', pad.l - 4, pad.t + 10); ctx.fillText(de(Eg * 1000, 1), pad.l - 4, Y(Eg) + 4); ctx.fillText('0', pad.l - 4, Y(0) + 4);
+      // Auslenkung unten
+      const y0 = pad.t + gh + 50, amp = 32;
+      ctx.strokeStyle = css('--line'); ctx.beginPath(); ctx.moveTo(pad.l, y0); ctx.lineTo(W - pad.r, y0); ctx.stroke();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let k = 0; k <= n; k++) { const t = tw * k / n; const px = X(t), py = y0 - amp * Math.cos(w * t); if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      ctx.fillStyle = css('--accent'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('y(t)', pad.l + 6, y0 - amp - 4);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('t: zwei Perioden T', W - pad.r, y0 + amp + 14);
+      for (let k = 0; k <= 4; k++) { const px = X(k * T / 2); ctx.strokeStyle = css('--line'); ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(px, pad.t); ctx.lineTo(px, y0 + amp); ctx.stroke(); ctx.setLineDash([]); }
+      texHTML($('enOut'), '\\(E_{\\mathrm{ges}} = \\tfrac12 D\\hat y^2 = \\htmlClass{hl}{' + deT(Eg * 1000, 2) + '\\,\\mathrm{mJ}}\\) (konstant, unabhängig von \\(m\\))<br>\\(v_{\\mathrm{max}} = \\sqrt{2E_{\\mathrm{ges}}/m} = ' + deT(Math.sqrt(2 * Eg / m), 3) + '\\,\\mathrm{m/s} = \\hat y\\omega = ' + deT(A * w, 3) + '\\,\\mathrm{m/s}\\) ✓<br>Periode der Auslenkung \\(T = ' + deT(T, 3) + '\\,\\mathrm{s}\\), Periode der Energieformen \\(T/2 = ' + deT(T / 2, 3) + '\\,\\mathrm{s}\\)<br>Umkehrpunkt: \\(E_{\\mathrm{span}} = E_{\\mathrm{ges}}\\), \\(E_{\\mathrm{kin}} = 0\\). Nulldurchgang: umgekehrt.');
+    }
+    ['enD', 'enM', 'enA'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 5 Fadenpendel (exakte Integration) ---------- */
+  (function faden() {
+    const cv = $('fpCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let t = 0, last = null, traj = [], tmax = 1, T0 = 1, Tex = 1, state = { a: 0, v: 0 };
+    function params() { return { l: parseFloat($('fpL').value), a0: parseFloat($('fpA0').value) * Math.PI / 180, g: parseFloat($('fpG').value) }; }
+    function reset() {
+      const { l, a0, g } = params();
+      texHTML($('fpLv'), '\\(' + deT(l, 2) + '\\,\\mathrm{m}\\)'); texHTML($('fpA0v'), '\\(' + Math.round(a0 * 180 / Math.PI) + '^\\circ\\)');
+      T0 = 2 * Math.PI * Math.sqrt(l / g); Tex = 4 * Math.sqrt(l / g) * ellipK(Math.sin(a0 / 2));
+      tmax = 3 * Tex; traj = []; let a = a0, v = 0; const dt = tmax / 3000;
+      for (let i = 0; i <= 3000; i++) { traj.push(a); const acc = (x) => -g / l * Math.sin(x); const k1v = acc(a), k1a = v; const k2v = acc(a + 0.5 * dt * k1a), k2a = v + 0.5 * dt * k1v; const k3v = acc(a + 0.5 * dt * k2a), k3a = v + 0.5 * dt * k2v; const k4v = acc(a + dt * k3a), k4a = v + dt * k3v; a += dt / 6 * (k1a + 2 * k2a + 2 * k3a + k4a); v += dt / 6 * (k1v + 2 * k2v + 2 * k3v + k4v); }
+      t = 0;
+      texHTML($('fpOut'), '\\(T_{\\mathrm{harm}} = 2\\pi\\sqrt{l/g} = \\htmlClass{hl}{' + deT(T0, 3) + '\\,\\mathrm{s}}\\) (Kleinwinkelnäherung)<br>\\(T_{\\mathrm{exakt}} = ' + deT(Tex, 3) + '\\,\\mathrm{s}\\) (Simulation), Abweichung \\(' + deT((Tex / T0 - 1) * 100, 1) + '\\,\\%\\)' + ((Tex / T0 - 1) < 0.01 ? ' (unter 1 %: harmonisch)' : (Tex / T0 - 1) < 0.05 ? ' (spürbar, aber oft toleriert)' : ' (deutlich: nicht mehr harmonisch)') + '<br>Richtgröße \\(D = mg/l\\) pro kg: \\(' + deT(g / l, 2) + '\\,\\mathrm{N/(m\\,kg)}\\); \\(\\omega = \\sqrt{g/l} = ' + deT(Math.sqrt(g / l), 2) + '\\,\\mathrm{s^{-1}}\\)<br>Masse spielt keine Rolle: Sie kürzt sich aus \\(m l\\ddot\\alpha = -mg\\sin\\alpha\\).');
+    }
+    function draw() {
+      const { l, a0, g } = params(); const tt = t % tmax; const idx = Math.min(3000, Math.round(tt / tmax * 3000)); const a = traj[idx];
+      ctx.clearRect(0, 0, W, H);
+      const px0 = 110, py0 = 28, scale = 115; const L = l * scale;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(px0, py0); ctx.lineTo(px0, py0 + L + 20); ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle = css('--line'); ctx.beginPath(); ctx.arc(px0, py0, L, Math.PI / 2 - a0, Math.PI / 2 + a0); ctx.stroke();
+      const bx = px0 + L * Math.sin(a), by = py0 + L * Math.cos(a);
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(px0 - 14, py0); ctx.lineTo(px0 + 14, py0); ctx.stroke();
+      ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(px0, py0); ctx.lineTo(bx, by); ctx.stroke();
+      dot(ctx, bx, by, css('--accent'), 11);
+      // tangentiale Rückstellkraft
+      const Ft = -Math.sin(a) * 40; arrowLine(ctx, bx, by, bx + Ft * Math.cos(a), by - Ft * Math.sin(a), css('--pos'), 2);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('α = ' + de(a * 180 / Math.PI, 1) + '°', 12, H - 12);
+      // Graph rechts: exakt (blau) vs harmonisch (grau)
+      const gx = 250, gw = W - gx - 10, yc = 150, amp = 110;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(gx, yc); ctx.lineTo(gx + gw, yc); ctx.stroke();
+      ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1.5; ctx.beginPath(); for (let k = 0; k <= 300; k++) { const x = tmax * k / 300; const py = yc - amp * Math.cos(2 * Math.PI / T0 * x); const px = gx + gw * k / 300; if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let k = 0; k <= 300; k++) { const px = gx + gw * k / 300, py = yc - amp * traj[Math.round(k * 10)] / a0; if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      dot(ctx, gx + gw * tt / tmax, yc - amp * a / a0, css('--accent'), 5);
+      ctx.fillStyle = css('--accent'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('exakt', gx + 4, 22); ctx.fillStyle = css('--muted'); ctx.fillText('harmonische Näherung', gx + 50, 22); ctx.textAlign = 'right'; ctx.fillText('t (drei Perioden)', gx + gw, H - 6);
+    }
+    function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; t += dt; draw(); requestAnimationFrame(loop); }
+    ['fpL', 'fpA0'].forEach((id) => $(id).addEventListener('input', reset)); $('fpG').addEventListener('change', reset); onTheme(draw);
+    reset(); requestAnimationFrame(loop);
+  })();
+
+  /* ---------- 6 Zeiger ---------- */
+  (function zeiger() {
+    const cv = $('zgCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let t = 0, running = true, last = null;
+    function params() { return { A: parseFloat($('zgA').value), w: parseFloat($('zgW').value), phi: parseFloat($('zgPhi').value) * Math.PI / 180, phiD: parseFloat($('zgPhi').value) }; }
+    function draw() {
+      const { A, w, phi, phiD } = params();
+      texHTML($('zgAv'), '\\(' + deT(A, 1) + '\\,\\mathrm{cm}\\)'); texHTML($('zgWv'), '\\(' + deT(w, 1) + '\\,\\mathrm{s^{-1}}\\)'); texHTML($('zgPhiv'), '\\(' + phiD + '^\\circ\\)');
+      const T = 2 * Math.PI / w, tmax = 2.5 * T, al = w * t + phi, y = A * Math.sin(al);
+      ctx.clearRect(0, 0, W, H);
+      const cx = 110, cy = 132, R = A * 9;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx - 100, cy); ctx.lineTo(cx + 100, cy); ctx.moveTo(cx, cy + 100); ctx.lineTo(cx, cy - 100); ctx.stroke();
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('x', cx + 92, cy - 6); ctx.fillText('y', cx + 6, cy - 92);
+      const alm = ((al % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
+      ctx.strokeStyle = css('--kin'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, 22, 0, -alm, true); ctx.stroke();
+      const tx = cx + R * Math.cos(al), ty = cy - R * Math.sin(al);
+      arrowLine(ctx, cx, cy, tx, ty, css('--accent'), 3);
+      ctx.setLineDash([4, 4]); ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(cx, ty); ctx.stroke(); ctx.setLineDash([]);
+      ctx.strokeStyle = css('--pos'); ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, ty); ctx.stroke();
+      ctx.fillStyle = css('--kin'); ctx.font = '12px system-ui'; ctx.fillText('α', cx + 26, cy - 8);
+      // Kurve rechts
+      const gx = 230, gw = W - gx - 10, yc = cy, amp = 90;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(gx, yc); ctx.lineTo(gx + gw, yc); ctx.stroke();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let k = 0; k <= 300; k++) { const tt = tmax * k / 300; const px = gx + gw * k / 300, py = yc - amp * Math.sin(w * tt + phi) / 10; if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      const tm = t % tmax, mx = gx + gw * tm / tmax; ctx.setLineDash([4, 4]); ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(mx, ty); ctx.stroke(); ctx.setLineDash([]); dot(ctx, mx, yc - amp * y / 10, css('--pos'), 5);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('t', gx + gw, yc + 14);
+      texHTML($('zgOut'), '\\(t = ' + deT(t % tmax, 2) + '\\,\\mathrm{s}\\): Phasenwinkel \\(\\alpha = \\omega t + \\varphi = ' + deT(al, 2) + '\\) rad, modulo \\(2\\pi\\): \\(' + deT(alm, 2) + ' = ' + deT(alm * 180 / Math.PI, 0) + '^\\circ\\)<br>Auslenkung \\(y = \\hat y\\sin\\alpha = ' + deT(A, 1) + '\\,\\mathrm{cm}\\cdot\\sin(' + deT(alm, 2) + ') = \\htmlClass{hl}{' + deT(y, 2) + '\\,\\mathrm{cm}}\\)<br>Periodendauer \\(T = 2\\pi/\\omega = ' + deT(T, 2) + '\\,\\mathrm{s}\\)');
+    }
+    function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; if (running) t += dt; draw(); requestAnimationFrame(loop); }
+    ['zgA', 'zgW', 'zgPhi'].forEach((id) => $(id).addEventListener('input', draw));
+    $('zgPlay').addEventListener('click', () => { running = !running; $('zgPlay').textContent = running ? 'Pause' : 'Weiter'; });
+    $('zgHeft').addEventListener('click', () => { $('zgA').value = 5; $('zgW').value = 1; $('zgPhi').value = 90; t = 2.5; running = false; $('zgPlay').textContent = 'Weiter'; draw(); });
+    requestAnimationFrame(loop);
+  })();
+
+  /* ---------- 7 Gedämpfte Schwingung ---------- */
+  (function daempfung() {
+    const cv = $('dmCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const c = parseFloat($('dmC').value), m = parseFloat($('dmM').value), D = parseFloat($('dmD').value);
+      texHTML($('dmCv'), '\\(' + deT(c, 2) + '\\,\\mathrm{kg/s}\\)'); texHTML($('dmMv'), '\\(' + deT(m, 2) + '\\,\\mathrm{kg}\\)'); texHTML($('dmDv'), '\\(' + D + '\\,\\mathrm{N/m}\\)');
+      const A = 5, w0 = Math.sqrt(D / m), lam = c / (2 * m), T0 = 2 * Math.PI / w0, tmax = 8 * T0;
+      const osc = lam < w0, w = osc ? Math.sqrt(w0 * w0 - lam * lam) : 0, T = osc ? 2 * Math.PI / w : NaN;
+      // numerische Lösung (RK4) für alle Fälle
+      const N = 2400, dt = tmax / N, ys = [], ts = []; let y = A, v = 0;
+      const acc = (yy, vv) => -(D * yy + c * vv) / m;
+      for (let i = 0; i <= N; i++) { ys.push(y); ts.push(i * dt); const k1v = acc(y, v), k1y = v; const k2v = acc(y + 0.5 * dt * k1y, v + 0.5 * dt * k1v), k2y = v + 0.5 * dt * k1v; const k3v = acc(y + 0.5 * dt * k2y, v + 0.5 * dt * k2v), k3y = v + 0.5 * dt * k2v; const k4v = acc(y + dt * k3y, v + dt * k3v), k4y = v + dt * k3v; y += dt / 6 * (k1y + 2 * k2y + 2 * k3y + k4y); v += dt / 6 * (k1v + 2 * k2v + 2 * k3v + k4v); }
+      const peaksT = [], peaksY = []; for (let i = 1; i < N; i++) { if (ys[i] > ys[i - 1] && ys[i] >= ys[i + 1] && ys[i] > 0.02 * A) { peaksT.push(ts[i]); peaksY.push(ys[i]); } }
+      const map = frame(ctx, W, H, { l: 44, r: 12, t: 14, b: 34 }, 0, tmax, -A * 1.1, A * 1.1, 't in s', 'y in cm', { ys: 2.5 });
+      curve(ctx, map, (t) => A * Math.cos(w0 * t), 0, tmax, css('--line'), 1.2);
+      if (osc) { curve(ctx, map, (t) => A * Math.exp(-lam * t), 0, tmax, css('--pos'), 1.5, [5, 4]); curve(ctx, map, (t) => -A * Math.exp(-lam * t), 0, tmax, css('--pos'), 1.5, [5, 4]); }
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2.2; ctx.beginPath(); for (let i = 0; i <= N; i += 2) { const px = map.X(ts[i]), py = map.Y(ys[i]); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      peaksT.forEach((pt, i) => dot(ctx, map.X(pt), map.Y(peaksY[i]), css('--pos'), 4));
+      let reg = '';
+      if (peaksT.length >= 3) { const er = expreg([0].concat(peaksT), [A].concat(peaksY)); const lr = linreg(peaksT.map((_, i) => i + 1), peaksT); reg = '<br><b>Auswertung über die Maxima</b> (' + (peaksT.length + 1) + ' Punkte): Exponentialregression \\(\\hat y = ' + deT(er.a, 2) + '\\cdot ' + deT(er.base, 4) + '^{t/\\mathrm{s}}\\) ⇒ \\(\\lambda = -\\ln b = ' + deT(-Math.log(er.base), 3) + '\\,\\mathrm{s^{-1}}\\) ✓; Gerade \\(t(n)\\): Steigung \\(T = ' + deT(lr.m, 3) + '\\,\\mathrm{s}\\) ✓'; }
+      texHTML($('dmOut'), '\\(\\omega_0 = \\sqrt{D/m} = ' + deT(w0, 3) + '\\,\\mathrm{s^{-1}}\\), \\(T_0 = ' + deT(T0, 3) + '\\,\\mathrm{s}\\)<br>\\(\\lambda = c/(2m) = \\htmlClass{hl}{' + deT(lam, 3) + '\\,\\mathrm{s^{-1}}}\\)' + (osc ? ', \\(\\omega = \\sqrt{\\omega_0^2 - \\lambda^2} = \\htmlClass{hl}{' + deT(w, 3) + '\\,\\mathrm{s^{-1}}}\\), \\(T = ' + deT(T, 3) + '\\,\\mathrm{s}\\)<br>Halbwertszeit der Amplitude \\(t_{1/2} = \\ln 2/\\lambda = ' + (lam > 0 ? deT(Math.log(2) / lam, 2) + '\\,\\mathrm{s}' : '\\infty') + '\\)' : '<br><b>\\(\\lambda \\ge \\omega_0\\): keine Schwingung mehr</b> (Kriechfall), die Masse kehrt ohne Durchschwingen zur Ruhelage zurück.') + reg);
+    }
+    ['dmC', 'dmM', 'dmD'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 8 Resonanz ---------- */
+  (function resonanz() {
+    const cv = $('rsCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const m = 1, D = 25, w0 = Math.sqrt(D / m), F0 = 12.5; // statische Amplitude F0/D = 0,5 m -> in cm: Faktor 100/100 ... wir rechnen in cm mit Erregeramplitude 0,5 cm
+    function amp(wE, lam) { return 0.5 * w0 * w0 / Math.sqrt(Math.pow(w0 * w0 - wE * wE, 2) + Math.pow(2 * lam * wE, 2)); } // in cm (Erregeramplitude 0,5 cm)
+    function draw() {
+      const c = parseFloat($('rsC').value), lam = c / (2 * m);
+      texHTML($('rsCv'), '\\(' + deT(c, 2) + '\\,\\mathrm{kg/s}\\)');
+      const map = frame(ctx, W, H, { l: 44, r: 12, t: 14, b: 34 }, 0, 12, 0, 5, 'ω_E in 1/s', 'ŷ in cm', { xs: 2, ys: 1 });
+      curve(ctx, map, (x) => Math.min(5.2, amp(x, 0)), 0, 12, css('--line'), 1.5, null, 600);
+      curve(ctx, map, (x) => Math.min(5.2, amp(x, lam)), 0, 12, css('--accent'), 2.5, null, 600);
+      ctx.setLineDash([3, 3]); ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(map.X(w0), map.Y(0)); ctx.lineTo(map.X(w0), map.Y(5)); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('ω₀', map.X(w0) + 3, map.Y(5) + 10);
+      ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(map.X(0), map.Y(0.5)); ctx.lineTo(map.X(12), map.Y(0.5)); ctx.stroke(); ctx.setLineDash([]); ctx.fillText('Erregeramplitude 0,5 cm', map.X(7), map.Y(0.5) - 4);
+      const res = 2 * lam * lam < w0 * w0; const wR = res ? Math.sqrt(w0 * w0 - 2 * lam * lam) : 0, yR = res ? amp(wR, lam) : amp(0, lam);
+      if (res && yR < 5.2) dot(ctx, map.X(wR), map.Y(yR), css('--pos'), 5);
+      texHTML($('rsOut'), '\\(\\omega_0 = \\sqrt{D/m} = ' + deT(w0, 2) + '\\,\\mathrm{s^{-1}}\\), \\(\\lambda = c/(2m) = ' + deT(lam, 3) + '\\,\\mathrm{s^{-1}}\\)<br>' + (c === 0 ? '<b>Ohne Dämpfung:</b> Amplitude bei \\(\\omega_E = \\omega_0\\) unbegrenzt (Resonanzkatastrophe).' : (res ? 'Resonanz bei \\(\\omega_R = \\sqrt{\\omega_0^2 - 2\\lambda^2} = \\htmlClass{hl}{' + deT(wR, 2) + '\\,\\mathrm{s^{-1}}}\\), Amplitude dort \\(\\htmlClass{hl}{' + deT(yR, 2) + '\\,\\mathrm{cm}}\\) (bei \\(\\omega_0\\): \\(' + deT(amp(w0, lam), 2) + '\\,\\mathrm{cm}\\))' : '<b>Starke Dämpfung</b> (\\(2\\lambda^2 \\ge \\omega_0^2\\)): kein Resonanzmaximum mehr, Amplitude fällt monoton.')) + '<br>Überhöhung gegenüber dem Erreger: Faktor ' + de(yR / 0.5, 1) + '. Für \\(\\omega_E \\to 0\\): Masse folgt dem Erreger (0,5 cm). Für \\(\\omega_E \\gg \\omega_0\\): Amplitude → 0.');
+    }
+    $('rsC').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 9 Schwingkreis: Heft-Versuch ---------- */
+  (function schwingkreis() {
+    const cv = $('lcCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const N = [0, 1, 2, 3, 4, 5, 6, 7], Tn = [0, 450, 850, 1250, 1750, 2100, 2550, 2900], U = [6.0, 4.1, 3.2, 2.6, 2.0, 1.4, 1.0, 0.9], C = 33e-9;
+    const er = expreg(Tn, U), lam = -Math.log(er.base) * 1e6, lr = linreg(N, Tn), Tp = lr.m * 1e-6, w = 2 * Math.PI / Tp, w0 = Math.sqrt(w * w + lam * lam), f0 = w0 / (2 * Math.PI), L = 1 / (w0 * w0 * C);
+    let mode = 1;
+    function draw() {
+      const pad = { l: 50, r: 14, t: 16, b: 36 };
+      if (mode === 1) {
+        const map = frame(ctx, W, H, pad, 0, 3200, 0, 7, 't in µs', 'U in V', { xs: 500, ys: 1 });
+        curve(ctx, map, (t) => er.a * Math.pow(er.base, t), 0, 3200, css('--accent'), 2);
+        Tn.forEach((t, i) => dot(ctx, map.X(t), map.Y(U[i]), css('--pos'), 4));
+        texHTML($('lcOut'), '<b>Schritt 1, Abklingen:</b> Punkte fallen exponentiell ⇒ Exponentialregression \\(U(t) = ' + deT(er.a, 2) + '\\,\\mathrm{V}\\cdot ' + deT(er.base, 5) + '^{\\,t/\\mathrm{\\mu s}}\\) (Heft-TR: \\(5{,}78\\cdot 0{,}99934^x\\)).<br>Vergleich mit \\(\\hat U e^{-\\lambda t}\\): \\(\\lambda = -\\ln(' + deT(er.base, 5) + ')/\\mathrm{\\mu s} = \\htmlClass{hl}{' + deT(lam, 0) + '\\,\\mathrm{s^{-1}}}\\) (wie im Heft).<br>Zeitkonstante \\(1/\\lambda = ' + deT(1 / lam * 1e3, 2) + '\\,\\mathrm{ms}\\), Halbwertszeit \\(' + deT(Math.log(2) / lam * 1e3, 2) + '\\,\\mathrm{ms}\\).');
+      } else if (mode === 2) {
+        const map = frame(ctx, W, H, pad, 0, 7.5, 0, 3200, 'n', 't in µs', { xs: 1, ys: 500 });
+        curve(ctx, map, (n) => lr.m * n + lr.b, 0, 7.5, css('--accent'), 2);
+        N.forEach((n, i) => dot(ctx, map.X(n), map.Y(Tn[i]), css('--pos'), 4));
+        texHTML($('lcOut'), '<b>Schritt 2, Periodendauer:</b> Zeiten der Maxima gegen die Nummer: Gerade \\(t(n) = ' + deT(lr.m, 1) + '\\,\\mathrm{\\mu s}\\cdot n + ' + deT(lr.b, 1) + '\\,\\mathrm{\\mu s}\\) (\\(r = ' + deT(lr.r, 4) + '\\)).<br>Steigung = Periodendauer \\(T = \\htmlClass{hl}{' + deT(lr.m, 1) + '\\,\\mathrm{\\mu s}}\\) ⇒ \\(\\omega = 2\\pi/T = ' + deT(w, 0) + '\\,\\mathrm{s^{-1}}\\) (gedämpft).<br>Ungedämpft: \\(\\omega_0 = \\sqrt{\\omega^2 + \\lambda^2} = ' + deT(w0, 0) + '\\,\\mathrm{s^{-1}}\\), \\(f_0 = ' + deT(f0, 0) + '\\,\\mathrm{Hz}\\).<br><b>Schritt 3:</b> \\(L = 1/(\\omega_0^2 C) = \\htmlClass{hl}{' + deT(L, 3) + '\\,\\mathrm{H}}\\) mit \\(C = 33\\,\\mathrm{nF}\\).');
+      } else {
+        const map = frame(ctx, W, H, pad, 0, 3200, -7, 7, 't in µs', 'U_C in V', { xs: 500, ys: 2 });
+        const t0 = lr.b; curve(ctx, map, (t) => er.a * Math.pow(er.base, t) * Math.cos(w * (t - t0) * 1e-6), 0, 3200, css('--accent'), 1.8, null, 1200);
+        curve(ctx, map, (t) => er.a * Math.pow(er.base, t), 0, 3200, css('--pos'), 1.2, [5, 4]); curve(ctx, map, (t) => -er.a * Math.pow(er.base, t), 0, 3200, css('--pos'), 1.2, [5, 4]);
+        Tn.forEach((t, i) => dot(ctx, map.X(t), map.Y(U[i]), css('--pos'), 4));
+        texHTML($('lcOut'), '<b>Rekonstruktion:</b> \\(U_C(t) = ' + deT(er.a, 2) + '\\,\\mathrm{V}\\cdot e^{-' + deT(lam, 0) + '\\,\\mathrm{s^{-1}}\\cdot t}\\cos\\!\\big(' + deT(w, 0) + '\\,\\mathrm{s^{-1}}\\cdot(t - ' + deT(lr.b, 0) + '\\,\\mathrm{\\mu s})\\big)\\). Die Maxima treffen die Messpunkte: Modell und Messung passen.<br>Probe mit Thomson: \\(f_0 = 1/(2\\pi\\sqrt{LC}) = ' + deT(1 / (2 * Math.PI * Math.sqrt(L * C)), 0) + '\\,\\mathrm{Hz}\\) ✓. Dämpfung durch \\(R = 50\\,\\Omega\\) plus Spulenwiderstand: \\(\\delta = R_{\\mathrm{ges}}/(2L)\\) ⇒ \\(R_{\\mathrm{ges}} = 2L\\lambda = ' + deT(2 * L * lam, 0) + '\\,\\Omega\\).');
+      }
+      ['lcBtn1', 'lcBtn2', 'lcBtn3'].forEach((id, i) => $(id).classList.toggle('active', mode === i + 1));
+    }
+    ['lcBtn1', 'lcBtn2', 'lcBtn3'].forEach((id, i) => $(id).addEventListener('click', () => { mode = i + 1; draw(); })); onTheme(draw); draw();
+  })();
+
+  /* ---------- 10 Abitur 2023: Fahrradkette ---------- */
+  (function kette() {
+    const cv = $('kcCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const Lk = [0.183, 0.335, 0.488, 0.640, 0.793, 0.945, 1.098, 1.250], Tk = [0.61, 0.83, 0.98, 1.13, 1.27, 1.37, 1.48, 1.57];
+    const pr = powreg(Lk, Tk), lr = linreg([0].concat(Lk), [0].concat(Tk.map((t) => t * t))), kth = 2 * Math.PI / Math.sqrt(2 * g0);
+    let mode = 1;
+    function draw() {
+      const pad = { l: 50, r: 14, t: 16, b: 36 };
+      if (mode === 1) {
+        const map = frame(ctx, W, H, pad, 0, 1.4, 0, 1.8, 'l in m', 'T in s', { xs: 0.2, ys: 0.3 });
+        curve(ctx, map, (l) => kth * Math.sqrt(l), 0.001, 1.4, css('--muted'), 1.5, [5, 4]);
+        curve(ctx, map, (l) => pr.a * Math.pow(l, pr.b), 0.001, 1.4, css('--accent'), 2);
+        Lk.forEach((l, i) => dot(ctx, map.X(l), map.Y(Tk[i]), css('--pos'), 4));
+        texHTML($('kcOut'), '<b>2.2, TR-Schema:</b> (1) Werte in den TR. (2) \\(l\\)-\\(T\\)-Diagramm. (3) Wurzelförmig gebogen ⇒ Potenzregression: \\(T = ' + deT(pr.a, 3) + '\\cdot l^{' + deT(pr.b, 3) + '}\\) (EWH: \\(1{,}41\\cdot x^{0{,}493}\\)). (4) Exponent \\(\\approx 0{,}5\\) ⇒ \\(T = \\htmlClass{hl}{' + deT(pr.a, 2) + '\\,\\mathrm{s/\\sqrt m}\\cdot\\sqrt l}\\). (5) Deutung in 2.4: Theorie \\(T = 2\\pi\\sqrt{l/(2g)}\\) ⇒ \\(k_{\\mathrm{theo}} = 2\\pi/\\sqrt{2g} = ' + deT(kth, 3) + '\\,\\mathrm{s/\\sqrt m}\\) (grau gestrichelt), Abweichung \\(' + deT(Math.abs(pr.a - kth) / kth * 100, 1) + '\\,\\%\\): bestätigt.');
+      } else {
+        const map = frame(ctx, W, H, pad, 0, 1.4, 0, 2.8, 'l in m', 'T² in s²', { xs: 0.2, ys: 0.5 });
+        curve(ctx, map, (l) => lr.m * l + lr.b, 0, 1.4, css('--accent'), 2);
+        Lk.forEach((l, i) => dot(ctx, map.X(l), map.Y(Tk[i] * Tk[i]), css('--pos'), 4));
+        texHTML($('kcOut'), '<b>Alternative Doku, linearisiert:</b> \\(T^2 = \\frac{4\\pi^2}{2g}\\,l = \\frac{2\\pi^2}{g}\\,l\\). Lineare Regression: \\(T^2 = ' + deT(lr.m, 3) + '\\,\\mathrm{s^2/m}\\cdot l + ' + deT(lr.b, 3) + '\\,\\mathrm{s^2}\\) (\\(r = ' + deT(lr.r, 4) + '\\)). Theorie: \\(2\\pi^2/g = ' + deT(2 * Math.PI * Math.PI / g0, 3) + '\\,\\mathrm{s^2/m}\\). Aus der Steigung: \\(g = 2\\pi^2/' + deT(lr.m, 3) + ' = \\htmlClass{hl}{' + deT(2 * Math.PI * Math.PI / lr.m, 2) + '\\,\\mathrm{m/s^2}}\\). Die Kette misst die Erdbeschleunigung.');
+      }
+      ['kcBtn1', 'kcBtn2'].forEach((id, i) => $(id).classList.toggle('active', mode === i + 1));
+    }
+    ['kcBtn1', 'kcBtn2'].forEach((id, i) => $(id).addEventListener('click', () => { mode = i + 1; draw(); })); onTheme(draw); draw();
+  })();
+
+  /* ---------- Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Beim Feder-Masse-Pendel wird die Masse vervierfacht. Die Periodendauer ...', o: ['vervierfacht sich', 'verdoppelt sich', 'bleibt gleich'], a: 1, e: '\\(T = 2\\pi\\sqrt{m/D} \\propto \\sqrt m\\); \\(\\sqrt 4 = 2\\). (Abitur 2022: Skizze mit \\(2T\\).)' },
+      { q: 'Eine Schwingung heißt harmonisch, wenn ...', o: ['sie sich periodisch wiederholt', 'die Rückstellkraft proportional zur Auslenkung ist', 'die Reibung vernachlässigbar ist'], a: 1, e: 'Definition im Heft: \\(F = -D\\,y\\). Nur dann ist der Verlauf sinusförmig und \\(T\\) unabhängig von der Amplitude. Periodisch sind auch nichtharmonische Schwingungen.' },
+      { q: 'Wo ist die Geschwindigkeit der schwingenden Masse maximal?', o: ['im Umkehrpunkt', 'im Nulldurchgang (Ruhelage)', 'auf halber Auslenkung'], a: 1, e: 'Im Nulldurchgang ist die ganze Energie Bewegungsenergie: \\(v_{\\mathrm{max}} = \\hat y\\,\\omega\\). Im Umkehrpunkt ist \\(v = 0\\), aber \\(|a|\\) maximal.' },
+      { q: 'Das Pendel wird um \\(\\hat y\\) ausgelenkt und losgelassen. Welche Phase \\(\\varphi\\) hat \\(y = \\hat y\\sin(\\omega t + \\varphi)\\)?', o: ['\\(\\varphi = 0\\)', '\\(\\varphi = \\pi/2\\)', '\\(\\varphi = \\pi\\)'], a: 1, e: '\\(y(0) = \\hat y\\) ⇒ \\(\\sin\\varphi = 1\\) ⇒ \\(\\varphi = \\pi/2\\), also \\(y = \\hat y\\cos(\\omega t)\\). (Klausur 3, 3b)' },
+      { q: 'Fadenpendel: Die Kugel wird gegen eine doppelt so schwere getauscht, Länge gleich. \\(T\\) ...', o: ['wird größer', 'wird kleiner', 'bleibt gleich'], a: 2, e: '\\(T = 2\\pi\\sqrt{l/g}\\) enthält keine Masse: Sie kürzt sich aus \\(m l\\ddot\\alpha = -mg\\sin\\alpha\\).' },
+      { q: 'Die Dämpfung wird erhöht. Die Kreisfrequenz der gedämpften Schwingung ...', o: ['wird etwas kleiner', 'wird größer', 'bleibt exakt gleich'], a: 0, e: '\\(\\omega = \\sqrt{\\omega_0^2 - \\lambda^2}\\) mit \\(\\lambda = c/(2m)\\): größeres \\(c\\) ⇒ kleineres \\(\\omega\\), bei schwacher Dämpfung kaum messbar.' },
+      { q: 'Erzwungene Schwingung nach dem Einschwingen: Mit welcher Frequenz schwingt das Pendel?', o: ['mit seiner Eigenfrequenz \\(\\omega_0\\)', 'mit der Erregerfrequenz \\(\\omega_E\\)', 'mit dem Mittelwert aus beiden'], a: 1, e: 'Der Erreger zwingt seine Frequenz auf. Nur die Amplitude hängt davon ab, wie nah \\(\\omega_E\\) an \\(\\omega_0\\) liegt (Resonanzkurve).' },
+      { q: 'Im Schwingkreis wird die Kapazität vervierfacht. Die Periodendauer ...', o: ['verdoppelt sich', 'vervierfacht sich', 'halbiert sich'], a: 0, e: 'Thomson: \\(T = 2\\pi\\sqrt{LC} \\propto \\sqrt C\\). Analogie: \\(1/C\\) ist die „Federkonstante", viermal mehr \\(C\\) = viermal weichere Feder = doppelte Periodendauer.' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      texHTML(dv, '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>');
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); texHTML(b, txt);
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; texHTML(fb, '<span class="right">Richtig.</span> ' + item.e); } else { texHTML(fb, '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a] + '". ' + item.e); }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+
+  /* ---------- Fortschritt ---------- */
+  (function progress() {
+    const key = 'physik-l6-progress'; let st = {};
+    try { st = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { st = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => { cb.checked = !!st[cb.dataset.k]; cb.addEventListener('change', () => { st[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) { } }); });
+  })();
+})();
+</script>
+</body>
+</html>
