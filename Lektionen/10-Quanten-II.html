@@ -1,0 +1,793 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 10 – Quanten II</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; overflow-x: auto; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { white-space: normal; }
+  .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; overflow-x: auto; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+  /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
+  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .out { max-width: 100%; }
+  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+</style>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="katex/katex.min.js"></script>
+  <script>
+    window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
+    // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
+    window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+    window.markWide = function () { document.querySelectorAll('.f').forEach(function (f) { f.classList.remove('wide'); var p = f.parentElement; if (p && p.clientWidth > 0 && f.getBoundingClientRect().width > p.clientWidth - 2) f.classList.add('wide'); }); };
+    window.addEventListener('resize', function () { clearTimeout(window.__mwT); window.__mwT = setTimeout(function () { if (window.markWide) markWide(); }, 150); });
+  </script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS); if (window.markWide) markWide();"></script>
+  <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Bragg</a><a href="#s2">2 Elektronenbeugung</a><a href="#s3">3 de Broglie</a><a href="#s4">4 Elektronen am Doppelspalt</a><a href="#s5">5 Mach-Zehnder</a><a href="#s6">6 Wellenfunktion</a><a href="#s7">7 Verschränkung</a><a href="#s8">8 Wasserstoff</a><a href="#s9">9 Absorption & Natrium</a><a href="#s10">10 Potentialtopf</a><a href="#s11">11 Abitur</a><a href="#s12">12 Aufgaben</a><a href="#s13">13 Nicht in FS</a><a href="#s14">14 Quiz</a><a href="#s15">15 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 10 · Quanten II: Materiewellen, Quantenobjekte, Atome</h1>
+  <p class="sub">Bragg-Reflexion → Elektronenbeugung an Graphit → de-Broglie-Wellenlänge → Elektronen am Doppelspalt (Jönsson, Tonomura) → Mach-Zehnder und Delayed Choice → Wellenfunktion, Komplementarität, Unschärfe → Präparation und Verschränkung → Wasserstoffspektrum und Energieniveaus → Absorptionsspektren und Natrium → Potentialtopf. Grundlage: Heft (13.1) Quantenmechanik ab „Interferenz am Kristallgitter", Arbeitsblatt Bohrsches Atommodell, Abitur 2021 I Aufgabe 3, 2023 IIb Aufgabe 3, 2024 I Aufgabe 2, 2025 Aufgaben 3 und 4 mit Erwartungshorizonten. Photoeffekt, Gegenfeldmethode und <span class="f">\(h\)</span> mit LEDs stehen in Lektion 9.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Bragg-Bedingung <span class="f">\(n\lambda = 2d\sin\vartheta\)</span> aus der Geometrie herleiten und die Röhren-Geometrie <span class="f">\(\tan 2\vartheta = a/e\)</span> anwenden.</li>
+    <li>Den Heft-Versuch Elektronenbeugung beschreiben und auswerten: Ringe ⇒ Netzebenenabstände im Graphit, <span class="f">\(\lambda\propto 1/\sqrt U\)</span>, <span class="f">\(\lambda = h/p\)</span> aus der Steigung.</li>
+    <li>De-Broglie-Wellenlänge für Elektronen (<span class="f">\(\lambda = h/\sqrt{2meU}\)</span> herleiten), Moleküle und Alltagsobjekte berechnen; wissen, wann Welleneigenschaften sichtbar werden.</li>
+    <li>Elektroneninterferenz am Doppelspalt deuten: Einzelereignisse, Aufbau des Musters, Wahrscheinlichkeit statt Vorhersage, Komplementarität mit Welcher-Weg-Gedankenexperiment (Abitur 2025 Aufgabe 3).</li>
+    <li>Mach-Zehnder-Interferometer mit Einzelphotonen erklären, Delayed Choice, Deutung der Wellenfunktion <span class="f">\(|\Psi|^2\)</span>, Verschränkung, Unschärferelation.</li>
+    <li>Energieniveaus des Wasserstoffs <span class="f">\(E_n = -13{,}6\,\mathrm{eV}/n^2\)</span>, Spektrallinien berechnen (Balmer 656/486 nm), Heft-Messung mit Fehlerbetrachtung, Absorptionsspektren erklären (Natrium, Abitur 2025 Aufgabe 4).</li>
+    <li>Unendlich tiefer Potentialtopf: stehende Wellen, <span class="f">\(E_n \propto n^2\)</span>, Zusammenhang mit der Schrödingergleichung (FS).</li>
+  </ul>
+  <div class="note warn"><b>Ein Satz, der die ganze Lektion trägt:</b> Quantenobjekte sind weder Wellen noch Teilchen, sondern etwas Drittes: Sie werden <b>einzeln und ganz</b> registriert (Teilchenaspekt), aber die <b>Wahrscheinlichkeit</b>, wo sie registriert werden, folgt einer Welle mit <span class="f">\(\lambda = h/p\)</span> (Wellenaspekt). Alles in dieser Lektion ist eine Anwendung dieses Satzes.</div>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Simulationen rechnen mit den echten Heft- und Abiturwerten.</p>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Interferenz am Kristallgitter: die Bragg-Bedingung (Heft)</h2>
+  <p>Ein Kristall besteht aus regelmäßig angeordneten Atomen in parallelen <b>Netzebenen</b> im Abstand <span class="f">\(d\)</span>. Fällt eine Welle mit Wellenlänge <span class="f">\(\lambda\)</span> (Röntgenstrahlung, oder die Materiewelle von Elektronen) unter dem <b>Glanzwinkel</b> <span class="f">\(\vartheta\)</span> auf die Ebenen, wird an jeder Ebene ein Teil reflektiert. Heft-Bild: zwei Strahlen, reflektiert an benachbarten Ebenen; der untere läuft zusätzlich hinein und wieder heraus. Der Gangunterschied ist zweimal das Stück <span class="f">\(l = d\sin\vartheta\)</span> (Heft: „<span class="f">\(l = d\sin\vartheta\)</span>, <span class="f">\(\vartheta\)</span>: Glanzwinkel; <span class="f">\(n\lambda = 2l\)</span>"):</p>
+  <div class="formula">\[n\cdot\lambda = \textcolor{#d93025}{2}\cdot d\cdot\sin\vartheta\qquad\text{(Bragg-Bedingung für Interferenzmaxima an Gitter}\textbf{ebenen}\text{; FS S. 35 mit } \varphi_k\text{)}\]</div>
+  <ul>
+    <li><b>Der Glanzwinkel</b> wird zwischen Strahl und <b>Ebene</b> gemessen, nicht zum Lot wie bei der Brechung. Das Heft markiert ihn rot: der Faktor 2 und die Winkeldefinition sind die beiden Fehlerquellen.</li>
+    <li>Einfallender und reflektierter Strahl schließen den Winkel <span class="f">\(2\vartheta\)</span> ein. Deshalb erscheint der gebeugte Strahl in der Elektronenbeugungsröhre unter <span class="f">\(2\vartheta\)</span> zur Strahlachse (Heft-Bild „Beugung und Interferenz am Kristall": Kristall schräg im Strahl, reflektierter Strahl trifft den Schirm in der Höhe <span class="f">\(a\)</span>, Abstand <span class="f">\(e\)</span>):</li>
+  </ul>
+  <div class="formula">\[\tan(2\vartheta) = \frac{a}{e}\ \Rightarrow\ \vartheta = \tfrac12\arctan\frac{a}{e}\qquad\Rightarrow\qquad n\lambda = 2d\sin\!\Big(\tfrac12\arctan\frac{a}{e}\Big)\]</div>
+  <ul>
+    <li><b>Warum Ringe statt Punkte:</b> Graphit in der Röhre ist <b>polykristallin</b>, viele winzige Kristalle in allen Orientierungen. Für jede Netzebenenschar gibt es irgendwo Kristallite mit dem passenden Glanzwinkel, rundherum um die Achse: der Beugungskegel mit Öffnungswinkel <span class="f">\(2\vartheta\)</span> schneidet den Schirm in einem Ring (Abitur 2021 I, EWH: „Ringstruktur durch unregelmäßige Anordnung von Kristallen").</li>
+    <li>Für den Ring misst man den <b>Durchmesser</b> <span class="f">\(D\)</span>; der Radius ist <span class="f">\(a = D/2\)</span>. Im Heft-Tabellenblatt steht deshalb <span class="f">\(\lambda = 2g\sin(\tfrac12\arctan\frac{D}{2e})\)</span>.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(d\)</span> <input type="range" id="bgD" min="100" max="400" value="213" step="1"> <span id="bgDv"></span></label>
+        <label><span class="f">\(\lambda\)</span> <input type="range" id="bgL" min="10" max="200" value="24" step="1"> <span id="bgLv"></span></label>
+        <label><span class="f">\(\vartheta\)</span> <input type="range" id="bgT" min="1" max="60" value="3.2" step="0.1"> <span id="bgTv"></span></label>
+      </div>
+      <canvas id="bgCanvas" width="480" height="280"></canvas>
+      <p class="small">Zwei Netzebenen im Abstand <span class="f">\(d\)</span>, zwei Strahlen unter dem Glanzwinkel <span class="f">\(\vartheta\)</span>. Rot: der zusätzliche Weg <span class="f">\(2d\sin\vartheta\)</span> des unteren Strahls. Rechts die Zeiger der beiden reflektierten Wellen.</p>
+    </div>
+    <div>
+      <div class="out" id="bgOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> (1) Faktor 2: Gangunterschied <span class="f">\(2d\sin\vartheta\)</span>, weil der Weg hinein <b>und</b> heraus länger ist. (2) <span class="f">\(\vartheta\)</span> zur Ebene, <span class="f">\(2\vartheta\)</span> zwischen den Strahlen, auf dem Schirm <span class="f">\(\tan 2\vartheta = a/e\)</span>. (3) FS nennt die Spaltbreite beim Einzelspalt <span class="f">\(d\)</span> und den Netzebenenabstand ebenfalls <span class="f">\(d\)</span>; im Heft heißen die Netzebenenabstände <span class="f">\(g_1\)</span>, <span class="f">\(g_2\)</span>. Immer dazuschreiben, was gemeint ist.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Versuch Elektronenbeugung: Elektronen zeigen Interferenz (Heft)</h2>
+  <p><b>Aufbau (Heft-Bild):</b> Glühkathode mit Heizspannung <span class="f">\(U_H\)</span>, Beschleunigungsspannung <span class="f">\(U_B\)</span> (2,5 bis 5 kV) zur Lochanode, dahinter eine dünne Graphitfolie aus vielen kleinen Kristallen, dann ein Leuchtschirm im Abstand <span class="f">\(e = 0{,}133\,\mathrm{m}\)</span>. <b>Beobachtung (Heft):</b> „Auf dem Schirm entstehen Ringe, die durch die Beugung, also eine Interferenzerscheinung, der Elektronen erklärbar sind. Es gibt einen inneren und einen äußeren Ring, die durch Beugung an verschiedenen Gitterebenen entstehen." Mit steigender Spannung werden die Ringe <b>kleiner</b>.</p>
+  <h3>Die beiden Netzebenenabstände im Graphit (Heft-Bild)</h3>
+  <p>Graphit ist ein Sechseckgitter mit Atomabstand <span class="f">\(w = 1{,}42\cdot 10^{-10}\,\mathrm{m}\)</span>. Aus dem Sechseck lassen sich zwei Scharen paralleler Netzebenen bilden: <span class="f">\(g_1 = w + w\sin 30^\circ = \tfrac32 w = 2{,}13\cdot 10^{-10}\,\mathrm{m}\)</span> (größerer Abstand ⇒ kleinerer Winkel ⇒ <b>innerer</b> Ring <span class="f">\(d_i\)</span>) und <span class="f">\(g_2 = w\sin 60^\circ = \tfrac{\sqrt3}{2}w = 1{,}23\cdot 10^{-10}\,\mathrm{m}\)</span> (kleinerer Abstand ⇒ <b>äußerer</b> Ring <span class="f">\(d_a\)</span>). Kleines <span class="f">\(d\)</span> ⇒ großes <span class="f">\(\sin\vartheta\)</span>: wie beim optischen Gitter mit kleinem Spaltabstand.</p>
+  <h3>Heft-Messwerte und Auswertung (Tabellenblatt Elektronenbeugung.ods)</h3>
+  <table>
+    <tr><th><span class="f">\(U\)</span> in V</th><td><span class="f">\(2500\)</span></td><td><span class="f">\(3000\)</span></td><td><span class="f">\(3500\)</span></td><td><span class="f">\(4000\)</span></td><td><span class="f">\(4500\)</span></td><td><span class="f">\(5000\)</span></td></tr>
+    <tr><th><span class="f">\(D_i\)</span> in cm</th><td><span class="f">\(3{,}3\)</span></td><td><span class="f">\(3{,}0\)</span></td><td><span class="f">\(2{,}7\)</span></td><td><span class="f">\(2{,}6\)</span></td><td><span class="f">\(2{,}4\)</span></td><td><span class="f">\(2{,}1\)</span></td></tr>
+    <tr><th><span class="f">\(D_a\)</span> in cm</th><td><span class="f">\(5{,}8\)</span></td><td><span class="f">\(5{,}4\)</span></td><td><span class="f">\(4{,}9\)</span></td><td><span class="f">\(4{,}6\)</span></td><td><span class="f">\(4{,}2\)</span></td><td><span class="f">\(4{,}0\)</span></td></tr>
+  </table>
+  <ol>
+    <li>Aus jedem Ring die Wellenlänge: <span class="f">\(\lambda = 2g\sin(\tfrac12\arctan\frac{D}{2e})\)</span> mit <span class="f">\(g_1\)</span> für den inneren, <span class="f">\(g_2\)</span> für den äußeren Ring. Beide Ringe liefern bei jeder Spannung <b>dieselbe</b> Wellenlänge (2500 V: 26,3 und 26,4 pm): Das bestätigt die Netzebenen-Deutung.</li>
+    <li><span class="f">\(\lambda\)</span> gegen <span class="f">\(E = eU\)</span> auftragen (Heft-Diagramm 1): fallende Kurve, Potenzregression Exponent <span class="f">\(-\tfrac12\)</span> ⇒ <span class="f">\(\lambda\propto 1/\sqrt E\)</span>.</li>
+    <li>Mit <span class="f">\(E = \tfrac12 mv^2\)</span> ⇒ <span class="f">\(\sqrt E = \sqrt{m/2}\,v\)</span> ⇒ <span class="f">\(\lambda\propto 1/v\)</span> (Heft-Diagramm 2: <span class="f">\(\lambda\)</span> gegen <span class="f">\(1/v\)</span> ist eine Gerade). Heft: „Die Steigung lässt darauf schließen, dass der Faktor <span class="f">\(1/m_e\)</span> eine Rolle spielt."</li>
+    <li>Also <span class="f">\(\lambda\)</span> gegen <span class="f">\(1/(m_e v) = 1/p\)</span> auftragen (Heft-Diagramm 3): Ursprungsgerade mit <b>Steigung <span class="f">\(h\)</span></b>. Ergebnis: <span class="f">\(\lambda = h/p\)</span>, die <b>de-Broglie-Wellenlänge</b>. <span class="f">\(p = m_e v\)</span> ist der Impuls, <span class="f">\([p] = \mathrm{kg\,m/s}\)</span>.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="ebBtn1" class="active">Ringe</button><button id="ebBtn2"><span class="f">\(\lambda\)</span> über <span class="f">\(E\)</span></button><button id="ebBtn3"><span class="f">\(\lambda\)</span> über <span class="f">\(1/v\)</span></button><button id="ebBtn4"><span class="f">\(\lambda\)</span> über <span class="f">\(1/p\)</span></button>
+        <label><span class="f">\(U\)</span> <input type="range" id="ebU" min="2500" max="5000" value="2500" step="500"> <span id="ebUv"></span></label>
+      </div>
+      <canvas id="ebCanvas" width="480" height="300"></canvas>
+      <p class="small">Ansicht 1: Schirmbild mit beiden Ringen bei der gewählten Spannung (Heft-Durchmesser). Ansichten 2 bis 4: die drei Heft-Diagramme mit Regression, aus den Heft-Daten live gerechnet.</p>
+    </div>
+    <div>
+      <div class="out" id="ebOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 I, 3.1, 9 BE):</b> „Beschreiben Sie anhand einer Skizze die Funktionsweise eines Aufbaus zur Erzeugung eines Strahls freier Elektronen" (Glühkathode, Heizspannung, Beschleunigungsspannung, Lochanode: 5 BE) und „Erläutern Sie die Entstehung des inneren Ringes" (Elementarwellen an den Streuzentren, Gangunterschied bzw. Phasendifferenz, konstruktive Interferenz, Ringstruktur durch die ungeordneten Kristallite: 4 BE). Dann 3.2: aus dem Ringradius <span class="f">\(a_1 = 10{,}5\,\mathrm{mm}\pm 1{,}0\,\mathrm{mm}\)</span> und <span class="f">\(\lambda = 19{,}4\,\mathrm{pm}\)</span> den Netzebenenabstand <span class="f">\(d\approx 231{,}8\,\mathrm{pm}\pm 22\,\mathrm{pm}\)</span> (relativer Fehler 10 % aus <span class="f">\(a_1\)</span>) und die maximale Ordnung (4) bestimmen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Die de-Broglie-Wellenlänge: Materiewellen</h2>
+  <p>De Broglie (1923) postulierte, was der Versuch bestätigt: Jedem Teilchen mit Impuls <span class="f">\(p\)</span> ist eine Wellenlänge zugeordnet (FS S. 36). Für Elektronen, die aus der Ruhe durch <span class="f">\(U_B\)</span> beschleunigt wurden, folgt aus der Energiebilanz <span class="f">\(eU_B = \tfrac12 m v^2\)</span> ⇒ <span class="f">\(v = \sqrt{2eU_B/m}\)</span> ⇒ <span class="f">\(p = mv = \sqrt{2meU_B}\)</span>:</p>
+  <div class="formula">\[\lambda = \frac{h}{p} = \frac{h}{m\,v} = \frac{h}{\sqrt{2\,m\,e\,U_B}}\qquad\text{(Herleitung verlangt in Abitur 2021 I, 3.3)}\]</div>
+  <ul>
+    <li>Zahlen: <span class="f">\(U_B = 2500\,\mathrm{V}\)</span> ⇒ <span class="f">\(v = 2{,}97\cdot 10^7\,\mathrm{m/s}\)</span>, <span class="f">\(p = 2{,}70\cdot 10^{-23}\,\mathrm{kg\,m/s}\)</span>, <span class="f">\(\lambda = 24{,}5\,\mathrm{pm}\)</span>. Im Heft gemessen: 26,3 pm (7 % Abweichung, Ablesung der Ringe). 50 kV (Jönsson, Tonomura): <span class="f">\(\lambda \approx 5\,\mathrm{pm}\)</span>, tausendmal kleiner als Atomabstände; deshalb braucht man Kristallgitter oder extrem feine Spalte.</li>
+    <li>Nicht nur Elektronen: Neutronen, Atome, Moleküle. Abitur 2024 I: C60-Fullerene (720 u) mit <span class="f">\(v\approx 200\,\mathrm{m/s}\)</span> ⇒ <span class="f">\(\lambda\approx 2{,}4\,\mathrm{pm}\)</span>, Interferenz an einem Gitter mit <span class="f">\(g = 100\,\mathrm{nm}\)</span>. Phthalocyanin-Messreihe: <span class="f">\(\lambda\propto 1/v\)</span> mit <span class="f">\(k_{\mathrm{exp}} = 8{,}15\cdot 10^{-10}\,\mathrm{m^2/s}\)</span> gegen <span class="f">\(h/m = 7{,}77\cdot 10^{-10}\,\mathrm{m^2/s}\)</span>: de Broglie bestätigt.</li>
+    <li>Alltag: Tennisball (58 g, 30 m/s) ⇒ <span class="f">\(\lambda = 3{,}8\cdot 10^{-34}\,\mathrm{m}\)</span>. Keine Öffnung der Welt ist so klein, daher sieht man nie Beugung. Welleneigenschaften werden sichtbar, wenn <span class="f">\(\lambda\)</span> mit den Abmessungen der Hindernisse vergleichbar ist.</li>
+    <li>Vergleich Photon: <span class="f">\(E = hf\)</span>, <span class="f">\(p = E/c = h/\lambda\)</span> (FS). Die Formel <span class="f">\(\lambda = h/p\)</span> gilt für Licht <b>und</b> Materie; der Unterschied steckt in der Beziehung zwischen <span class="f">\(E\)</span> und <span class="f">\(p\)</span> (Photon <span class="f">\(E = pc\)</span>, Teilchen <span class="f">\(E_{\mathrm{kin}} = p^2/2m\)</span>).</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Objekt <select id="dbObj"><option value="e">Elektron</option><option value="p">Proton</option><option value="n">Neutron</option><option value="c60">C60-Molekül (720 u)</option><option value="ball">Tennisball (58 g)</option></select></label>
+        <label>Antrieb <select id="dbMode"><option value="U">Spannung U</option><option value="v">Geschwindigkeit v</option></select></label>
+        <label><span id="dbLab"></span> <input type="range" id="dbX" min="1" max="7" value="3.4" step="0.01"> <span id="dbXv"></span></label>
+      </div>
+      <canvas id="dbCanvas" width="480" height="220"></canvas>
+      <p class="small">Wellenlänge des gewählten Objekts im Vergleich mit typischen Längen (logarithmische Skala). Der Regler stellt <span class="f">\(U\)</span> oder <span class="f">\(v\)</span> als Zehnerpotenz ein.</p>
+    </div>
+    <div>
+      <div class="out" id="dbOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 I, 3.3, 7 BE):</b> „Leiten Sie <span class="f">\(\lambda = h/\sqrt{2emU_B}\)</span> unter Verwendung der de-Broglie-Beziehung begründet her" (Energieansatz <span class="f">\(eU_B = \tfrac12 mv^2\)</span>, Impuls <span class="f">\(p = mv\)</span>, einsetzen: 4 BE). „Beschreiben Sie ein Vorgehen, um <span class="f">\(h\)</span> mit der Elektronenbeugungsröhre zu bestimmen" (bekannter Netzebenenabstand; Messreihe <span class="f">\(a_1\)</span> gegen <span class="f">\(U_B\)</span>, daraus <span class="f">\(\lambda\)</span> über Bragg, dann <span class="f">\(\lambda\)</span> gegen <span class="f">\(1/\sqrt{U_B}\)</span> auftragen: Ursprungsgerade mit Steigung <span class="f">\(h/\sqrt{2me}\)</span>, oder gegen <span class="f">\(1/p\)</span>: Steigung <span class="f">\(h\)</span>; genau das Heft-Diagramm 3: 3 BE).</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Elektronen am Doppelspalt: Jönsson 1961 und Tonomura 1989 (Abitur 2025, Aufgabe 3)</h2>
+  <p>Der Kristall ist ein „natürliches Gitter". Claus Jönsson gelang 1961 das Experiment mit <b>künstlich hergestellten</b> Spalten: 50-kV-Elektronen (<span class="f">\(\lambda\approx 5\cdot 10^{-12}\,\mathrm{m}\)</span>), Spaltbreite <span class="f">\(0{,}50\,\mathrm{\mu m}\)</span>, Spaltmittenabstand <span class="f">\(g = 2{,}0\,\mathrm{\mu m}\)</span>, Schirm in <span class="f">\(350\,\mathrm{mm}\)</span>. Weil <span class="f">\(\lambda\)</span> so winzig ist, sind die Streifen extrem eng und müssen 100-fach elektronenoptisch und 10-fach lichtoptisch nachvergrößert werden.</p>
+  <ul>
+    <li><b>Beugungswinkel:</b> <span class="f">\(\sin\alpha_1 = \lambda/g = 2{,}5\cdot 10^{-6}\)</span> ⇒ <span class="f">\(\alpha_1 = 0{,}00014^\circ\)</span> (Kontrollwert der Aufgabe). Streifenabstand auf dem Schirm <span class="f">\(a_1 = e\tan\alpha_1 = 350\,\mathrm{mm}\cdot 2{,}5\cdot 10^{-6} = 0{,}000875\,\mathrm{mm}\)</span>; nach Vergrößerung um <span class="f">\(1000\)</span>: <span class="f">\(0{,}875\,\mathrm{mm}\)</span>, mit bloßem Auge erkennbar (EWH 3.2 b).</li>
+    <li><b>Spannung erhöhen</b> (EWH 3.2 c): mehr Geschwindigkeit ⇒ größerer Impuls ⇒ kleinere Wellenlänge ⇒ kleinerer Winkel ⇒ engere Streifen, das Bild wird horizontal gestaucht. Kausalkette in genau dieser Reihenfolge aufschreiben.</li>
+    <li><b>Geschwindigkeitsverteilung</b> (3.2 d): verschiedene <span class="f">\(v\)</span> ⇒ verschiedene <span class="f">\(\lambda\)</span> ⇒ gegeneinander verschobene Muster; schmale Verteilung: unschärfer, aber erkennbar; breite Verteilung: verwaschen bis unsichtbar. Dasselbe beim C60-Experiment 2024: Geschwindigkeitsfilter ⇒ schärfere Maxima.</li>
+    <li><b>Tonomura 1989:</b> Strom <span class="f">\(1{,}6\cdot 10^{-16}\,\mathrm{A}\)</span>, das sind 1000 Elektronen pro Sekunde; bei <span class="f">\(v\approx 1{,}2\cdot 10^8\,\mathrm{m/s}\)</span> braucht ein Elektron für 1,5 m nur 12 ns. Mit sehr großer Wahrscheinlichkeit ist immer nur <b>ein</b> Elektron unterwegs. Bilder a bis e: 11, 200, 6000, 40 000, 140 000 Elektronen. Jedes Elektron erzeugt einen einzelnen Punkt (Teilchen); die Punkte sehen zuerst zufällig aus; mit vielen Elektronen entsteht das Interferenzmuster (Welle). Die Elektronen beeinflussen sich nicht gegenseitig, jedes „interferiert mit sich selbst".</li>
+    <li><b>Feynman</b> (M3-D): Man kann den Auftreffort eines einzelnen Elektrons nicht vorhersagen, nur die <b>Wahrscheinlichkeit</b>. Die Verteilung lässt sich aus dem Aufbau berechnen (<span class="f">\(|\Psi|^2\)</span>, Abschnitt 6) und an der Häufigkeitsverteilung vieler Treffer prüfen. Tonomuras Bilder bestätigen das.</li>
+    <li><b>Komplementarität</b> (3.3 c, 2024 2.5): Weg-Information und Interferenzmuster schließen sich aus. Gedankenexperiment: hinter jedem Spalt ein Detektor, der registriert, durch welchen Spalt das Elektron ging ⇒ das Interferenzmuster verschwindet, es bleiben zwei Streifen wie bei klassischen Teilchen. Ohne Weg-Information: Muster.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="jsStart">Elektronen schießen</button><button id="jsReset">Zurücksetzen</button>
+        <label><span class="f">\(U_B\)</span> <input type="range" id="jsU" min="10" max="100" value="50" step="5"> <span id="jsUv"></span></label>
+        <label>Welcher-Weg-Detektor <input type="checkbox" id="jsWW"></label>
+      </div>
+      <canvas id="jsCanvas" width="480" height="300"></canvas>
+      <p class="small">Nachbau des Tonomura-Experiments: Jedes Elektron trifft als Punkt auf; sein Ort wird nach der Wahrscheinlichkeitsverteilung <span class="f">\(|\Psi|^2\)</span> des Doppelspalts (Jönsson-Geometrie, Nachvergrößerung 1000) ausgewürfelt. Unten die Häufigkeitsverteilung. Mit Weg-Detektor: nur die Einzelspaltverteilungen, keine Streifen.</p>
+    </div>
+    <div>
+      <div class="out" id="jsOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2025, 3.1 a, 6 BE):</b> „Erklären Sie, dass die Abbildung als Nachweis für Welleneigenschaften gedeutet werden kann und gegen klassische Teilchen spricht." EWH: Das Bild zeigt ein Interferenzmuster wie Wellen am Doppelspalt (Maxima und Minima in regelmäßigen Abständen); klassische Teilchen würden eine andere Verteilung zeigen, nämlich zwei Streifen hinter den beiden Spalten (Summe zweier Einzelverteilungen). <b>3.3 a (4 BE):</b> einzelne Auftreffpunkte in allen Bildern; Muster erst bei vielen Elektronen; Elektronen passieren einzeln ohne gegenseitige Beeinflussung; gemeinsames Auftreten beider Eigenschaften = Quantenobjekt.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Mach-Zehnder-Interferometer und Delayed Choice (Heft)</h2>
+  <p><b>Aufbau (Heft-Bild):</b> Lichtquelle für <b>Einzelphotonen</b> → halbdurchlässiger Spiegel (1) → zwei Wege über je einen Spiegel → halbdurchlässiger Spiegel (2) → Schirm (bzw. zwei Detektoren hinter den beiden Ausgängen). An jedem Spiegel: Reflexion am optisch dichteren Medium ⇒ Phasensprung <span class="f">\(180^\circ\)</span>, Durchgang ⇒ <span class="f">\(0^\circ\)</span>. Im Heft-Bild sind die Phasen eingetragen: Zum Schirm hin haben beide Wege zusammen <span class="f">\(360^\circ\)</span> ⇒ konstruktiv, Interferenzmuster (bei leicht verkippten Spiegeln Ringe); zum anderen Ausgang <span class="f">\(360^\circ\)</span> gegen <span class="f">\(180^\circ\)</span> ⇒ destruktiv, dort kommt nichts an.</p>
+  <ul>
+    <li><b>Heft:</b> „Je nachdem, ob der halbdurchlässige Spiegel (2) vorhanden ist oder nicht, beobachtet man auf dem Schirm ein Interferenzmuster oder einfach einen hellen Fleck." Ohne Spiegel 2 läuft jeder Weg zu einem eigenen Detektor: Man weiß, welchen Weg das Photon genommen hat (je 50 %), und es gibt keine Interferenz. Mit Spiegel 2 sind die Wege nicht unterscheidbar ⇒ Interferenz. Komplementarität am Einzelphoton.</li>
+    <li><b>Delayed Choice (Heft):</b> Schaltet man Spiegel 2 erst ein oder aus, nachdem das Photon Spiegel 1 passiert hat und kurz bevor es Spiegel 2 erreicht, ergibt sich dasselbe Ergebnis wie bei fester Einstellung. Heft-Schluss: „Ob sich die Photonen auf dem Weg wie Wellen oder Teilchen verhalten, wird erst bei der Beobachtung, dann aber ‚rückwirkend' für den gesamten Weg festgelegt. Die Entscheidung (Choice) fällt im Nachgang (delayed)." Das Photon hat auf dem Weg weder „beide Wege genommen" noch „einen": Die Frage ist vor der Messung sinnlos.</li>
+    <li><b>Warum keine Interferenz ohne Spiegel 2?</b> Interferenz braucht zwei ununterscheidbare Möglichkeiten, die am selben Ort enden. Zwei getrennte Detektoren machen die Möglichkeiten unterscheidbar. Die Wahrscheinlichkeiten addieren sich dann (50 % + 50 %), nicht die Wellenfunktionen.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Spiegel 2 <input type="checkbox" id="mzBS2" checked></label>
+        <label>Wegdifferenz <input type="range" id="mzPh" min="0" max="360" value="0" step="10"> <span id="mzPhv"></span></label>
+        <button id="mzOne">1 Photon</button><button id="mzMany">100 Photonen</button><button id="mzDelayed">Delayed Choice (100)</button><button id="mzReset">Zurücksetzen</button>
+      </div>
+      <canvas id="mzCanvas" width="480" height="280"></canvas>
+      <p class="small">Jedes Photon wird einzeln registriert, in Detektor A (Schirm) oder B. Mit Spiegel 2 bestimmt die Wegdifferenz die Wahrscheinlichkeiten <span class="f">\(\cos^2\)</span> und <span class="f">\(\sin^2\)</span>; ohne Spiegel 2 sind es immer 50/50. „Delayed Choice" würfelt für jedes Photon erst nach Spiegel 1, ob Spiegel 2 eingesetzt wird.</p>
+    </div>
+    <div>
+      <div class="out" id="mzOut"></div>
+      <div class="note"><b>Vergleich mit Michelson (Lektion 8):</b> Dort zwei Arme und ein Detektor, Gangunterschied durch Spiegelverschiebung; hier zwei getrennte Wege und zwei Ausgänge, deren Summe immer 100 % ergibt. Das Mach-Zehnder-Interferometer ist das Standardbeispiel des Unterrichts (milq) für Einzelphotonen und Delayed Choice.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Die Wellenfunktion: Wahrscheinlichkeit, Komplementarität, Unschärfe (Heft)</h2>
+  <p><b>Kopenhagener Deutung (Heft):</b> Die Wellenfunktion <span class="f">\(\Psi(\vec r, t)\)</span> beschreibt ein Teilchen so, dass <span class="f">\(|\Psi|^2\)</span> die <b>Aufenthaltswahrscheinlichkeit</b> angibt. Statistische Beschreibung: Vor der Messung ist nur die Wahrscheinlichkeit festgelegt. „Im Moment einer Messung bricht die Welle zusammen und der Ort des Teilchens (und auch der Weg) liegt fest. Interferenzmuster ergeben sich dann durch die Überlagerung aller gemessenen Orte von identischen Teilchen." Genau das zeigen Tonomuras Bilder.</p>
+  <ul>
+    <li><b>Was interferiert?</b> Nicht die Elektronen untereinander, sondern die Wellenfunktion des einzelnen Elektrons mit sich selbst: Die beiden Möglichkeiten „durch Spalt 1" und „durch Spalt 2" tragen beide zu <span class="f">\(\Psi\)</span> am Schirm bei, <span class="f">\(\Psi = \Psi_1 + \Psi_2\)</span>, und <span class="f">\(|\Psi_1 + \Psi_2|^2\)</span> hat die Interferenzterme. Mit Weg-Messung gibt es nur <span class="f">\(|\Psi_1|^2 + |\Psi_2|^2\)</span>: zwei Streifen.</li>
+    <li><b>Komplementarität (Heft-Wortlaut):</b> „Die Beschreibung von Quantenobjekten gelingt nicht, wenn man sich nur auf seine Wellen- <b>oder</b> nur auf seine Teilcheneigenschaften beschränkt. Beide Eigenschaften sind zueinander komplementär: Sie ergänzen sich zur vollständigen Beschreibung des Objekts." Im Experiment: Weg-Information (Teilchen) und Interferenz (Welle) sind nie gleichzeitig zu haben.</li>
+    <li><b>Heisenbergsche Unschärferelation</b> (Heft: <span class="f">\(\Delta x\cdot\Delta p = \hbar/2\)</span>; FS S. 37: <span class="f">\(\Delta x\cdot\Delta p_x \ge \frac{h}{4\pi}\)</span>, dasselbe, weil <span class="f">\(\hbar = h/2\pi\)</span>): Ort und Impuls lassen sich nicht gleichzeitig beliebig genau festlegen. Das ist keine Messungenauigkeit, sondern eine Eigenschaft des Zustands. Beispiel Einzelspalt: Spalt verengen (<span class="f">\(\Delta x = b\)</span> kleiner) ⇒ <span class="f">\(\Delta p_y\)</span> größer ⇒ der Strahl fächert stärker auf, das ist die Beugung aus Lektion 8. Beispiel Atom: <span class="f">\(\Delta x\approx 10^{-10}\,\mathrm{m}\)</span> ⇒ <span class="f">\(\Delta p \ge 5{,}3\cdot 10^{-25}\,\mathrm{kg\,m/s}\)</span> ⇒ <span class="f">\(\Delta v\approx 6\cdot 10^5\,\mathrm{m/s}\)</span>: Ein Elektron, das im Atom eingesperrt ist, kann nicht ruhen. Energie-Zeit-Form <span class="f">\(\Delta E\cdot\Delta t\ge h/4\pi\)</span> (FS): kurzlebige Zustände haben unscharfe Energie.</li>
+    <li><b>Sprache für die Klausur:</b> „Das Elektron wird am Ort <span class="f">\(x\)</span> mit der Wahrscheinlichkeit <span class="f">\(|\Psi(x)|^2\,\Delta x\)</span> nachgewiesen" statt „das Elektron ist eine Welle". „Quantenobjekt" statt „Teilchen" oder „Welle". Nie: „das Elektron teilt sich auf".</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Zustandspräparation und Verschränkung (Heft)</h2>
+  <p><b>Heft-Beispiel:</b> Ein Wasserstoffatom wird in den Zustand <span class="f">\(2s\,{}^2S_{1/2}\)</span> angeregt (Hochstellung 2: Spin-Multiplizität, <span class="f">\(s\)</span>: Bahndrehimpuls null, Index <span class="f">\(1/2\)</span>: Gesamtdrehimpuls). Das Anregen ist eine <b>Präparation</b>: „Es wird ein definierter quantenmechanischer Zustand erzeugt." Fällt das Atom in den Grundzustand <span class="f">\(1s\,{}^2S_{1/2}\)</span>, ändert sich sein Drehimpuls nicht (beide Zustände <span class="f">\(j = 1/2\)</span>). Der Gesamtdrehimpuls ist eine Erhaltungsgröße, und ein Photon trägt den Drehimpuls 1 weg. Ein Übergang mit <b>einem</b> Photon ist also unmöglich. Heft: „Der Übergang ist nur durch Aussendung zweier Photonen möglich. In der Kombination Atom + Photon 1 + Photon 2 muss auch nach dem Übergang der Gesamtdrehimpuls <span class="f">\(1/2\)</span> sein."</p>
+  <ul>
+    <li><b>Auswahl (Heft-Bild):</b> Zwei Detektoren in <span class="f">\(180^\circ\)</span>-Geometrie um das Atom fangen Photonenpaare, die in entgegengesetzte Richtungen fliegen. Ihre Drehimpulse (Polarisationen) müssen sich zu null addieren.</li>
+    <li><b>Verschränkt (Heft):</b> „Der Zustand beider Photonen wird durch dieselbe Wellenfunktion <span class="f">\(\Psi\)</span> beschrieben." Die einzelnen Welleneigenschaften (Polarisation) von P1 und P2 sind <b>nicht definiert</b>, nur ihre Beziehung.</li>
+    <li><b>Messung (Heft-Bild „Zusammenfall"):</b> Erreicht eines der Photonen einen Detektor und wird seine Polarisation gemessen, so bricht <span class="f">\(\Psi\)</span> zusammen, und der Zustand <b>beider</b> Photonen ist festgelegt, entgegengesetzt gerichtet. Danach existiert <span class="f">\(\Psi\)</span> nicht mehr, die Verschränkung ist aufgehoben.</li>
+    <li><b>Konsequenzen (Heft):</b> (1) Vor der Messung gibt es nur Wahrscheinlichkeitsaussagen über die einzelnen Photonen. (2) Die Einzelmessung legt den Zustand beider Photonen auch über große Entfernungen <b>instantan</b> fest; das Heft nennt das einen Widerspruch zur Relativitätstheorie. Genauer: Es wirkt so, aber es lässt sich damit keine Information schneller als Licht übertragen, weil jedes Messergebnis für sich zufällig ist. (3) Die Gesamtwellenfunktion ist eine <b>Superposition</b> aller möglichen Einzelzustände beider Photonen.</li>
+    <li><b>Allgemein (Heft):</b> Geht ein Zustand <span class="f">\(\Psi_1\)</span> in einen Zweiteilchenzustand <span class="f">\(\Psi_2\)</span> über, beschreibt <span class="f">\(\Psi_2\)</span> alle beteiligten Teilchen gemeinsam; die Beobachtung einer Eigenschaft des einen legt sie für das andere instantan fest.</li>
+  </ul>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> Verschränkung ist keine „Fernwirkung mit Information": Wer nur Photon 1 misst, sieht reine Zufallswerte; erst der <b>Vergleich</b> beider Messreihen zeigt die perfekte Korrelation. Und: Die Eigenschaften waren vor der Messung nicht „heimlich schon festgelegt" (das wäre eine klassische Erklärung; sie ist experimentell widerlegt, Nobelpreis 2022).</div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Das Wasserstoffatom: Energieniveaus und Spektrallinien (Bohr-Blatt, Heft)</h2>
+  <p><b>Das Problem (Blatt):</b> Ein kreisendes Elektron ist eine beschleunigte Ladung, müsste strahlen, Energie verlieren und in den Kern stürzen; und angeregte Atome senden nur ganz bestimmte Wellenlängen aus. Beides erklärt die klassische Physik nicht. <b>Bohrs Ansatz:</b> Nur Bahnen, auf deren Umfang ein ganzzahliges Vielfaches der <b>de-Broglie-Wellenlänge</b> passt, sind erlaubt: <span class="f">\(2\pi r = n\lambda = n\,h/(m_e v)\)</span>. Zusammen mit dem Kräftegleichgewicht Coulombkraft = Zentripetalkraft (<span class="f">\(\frac{e^2}{4\pi\varepsilon_0 r^2} = \frac{m_e v^2}{r}\)</span>) folgen diskrete Radien <span class="f">\(r_n = a_0 n^2\)</span> (<span class="f">\(a_0 = 52{,}9\,\mathrm{pm}\)</span>) und Energien</p>
+  <div class="formula">\[E_n = -\frac{m_e e^4}{8\varepsilon_0^2 h^2}\cdot\frac{1}{n^2} = -\frac{13{,}61\,\mathrm{eV}}{n^2},\qquad E_1 = -13{,}61\,\mathrm{eV}\ (\text{Rydberg-Energie}),\ E_2 = -3{,}40,\ E_3 = -1{,}51,\ E_4 = -0{,}85,\ E_5 = -0{,}54,\ E_6 = -0{,}38\,\mathrm{eV}\]</div>
+  <ul>
+    <li><b>Negative Energien:</b> Nullpunkt ist das freie Elektron im Unendlichen. <span class="f">\(|E_1| = 13{,}6\,\mathrm{eV}\)</span> ist die Ionisierungsenergie. Die Niveaus rücken nach oben immer enger zusammen (nicht äquidistant, Abitur 2023 IIb EWH).</li>
+    <li><b>Übergänge:</b> <span class="f">\(hf = E_m - E_n\)</span> (FS S. 37). Mit <span class="f">\(E_n = -E_R/n^2\)</span>: <span class="f">\(f = \frac{E_R}{h}\Big(\frac{1}{n^2} - \frac{1}{m^2}\Big)\)</span>, FS-Form <span class="f">\(f = c R_H(1/n^2 - 1/m^2)\)</span> mit der Rydbergkonstante; Abitur 2023 nennt <span class="f">\(f_R = 3{,}2898\cdot 10^{15}\,\mathrm{Hz}\)</span>.</li>
+    <li><b>Balmer-Serie</b> (<span class="f">\(n = 2\)</span>, sichtbar): <span class="f">\(3\to 2\)</span>: <span class="f">\(656\,\mathrm{nm}\)</span> rot, <span class="f">\(4\to 2\)</span>: <span class="f">\(486\,\mathrm{nm}\)</span> blaugrün, <span class="f">\(5\to 2\)</span>: <span class="f">\(434\,\mathrm{nm}\)</span>, <span class="f">\(6\to 2\)</span>: <span class="f">\(410\,\mathrm{nm}\)</span> violett; Seriengrenze <span class="f">\(m\to\infty\)</span>: <span class="f">\(365\,\mathrm{nm}\)</span>. <b>Lyman</b> (<span class="f">\(n = 1\)</span>): schon <span class="f">\(2\to 1\)</span> liegt bei <span class="f">\(122\,\mathrm{nm}\)</span>, alle anderen noch kürzer ⇒ komplett UV. <b>Paschen</b> (<span class="f">\(n = 3\)</span>): Infrarot.</li>
+  </ul>
+  <h3>Heft-Messung: Wasserstoffspektrum mit der subjektiven Methode</h3>
+  <p>Balmer-Lampe, Gitter mit <span class="f">\(d = 0{,}001\,\mathrm{m}/570\)</span>, <span class="f">\(e = (29{,}7\pm 0{,}2)\,\mathrm{cm}\)</span>; abgelesen am Lineal <span class="f">\(\tilde a_0 = (20{,}2\pm 0{,}1)\,\mathrm{cm}\)</span> (Mitte), <span class="f">\(\tilde a_{\mathrm{rot}} = (7{,}7\pm 0{,}5)\,\mathrm{cm}\)</span>, <span class="f">\(\tilde a_{\mathrm{blau}} = (11{,}3\pm 0{,}4)\,\mathrm{cm}\)</span> ⇒ Abstände <span class="f">\(a_{\mathrm{rot}} = 12{,}5\,\mathrm{cm}\)</span> (<span class="f">\(\Delta a = 0{,}1 + 0{,}5 = 0{,}6\,\mathrm{cm}\)</span>), <span class="f">\(a_{\mathrm{blau}} = 8{,}9\,\mathrm{cm}\)</span> (<span class="f">\(\Delta a = 0{,}5\,\mathrm{cm}\)</span>). Fehler einer Differenz: die Einzelfehler addieren sich.</p>
+  <table>
+    <tr><th>Linie</th><th><span class="f">\(\lambda = d\sin(\arctan(a/e))\)</span></th><th><span class="f">\(\lambda_{\mathrm{min}}\)</span> (<span class="f">\(a-\Delta a\)</span>, <span class="f">\(e+\Delta e\)</span>)</th><th><span class="f">\(\lambda_{\mathrm{max}}\)</span> (<span class="f">\(a+\Delta a\)</span>, <span class="f">\(e-\Delta e\)</span>)</th><th>Theorie</th></tr>
+    <tr><td>rot (<span class="f">\(3\to 2\)</span>)</td><td><span class="f">\(681\,\mathrm{nm}\)</span></td><td><span class="f">\(649\,\mathrm{nm}\)</span></td><td><span class="f">\(712\,\mathrm{nm}\)</span></td><td><span class="f">\(656\,\mathrm{nm}\)</span> ✓</td></tr>
+    <tr><td>blau (<span class="f">\(4\to 2\)</span>)</td><td><span class="f">\(504\,\mathrm{nm}\)</span></td><td><span class="f">\(475\,\mathrm{nm}\)</span></td><td><span class="f">\(533\,\mathrm{nm}\)</span></td><td><span class="f">\(486\,\mathrm{nm}\)</span> ✓</td></tr>
+  </table>
+  <p>Heft-Fazit: „Im Rahmen der Messungenauigkeit stimmen die Werte überein." Die Theoriewerte liegen in beiden Fehlerintervallen; die Messwerte selbst liegen 4 % daneben, weil die Linienmitte am Lineal schwer zu treffen ist (<span class="f">\(\Delta a = 5\,\mathrm{mm}\)</span>). Dasselbe Fehlerverfahren wie in Lektion 8.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>von <span class="f">\(m\)</span> <input type="range" id="hwM" min="2" max="8" value="3" step="1"> <span id="hwMv"></span></label>
+        <label>nach <span class="f">\(n\)</span> <input type="range" id="hwN" min="1" max="4" value="2" step="1"> <span id="hwNv"></span></label>
+        <label>Atom <select id="hwAtom"><option value="H">Wasserstoff</option><option value="Na">Natrium (Abitur 2025)</option></select></label>
+      </div>
+      <canvas id="hwCanvas" width="480" height="320"></canvas>
+      <p class="small">Energieniveauschema mit dem gewählten Übergang (Pfeil) und dem zugehörigen Spektrum unten (Balmer-Linien farbig, UV und IR grau). Für Natrium die vier Niveaus aus Abitur 2025 (M4-B).</p>
+    </div>
+    <div>
+      <div class="out" id="hwOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2023 IIb, Aufgabe 3):</b> 3.1 (3 BE) Emissionsspektrum: Anregung (Elektron auf höheres Niveau), quantenhafte Emission beim Zurückfallen, diskrete Linien durch charakteristische Energiestufen. 3.2 (9 BE): Linien I (410 nm, <span class="f">\(6\to 2\)</span>) und II (486 nm, <span class="f">\(4\to 2\)</span>) gehören zur Balmer-Serie, III (615 nm) nicht (kein ganzzahliges <span class="f">\(m\)</span>); Seriengrenze 365 nm mit <span class="f">\(m\to\infty\)</span>; Lyman: <span class="f">\(2\to 1\)</span> gibt <span class="f">\(f = 2{,}47\cdot 10^{15}\,\mathrm{Hz}\)</span>, 122 nm, alle anderen größere Frequenz ⇒ UV. 3.3 (7 BE): Schema mit sechs Niveaus, nicht äquidistant, Pfeile für I und II. 3.4 (5 BE): Grundzustand ⇒ Glühlicht zu energiearm (10,2 eV nötig), kein Absorptionseffekt; angeregt ⇒ Absorptionslinien (Resonanzabsorption).</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · Absorptionsspektren und das Natriumspektrum (Heft, Abitur 2025 Aufgabe 4)</h2>
+  <p><b>Heft-Versuch (Bild):</b> (1) Lampe mit kontinuierlichem Spektrum, Spalt. (2) In der farblosen Brennerflamme werden Natriumatome verdampft (Stab mit NaCl-Kristallen; die Flamme färbt sich gelb). (3) Das Lampenlicht durchquert den Natriumdampf. (4) Photonen mit passender Energie regen Natriumatome an. (5) Das bei der Abregung entstehende Licht wird <b>in alle Richtungen</b> abgestrahlt, also fast nie in die ursprüngliche Richtung. (6) Hinter Linse und Reflexionsgitter fehlen im Spektrum genau diese Wellenlängen: dunkle <b>Absorptionslinien</b>, hier die Na-D-Doppellinie bei 589 nm.</p>
+  <ul>
+    <li><b>Emission und Absorption</b> sind derselbe Übergang in zwei Richtungen: Absorbiert werden nur Photonen mit <span class="f">\(hf = E_m - E_n\)</span>. Darum fehlen im Sonnenspektrum die Fraunhofer-Linien an den Stellen, an denen das Element in der Sonnenatmosphäre emittieren würde.</li>
+    <li><b>Abitur 2025, 4.1:</b> Natrium-Niveaus <span class="f">\(E_3 = -5{,}1\)</span>, <span class="f">\(E_4 = -3{,}0\)</span>, <span class="f">\(E_5 = -1{,}9\)</span>, <span class="f">\(E_6 = -1{,}4\,\mathrm{eV}\)</span> (die vollen Schalen <span class="f">\(n = 1, 2\)</span> fehlen). Die gelbe Linie 589 nm hat <span class="f">\(E = hc/\lambda = 2{,}1\,\mathrm{eV}\)</span> ⇒ Übergang <span class="f">\(E_4\to E_3\)</span>. Beobachtungstabelle: Na-Lampe ohne Kochsalz kein Schatten, mit Kochsalz Schatten (die Na-Atome in der Flamme absorbieren das Na-Licht und streuen es weg); Hg-Lampe mit Kochsalz: <b>kein</b> Schatten, weil die Hg-Photonen keine passende Energie für einen Na-Übergang haben (M4-C: keine Hg-Linie bei 589 nm).</li>
+    <li><b>Beteigeuze (4.2):</b> Zeigt das Sternspektrum einen Intensitätseinbruch bei 589 nm, enthält die Sternatmosphäre Natrium. Hypothese mit Begründung über die Absorption.</li>
+    <li><b>Kompaktspektrometer (4.3):</b> Gitter <span class="f">\(g = 3{,}0\,\mathrm{\mu m}\)</span>, Abstand zum CCD <span class="f">\(d = 0{,}10\,\mathrm{m}\)</span>: <span class="f">\(a = d\tan(\arcsin(\lambda/g)) = 0{,}10\,\mathrm{m}\cdot\tan(11{,}3^\circ) = 2{,}0\,\mathrm{cm}\)</span>; Doppellinie: <span class="f">\(a(589{,}592) - a(588{,}995) = 20{,}044 - 20{,}023\,\mathrm{mm} = 21\,\mathrm{\mu m}\)</span>; Sensorbreite 2,87 cm ⇒ <span class="f">\(\lambda_{\mathrm{max}} = g\sin(\arctan(2{,}87/10)) = 828\,\mathrm{nm}\)</span>. 4.3 b: Die Doppellinie (21 µm Abstand) ist mit typischen Pixeln (etwa 14 µm) kaum trennbar ⇒ größerer Gitterabstand zum Sensor, kleinere Gitterkonstante oder feinere Pixel. Das ist die Doppelspalt-Mathematik aus Lektion 8 im Quantenkontext.</li>
+  </ul>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2025, 4.1 d, 5 BE):</b> „Erläutern Sie die Absorption und Emission von Licht am Beispiel der Natriumatome." EWH: Absorption eines Photons, wenn seine Energie der Energiedifferenz zweier Niveaus entspricht ⇒ angeregter Zustand ⇒ Energieabgabe durch Emission eines Photons mit genau dieser Energiedifferenz. Dazu der Heft-Schritt 5: Emission in alle Richtungen ⇒ in Durchstrahlrichtung fehlt Intensität ⇒ Schatten bzw. dunkle Linie.</div>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Der unendlich tiefe Potentialtopf: stehende Materiewellen (Heft)</h2>
+  <p><b>Idee (Heft-Bild):</b> Das Coulomb-Potential am Atomkern ist ein Trichter (<span class="f">\(W\propto -1/r\)</span>). Vereinfachung: ein Kasten der Länge <span class="f">\(l\)</span> mit unendlich hohen Wänden; innen <span class="f">\(V = 0\)</span>, das Elektron kann nicht hinaus. Die Materiewelle muss an den Wänden verschwinden, wie eine Saite mit festen Enden (Lektion 7): Es passen nur <b>stehende Wellen</b> mit <span class="f">\(l = n\cdot\lambda_n/2\)</span> hinein.</p>
+  <div class="formula">\[\lambda_n = \frac{2l}{n}\ \Rightarrow\ p_n = \frac{h}{\lambda_n} = \frac{n h}{2l}\ \Rightarrow\ E_n = \frac{p_n^2}{2m} = \frac{n^2 h^2}{8 m l^2},\qquad \Psi_n(x) = A_n\sin\!\Big(\frac{n\pi}{l}x\Big)\ \text{(FS S. 37)}\]</div>
+  <ul>
+    <li><b>Quantisierung ohne Bohr-Postulat:</b> Allein aus „stehende Welle im Kasten" folgen diskrete Energien <span class="f">\(E_n\propto n^2\)</span>. Kleinerer Kasten ⇒ größere Energien (<span class="f">\(\propto 1/l^2\)</span>). Es gibt keine Energie null: Der Grundzustand <span class="f">\(n = 1\)</span> hat <span class="f">\(E_1 = h^2/(8ml^2)\)</span> (Nullpunktsenergie, passt zur Unschärferelation: eingesperrt ⇒ Impuls ungleich null).</li>
+    <li><b>Zahlen:</b> Elektron, <span class="f">\(l = 1{,}0\,\mathrm{nm}\)</span>: <span class="f">\(E_1 = \frac{(6{,}626\cdot 10^{-34})^2}{8\cdot 9{,}109\cdot 10^{-31}\cdot 10^{-18}}\,\mathrm{J} = 6{,}0\cdot 10^{-20}\,\mathrm{J} = 0{,}38\,\mathrm{eV}\)</span>, <span class="f">\(E_2 = 1{,}5\,\mathrm{eV}\)</span>, <span class="f">\(E_3 = 3{,}4\,\mathrm{eV}\)</span>; Übergang <span class="f">\(2\to 1\)</span>: <span class="f">\(1{,}13\,\mathrm{eV}\)</span> ⇒ <span class="f">\(\lambda = 1{,}1\,\mathrm{\mu m}\)</span> (Infrarot). <span class="f">\(l = 0{,}1\,\mathrm{nm}\)</span> (Atomgröße): <span class="f">\(E_1 = 38\,\mathrm{eV}\)</span>, Größenordnung der Atomphysik.</li>
+    <li><b>Wellenfunktion und Wahrscheinlichkeit:</b> <span class="f">\(\Psi_n\)</span> hat <span class="f">\(n - 1\)</span> Knoten im Inneren; <span class="f">\(|\Psi_n|^2\)</span> ist die Aufenthaltswahrscheinlichkeit: Im Grundzustand sitzt das Elektron am wahrscheinlichsten in der Mitte, für <span class="f">\(n = 2\)</span> ist die Mitte ein Knoten mit Wahrscheinlichkeit null.</li>
+    <li><b>Schrödingergleichung (Heft):</b> Aus der klassischen Energie <span class="f">\(H = \frac{p^2}{2m} + V\)</span> wird durch die Ersetzung <span class="f">\(p\to\hat p = -i\hbar\,\partial/\partial x\)</span> eine Gleichung für <span class="f">\(\Psi\)</span>; stationär: <span class="f">\(E\,\Psi = -\frac{\hbar^2}{2m}\Psi'' + V\Psi\)</span>. FS S. 37 schreibt dasselbe als <span class="f">\(\Psi_n'' = \frac{8\pi^2 m}{h^2}(E_{\mathrm{pot}} - E_n)\Psi_n\)</span>. Probe: <span class="f">\(\Psi_n = A\sin(n\pi x/l)\)</span> einsetzen (<span class="f">\(V = 0\)</span>) ⇒ <span class="f">\(-(n\pi/l)^2 = -\frac{8\pi^2 m}{h^2}E_n\)</span> ⇒ <span class="f">\(E_n = \frac{n^2h^2}{8ml^2}\)</span>, dasselbe Ergebnis wie oben. Im Abitur reicht: Ansatz nennen, einsetzen, bestätigen.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(n\)</span> <input type="range" id="ptN" min="1" max="6" value="1" step="1"> <span id="ptNv"></span></label>
+        <label><span class="f">\(l\)</span> <input type="range" id="ptL" min="0.2" max="3" value="1" step="0.1"> <span id="ptLv"></span></label>
+        <label>Teilchen <select id="ptM"><option value="e">Elektron</option><option value="p">Proton</option></select></label>
+      </div>
+      <canvas id="ptCanvas" width="480" height="300"></canvas>
+      <p class="small">Links: Energieleiter <span class="f">\(E_n\propto n^2\)</span>, rechts: <span class="f">\(\Psi_n\)</span> (blau) und <span class="f">\(|\Psi_n|^2\)</span> (orange) im Kasten. <span class="f">\(n - 1\)</span> Knoten; Knotenabstand <span class="f">\(\lambda_n/2\)</span> wie bei der stehenden Welle.</p>
+    </div>
+    <div>
+      <div class="out" id="ptOut"></div>
+      <div class="note"><b>Analogie:</b> Gitarrensaite der Länge <span class="f">\(l\)</span>: erlaubt sind nur <span class="f">\(\lambda = 2l/n\)</span>, die Töne sind diskret. Beim Elektron wird aus dem Ton eine Energie, weil <span class="f">\(E = p^2/2m\)</span> und <span class="f">\(p = h/\lambda\)</span>. Kürzere Saite ⇒ höherer Ton; kleinerer Kasten ⇒ höhere Energie.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <h2>11 · Die Abituraufgaben zu dieser Lektion, mit Erwartungshorizont</h2>
+  <h3>Abitur 2021 I, Aufgabe 3: Elektronenbeugungsröhre (26 BE)</h3>
+  <ul>
+    <li><b>3.1 (9 BE)</b> Elektronenstrahl erzeugen: Skizze mit Glühkathode, Heizspannung, Beschleunigungsspannung, Lochanode (5). Innerer Ring: Elementarwellen an den Streuzentren, Gangunterschied/Phasendifferenz, konstruktive Interferenz, Ring durch ungeordnete Kristallite (4).</li>
+    <li><b>3.2 (10 BE)</b> Mit <span class="f">\(\lambda = 19{,}4\,\mathrm{pm}\pm 0{,}1\,\mathrm{pm}\)</span> aus dem Material und dem Ringradius <span class="f">\(a_1 = 10{,}5\,\mathrm{mm}\pm 1{,}0\,\mathrm{mm}\)</span>: <span class="f">\(d = \dfrac{\lambda}{2\sin(\tfrac12\arctan(a_1/e))}\approx 231{,}8\,\mathrm{pm}\)</span>; relativer Fehler von <span class="f">\(a_1\)</span> 9,5 % ⇒ <span class="f">\(\Delta d\approx 22\,\mathrm{pm}\)</span> (6). Maximale Ordnung aus der Röhrengeometrie (Schirmgröße, <span class="f">\(2\vartheta\)</span> begrenzt): 4 (4).</li>
+    <li><b>3.3 (7 BE)</b> Herleitung <span class="f">\(\lambda = h/\sqrt{2emU_B}\)</span> (4), Vorgehen zur <span class="f">\(h\)</span>-Bestimmung (3): Abschnitt 3.</li>
+  </ul>
+  <h3>Abitur 2023 IIb, Aufgabe 3: Balmer-Lampe (24 BE)</h3>
+  <ul>
+    <li>Abschnitt 8: Emissionsprozesse (3), Linien zuordnen mit <span class="f">\(f = f_R(1/n^2 - 1/m^2)\)</span> und <span class="f">\(c = \lambda f\)</span> (9), Energieniveauschema aus <span class="f">\(-13{,}61\,\mathrm{eV}\)</span> und <span class="f">\(E_2 = -3{,}40\,\mathrm{eV}\)</span> mit Pfeilen (7), Hypothesen Grundzustand/angeregt (5).</li>
+  </ul>
+  <h3>Abitur 2024 I, Aufgabe 2: C60-Moleküle am Gitter (24 BE)</h3>
+  <ul>
+    <li><b>2.1 (5 BE)</b> Ohne Gitter: schmaler Peak, Intensität fällt beidseitig schnell auf null; mit Gitter: zusätzlich je ein Maximum im gleichen Abstand beiderseits (3). Quanteneigenschaften: einzelne Messimpulse (Teilchen) <b>und</b> Interferenz (2).</li>
+    <li><b>2.2 (4 BE)</b> <span class="f">\(2a_1\approx 60\,\mathrm{\mu m}\)</span>, <span class="f">\(g = 100\,\mathrm{nm}\)</span>, <span class="f">\(e = 1{,}25\,\mathrm{m}\)</span> ⇒ <span class="f">\(\lambda = g\sin(\arctan(a_1/e))\approx 2{,}40\,\mathrm{pm}\)</span>.</li>
+    <li><b>2.3 (8 BE)</b> Phthalocyanin (<span class="f">\(m = 8{,}53\cdot 10^{-25}\,\mathrm{kg}\)</span>): Potenzregression <span class="f">\(\lambda = 8{,}15\cdot 10^{-10}\,\mathrm{m^2/s}\cdot v^{-1{,}01}\)</span> ⇒ <span class="f">\(\lambda\propto 1/v\)</span>; Vergleich <span class="f">\(k_{\mathrm{exp}} = 8{,}15\cdot 10^{-10}\)</span> mit <span class="f">\(h/m = 7{,}77\cdot 10^{-10}\,\mathrm{m^2/s}\)</span> (5 % Abweichung) ⇒ de Broglie annähernd bestätigt. Dokumentation nach Schema.</li>
+    <li><b>2.4 (4 BE)</b> Geschwindigkeitsfilter: Streuung von <span class="f">\(v\)</span> und damit <span class="f">\(\lambda\)</span> kleiner ⇒ Maxima deutlicher, mehr Ordnungen sichtbar; mittlere Geschwindigkeit kleiner ⇒ <span class="f">\(\lambda\)</span> größer ⇒ <span class="f">\(a_n\)</span> größer. <b>2.5 (3 BE)</b> Komplementarität mit Welcher-Weg-Experiment.</li>
+  </ul>
+  <h3>Abitur 2025, Aufgabe 3: Elektroneninterferenz (40 BE) und Aufgabe 4: Natriumspektrum (40 BE)</h3>
+  <ul>
+    <li><b>3.1–3.3:</b> Abschnitt 4 (Jönsson-Zahlen, Spannung, Geschwindigkeitsverteilung, Tonomura, Feynman, Komplementarität). Zahlen: <span class="f">\(\alpha_1 = 0{,}00014^\circ\)</span>, <span class="f">\(a_1 = 0{,}000855\,\mathrm{mm}\)</span>, nach Vergrößerung 1000 ⇒ 0,855 mm.</li>
+    <li><b>4.1–4.3:</b> Abschnitt 9 (Beobachtungstabelle, Niveauschema, 2,1 eV ⇒ <span class="f">\(E_4\to E_3\)</span>, Absorption/Emission, Hg-Lampe, Beteigeuze, Spektrometer 2,0 cm / 21 µm / 828 nm).</li>
+  </ul>
+  <div class="note exam"><b>Muster der Quanten-II-Aufgaben:</b> (1) Versuch beschreiben (Aufbau, Erzeugung freier Elektronen, Nachweis), (2) Interferenz erklären mit Huygens-Dreisatz, (3) rechnen mit <span class="f">\(\lambda = h/p\)</span>, Bragg oder Gitterformel plus Fehlerabschätzung, (4) deuten: Einzelereignis + Muster = Quantenobjekt, Wahrscheinlichkeit, Komplementarität, (5) Atome: <span class="f">\(hf = \Delta E\)</span>, Niveauschema, Emission/Absorption. Die Deutungsteile bringen viele Punkte für wenig Rechnung, aber nur mit den richtigen Fachwörtern.</div>
+</section>
+
+<!-- 12 -->
+<section class="card" id="s12">
+  <h2>12 · Aufgaben zum Selbstrechnen (erst rechnen, dann aufklappen)</h2>
+  <details><summary>A1: Elektronenbeugungsröhre, <span class="f">\(U_B = 4000\,\mathrm{V}\)</span>, <span class="f">\(e = 13{,}3\,\mathrm{cm}\)</span>, Graphit <span class="f">\(g_1 = 213\,\mathrm{pm}\)</span>, <span class="f">\(g_2 = 123\,\mathrm{pm}\)</span>. a) <span class="f">\(v\)</span>, <span class="f">\(p\)</span>, <span class="f">\(\lambda\)</span>. b) Durchmesser beider Ringe (1. Ordnung). c) Vergleich mit den Heft-Werten 2,6 cm und 4,6 cm.</summary>
+    <p>a) <span class="f">\(v = \sqrt{2eU/m} = 3{,}75\cdot 10^7\,\mathrm{m/s}\)</span>, <span class="f">\(p = mv = 3{,}42\cdot 10^{-23}\,\mathrm{kg\,m/s}\)</span>, <span class="f">\(\lambda = h/p = 19{,}4\,\mathrm{pm}\)</span> (genau der Wert aus Abitur 2021).<br>
+    b) Innen: <span class="f">\(\sin\vartheta = \lambda/(2g_1) = 0{,}0455\)</span> ⇒ <span class="f">\(\vartheta = 2{,}61^\circ\)</span> ⇒ <span class="f">\(a = e\tan(2\vartheta) = 13{,}3\,\mathrm{cm}\cdot\tan 5{,}22^\circ = 1{,}21\,\mathrm{cm}\)</span> ⇒ <span class="f">\(D_i = 2{,}4\,\mathrm{cm}\)</span>. Außen: <span class="f">\(\sin\vartheta = 0{,}0789\)</span> ⇒ <span class="f">\(4{,}52^\circ\)</span> ⇒ <span class="f">\(a = 13{,}3\cdot\tan 9{,}05^\circ = 2{,}12\,\mathrm{cm}\)</span> ⇒ <span class="f">\(D_a = 4{,}2\,\mathrm{cm}\)</span>.<br>
+    c) Heft: 2,6 und 4,6 cm, beide 7 % größer ⇒ gemessenes <span class="f">\(\lambda\)</span> 7 % zu groß. Systematisch (Ablesen der äußeren Ringkante statt der Mitte, Krümmung des Schirms), nicht zufällig.</p></details>
+  <details><summary>A2: Abitur 2021 nachgerechnet: <span class="f">\(\lambda = 19{,}4\,\mathrm{pm}\)</span>, innerer Ring <span class="f">\(a_1 = 10{,}5\,\mathrm{mm}\pm 1{,}0\,\mathrm{mm}\)</span>, Abstand Graphit–Schirm <span class="f">\(e = 12{,}5\,\mathrm{cm}\)</span>. a) Netzebenenabstand mit Unsicherheit. b) Bis zu welcher Ordnung gibt es Maxima, wenn der Schirm Ringe bis <span class="f">\(a = 4{,}5\,\mathrm{cm}\)</span> zeigt?</summary>
+    <p>a) <span class="f">\(2\vartheta = \arctan(10{,}5/125) = 4{,}80^\circ\)</span> ⇒ <span class="f">\(\vartheta = 2{,}40^\circ\)</span> ⇒ <span class="f">\(d = \lambda/(2\sin\vartheta) = 19{,}4\,\mathrm{pm}/0{,}0837 = 232\,\mathrm{pm}\)</span> (EWH 231,8 pm). Fehler: <span class="f">\(\Delta a/a = 9{,}5\,\%\)</span>, <span class="f">\(\Delta\lambda/\lambda = 0{,}5\,\%\)</span> ⇒ <span class="f">\(\Delta d\approx 10\,\%\cdot 232 = 23\,\mathrm{pm}\)</span> (EWH 22 pm). Also <span class="f">\((232\pm 23)\,\mathrm{pm}\)</span>; das ist <span class="f">\(g_1 = 213\,\mathrm{pm}\)</span> im Rahmen der Unsicherheit.<br>
+    b) Größter sichtbarer Winkel: <span class="f">\(\tan 2\vartheta_{\mathrm{max}} = 4{,}5/12{,}5\)</span> ⇒ <span class="f">\(2\vartheta_{\mathrm{max}} = 19{,}8^\circ\)</span> ⇒ <span class="f">\(\sin\vartheta_{\mathrm{max}} = 0{,}172\)</span>; Bragg: <span class="f">\(n = 2d\sin\vartheta/\lambda = 2\cdot 232\cdot 0{,}172/19{,}4 = 4{,}1\)</span> ⇒ Ordnungen 1 bis 4 (EWH: 4). Ohne Schirmgrenze ginge es bis <span class="f">\(n = 2d/\lambda = 23\)</span>.</p></details>
+  <details><summary>A3: De Broglie für andere Objekte. a) Proton nach <span class="f">\(1{,}0\,\mathrm{kV}\)</span>. b) Thermisches Neutron, <span class="f">\(v = 2200\,\mathrm{m/s}\)</span>. c) C60 (720 u) mit <span class="f">\(v = 200\,\mathrm{m/s}\)</span>; Abstand des Maximums 1. Ordnung bei <span class="f">\(g = 100\,\mathrm{nm}\)</span>, <span class="f">\(e = 1{,}25\,\mathrm{m}\)</span> (Abitur 2024).</summary>
+    <p>a) <span class="f">\(\lambda = h/\sqrt{2m_p eU} = 6{,}626\cdot 10^{-34}/\sqrt{2\cdot 1{,}673\cdot 10^{-27}\cdot 1{,}602\cdot 10^{-19}\cdot 1000}\,\mathrm{m} = 0{,}91\,\mathrm{pm}\)</span>; 43-mal kleiner als beim Elektron gleicher Spannung (<span class="f">\(\sqrt{1836}\)</span>).<br>
+    b) <span class="f">\(\lambda = h/(m_n v) = 6{,}626\cdot 10^{-34}/(1{,}675\cdot 10^{-27}\cdot 2200)\,\mathrm{m} = 0{,}18\,\mathrm{nm}\)</span>: Atomabstand, deshalb Neutronenbeugung an Kristallen.<br>
+    c) <span class="f">\(m = 720\cdot 1{,}66\cdot 10^{-27} = 1{,}20\cdot 10^{-24}\,\mathrm{kg}\)</span>, <span class="f">\(\lambda = h/(mv) = 2{,}8\,\mathrm{pm}\)</span>; <span class="f">\(a_1 = e\tan(\arcsin(\lambda/g)) = 1{,}25\,\mathrm{m}\cdot 2{,}8\cdot 10^{-5} = 35\,\mathrm{\mu m}\)</span> (Abitur-Messung: <span class="f">\(2a_1\approx 60\,\mathrm{\mu m}\)</span> ⇒ 2,4 pm, also <span class="f">\(v\approx 230\,\mathrm{m/s}\)</span>).</p></details>
+  <details><summary>A4: Jönsson mit anderer Spannung. a) <span class="f">\(\lambda\)</span> für <span class="f">\(U = 50\,\mathrm{kV}\)</span> nichtrelativistisch. b) Streifenabstand ohne und mit Nachvergrößerung 1000 (<span class="f">\(g = 2{,}0\,\mathrm{\mu m}\)</span>, <span class="f">\(e = 350\,\mathrm{mm}\)</span>). c) Was ändert sich bei <span class="f">\(100\,\mathrm{kV}\)</span>?</summary>
+    <p>a) <span class="f">\(\lambda = h/\sqrt{2meU} = 5{,}5\,\mathrm{pm}\)</span> (relativistisch korrekt 5,4 pm; Jönsson: „etwa <span class="f">\(5\cdot 10^{-12}\,\mathrm{m}\)</span>").<br>
+    b) <span class="f">\(a_1 = e\lambda/g = 350\,\mathrm{mm}\cdot 2{,}7\cdot 10^{-6} = 0{,}96\,\mathrm{\mu m}\)</span>; mal 1000: <span class="f">\(0{,}96\,\mathrm{mm}\)</span>, mit dem Auge zu sehen.<br>
+    c) <span class="f">\(\lambda\propto 1/\sqrt U\)</span> ⇒ Faktor <span class="f">\(1/\sqrt 2\)</span>: <span class="f">\(0{,}68\,\mathrm{mm}\)</span>, das Muster wird gestaucht (Abitur 2025, 3.2 c).</p></details>
+  <details><summary>A5: Wasserstoff. a) Wellenlänge des Übergangs <span class="f">\(5\to 2\)</span>. b) Welche Wellenlänge ionisiert ein Atom im Zustand <span class="f">\(n = 2\)</span> gerade noch? c) Ein Atom im Grundzustand absorbiert ein Photon mit <span class="f">\(12{,}09\,\mathrm{eV}\)</span>. Welche Linien kann es danach aussenden?</summary>
+    <p>a) <span class="f">\(\Delta E = 13{,}61\,\mathrm{eV}\,(1/4 - 1/25) = 2{,}86\,\mathrm{eV}\)</span> ⇒ <span class="f">\(\lambda = hc/\Delta E = 1240\,\mathrm{eV\,nm}/2{,}86\,\mathrm{eV} = 434\,\mathrm{nm}\)</span> (violett, Balmer).<br>
+    b) <span class="f">\(|E_2| = 3{,}40\,\mathrm{eV}\)</span> ⇒ <span class="f">\(\lambda = 1240/3{,}40 = 365\,\mathrm{nm}\)</span>: die Balmer-Seriengrenze (Abitur 2023).<br>
+    c) <span class="f">\(E_1 + 12{,}09 = -1{,}52\,\mathrm{eV} = E_3\)</span> ⇒ Anregung nach <span class="f">\(n = 3\)</span>. Abregung: <span class="f">\(3\to 1\)</span> (12,09 eV, 103 nm, Lyman), <span class="f">\(3\to 2\)</span> (1,89 eV, 656 nm, rot) und anschließend <span class="f">\(2\to 1\)</span> (10,2 eV, 122 nm). Drei Linien.</p></details>
+  <details><summary>A6: Potentialtopf. Elektron in <span class="f">\(l = 0{,}50\,\mathrm{nm}\)</span>. a) <span class="f">\(E_1\)</span>, <span class="f">\(E_2\)</span>, <span class="f">\(E_3\)</span> in eV. b) Wellenlänge des Photons beim Übergang <span class="f">\(2\to 1\)</span>. c) Dasselbe für ein Proton im gleichen Kasten.</summary>
+    <p>a) <span class="f">\(E_1 = h^2/(8ml^2) = (6{,}626\cdot 10^{-34})^2/(8\cdot 9{,}109\cdot 10^{-31}\cdot 2{,}5\cdot 10^{-19})\,\mathrm{J} = 2{,}41\cdot 10^{-19}\,\mathrm{J} = 1{,}50\,\mathrm{eV}\)</span>; <span class="f">\(E_2 = 4E_1 = 6{,}0\,\mathrm{eV}\)</span>; <span class="f">\(E_3 = 9E_1 = 13{,}5\,\mathrm{eV}\)</span>.<br>
+    b) <span class="f">\(\Delta E = 4{,}5\,\mathrm{eV}\)</span> ⇒ <span class="f">\(\lambda = 1240/4{,}5 = 275\,\mathrm{nm}\)</span> (UV).<br>
+    c) <span class="f">\(E\propto 1/m\)</span>: Faktor <span class="f">\(1/1836\)</span> ⇒ <span class="f">\(E_1 = 0{,}82\,\mathrm{meV}\)</span>; schwere Teilchen haben eng liegende Niveaus, fast klassisch.</p></details>
+</section>
+
+<!-- 13 -->
+<section class="card" id="s13">
+  <h2>13 · Was nicht in der Formelsammlung steht (auswendig, siehe Typst-Datei)</h2>
+  <ul>
+    <li><b>Bragg:</b> Herleitung über <span class="f">\(l = d\sin\vartheta\)</span>, Gangunterschied <span class="f">\(2l\)</span>; Glanzwinkel zur <b>Ebene</b>; Röhre: <span class="f">\(\tan 2\vartheta = a/e\)</span>, Ring: <span class="f">\(a = D/2\)</span>; <span class="f">\(n\lambda = 2d\sin(\tfrac12\arctan(a/e))\)</span>; Ringe durch polykristallines Graphit; <span class="f">\(g_1 = \tfrac32 w = 213\,\mathrm{pm}\)</span> (innen), <span class="f">\(g_2 = \tfrac{\sqrt3}{2}w = 123\,\mathrm{pm}\)</span> (außen), <span class="f">\(w = 142\,\mathrm{pm}\)</span>.</li>
+    <li><b>Versuch Elektronenbeugung:</b> Aufbau (Glühkathode, <span class="f">\(U_H\)</span>, <span class="f">\(U_B\)</span>, Lochanode, Graphitfolie, Schirm <span class="f">\(e = 13{,}3\,\mathrm{cm}\)</span>), Ringe werden mit <span class="f">\(U\)</span> kleiner; Auswertungskette <span class="f">\(\lambda\propto 1/\sqrt E\propto 1/v\)</span>, Gerade gegen <span class="f">\(1/p\)</span> mit Steigung <span class="f">\(h\)</span>.</li>
+    <li><b>De Broglie für beschleunigte Elektronen:</b> <span class="f">\(\lambda = h/\sqrt{2meU}\)</span> (Herleitung aus Energieansatz; FS hat nur <span class="f">\(\lambda = h/p\)</span>); Zahlen 2,5 kV ⇒ 24,5 pm, 4 kV ⇒ 19,4 pm, 50 kV ⇒ 5 pm; Moleküle <span class="f">\(\lambda = h/(mv)\)</span>, Alltag <span class="f">\(10^{-34}\,\mathrm{m}\)</span>.</li>
+    <li><b>Deutung:</b> Einzelereignis + Muster = Quantenobjekt; <span class="f">\(|\Psi|^2\)</span> = Aufenthaltswahrscheinlichkeit, Kollaps bei Messung, Interferenz der Möglichkeiten <span class="f">\(|\Psi_1 + \Psi_2|^2\)</span>; Komplementarität (Heft-Wortlaut), Welcher-Weg-Gedankenexperiment; Feynman: nur Wahrscheinlichkeiten; Spannung ⇒ <span class="f">\(\lambda\)</span> ⇒ Streifenabstand (Kausalkette); Geschwindigkeitsverteilung verwischt.</li>
+    <li><b>Mach-Zehnder:</b> Aufbau, Phasen (Reflexion am dichteren Medium 180°), mit Spiegel 2 Interferenz, ohne: heller Fleck/50:50, Delayed Choice: Entscheidung „rückwirkend" bei der Beobachtung.</li>
+    <li><b>Verschränkung:</b> Präparation = definierten Zustand erzeugen (<span class="f">\(2s\to 1s\)</span> nur mit zwei Photonen, Drehimpulserhaltung, Photon trägt 1); eine Wellenfunktion für beide; Messung legt beide instantan fest; nur Wahrscheinlichkeitsaussagen vorher; Superposition; keine Informationsübertragung.</li>
+    <li><b>Unschärfe:</b> Heft <span class="f">\(\Delta x\Delta p = \hbar/2\)</span> = FS <span class="f">\(h/4\pi\)</span>; Deutung als Zustandseigenschaft; Beispiele Spalt und Atom.</li>
+    <li><b>Wasserstoff:</b> Bohr-Postulat <span class="f">\(2\pi r = n\lambda\)</span>; <span class="f">\(E_n = -13{,}61\,\mathrm{eV}/n^2\)</span>, <span class="f">\(r_n = a_0 n^2\)</span>; Balmer-Linien 656/486/434/410 nm, Grenze 365 nm, Lyman 122 nm; <span class="f">\(\lambda = 1240\,\mathrm{eV\,nm}/\Delta E\)</span>; Heft-Messung 681/504 nm mit Min-Max-Fehlern; Fehler einer Differenz addieren.</li>
+    <li><b>Absorption:</b> die sechs Heft-Schritte (Streuung in alle Richtungen ⇒ dunkle Linie), Na-D 589 nm = <span class="f">\(E_4\to E_3\)</span> (2,1 eV), Hg-Licht regt Na nicht an; Spektrometer-Rechnung mit Gitterformel.</li>
+    <li><b>Potentialtopf:</b> <span class="f">\(l = n\lambda/2\)</span> ⇒ <span class="f">\(E_n = n^2h^2/(8ml^2)\)</span> (FS gibt nur <span class="f">\(\Psi_n\)</span> und die Schrödingergleichung); Nullpunktsenergie; <span class="f">\(n - 1\)</span> Knoten; Probe durch Einsetzen.</li>
+    <li><b>Steht in der FS (nur Fundort):</b> <span class="f">\(E = hf\)</span>, <span class="f">\(E_{\mathrm{kin,max}} = hf - W_A\)</span>, <span class="f">\(p = E/c\)</span>, <span class="f">\(\lambda = h/p\)</span> (S. 36); Compton, <span class="f">\(\Delta x\Delta p\ge h/4\pi\)</span>, <span class="f">\(\Delta E\Delta t\ge h/4\pi\)</span>, Schrödingergleichung und <span class="f">\(\Psi_n\)</span> für den Topf, <span class="f">\(hf = E_m - E_n\)</span>, <span class="f">\(f = cR_H(1/n^2 - 1/m^2)\)</span> (S. 37); Bragg <span class="f">\(2d\sin\varphi_k = k\lambda\)</span> (S. 35); Konstanten <span class="f">\(h\)</span>, <span class="f">\(e\)</span>, <span class="f">\(m_e\)</span>, <span class="f">\(m_p\)</span>, <span class="f">\(R_H\)</span>, <span class="f">\(a_0\)</span> (S. 50/51).</li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="card" id="s14">
+  <h2>14 · Quiz</h2>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 15 -->
+<section class="card" id="s15">
+  <h2>15 · Merksätze und Fortschritt</h2>
+  <ol>
+    <li>Bragg: <span class="f">\(n\lambda = 2d\sin\vartheta\)</span>, Glanzwinkel zur Ebene, Strahl knickt um <span class="f">\(2\vartheta\)</span>. Ringe, weil Graphit polykristallin ist.</li>
+    <li>Mehr Spannung ⇒ mehr Impuls ⇒ kleinere Wellenlänge ⇒ kleinere Ringe, engere Streifen. <span class="f">\(\lambda = h/p = h/\sqrt{2meU}\)</span>.</li>
+    <li><span class="f">\(\lambda\)</span> gegen <span class="f">\(1/p\)</span> ist eine Ursprungsgerade mit Steigung <span class="f">\(h\)</span>: so misst man <span class="f">\(h\)</span> mit Elektronen.</li>
+    <li>Quantenobjekt: einzeln und ganz registriert, Wahrscheinlichkeit folgt der Welle. Weg-Information und Interferenz schließen sich aus.</li>
+    <li><span class="f">\(|\Psi|^2\)</span> ist die Aufenthaltswahrscheinlichkeit; die Messung legt fest, vorher gibt es nur Wahrscheinlichkeiten (Feynman).</li>
+    <li>Mach-Zehnder: Spiegel 2 drin ⇒ Interferenz, draußen ⇒ 50:50. Delayed Choice: die Entscheidung fällt bei der Messung, nicht unterwegs.</li>
+    <li>Wasserstoff: <span class="f">\(E_n = -13{,}6\,\mathrm{eV}/n^2\)</span>, <span class="f">\(hf = E_m - E_n\)</span>, <span class="f">\(\lambda = 1240\,\mathrm{eV\,nm}/\Delta E\)</span>. Balmer sichtbar, Lyman UV.</li>
+    <li>Absorptionslinie = Emissionslinie rückwärts, in alle Richtungen gestreut. Potentialtopf: <span class="f">\(E_n\propto n^2/l^2\)</span>, kein Zustand mit Energie null.</li>
+  </ol>
+  <h3>Typische Verwechslungen</h3>
+  <table>
+    <tr><th>Das</th><th>ist nicht das</th></tr>
+    <tr><td>Glanzwinkel <span class="f">\(\vartheta\)</span> zur Netzebene</td><td>Winkel zum Lot (Brechung)</td></tr>
+    <tr><td>Gangunterschied <span class="f">\(2d\sin\vartheta\)</span> (Faktor 2)</td><td><span class="f">\(d\sin\vartheta\)</span> wie beim Doppelspalt</td></tr>
+    <tr><td>Ringdurchmesser <span class="f">\(D\)</span>, Ablenkwinkel <span class="f">\(2\vartheta\)</span></td><td>Radius <span class="f">\(a = D/2\)</span>, Glanzwinkel <span class="f">\(\vartheta\)</span></td></tr>
+    <tr><td><span class="f">\(\lambda = h/\sqrt{2meU}\)</span> (Elektron, aus der Ruhe beschleunigt)</td><td><span class="f">\(\lambda = hc/E\)</span> (Photon); für Photonen gilt <span class="f">\(E = pc\)</span></td></tr>
+    <tr><td>Das Elektron interferiert mit sich selbst (Wellenfunktion)</td><td>Elektronen interferieren miteinander (Tonomura: einzeln)</td></tr>
+    <tr><td>Komplementarität: entweder Weg oder Muster</td><td>„mal Welle, mal Teilchen" als zwei verschiedene Dinge</td></tr>
+    <tr><td>Verschränkung: Korrelation, erst im Vergleich sichtbar</td><td>Signalübertragung schneller als Licht</td></tr>
+    <tr><td><span class="f">\(E_n\)</span> negativ, Betrag = Bindungsenergie</td><td>Übergangsenergie <span class="f">\(\Delta E = E_m - E_n \gt 0\)</span></td></tr>
+    <tr><td>Potentialtopf <span class="f">\(E_n\propto n^2\)</span></td><td>Wasserstoff <span class="f">\(E_n\propto -1/n^2\)</span></td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="p1"> Bragg herleiten, Röhrengeometrie <span class="f">\(\tan 2\vartheta = a/e\)</span>, Graphit-Netzebenen</label>
+    <label><input type="checkbox" data-k="p2"> Versuch Elektronenbeugung beschreiben und bis <span class="f">\(\lambda = h/p\)</span> auswerten (Heft-Daten)</label>
+    <label><input type="checkbox" data-k="p3"> <span class="f">\(\lambda = h/\sqrt{2meU}\)</span> herleiten, Zahlen für Elektron, Molekül, Alltag; A1–A4</label>
+    <label><input type="checkbox" data-k="p4"> Jönsson/Tonomura deuten: Quantenobjekt, Wahrscheinlichkeit, Komplementarität mit Gedankenexperiment (Abitur 2025 Aufgabe 3)</label>
+    <label><input type="checkbox" data-k="p5"> Mach-Zehnder mit Einzelphotonen und Delayed Choice erklären</label>
+    <label><input type="checkbox" data-k="p6"> Wellenfunktion, Unschärfe, Präparation und Verschränkung in Heft-Sprache wiedergeben</label>
+    <label><input type="checkbox" data-k="p7"> Wasserstoff: Niveaus, Balmer/Lyman, Heft-Messung mit Fehlern, Abitur 2023 IIb (A5)</label>
+    <label><input type="checkbox" data-k="p8"> Absorption/Natrium (Abitur 2025 Aufgabe 4) und Potentialtopf (A6)</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 10 · erstellt 30.10.2026 · Quellen: Heft (13.1) Quantenmechanik (Interferenz am Kristallgitter, Elektronenbeugung mit Tabellenblatt, Mach-Zehnder, Zustandspräparation, Verschränkung, Komplementarität, Unschärfe, Elektronenvolt, Wasserstoffspektrum, Absorptionsspektra, Potentialtopf) mit Abbildungen, Arbeitsblatt Bohrsches Atommodell (25.9.2026), Zentralabitur 2021 I Aufgabe 3, 2023 IIb Aufgabe 3, 2024 I Aufgabe 2, 2025 Aufgaben 3 und 4 mit Erwartungshorizonten, Pool-Formelsammlung (Stand 14.02.2024). Photoeffekt, Gegenfeldmethode und h mit LEDs: Lektion 9.</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const deT = (x, d) => de(x, d).replace(',', '{,}');
+  const sciT = (x, sig) => {
+    if (x === 0) return '0';
+    let exp = Math.floor(Math.log10(Math.abs(x)));
+    const mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); exp += 1; }
+    m = m.replace(',', '{,}');
+    return exp === 0 ? m : m + '\\cdot 10^{' + exp + '}';
+  };
+  const $ = (id) => document.getElementById(id);
+  const onTheme = (fn) => window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fn);
+  function arrowAt(ctx, x, y, ux, uy, color) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(uy, ux)); ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-6, 5); ctx.lineTo(-6, -5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function arrowLine(ctx, x1, y1, x2, y2, color, w) { ctx.strokeStyle = color; ctx.lineWidth = w || 2; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); const dx = x2 - x1, dy = y2 - y1, m = Math.hypot(dx, dy) || 1; arrowAt(ctx, x2, y2, dx / m, dy / m, color); }
+  function linreg(X, Y) { const n = X.length; let sx = 0, sy = 0; for (let i = 0; i < n; i++) { sx += X[i]; sy += Y[i]; } const mx = sx / n, my = sy / n; let sxx = 0, sxy = 0, syy = 0; for (let i = 0; i < n; i++) { sxx += (X[i] - mx) ** 2; sxy += (X[i] - mx) * (Y[i] - my); syy += (Y[i] - my) ** 2; } const m = sxy / sxx; return { m, b: my - m * mx, r: syy > 0 ? sxy / Math.sqrt(sxx * syy) : 1 }; }
+  function powreg(X, Y) { const r = linreg(X.map(Math.log), Y.map(Math.log)); return { a: Math.exp(r.b), b: r.m, r: r.r }; }
+  function niceStep(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
+  function frame(ctx, W, H, pad, x0, x1, y0, y1, xl, yl, opts) {
+    opts = opts || {};
+    ctx.clearRect(0, 0, W, H);
+    const X = (x) => pad.l + (x - x0) / (x1 - x0) * (W - pad.l - pad.r);
+    const Y = (y) => H - pad.b - (y - y0) / (y1 - y0) * (H - pad.t - pad.b);
+    const xs = opts.xs || niceStep((x1 - x0) / 5), ys = opts.ys || niceStep((y1 - y0) / 4);
+    ctx.font = '11px system-ui'; ctx.fillStyle = css('--muted'); ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+    const dx = Math.max(0, -Math.floor(Math.log10(xs))), dy = Math.max(0, -Math.floor(Math.log10(ys)));
+    for (let x = Math.ceil(x0 / xs) * xs; x <= x1 + 1e-9; x += xs) { ctx.beginPath(); ctx.moveTo(X(x), pad.t); ctx.lineTo(X(x), H - pad.b); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(de(x, dx), X(x), H - pad.b + 14); }
+    for (let y = Math.ceil(y0 / ys) * ys; y <= y1 + 1e-9; y += ys) { ctx.beginPath(); ctx.moveTo(pad.l, Y(y)); ctx.lineTo(W - pad.r, Y(y)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(de(y, dy), pad.l - 4, Y(y) + 4); }
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.2;
+    if (y0 <= 0 && y1 >= 0) { ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.stroke(); }
+    if (x0 <= 0 && x1 >= 0) { ctx.beginPath(); ctx.moveTo(X(0), pad.t); ctx.lineTo(X(0), H - pad.b); ctx.stroke(); }
+    ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'right'; ctx.fillText(xl, W - pad.r, H - pad.b + 28); ctx.textAlign = 'left'; ctx.fillText(yl, pad.l + 4, pad.t - 4);
+    return { X, Y };
+  }
+  function curve(ctx, map, f, x0, x1, color, w, dash, n) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); n = n || 300; let started = false; for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; const y = f(x); if (!isFinite(y)) { started = false; continue; } const px = map.X(x), py = map.Y(y); if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py); } ctx.stroke(); ctx.restore(); }
+  function dot(ctx, x, y, color, r) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r || 4, 0, 2 * Math.PI); ctx.fill(); }
+  function poly(ctx, pts, color, w, dash) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); pts.forEach((p, i) => { if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke(); ctx.restore(); }
+  const TAU = 2 * Math.PI, degT = (a) => deT(a, 0) + '^\\circ';
+  const mod2pi = (a) => ((a % TAU) + TAU) % TAU;
+  const H = 6.62607015e-34, ME = 9.1093837e-31, MP = 1.67262192e-27, MN = 1.67492750e-27, QE = 1.602176634e-19, C0 = 2.99792458e8, EVNM = 1239.84;
+  const sinatan = (a, e) => Math.sin(Math.atan(a / e));
+  function wlColor(nm) { let r = 0, g = 0, b = 0; if (nm < 380) { r = 0.4; b = 0.6; } else if (nm < 440) { r = -(nm - 440) / 60; b = 1; } else if (nm < 490) { g = (nm - 440) / 50; b = 1; } else if (nm < 510) { g = 1; b = -(nm - 510) / 20; } else if (nm < 580) { r = (nm - 510) / 70; g = 1; } else if (nm < 645) { r = 1; g = -(nm - 645) / 65; } else if (nm <= 780) { r = 1; } else { r = 0.5; } let f = 1; if (nm > 700) f = 0.3 + 0.7 * (780 - nm) / 80; if (nm < 420) f = 0.3 + 0.7 * (nm - 380) / 40; if (nm < 380 || nm > 780) f = 0.5; return 'rgb(' + Math.round(255 * Math.max(0, r) * f) + ',' + Math.round(255 * Math.max(0, g) * f) + ',' + Math.round(255 * Math.max(0, b) * f) + ')'; }
+
+  /* ---------- 1 Bragg ---------- */
+  (function bragg() {
+    const cv = $('bgCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    function draw() {
+      const d = parseFloat($('bgD').value), lam = parseFloat($('bgL').value), thD = parseFloat($('bgT').value), th = thD * Math.PI / 180;
+      texHTML($('bgDv'), '\\(' + d + '\\,\\mathrm{pm}\\)'); texHTML($('bgLv'), '\\(' + lam + '\\,\\mathrm{pm}\\)'); texHTML($('bgTv'), '\\(' + deT(thD, 1) + '^\\circ\\)');
+      const gang = 2 * d * Math.sin(th), ratio = gang / lam;
+      ctx.clearRect(0, 0, W, H2);
+      const y1 = 120, dpx = 30 + d / 400 * 110, y2 = y1 + dpx, xl = 20, xr = 300;
+      [y1, y2].forEach((y) => { ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(xl, y); ctx.lineTo(xr, y); ctx.stroke(); for (let x = xl + 10; x < xr; x += 36) dot(ctx, x, y, css('--fg'), 4); });
+      const hit1 = [154, y1], hit2 = [154, y2]; const L = 160; const dir = [Math.cos(th), -Math.sin(th)];
+      // einlaufend (von links oben), reflektiert (nach rechts oben)
+      [hit1, hit2].forEach((h, i) => { ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(h[0] - L * dir[0], h[1] + L * dir[1]); ctx.lineTo(h[0], h[1]); ctx.lineTo(h[0] + L * dir[0], h[1] + L * dir[1]); ctx.stroke(); arrowAt(ctx, h[0] + L * dir[0] * 0.6, h[1] + L * dir[1] * 0.6, dir[0], dir[1], css('--kin')); });
+      // Gangunterschied: Lotfußpunkte vom oberen Treffpunkt auf den unteren Strahl
+      const f1 = [hit2[0] - dpx * Math.cos(th) * Math.sin(th), hit2[1] - dpx * Math.sin(th) * Math.sin(th)];
+      const f2 = [hit2[0] + dpx * Math.cos(th) * Math.sin(th), hit2[1] - dpx * Math.sin(th) * Math.sin(th)];
+      ctx.strokeStyle = css('--pos'); ctx.lineWidth = 3.5; ctx.beginPath(); ctx.moveTo(f1[0], f1[1]); ctx.lineTo(hit2[0], hit2[1]); ctx.lineTo(f2[0], f2[1]); ctx.stroke();
+      ctx.setLineDash([3, 3]); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(hit1[0], hit1[1]); ctx.lineTo(f1[0], f1[1]); ctx.moveTo(hit1[0], hit1[1]); ctx.lineTo(f2[0], f2[1]); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('ϑ', hit1[0] - 60, hit1[1] - 6); ctx.fillText('ϑ', hit1[0] + 48, hit1[1] - 6); ctx.fillText('d', xr + 6, (y1 + y2) / 2 + 4); ctx.fillStyle = css('--pos'); ctx.fillText('2·d·sin ϑ', hit2[0] + 10, hit2[1] + 18);
+      arrowLine(ctx, xr + 2, y1, xr + 2, y2, css('--muted'), 1); arrowLine(ctx, xr + 2, y2, xr + 2, y1, css('--muted'), 1);
+      // Zeiger
+      const cx = 400, cy = 110, R = 42, ph = 2 * Math.PI * ratio; ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, R, 0, 2 * Math.PI); ctx.stroke();
+      arrowLine(ctx, cx, cy, cx + R, cy, css('--kin'), 2.5); arrowLine(ctx, cx, cy, cx + R * Math.cos(ph), cy - R * Math.sin(ph), css('--pos'), 2.5);
+      const sx = Math.cos(ph) + 1, sy = Math.sin(ph); const amp = Math.hypot(sx, sy) / 2; ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('Zeiger der zwei Wellen', cx, cy + 62); ctx.fillText('Summe: ' + de(amp * 100, 0) + ' %', cx, cy + 76);
+      let txt = 'Gangunterschied \\(2d\\sin\\vartheta = 2\\cdot ' + d + '\\,\\mathrm{pm}\\cdot\\sin ' + deT(thD, 1) + '^\\circ = ' + deT(gang, 1) + '\\,\\mathrm{pm} = ' + deT(ratio, 2) + '\\,\\lambda\\)' + (Math.abs(ratio - Math.round(ratio)) < 0.03 && Math.round(ratio) >= 1 ? ' ⇒ <b>Maximum ' + Math.round(ratio) + '. Ordnung</b>' : Math.abs(ratio % 1 - 0.5) < 0.03 ? ' ⇒ <b>Auslöschung</b>' : ' ⇒ dazwischen') + '.<br>Bragg-Winkel für diese \\(d\\), \\(\\lambda\\): ';
+      const ws = []; for (let n = 1; n * lam / (2 * d) <= 1 && n <= 4; n++) { const t = Math.asin(n * lam / (2 * d)) * 180 / Math.PI; ws.push('\\(n = ' + n + '\\): \\(\\vartheta = ' + deT(t, 1) + '^\\circ\\) (Ring bei \\(a = e\\tan 2\\vartheta = ' + deT(13.3 * Math.tan(2 * t * Math.PI / 180), 1) + '\\,\\mathrm{cm}\\) für \\(e = 13{,}3\\,\\mathrm{cm}\\))'); }
+      txt += (ws.length ? ws.join('; ') : 'keine (\\(\\lambda \\gt 2d\\))') + '.';
+      texHTML($('bgOut'), txt);
+    }
+    ['bgD', 'bgL', 'bgT'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 2 Elektronenbeugung ---------- */
+  (function beugung() {
+    const cv = $('ebCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height; let mode = 1;
+    const U = [2500, 3000, 3500, 4000, 4500, 5000], Di = [3.3, 3.0, 2.7, 2.6, 2.4, 2.1], Da = [5.8, 5.4, 4.9, 4.6, 4.2, 4.0], g1 = 2.13e-10, g2 = 1.23e-10, e = 0.133;
+    const lamOf = (D, g) => 2 * g * Math.sin(0.5 * Math.atan(D / 100 / 2 / e));
+    const Li = Di.map((D) => lamOf(D, g1)), La = Da.map((D) => lamOf(D, g2)), E = U.map((u) => QE * u), v = E.map((En) => Math.sqrt(2 * En / ME)), p = v.map((vv) => ME * vv);
+    const lamTh = U.map((u) => H / Math.sqrt(2 * ME * QE * u));
+    const allX1p = p.concat(p).map((pp) => 1 / pp), allL = Li.concat(La); const lr = linreg(allX1p, allL); const lr0 = allX1p.reduce((s, x, i) => s + x * allL[i], 0) / allX1p.reduce((s, x) => s + x * x, 0);
+    const pr = powreg(E.concat(E), allL);
+    function draw() {
+      const u = parseFloat($('ebU').value), i = U.indexOf(u); texHTML($('ebUv'), '\\(' + u + '\\,\\mathrm{V}\\)');
+      const pad = { l: 60, r: 14, t: 16, b: 36 };
+      if (mode === 1) {
+        ctx.clearRect(0, 0, W, H2); const cx = W / 2, cy = H2 / 2 - 6, s = 38;
+        ctx.fillStyle = css('--soft'); ctx.beginPath(); ctx.arc(cx, cy, 130, 0, 2 * Math.PI); ctx.fill(); ctx.strokeStyle = css('--line'); ctx.stroke();
+        [[Di[i], css('--ok')], [Da[i], css('--kin')]].forEach((r) => { ctx.strokeStyle = r[1]; ctx.lineWidth = 6; ctx.globalAlpha = 0.7; ctx.beginPath(); ctx.arc(cx, cy, r[0] / 2 * s, 0, 2 * Math.PI); ctx.stroke(); ctx.globalAlpha = 1; });
+        dot(ctx, cx, cy, css('--pos'), 5);
+        ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, cy + 118); ctx.lineTo(cx + 3 * s, cy + 118); ctx.stroke(); for (let k = 0; k <= 3; k++) { ctx.beginPath(); ctx.moveTo(cx + k * s, cy + 114); ctx.lineTo(cx + k * s, cy + 122); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(k + ' cm', cx + k * s, cy + 134); }
+        ctx.fillStyle = css('--ok'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('innen D_i = ' + de(Di[i], 1) + ' cm (g₁ = 213 pm)', 10, 20); ctx.fillStyle = css('--kin'); ctx.fillText('außen D_a = ' + de(Da[i], 1) + ' cm (g₂ = 123 pm)', 10, 38);
+        texHTML($('ebOut'), '\\(U = ' + u + '\\,\\mathrm{V}\\): \\(E = eU = ' + sciT(E[i], 3) + '\\,\\mathrm{J}\\), \\(v = \\sqrt{2E/m_e} = ' + sciT(v[i], 3) + '\\,\\mathrm{m/s}\\), \\(p = m_e v = ' + sciT(p[i], 3) + '\\,\\mathrm{kg\\,m/s}\\)<br>Innerer Ring: \\(\\lambda_i = 2g_1\\sin(\\tfrac12\\arctan\\tfrac{D_i}{2e}) = \\htmlClass{hl}{' + deT(Li[i] * 1e12, 1) + '\\,\\mathrm{pm}}\\); äußerer Ring: \\(\\lambda_a = 2g_2\\sin(\\dots) = \\htmlClass{hl}{' + deT(La[i] * 1e12, 1) + '\\,\\mathrm{pm}}\\). Beide Ringe, eine Wellenlänge.<br>Theorie \\(h/p = ' + deT(lamTh[i] * 1e12, 1) + '\\,\\mathrm{pm}\\), Abweichung \\(' + deT((Li[i] / lamTh[i] - 1) * 100, 0) + '\\,\\%\\).');
+      } else if (mode === 2) {
+        const map = frame(ctx, W, H2, pad, 0, 9, 0, 30, 'E in 10⁻¹⁶ J', 'λ in pm', { xs: 2, ys: 5 });
+        curve(ctx, map, (x) => pr.a * Math.pow(x * 1e-16, pr.b) * 1e12, 3, 9, css('--accent'), 2);
+        E.forEach((En, k) => { dot(ctx, map.X(En * 1e16), map.Y(Li[k] * 1e12), css('--ok'), 4); dot(ctx, map.X(En * 1e16), map.Y(La[k] * 1e12), css('--kin'), 4); });
+        texHTML($('ebOut'), '<b>Heft-Diagramm 1:</b> \\(\\lambda\\) über \\(E\\) (grün innen, orange außen). Fallende Kurve ⇒ Potenzregression über alle 12 Punkte: \\(\\lambda = a\\cdot E^{' + deT(pr.b, 2) + '}\\), Exponent \\(\\approx -\\tfrac12\\) ⇒ \\(\\lambda\\propto 1/\\sqrt E\\).<br>Mit \\(E = \\tfrac12 m v^2\\): \\(\\sqrt E = \\sqrt{m/2}\\,v\\) ⇒ \\(\\lambda\\propto 1/v\\).');
+      } else if (mode === 3) {
+        const X = v.map((vv) => 1 / vv * 1e8); const map = frame(ctx, W, H2, pad, 0, 3, 0, 30, '1/v in 10⁻⁸ s/m', 'λ in pm', { xs: 0.5, ys: 5 });
+        const l3 = linreg(X.concat(X), allL.map((l) => l * 1e12)); curve(ctx, map, (x) => l3.m * x + l3.b, 0, 3, css('--accent'), 2);
+        X.forEach((x, k) => { dot(ctx, map.X(x), map.Y(Li[k] * 1e12), css('--ok'), 4); dot(ctx, map.X(x), map.Y(La[k] * 1e12), css('--kin'), 4); });
+        texHTML($('ebOut'), '<b>Heft-Diagramm 2:</b> \\(\\lambda\\) über \\(1/v\\): Gerade, \\(\\lambda = ' + deT(l3.m, 2) + '\\cdot 10^{-4}\\,\\mathrm{m^2/s}\\cdot\\tfrac1v + ' + deT(l3.b, 1) + '\\,\\mathrm{pm}\\) (\\(r = ' + deT(l3.r, 3) + '\\)). Steigung \\(' + sciT(l3.m * 1e-4, 3) + '\\,\\mathrm{m^2/s}\\); Vergleich \\(h/m_e = ' + sciT(H / ME, 3) + '\\,\\mathrm{m^2/s}\\): Heft: „der Faktor \\(1/m_e\\) spielt eine Rolle" ⇒ gegen \\(1/(m_e v) = 1/p\\) auftragen.');
+      } else {
+        const X = p.map((pp) => 1 / pp * 1e-22); const map = frame(ctx, W, H2, pad, 0, 4.5, 0, 30, '1/p in 10²² s/(kg·m)', 'λ in pm', { xs: 1, ys: 5 });
+        curve(ctx, map, (x) => lr0 * x * 1e22 * 1e12, 0, 4.5, css('--accent'), 2); curve(ctx, map, (x) => H * x * 1e22 * 1e12, 0, 4.5, css('--muted'), 1.5, [5, 4]);
+        X.forEach((x, k) => { dot(ctx, map.X(x), map.Y(Li[k] * 1e12), css('--ok'), 4); dot(ctx, map.X(x), map.Y(La[k] * 1e12), css('--kin'), 4); });
+        texHTML($('ebOut'), '<b>Heft-Diagramm 3:</b> \\(\\lambda\\) über \\(1/p\\): Ursprungsgerade, Steigung \\(= h\\). Regression durch den Ursprung: \\(h_{\\mathrm{exp}} = \\htmlClass{hl}{' + sciT(lr0, 3) + '\\,\\mathrm{Js}}\\); Literaturwert \\(6{,}626\\cdot 10^{-34}\\,\\mathrm{Js}\\) (grau gestrichelt), Abweichung \\(' + deT((lr0 / H - 1) * 100, 0) + '\\,\\%\\).<br>Ergebnis: \\(\\lambda = h/p\\), die de-Broglie-Wellenlänge. Die 7 % stecken im Ablesen der Ringdurchmesser (alle etwas zu groß).');
+      }
+      ['ebBtn1', 'ebBtn2', 'ebBtn3', 'ebBtn4'].forEach((id, k) => $(id).classList.toggle('active', mode === k + 1));
+    }
+    ['ebBtn1', 'ebBtn2', 'ebBtn3', 'ebBtn4'].forEach((id, k) => $(id).addEventListener('click', () => { mode = k + 1; draw(); })); $('ebU').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 3 de Broglie ---------- */
+  (function debroglie() {
+    const cv = $('dbCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    const OBJ = { e: [ME, 1, 'Elektron'], p: [MP, 1, 'Proton'], n: [MN, 0, 'Neutron'], c60: [720 * 1.6605e-27, 0, 'C60'], ball: [0.058, 0, 'Tennisball'] };
+    function setRange() { const mode = $('dbMode').value, o = OBJ[$('dbObj').value]; if (mode === 'U' && !o[1]) { $('dbMode').value = 'v'; } const m = $('dbMode').value; if (m === 'U') { $('dbX').min = 1; $('dbX').max = 5; if (+$('dbX').value > 5) $('dbX').value = 3.4; } else { $('dbX').min = -1; $('dbX').max = 7; } }
+    function draw() {
+      setRange(); const mode = $('dbMode').value, key = $('dbObj').value, o = OBJ[key], x = parseFloat($('dbX').value);
+      let v, Uv = null; if (mode === 'U') { Uv = Math.pow(10, x); v = Math.sqrt(2 * QE * Uv / o[0]); } else v = Math.pow(10, x);
+      const p = o[0] * v, lam = H / p;
+      texHTML($('dbLab'), mode === 'U' ? '\\(U\\)' : '\\(v\\)'); texHTML($('dbXv'), mode === 'U' ? '\\(' + sciT(Uv, 2) + '\\,\\mathrm{V}\\)' : '\\(' + sciT(v, 2) + '\\,\\mathrm{m/s}\\)');
+      ctx.clearRect(0, 0, W, H2);
+      const x0 = 30, x1 = W - 20, lmin = -35, lmax = 0, X = (l) => x0 + (Math.log10(l) - lmin) / (lmax - lmin) * (x1 - x0), y = 110;
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+      for (let k = -35; k <= 0; k += 5) { ctx.beginPath(); ctx.moveTo(X(Math.pow(10, k)), y - 5); ctx.lineTo(X(Math.pow(10, k)), y + 5); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText('10' + (k === 0 ? '⁰' : '⁻' + String(-k).replace(/\d/g, (d) => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d])) + ' m', X(Math.pow(10, k)), y + 20); }
+      const refs = [[1e-15, 'Atomkern'], [1e-10, 'Atom'], [2e-9, 'Spaltmittenabstand Jönsson 2 µm', 2e-6], [1e-6, 'Gitter 100 nm', 1e-7], [1e-4, 'Haar'], [1, '1 m']];
+      [[1e-15, 'Atomkern', 1], [1e-10, 'Atom', 2], [1e-7, 'Gitter 100 nm', 1], [2e-6, 'Spalt 2 µm', 2], [1e-4, 'Haar', 1], [1, '1 m', 2]].forEach((r) => { ctx.strokeStyle = css('--line'); ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(X(r[0]), y - 12 - 18 * r[2]); ctx.lineTo(X(r[0]), y); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(r[1], X(r[0]), y - 16 - 18 * r[2]); });
+      const lx = Math.max(x0, Math.min(x1, X(lam))); arrowLine(ctx, lx, y + 70, lx, y + 10, css('--pos'), 2.5); ctx.fillStyle = css('--pos'); ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center'; ctx.fillText('λ = ' + (lam >= 1e-12 ? de(lam * 1e12, 1) + ' pm' : lam.toExponential(1).replace('.', ',').replace('e', '·10^') + ' m'), lx, y + 86);
+      const rel = v / C0; const warn = rel > 0.3 ? ' <b>Achtung:</b> \\(v = ' + deT(rel, 2) + '\\,c\\), nichtrelativistische Rechnung wird ungenau.' : '';
+      texHTML($('dbOut'), o[2] + ', \\(m = ' + sciT(o[0], 3) + '\\,\\mathrm{kg}\\)' + (Uv !== null ? ', aus der Ruhe mit \\(U = ' + sciT(Uv, 2) + '\\,\\mathrm{V}\\) beschleunigt: \\(v = \\sqrt{2eU/m} = ' + sciT(v, 3) + '\\,\\mathrm{m/s}\\)' : ', \\(v = ' + sciT(v, 2) + '\\,\\mathrm{m/s}\\)') + '<br>\\(p = mv = ' + sciT(p, 3) + '\\,\\mathrm{kg\\,m/s}\\) ⇒ \\(\\lambda = h/p = \\htmlClass{hl}{' + sciT(lam, 3) + '\\,\\mathrm{m}}\\)' + (lam >= 1e-13 ? ' \\(= ' + deT(lam * 1e12, 1) + '\\,\\mathrm{pm}\\)' : '') + (Uv !== null ? ' (Formel \\(\\lambda = h/\\sqrt{2meU}\\))' : '') + '.<br>' + (lam > 1e-7 ? 'Wellenlänge größer als ein 100-nm-Gitter: Interferenz leicht sichtbar.' : lam > 1e-11 ? 'Wellenlänge im Bereich von Atomabständen bis Gitterkonstanten: Interferenz an Kristallen oder feinen Spalten sichtbar.' : lam > 1e-13 ? 'Wellenlänge im Pikometerbereich: Interferenz nur an Kristallen oder sehr feinen Gittern mit Nachvergrößerung nachweisbar (Jönsson 5 pm, C60 2,4 pm, Abitur 2024/2025).' : lam > 1e-20 ? 'Wellenlänge viel kleiner als jede Struktur: Beugung nicht messbar, Objekt verhält sich praktisch klassisch.' : 'Wellenlänge unterhalb jeder physikalischen Länge: klassische Mechanik gilt perfekt.') + warn);
+    }
+    ['dbX'].forEach((id) => $(id).addEventListener('input', draw)); ['dbObj', 'dbMode'].forEach((id) => $(id).addEventListener('change', () => { setRange(); draw(); })); onTheme(draw); draw();
+  })();
+
+  /* ---------- 4 Tonomura-Simulation ---------- */
+  (function tonomura() {
+    const cv = $('jsCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    const off = document.createElement('canvas'); off.width = W; off.height = 200; const octx = off.getContext('2d');
+    let running = false, count = 0; const bins = new Array(120).fill(0); const g = 2.0e-6, b = 0.5e-6, e = 0.35, mag = 1000, xmax = 6; // mm nach Vergrößerung
+    let lam = 5.5e-12, ww = false;
+    function params() { const U = parseFloat($('jsU').value) * 1e3; lam = H / Math.sqrt(2 * ME * QE * U); ww = $('jsWW').checked; texHTML($('jsUv'), '\\(' + (U / 1e3) + '\\,\\mathrm{kV}\\)'); }
+    function I(xmm) { const x = xmm / 1e3 / mag; const s = x / Math.hypot(x, e); const u = Math.PI * b * s / lam; const env = u === 0 ? 1 : Math.pow(Math.sin(u) / u, 2); if (ww) { const x1 = (x - g / 2) / Math.hypot(x, e), x2 = (x + g / 2) / Math.hypot(x, e); const u1 = Math.PI * b * x1 / lam, u2 = Math.PI * b * x2 / lam; return 0.5 * (Math.pow(Math.sin(u1) / (u1 || 1e-9), 2) + Math.pow(Math.sin(u2) / (u2 || 1e-9), 2)); } return Math.pow(Math.cos(Math.PI * g * s / lam), 2) * env; }
+    function sample() { for (let k = 0; k < 50; k++) { const x = (Math.random() * 2 - 1) * xmax; if (Math.random() < I(x)) return x; } return 0; }
+    function shoot(n) { for (let k = 0; k < n; k++) { const x = sample(); const px = (x + xmax) / (2 * xmax) * W, py = 8 + Math.random() * 184; octx.fillStyle = 'rgba(120,200,255,0.9)'; octx.fillRect(px, py, 1.6, 1.6); bins[Math.min(119, Math.floor((x + xmax) / (2 * xmax) * 120))]++; count++; } }
+    function draw() {
+      ctx.clearRect(0, 0, W, H2); ctx.fillStyle = '#0b1020'; ctx.fillRect(0, 0, W, 200); ctx.drawImage(off, 0, 0);
+      ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Elektronen: ' + count, 8, 16);
+      const mx = Math.max(1, ...bins); ctx.fillStyle = css('--soft'); ctx.fillRect(0, 200, W, 100); for (let i = 0; i < 120; i++) { const h = bins[i] / mx * 90; ctx.fillStyle = css('--accent'); ctx.fillRect(i * W / 120, 298 - h, W / 120 - 1, h); }
+      ctx.strokeStyle = css('--pos'); ctx.lineWidth = 1.5; ctx.beginPath(); for (let i = 0; i <= 240; i++) { const x = -xmax + 2 * xmax * i / 240; const px = i / 240 * W, py = 298 - I(x) * 90; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'right'; ctx.fillText('Häufigkeit (blau) und |Ψ|² (rot), x von −6 bis +6 mm (nach 1000-facher Vergrößerung)', W - 6, 212);
+      const a1 = e * lam / g * mag * 1e3;
+      texHTML($('jsOut'), '\\(U_B = ' + (parseFloat($('jsU').value)) + '\\,\\mathrm{kV}\\) ⇒ \\(\\lambda = h/\\sqrt{2meU} = ' + deT(lam * 1e12, 2) + '\\,\\mathrm{pm}\\), \\(\\sin\\alpha_1 = \\lambda/g = ' + sciT(lam / g, 2) + '\\) ⇒ \\(\\alpha_1 = ' + sciT(Math.asin(lam / g) * 180 / Math.PI, 2) + '\\,{}^\\circ\\)<br>Streifenabstand auf dem Schirm \\(e\\lambda/g = ' + deT(e * lam / g * 1e6, 2) + '\\,\\mathrm{\\mu m}\\), nach Vergrößerung 1000: \\(\\htmlClass{hl}{' + deT(a1, 2) + '\\,\\mathrm{mm}}\\) (Abitur 2025: 0,855 mm bei \\(\\lambda = 5\\,\\mathrm{pm}\\)).<br>' + (ww ? '<b>Mit Weg-Detektor:</b> keine Interferenz, nur die Einzelspalt-Verteilungen (sie überlappen sich zu einem breiten Buckel). Weg-Information und Muster schließen sich aus.' : '<b>Ohne Weg-Detektor:</b> ' + (count < 50 ? 'Einzelne, scheinbar zufällige Punkte (Tonomura Abb. a).' : count < 3000 ? 'Streifen beginnen sich abzuzeichnen (Abb. b/c).' : 'Das Interferenzmuster ist klar erkennbar (Abb. d/e). Jedes Elektron landete einzeln, die Statistik folgt \\(|\\Psi|^2\\).')));
+    }
+    function loop() { if (running) shoot(12); draw(); requestAnimationFrame(loop); }
+    $('jsStart').addEventListener('click', () => { running = !running; $('jsStart').textContent = running ? 'Stopp' : 'Elektronen schießen'; });
+    $('jsReset').addEventListener('click', () => { octx.clearRect(0, 0, W, 200); bins.fill(0); count = 0; draw(); });
+    $('jsU').addEventListener('input', () => { params(); octx.clearRect(0, 0, W, 200); bins.fill(0); count = 0; draw(); }); $('jsWW').addEventListener('change', () => { params(); octx.clearRect(0, 0, W, 200); bins.fill(0); count = 0; draw(); });
+    params(); requestAnimationFrame(loop);
+  })();
+
+  /* ---------- 5 Mach-Zehnder ---------- */
+  (function machzehnder() {
+    const cv = $('mzCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    let nA = 0, nB = 0, nDA = 0, nDB = 0, nDin = 0, lastHit = null, lastDelayed = null;
+    function probs(bs2, phD) { if (!bs2) return [0.5, 0.5]; const ph = phD * Math.PI / 180; return [Math.pow(Math.cos(ph / 2), 2), Math.pow(Math.sin(ph / 2), 2)]; }
+    function draw() {
+      const bs2 = $('mzBS2').checked, phD = parseFloat($('mzPh').value); texHTML($('mzPhv'), '\\(' + phD + '^\\circ\\)');
+      ctx.clearRect(0, 0, W, H2);
+      const x1 = 120, y1 = 200, x2 = 320, y2 = 70; // BS1 unten links, Spiegel oben links (x1,y2) und unten rechts (x2,y1), BS2 oben rechts (x2,y2)
+      ctx.fillStyle = css('--soft'); ctx.fillRect(14, y1 - 12, 56, 24); ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Quelle', 18, y1 + 4); ctx.fillStyle = css('--muted'); ctx.fillText('Einzelphotonen', 14, y1 + 26);
+      ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(70, y1); ctx.lineTo(x1, y1); ctx.lineTo(x1, y2); ctx.lineTo(x2, y2); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(x2, y2); ctx.lineTo(x2 + 90, y2); ctx.moveTo(x2, y2); ctx.lineTo(x2, y2 - 50); ctx.stroke();
+      arrowAt(ctx, 95, y1, 1, 0, css('--kin')); arrowAt(ctx, x1, 135, 0, -1, css('--kin')); arrowAt(ctx, 220, y2, 1, 0, css('--kin')); arrowAt(ctx, 220, y1, 1, 0, css('--kin')); arrowAt(ctx, x2, 135, 0, -1, css('--kin'));
+      const mirror = (x, y, lab) => { ctx.strokeStyle = css('--fg'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x - 14, y + 14); ctx.lineTo(x + 14, y - 14); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText(lab, x + 10, y + 18); };
+      const splitter = (x, y, lab, on) => { ctx.strokeStyle = on ? css('--accent') : css('--line'); ctx.lineWidth = on ? 3 : 1.5; if (!on) ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(x - 14, y + 14); ctx.lineTo(x + 14, y - 14); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText(lab, x + 10, y + 18); };
+      splitter(x1, y1, 'HDS 1', true); mirror(x1, y2, 'Spiegel'); mirror(x2, y1, 'Spiegel'); splitter(x2, y2, bs2 ? 'HDS 2' : 'HDS 2 fehlt', bs2);
+      // Phasenschieber
+      if (phD > 0) { ctx.fillStyle = css('--efield'); ctx.fillRect(x1 - 8, 120, 16, 30); ctx.fillStyle = css('--muted'); ctx.textAlign = 'right'; ctx.fillText('Wegdifferenz ' + phD + '°', x1 - 12, 140); }
+      // Detektoren
+      const pA = probs(bs2, phD)[0], pB = 1 - pA;
+      ctx.fillStyle = lastHit === 'A' ? css('--pos') : css('--ok'); ctx.fillRect(x2 + 90, y2 - 14, 22, 28); ctx.fillStyle = lastHit === 'B' ? css('--pos') : css('--ok'); ctx.fillRect(x2 - 14, y2 - 72, 28, 22);
+      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('A (Schirm): ' + nA, x2 + 118, y2 + 4); ctx.fillText('B: ' + nB, x2 + 20, y2 - 58);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.fillText('erwartet A: ' + de(pA * 100, 0) + ' %, B: ' + de(pB * 100, 0) + ' %', x2 + 118, y2 + 22);
+      // Balken
+      const tot = nA + nB; const bx = 40, by = 252; ctx.fillStyle = css('--soft'); ctx.fillRect(bx, by, 300, 14); if (tot) { ctx.fillStyle = css('--accent'); ctx.fillRect(bx, by, 300 * nA / tot, 14); } ctx.fillStyle = css('--muted'); ctx.textAlign = 'left'; ctx.fillText('Anteil A gemessen: ' + (tot ? de(nA / tot * 100, 0) + ' %' : '–') + ' (' + tot + ' Photonen)', bx, by - 4);
+      let txt = (bs2 ? 'Mit HDS 2 sind die Wege ununterscheidbar: \\(P_A = \\cos^2(\\Delta\\varphi/2) = ' + deT(pA, 2) + '\\), \\(P_B = \\sin^2(\\Delta\\varphi/2) = ' + deT(pB, 2) + '\\). Bei gleichen Wegen geht jedes Photon nach A (konstruktiv), B bleibt dunkel (destruktiv).' : 'Ohne HDS 2 landet jedes Photon mit 50 % in A oder B; man weiß, welchen Weg es genommen hat. Keine Interferenz.') + '<br>Gezählt: A ' + nA + ', B ' + nB + (lastHit ? ', letztes Photon: ' + lastHit : '') + '.';
+      if (nDin + nDB + nDA > 0) txt += '<br><b>Delayed Choice:</b> ' + nDin + ' Photonen mit nachträglich eingesetztem HDS 2: ' + nDA + ' in A, ' + (nDin - nDA) + ' in B (wie fest eingesetzt); ' + nDB + ' ohne HDS 2: je etwa die Hälfte. Die nachträgliche Entscheidung ändert die Statistik nicht.';
+      texHTML($('mzOut'), txt);
+    }
+    function one(bs2, phD) { const p = probs(bs2, phD)[0]; const hit = Math.random() < p ? 'A' : 'B'; if (hit === 'A') nA++; else nB++; lastHit = hit; return hit; }
+    $('mzOne').addEventListener('click', () => { one($('mzBS2').checked, parseFloat($('mzPh').value)); draw(); });
+    $('mzMany').addEventListener('click', () => { for (let k = 0; k < 100; k++) one($('mzBS2').checked, parseFloat($('mzPh').value)); draw(); });
+    $('mzDelayed').addEventListener('click', () => { const phD = parseFloat($('mzPh').value); for (let k = 0; k < 100; k++) { const bs2 = Math.random() < 0.5; const hit = one(bs2, phD); if (bs2) { nDin++; if (hit === 'A') nDA++; } else nDB++; } draw(); });
+    $('mzReset').addEventListener('click', () => { nA = nB = nDA = nDB = nDin = 0; lastHit = null; draw(); });
+    ['mzBS2'].forEach((id) => $(id).addEventListener('change', () => { nA = nB = 0; lastHit = null; draw(); })); $('mzPh').addEventListener('input', () => { nA = nB = 0; lastHit = null; draw(); }); onTheme(draw); draw();
+  })();
+
+  /* ---------- 8 Energieniveaus ---------- */
+  (function niveaus() {
+    const cv = $('hwCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    const ER = 13.6057; const NA = { 3: -5.1, 4: -3.0, 5: -1.9, 6: -1.4 };
+    function draw() {
+      const atom = $('hwAtom').value; let m = parseInt($('hwM').value), n = parseInt($('hwN').value);
+      if (atom === 'Na') { if (n < 3) { n = 3; $('hwN').value = 3; } if (m > 6) { m = 6; $('hwM').value = 6; } }
+      if (m <= n) { m = n + 1; $('hwM').value = m; }
+      texHTML($('hwMv'), '\\(' + m + '\\)'); texHTML($('hwNv'), '\\(' + n + '\\)');
+      const E = (k) => atom === 'H' ? -ER / (k * k) : (NA[k] !== undefined ? NA[k] : NaN);
+      const levels = atom === 'H' ? [1, 2, 3, 4, 5, 6, 7, 8] : [3, 4, 5, 6];
+      ctx.clearRect(0, 0, W, H2);
+      const Emin = atom === 'H' ? -14.5 : -5.6, pad = { l: 60, r: 170, t: 16, b: 100 }; const Y = (Ev) => pad.t + (0 - Ev) / (0 - Emin) * (H2 - pad.t - pad.b);
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('E = 0 (frei)', W - pad.r + 6, Y(0) + 4);
+      levels.forEach((k) => { const yy = Y(E(k)); ctx.strokeStyle = (k === m || k === n) ? css('--accent') : css('--fg'); ctx.lineWidth = (k === m || k === n) ? 3 : 1.5; ctx.beginPath(); ctx.moveTo(pad.l, yy); ctx.lineTo(W - pad.r, yy); ctx.stroke(); ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('n = ' + k, pad.l - 6, yy + 4); ctx.textAlign = 'left'; ctx.fillText(de(E(k), 2) + ' eV', W - pad.r + 6, yy + 4); });
+      const dE = E(m) - E(n), lam = EVNM / dE, f = dE * QE / H; const xa = (pad.l + W - pad.r) / 2; arrowLine(ctx, xa, Y(E(m)), xa, Y(E(n)), wlColor(lam), 3); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('ΔE = ' + de(dE, 2) + ' eV', xa + 10, (Y(E(m)) + Y(E(n))) / 2 + 4);
+      // Spektrum unten (log 90..2000 nm)
+      const sy = H2 - 70, sh = 36, lmn = 90, lmx = 2000, X = (l) => pad.l + (Math.log10(l) - Math.log10(lmn)) / (Math.log10(lmx) - Math.log10(lmn)) * (W - pad.l - 20);
+      for (let i = 0; i < W - pad.l - 20; i++) { const l = Math.pow(10, Math.log10(lmn) + i / (W - pad.l - 20) * (Math.log10(lmx) - Math.log10(lmn))); ctx.fillStyle = (l < 380 || l > 780) ? css('--soft') : wlColor(l); ctx.fillRect(pad.l + i, sy, 1.5, sh); }
+      ctx.strokeStyle = css('--line'); ctx.strokeRect(pad.l, sy, W - pad.l - 20, sh); [100, 200, 400, 800, 1600].forEach((l) => { ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(l + ' nm', X(l), sy + sh + 14); });
+      if (atom === 'H') { for (let k = 3; k <= 8; k++) { const l = EVNM / (ER * (1 / 4 - 1 / (k * k))); ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(X(l), sy); ctx.lineTo(X(l), sy + sh); ctx.stroke(); } ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Balmer-Linien (→2)', pad.l + 4, sy - 4); }
+      ctx.strokeStyle = css('--pos'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(X(Math.max(lmn, Math.min(lmx, lam))), sy - 6); ctx.lineTo(X(Math.max(lmn, Math.min(lmx, lam))), sy + sh + 6); ctx.stroke();
+      const series = atom === 'H' ? (n === 1 ? 'Lyman-Serie' : n === 2 ? 'Balmer-Serie' : n === 3 ? 'Paschen-Serie' : 'Brackett-Serie') : 'Natrium';
+      const region = lam < 380 ? 'Ultraviolett' : lam <= 780 ? 'sichtbar' : 'Infrarot';
+      texHTML($('hwOut'), (atom === 'H' ? '\\(E_n = -13{,}6\\,\\mathrm{eV}/n^2\\): \\(E_' + m + ' = ' + deT(E(m), 2) + '\\,\\mathrm{eV}\\), \\(E_' + n + ' = ' + deT(E(n), 2) + '\\,\\mathrm{eV}\\)' : 'Natrium (M4-B): \\(E_' + m + ' = ' + deT(E(m), 1) + '\\,\\mathrm{eV}\\), \\(E_' + n + ' = ' + deT(E(n), 1) + '\\,\\mathrm{eV}\\)') + '<br>Übergang \\(' + m + '\\to ' + n + '\\): \\(\\Delta E = E_' + m + ' - E_' + n + ' = ' + deT(dE, 2) + '\\,\\mathrm{eV}\\) ⇒ \\(f = \\Delta E/h = ' + sciT(f, 3) + '\\,\\mathrm{Hz}\\), \\(\\lambda = hc/\\Delta E = \\dfrac{1240\\,\\mathrm{eV\\,nm}}{' + deT(dE, 2) + '\\,\\mathrm{eV}} = \\htmlClass{hl}{' + deT(lam, 0) + '\\,\\mathrm{nm}}\\) (' + series + ', ' + region + ').' + (atom === 'H' && n === 2 ? '<br>Seriengrenze (\\(m\\to\\infty\\)): \\(|E_2| = 3{,}40\\,\\mathrm{eV}\\) ⇒ 365 nm. Lyman \\(2\\to 1\\): 122 nm, alles UV.' : '') + (atom === 'Na' && m === 4 && n === 3 ? ' <b>Das ist die gelbe Na-D-Linie (Abitur 2025: 2,1 eV ⇒ 589 nm).</b>' : ''));
+    }
+    ['hwM', 'hwN'].forEach((id) => $(id).addEventListener('input', draw)); $('hwAtom').addEventListener('change', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 10 Potentialtopf ---------- */
+  (function topf() {
+    const cv = $('ptCanvas'), ctx = cv.getContext('2d'), W = cv.width, H2 = cv.height;
+    function draw() {
+      const n = parseInt($('ptN').value), l = parseFloat($('ptL').value) * 1e-9, m = $('ptM').value === 'e' ? ME : MP;
+      texHTML($('ptNv'), '\\(' + n + '\\)'); texHTML($('ptLv'), '\\(' + deT(l * 1e9, 1) + '\\,\\mathrm{nm}\\)');
+      const En = (k) => k * k * H * H / (8 * m * l * l), E1 = En(1), Emax = En(6);
+      ctx.clearRect(0, 0, W, H2);
+      // Energieleiter links
+      const lx0 = 60, lx1 = 170, yb = 270, yt = 20, Y = (E) => yb - E / Emax * (yb - yt);
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(lx0 - 10, yb); ctx.lineTo(lx1 + 10, yb); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText('E = 0', (lx0 + lx1) / 2, yb + 14);
+      for (let k = 1; k <= 6; k++) { const yy = Y(En(k)); ctx.strokeStyle = k === n ? css('--accent') : css('--fg'); ctx.lineWidth = k === n ? 3 : 1.5; ctx.beginPath(); ctx.moveTo(lx0, yy); ctx.lineTo(lx1, yy); ctx.stroke(); ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('n=' + k, lx0 - 4, yy + 4); ctx.textAlign = 'left'; ctx.fillText((En(k) / QE < 0.01 ? de(En(k) / QE * 1e3, 2) + ' meV' : de(En(k) / QE, 2) + ' eV'), lx1 + 4, yy + 4); }
+      // Topf rechts
+      const bx0 = 250, bx1 = 460, by = 250, bt = 30; ctx.strokeStyle = css('--fg'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(bx0, bt); ctx.lineTo(bx0, by); ctx.lineTo(bx1, by); ctx.lineTo(bx1, bt); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('x von 0 bis l', (bx0 + bx1) / 2, by + 16); ctx.fillText('∞', bx0, bt - 6); ctx.fillText('∞', bx1, bt - 6);
+      const yc = 150, A = 55; ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(bx0, yc); ctx.lineTo(bx1, yc); ctx.stroke();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2.5; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const x = i / 200; const px = bx0 + (bx1 - bx0) * x, py = yc - A * Math.sin(n * Math.PI * x); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const x = i / 200; const px = bx0 + (bx1 - bx0) * x, py = by - 4 - 70 * Math.pow(Math.sin(n * Math.PI * x), 2); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      ctx.fillStyle = css('--accent'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Ψ_' + n, bx0 + 6, yc - A - 6); ctx.fillStyle = css('--kin'); ctx.fillText('|Ψ_' + n + '|²', bx0 + 6, by - 80);
+      const lamn = 2 * l / n, pn = H / lamn, dE = n > 1 ? En(n) - En(n - 1) : NaN;
+      texHTML($('ptOut'), '\\(\\lambda_' + n + ' = 2l/n = ' + deT(lamn * 1e9, 2) + '\\,\\mathrm{nm}\\), \\(p_' + n + ' = h/\\lambda_' + n + ' = ' + sciT(pn, 3) + '\\,\\mathrm{kg\\,m/s}\\)<br>\\(E_' + n + ' = \\dfrac{n^2h^2}{8ml^2} = ' + sciT(En(n), 3) + '\\,\\mathrm{J} = \\htmlClass{hl}{' + (En(n) / QE < 0.01 ? deT(En(n) / QE * 1e3, 3) + '\\,\\mathrm{meV}' : deT(En(n) / QE, 3) + '\\,\\mathrm{eV}') + '}\\) \\(= ' + (n * n) + '\\,E_1\\); Knoten im Inneren: ' + (n - 1) + '.<br>' + (n > 1 ? 'Übergang \\(' + n + '\\to ' + (n - 1) + '\\): \\(\\Delta E = ' + deT(dE / QE, 3) + '\\,\\mathrm{eV}\\) ⇒ \\(\\lambda_{\\mathrm{Photon}} = ' + (dE / QE > 0.001 ? deT(EVNM / (dE / QE), 0) + '\\,\\mathrm{nm}' : sciT(EVNM * 1e-9 / (dE / QE), 2) + '\\,\\mathrm{m}') + '\\).' : 'Grundzustand: Nullpunktsenergie, das Teilchen kann nicht ruhen (Unschärfe).') + ' Halbe Kastenlänge ⇒ vierfache Energien.');
+    }
+    ['ptN', 'ptL'].forEach((id) => $(id).addEventListener('input', draw)); $('ptM').addEventListener('change', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Bragg: \\(n\\lambda = 2d\\sin\\vartheta\\). Der Winkel \\(\\vartheta\\) wird gemessen ...', o: ['zum Lot', 'zur Netzebene', 'zwischen ein- und ausfallendem Strahl'], a: 1, e: 'Glanzwinkel zur Ebene. Zwischen den Strahlen liegt \\(2\\vartheta\\); auf dem Schirm gilt \\(\\tan 2\\vartheta = a/e\\).' },
+      { q: 'Elektronenbeugungsröhre: Die Beschleunigungsspannung wird erhöht. Die Ringe ...', o: ['werden größer', 'werden kleiner', 'bleiben gleich'], a: 1, e: 'Mehr \\(U\\) ⇒ mehr \\(p\\) ⇒ kleineres \\(\\lambda = h/p\\) ⇒ kleinerer Bragg-Winkel ⇒ kleinere Ringe (Heft: 3,3 cm bei 2,5 kV, 2,1 cm bei 5 kV).' },
+      { q: 'De-Broglie-Wellenlänge eines Elektrons nach \\(2{,}5\\,\\mathrm{kV}\\): etwa ...', o: ['25 pm', '25 nm', '2,5 µm'], a: 0, e: '\\(\\lambda = h/\\sqrt{2meU} = 24{,}5\\,\\mathrm{pm}\\), Bruchteil eines Atomabstands. Deshalb Kristalle als Gitter.' },
+      { q: 'Tonomura: einzelne Punkte, und nach 140 000 Elektronen ein Streifenmuster. Das zeigt ...', o: ['Elektronen sind Wellen', 'Elektronen sind Teilchen', 'Elektronen sind Quantenobjekte: einzeln registriert, Verteilung nach \\(|\\Psi|^2\\)'], a: 2, e: 'Beide Aspekte gemeinsam, kein Widerspruch: Das ist die Definition eines Quantenobjekts (EWH 2025, 3.3 a).' },
+      { q: 'Mach-Zehnder ohne den zweiten halbdurchlässigen Spiegel: Die Photonen landen ...', o: ['alle in Detektor A', 'je 50 % in A und B, keine Interferenz', 'je nach Wegdifferenz in A oder B'], a: 1, e: 'Ohne HDS 2 sind die Wege unterscheidbar ⇒ Wahrscheinlichkeiten addieren sich, kein Interferenzmuster (Heft: „heller Fleck").' },
+      { q: 'Zwei verschränkte Photonen. Die Polarisation von P1 wird gemessen. Für P2 gilt ...', o: ['nichts, P2 ist unabhängig', 'sie ist sofort festgelegt, aber damit lässt sich keine Nachricht übertragen', 'sie war schon vorher festgelegt'], a: 1, e: '\\(\\Psi\\) bricht zusammen, der Zustand beider ist festgelegt (Heft). Das einzelne Messergebnis bleibt zufällig; die Korrelation sieht man erst im Vergleich.' },
+      { q: 'Wasserstoff, Übergang \\(3\\to 2\\): Wellenlänge?', o: ['122 nm', '486 nm', '656 nm'], a: 2, e: '\\(\\Delta E = 13{,}6\\,\\mathrm{eV}(1/4 - 1/9) = 1{,}89\\,\\mathrm{eV}\\) ⇒ \\(\\lambda = 1240/1{,}89 = 656\\,\\mathrm{nm}\\), die rote Balmer-Linie (Heft: 681 nm gemessen).' },
+      { q: 'Potentialtopf: Die Kastenlänge wird halbiert. Die Energien ...', o: ['halbieren sich', 'verdoppeln sich', 'vervierfachen sich'], a: 2, e: '\\(E_n = n^2h^2/(8ml^2) \\propto 1/l^2\\). Kleiner Kasten = kurze stehende Welle = großer Impuls.' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      texHTML(dv, '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>');
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); texHTML(b, txt);
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; texHTML(fb, '<span class="right">Richtig.</span> ' + item.e); } else { texHTML(fb, '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a] + '". ' + item.e); }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+
+  /* ---------- Fortschritt ---------- */
+  (function progress() {
+    const key = 'physik-l10-progress'; let st = {};
+    try { st = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { st = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => { cb.checked = !!st[cb.dataset.k]; cb.addEventListener('change', () => { st[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) { } }); });
+  })();
+})();
+</script>
+</body>
+</html>

@@ -31,14 +31,14 @@
   header.hero { padding: 24px 0 8px; }
   header.hero h1 { margin: 0 0 4px; font-size: 30px; }
   header.hero p.sub { margin: 0; color: var(--muted); }
-  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; overflow-x: auto; }
   section.card h2 { margin: 0 0 10px; font-size: 22px; }
   h3 { margin: 20px 0 6px; font-size: 17px; }
   h4 { margin: 14px 0 4px; font-size: 15px; }
   p { margin: 8px 0; }
   ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
   li { margin: 4px 0; }
-  .f { white-space: nowrap; }
+  .f { white-space: normal; }
   .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
@@ -75,6 +75,12 @@
   .small { font-size: 13px; color: var(--muted); }
   .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
   .ex .t { font-weight: 600; }
+  /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
+  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .out { max-width: 100%; }
+  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -82,8 +88,10 @@
     window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
     // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
     window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+    window.markWide = function () { document.querySelectorAll('.f').forEach(function (f) { f.classList.remove('wide'); var p = f.parentElement; if (p && p.clientWidth > 0 && f.getBoundingClientRect().width > p.clientWidth - 2) f.classList.add('wide'); }); };
+    window.addEventListener('resize', function () { clearTimeout(window.__mwT); window.__mwT = setTimeout(function () { if (window.markWide) markWide(); }, 150); });
   </script>
-  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS);"></script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS); if (window.markWide) markWide();"></script>
   <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
 </head>
 <body>

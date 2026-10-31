@@ -8,19 +8,19 @@
   :root {
     --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
     --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
-    --field: #2b6cb0; --arrow: #c62828;
+    --field: #2b6cb0; --arrow: #c62828; --rope: #6d28d9;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
       --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
-      --field: #7fb3ff; --arrow: #ff7a70;
+      --field: #7fb3ff; --arrow: #ff7a70; --rope: #c4a6ff;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
     --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
-    --field: #7fb3ff; --arrow: #ff7a70;
+    --field: #7fb3ff; --arrow: #ff7a70; --rope: #c4a6ff;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -31,14 +31,14 @@
   header.hero { padding: 24px 0 8px; }
   header.hero h1 { margin: 0 0 4px; font-size: 30px; }
   header.hero p.sub { margin: 0; color: var(--muted); }
-  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; overflow-x: auto; }
   section.card h2 { margin: 0 0 10px; font-size: 22px; }
   h3 { margin: 20px 0 6px; font-size: 17px; }
   h4 { margin: 14px 0 4px; font-size: 15px; }
   p { margin: 8px 0; }
   ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
   li { margin: 4px 0; }
-  .f { white-space: nowrap; }
+  .f { white-space: normal; }
   .f b { font-style: normal; }
   .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -74,6 +74,12 @@
   .small { font-size: 13px; color: var(--muted); }
   .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
   .ex .t { font-weight: 600; }
+  /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
+  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .out { max-width: 100%; }
+  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -81,8 +87,10 @@
     window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
     // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
     window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+    window.markWide = function () { document.querySelectorAll('.f').forEach(function (f) { f.classList.remove('wide'); var p = f.parentElement; if (p && p.clientWidth > 0 && f.getBoundingClientRect().width > p.clientWidth - 2) f.classList.add('wide'); }); };
+    window.addEventListener('resize', function () { clearTimeout(window.__mwT); window.__mwT = setTimeout(function () { if (window.markWide) markWide(); }, 150); });
   </script>
-  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS);"></script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS); if (window.markWide) markWide();"></script>
   <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
 </head>
 <body>
@@ -182,8 +190,29 @@
     <li><b>Dichte der Linien = Stärke des Feldes.</b> Das gehört zur Definition des Bildes: Pro Ladungsmenge wird eine feste Zahl Linien gezeichnet. Laufen die Linien auseinander (Punktladung), wird das Feld schwächer. Bleiben sie parallel und gleich dicht (Plattenkondensator innen), bleibt das Feld gleich stark.</li>
     <li><b>Feldlinien kreuzen sich nie.</b> An einem Ort gibt es nur eine Kraftrichtung auf die Probeladung. Eine Kreuzung würde zwei Richtungen gleichzeitig bedeuten.</li>
     <li><b>Auf Leiteroberflächen stehen sie senkrecht.</b> Begründung: Hätte die Feldlinie eine Komponente <i>parallel</i> zur Metalloberfläche, würde diese laterale Kraft die freien Elektronen entlang der Oberfläche verschieben. Das geht so lange, bis keine laterale Kraft mehr wirkt, die Ladungen sind dann so verteilt, dass nur die senkrechte Komponente übrig ist. Die kann die Elektronen nicht aus dem Metall ziehen. Im Gleichgewicht (Elektrostatik) ist das Feld an der Oberfläche also senkrecht.</li>
-    <li><b>Im Inneren eines Leiters ist das Feld null</b> (Faraday-Käfig). Begründung: Die Influenzladungen auf der Oberfläche erzeugen ein eigenes Feld, das im Inneren das äußere Feld genau aufhebt. Würde innen noch ein Feld übrig bleiben, würden weiter Elektronen verschoben, bis es weg ist. Deshalb ist man im Auto bei Gewitter geschützt, und deshalb enden Feldlinien auf der Leiteroberfläche und gehen nicht hindurch.</li>
+    <li><b>Im Inneren eines Leiters ist das Feld null</b> („Faraday-Käfig"). Das ist keine neue Regel, sondern die Influenz aus Abschnitt 1 zu Ende gedacht. Schritt für Schritt am neutralen Metallwürfel im homogenen Feld:
+      <ol type="a">
+        <li>Das äußere Feld <span class="f">\(E_{\mathrm{außen}}\)</span> zeigt von links nach rechts. Es übt auf die freien Elektronen im Metall eine Kraft nach <b>links</b> aus (negative Ladung, Kraft gegen die Feldrichtung).</li>
+        <li>Die Elektronen folgen der Kraft und sammeln sich auf der linken Seitenfläche. Rechts bleiben die ortsfesten positiven Atomrümpfe zurück. Das ist <b>Influenz</b>: links <span class="neg">−</span>, rechts <span class="pos">+</span>, der Würfel bleibt insgesamt neutral.</li>
+        <li>Diese Oberflächenladungen erzeugen selbst ein Feld. Im Inneren zeigt es von <span class="pos">+</span> (rechts) nach <span class="neg">−</span> (links), also <b>gegen</b> das äußere Feld.</li>
+        <li>Solange innen noch ein Rest des äußeren Feldes übrig ist, wirkt weiter eine Kraft, und es wandern weitere Elektronen nach links. Das Gegenfeld wächst. Der Vorgang hört erst auf, wenn sich innen beide Felder <b>genau aufheben</b>: <span class="f">\(E_{\mathrm{innen}} = E_{\mathrm{außen}} + E_{\mathrm{Influenz}} = 0\)</span>. Dann gibt es keine Kraft mehr, die noch etwas verschieben könnte. Das Gleichgewicht stellt sich in Sekundenbruchteilen ein.</li>
+      </ol>
+      Folgen: Feldlinien enden auf der Oberfläche des Leiters und gehen nicht hindurch; im Inneren eines hohlen Leiters (Käfig, Auto, Flugzeug) ist man vor äußeren elektrischen Feldern geschützt, auch bei Gewitter. Es spielt keine Rolle, ob der Leiter massiv oder hohl ist und ob er geladen ist oder neutral. Nur im Gleichgewicht (keine Ströme) gilt das; bei fließendem Strom ist im Draht ein Feld.</li>
   </ol>
+  <svg viewBox="0 0 520 170" style="width:100%;max-width:520px;display:block;margin:6px auto" aria-label="Metallwürfel im homogenen Feld">
+    <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--field)"/></marker><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--pos)"/></marker></defs>
+    <g stroke="var(--field)" stroke-width="2" marker-end="url(#ar1)">
+      <line x1="20" y1="35" x2="175" y2="35"/><line x1="20" y1="65" x2="175" y2="65"/><line x1="20" y1="95" x2="175" y2="95"/><line x1="20" y1="125" x2="175" y2="125"/>
+      <line x1="345" y1="35" x2="500" y2="35"/><line x1="345" y1="65" x2="500" y2="65"/><line x1="345" y1="95" x2="500" y2="95"/><line x1="345" y1="125" x2="500" y2="125"/>
+    </g>
+    <rect x="180" y="20" width="160" height="120" fill="var(--soft)" stroke="var(--fg)" stroke-width="2"/>
+    <g font-size="15" font-weight="700" text-anchor="middle"><text x="192" y="45" fill="var(--neg)">−</text><text x="192" y="75" fill="var(--neg)">−</text><text x="192" y="105" fill="var(--neg)">−</text><text x="192" y="135" fill="var(--neg)">−</text><text x="328" y="45" fill="var(--pos)">+</text><text x="328" y="75" fill="var(--pos)">+</text><text x="328" y="105" fill="var(--pos)">+</text><text x="328" y="135" fill="var(--pos)">+</text></g>
+    <line x1="312" y1="80" x2="212" y2="80" stroke="var(--pos)" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#ar2)"/>
+    <text x="260" y="70" font-size="11" fill="var(--pos)" text-anchor="middle">Gegenfeld der Influenzladungen</text>
+    <text x="260" y="112" font-size="12" fill="var(--fg)" text-anchor="middle">innen: E = 0</text>
+    <text x="95" y="155" font-size="11" fill="var(--muted)" text-anchor="middle">äußeres Feld</text><text x="422" y="155" font-size="11" fill="var(--muted)" text-anchor="middle">äußeres Feld</text>
+  </svg>
+  <div class="note exam"><b>So fragt die Klausur:</b> „Begründen Sie, dass das elektrische Feld im Inneren eines Leiters null ist." Erwartet, in dieser Reihenfolge: freie Elektronen, Kraft durch das äußere Feld, Verschiebung (Influenz), Gegenfeld der Oberflächenladungen, Verschiebung endet erst bei vollständiger Aufhebung. Vier Sätze, der letzte ist der Punktbringer: „Bliebe innen ein Feld, würden weitere Ladungen verschoben; das Gleichgewicht ist erst bei <span class="f">\(E_{\mathrm{innen}} = 0\)</span> erreicht."</div>
 
   <h3>Homogen oder inhomogen?</h3>
   <p><b>Homogen</b> heißt: an jedem Ort gleich stark und gleich gerichtet. Im Bild: Feldlinien parallel, gerade und gleich dicht. Das gibt es (näherungsweise) im Inneren eines Plattenkondensators, weit weg vom Rand. Am Rand biegen sich die Linien nach außen (<b>Randfeld</b>), dort ist das Feld inhomogen. Punktladung und Dipol sind überall inhomogen: Linien laufen auseinander, das Feld wird mit dem Abstand schwächer. Klick oben auf „Plattenkondensator" und vergleiche innen mit dem Rand.</p>
@@ -300,14 +329,23 @@
     Antwort: Die Kugeln ziehen sich mit <span class="f">\(0{,}25\,\mathrm{mN}\)</span> an (negatives Vorzeichen, ungleichnamige Ladungen). Zwei geltende Ziffern, weil die Eingangswerte zwei haben.</p></div>
   <div class="note warn"><b>Typische Fehler:</b> <span class="f">\(r\)</span> in <span class="f">\(\mathrm{cm}\)</span> eingesetzt (Faktor <span class="f">\(10^{4}\)</span> falsch). Quadrat vergessen. <span class="f">\(\mathrm{nC}\)</span> nicht in <span class="f">\(\mathrm{C}\)</span> umgerechnet. Vorzeichen ignoriert und dann „abstoßend" geschrieben.</div>
 
-  <h3>Warum <span class="f">\(1/r^{2}\)</span>?</h3>
+  <h3>Warum <span class="f">\(1/r^{2}\)</span>? Die Feldlinien verdünnen sich wie Farbe auf einem wachsenden Ballon</h3>
+  <p><b>Die Frage:</b> Warum sinkt die Kraft zwischen zwei Ladungen bei doppeltem Abstand auf ein Viertel und nicht auf die Hälfte? Die Antwort steckt im Feldlinienbild, und zwar in zwei Regeln aus Abschnitt 2: Die Linien <b>enden nirgends im leeren Raum</b>, und ihre <b>Dichte</b> (Linien pro Fläche) ist ein Maß für die Feldstärke.</p>
   <ol>
-    <li>Von einer Punktladung gehen <span class="f">\(n\)</span> Feldlinien aus (die Zahl ist fest, sie hängt nur von <span class="f">\(Q\)</span> ab).</li>
-    <li>Lege eine gedachte Kugel mit Radius <span class="f">\(r\)</span> um die Ladung. Alle <span class="f">\(n\)</span> Linien gehen durch die Kugeloberfläche <span class="f">\(O = 4\pi r^{2}\)</span>.</li>
-    <li>Liniendichte = Linien pro Fläche = <span class="f">\(n/(4\pi r^{2}) \propto 1/r^{2}\)</span>.</li>
-    <li>Dichte = Feldstärke (Regel 2), und Kraft <span class="f">\(\propto\)</span> Feldstärke. Also <span class="f">\(F \propto 1/r^{2}\)</span>.</li>
+    <li><b>Feste Linienzahl.</b> Beim Zeichnen vereinbart man: Pro Ladungsmenge eine feste Zahl Linien, zum Beispiel 16 Linien für 1 nC. Diese 16 Linien starten auf der Ladung und laufen geradlinig nach außen, immer weiter, ohne zu enden. Weit weg von der Ladung sind es immer noch genau 16 Linien, keine kommt dazu, keine verschwindet.</li>
+    <li><b>Gedachte Kugel.</b> Lege eine Kugel mit Radius <span class="f">\(r\)</span> um die Ladung. Jede der 16 Linien durchstößt die Kugeloberfläche genau einmal. Die Oberfläche einer Kugel ist <span class="f">\(O = 4\pi r^{2}\)</span>; sie wächst mit dem <b>Quadrat</b> des Radius (doppelter Radius, vierfache Fläche, wie bei jeder Fläche: Länge mal Breite, beides verdoppelt).</li>
+    <li><b>Dichte ausrechnen.</b> Liniendichte = Linien pro Fläche = <span class="f">\(n/(4\pi r^{2})\)</span>. Dieselben 16 Linien verteilen sich auf eine immer größere Fläche: Bei <span class="f">\(r = 1\,\mathrm{cm}\)</span> sind es <span class="f">\(16/12{,}6\,\mathrm{cm^2} = 1{,}3\)</span> Linien pro cm², bei <span class="f">\(2\,\mathrm{cm}\)</span> nur noch <span class="f">\(16/50{,}3\,\mathrm{cm^2} = 0{,}32\)</span> pro cm² (ein Viertel), bei <span class="f">\(3\,\mathrm{cm}\)</span> <span class="f">\(0{,}14\)</span> (ein Neuntel). Das ist <span class="f">\(\propto 1/r^{2}\)</span>.</li>
+    <li><b>Dichte ist Feldstärke.</b> Regel 2 sagt: Wo die Linien dichter liegen, ist das Feld stärker, und zwar proportional. Also <span class="f">\(E \propto 1/r^{2}\)</span>. Und auf eine Probeladung wirkt <span class="f">\(F = q\cdot E\)</span>, also auch <span class="f">\(F \propto 1/r^{2}\)</span>.</li>
   </ol>
-  <p>Daraus folgt auch das <b>Feld einer Punktladung</b> (steht in der FS): <span class="f">\(E = F/q = k \cdot Q / r^{2}\)</span>. Es zeigt radial nach außen (bei <span class="f">\(Q > 0\)</span>) bzw. nach innen (bei <span class="f">\(Q < 0\)</span>).</p>
+  <table>
+    <tr><th>Abstand <span class="f">\(r\)</span></th><td><span class="f">\(1\,\mathrm{cm}\)</span></td><td><span class="f">\(2\,\mathrm{cm}\)</span></td><td><span class="f">\(3\,\mathrm{cm}\)</span></td><td><span class="f">\(4\,\mathrm{cm}\)</span></td></tr>
+    <tr><th>Kugelfläche <span class="f">\(4\pi r^{2}\)</span></th><td><span class="f">\(12{,}6\,\mathrm{cm^2}\)</span></td><td><span class="f">\(50{,}3\,\mathrm{cm^2}\)</span></td><td><span class="f">\(113\,\mathrm{cm^2}\)</span></td><td><span class="f">\(201\,\mathrm{cm^2}\)</span></td></tr>
+    <tr><th>Linien pro cm² (16 Linien)</th><td><span class="f">\(1{,}27\)</span></td><td><span class="f">\(0{,}32\)</span></td><td><span class="f">\(0{,}14\)</span></td><td><span class="f">\(0{,}08\)</span></td></tr>
+    <tr><th>relativ zu 1 cm</th><td><span class="f">\(1\)</span></td><td><span class="f">\(1/4\)</span></td><td><span class="f">\(1/9\)</span></td><td><span class="f">\(1/16\)</span></td></tr>
+  </table>
+  <div class="note"><b>Analogie:</b> Sprühfarbe aus einer Düse. Pro Sekunde kommt immer gleich viel Farbe heraus (feste Linienzahl). Hältst du ein Blatt in 1 cm Abstand, wird es dick bedeckt; in 2 cm Abstand verteilt sich dieselbe Farbe auf die vierfache Fläche, die Schicht ist nur ein Viertel so dick. Oder: Das Licht einer Lampe wird mit dem Abstand schwächer, weil sich dieselbe Lichtmenge auf eine immer größere Kugel verteilt. Die Feldstärke ist die „Schichtdicke" der Feldlinien.</div>
+  <div class="note warn"><b>Warum nicht <span class="f">\(1/r\)</span>?</b> Im gezeichneten Bild (flach, auf Papier) verteilen sich die Linien nur auf einen Kreis<b>umfang</b> <span class="f">\(2\pi r\)</span>, das sähe nach <span class="f">\(1/r\)</span> aus. Das Papier täuscht: Die Linien gehen in Wirklichkeit in alle drei Raumrichtungen, also durch eine Kugel<b>oberfläche</b> <span class="f">\(4\pi r^{2}\)</span>. Deshalb das Quadrat. Dasselbe Argument gilt für die Gravitation, darum hat auch Newtons Gesetz <span class="f">\(1/r^{2}\)</span> (Tabelle unten).</div>
+  <p><b>Daraus folgt das Feld einer Punktladung</b> (steht in der FS): <span class="f">\(E = F/q = k\cdot Q/r^{2}\)</span>. Jetzt kannst du die Formel lesen: <span class="f">\(Q\)</span> im Zähler, weil mehr Ladung mehr Linien bedeutet; <span class="f">\(r^{2}\)</span> im Nenner, weil sich die Linien auf die Kugelfläche verteilen. Schreibt man <span class="f">\(k = 1/(4\pi\varepsilon_0)\)</span> aus, steht da <span class="f">\(E = \dfrac{Q/\varepsilon_0}{4\pi r^{2}}\)</span>: oben die „Linienmenge" der Ladung, unten genau die Kugeloberfläche. Das <span class="f">\(4\pi\)</span> in der Konstante ist die Kugel. Richtung: radial nach außen bei <span class="f">\(Q > 0\)</span>, nach innen bei <span class="f">\(Q < 0\)</span>.</p>
 
   <h3>Vergleich Newton ↔ Coulomb</h3>
   <table>
@@ -342,8 +380,8 @@
       <p class="small">Regler: größere Spannung → stärkeres Feld; größerer Abstand bei gleicher Spannung → schwächeres Feld.</p>
     </div>
     <div>
-      <svg class="vis" id="pendSvg" viewBox="0 0 480 300" aria-label="Pendel im Plattenkondensator"></svg>
-      <p class="small">Pendelmessung, Auslenkung im Bild 4-fach überhöht. Grün: Gewichtskraft nach unten. Rot: elektrische Kraft waagerecht (Kugel positiv, zieht zur negativen Platte). Die Fadenkraft zeigt entlang des Fadens.</p>
+      <svg class="vis" id="pendSvg" viewBox="0 0 520 360" aria-label="Pendel im Plattenkondensator mit allen Kräften"></svg>
+      <p class="small"><b>Lesehilfe zur Zeichnung.</b> An der Kugel (positiv geladen, „+") greifen drei Kräfte an; alle Pfeile beginnen im Kugelmittelpunkt. <span style="color:var(--ok)"><b>Grün</b></span>: Gewichtskraft \(\vec F_{\mathrm g}\) senkrecht nach unten. <span style="color:var(--arrow)"><b>Rot</b></span>: elektrische Kraft \(\vec F_{\mathrm{el}}\) waagerecht zur negativen Platte (positive Ladung wird in Feldrichtung gezogen). <span style="color:var(--rope)"><b>Violett</b></span>: Fadenkraft \(\vec F_{\mathrm{Faden}}\) entlang des Fadens zum Aufhängepunkt. Die Kugel ruht, also heben sich die drei Kräfte auf: \(\vec F_{\mathrm{Faden}} = -(\vec F_{\mathrm g} + \vec F_{\mathrm{el}})\). Das gestrichelte Parallelogramm aus Grün und Rot liefert die graue Resultierende \(\vec F_{\mathrm g} + \vec F_{\mathrm{el}}\), und die zeigt genau in die Verlängerung des Fadens; deshalb stellt sich der Faden so ein. Der Winkel \(\alpha\) zwischen Lot und Faden taucht im Kräftedreieck zwischen \(\vec F_{\mathrm g}\) und der Resultierenden wieder auf, beide Dreiecke sind ähnlich: \(\tan\alpha = F_{\mathrm{el}}/F_{\mathrm g}\) und \(\tan\alpha = \Delta x/\text{Höhe}\), für kleine Winkel \(\approx \Delta x/h\). Regler oben bewegen: mehr Spannung, größere elektrische Kraft, größerer Winkel.</p>
     </div>
   </div>
 
@@ -673,42 +711,98 @@
   /* ---------- 5 Plattenkondensator + Pendel ---------- */
   (function kondensator() {
     const uk = $('uk'), dc = $('dc'), svg = $('pendSvg'), NS = 'http://www.w3.org/2000/svg';
-    const el = (tag, attrs) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); svg.appendChild(n); return n; };
+    const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; };
     const m = 2.5e-3, q = 10e-9, h = 0.41, g = 9.81;
-    el('rect', { x: 110, y: 40, width: 10, height: 230, fill: css('--pos') });
-    el('rect', { x: 370, y: 40, width: 10, height: 230, fill: css('--neg') });
-    const tp = el('text', { x: 100, y: 30, 'font-size': 14, fill: css('--fg') }); tp.textContent = '+';
-    const tn = el('text', { x: 372, y: 30, 'font-size': 14, fill: css('--fg') }); tn.textContent = '−';
-    for (let i = 0; i < 5; i++) el('line', { x1: 130, x2: 355, y1: 60 + i * 50, y2: 60 + i * 50, stroke: css('--field'), 'stroke-width': 1.2, 'marker-end': 'url(#ah)' });
-    const defs = el('defs', {}); const mk = document.createElementNS(NS, 'marker'); ['id', 'ah', 'markerWidth', '8', 'markerHeight', '8', 'refX', '6', 'refY', '4', 'orient', 'auto'].forEach((v, i, a) => { if (i % 2 === 0) mk.setAttribute(v, a[i + 1]); });
-    const mp = document.createElementNS(NS, 'path'); mp.setAttribute('d', 'M0,0 L8,4 L0,8 z'); mp.setAttribute('fill', css('--field')); mk.appendChild(mp); defs.appendChild(mk);
-    const pivot = { x: 240, y: 50 }, L = 180;
-    el('circle', { cx: pivot.x, cy: pivot.y, r: 4, fill: css('--fg') });
-    const thread = el('line', { x1: pivot.x, y1: pivot.y, x2: pivot.x, y2: pivot.y + L, stroke: css('--fg'), 'stroke-width': 1.5 });
-    el('line', { x1: pivot.x, y1: pivot.y, x2: pivot.x, y2: pivot.y + L, stroke: css('--line'), 'stroke-dasharray': '4 4' });
-    const fG = el('line', { stroke: css('--ok'), 'stroke-width': 2.5 });
-    const fE = el('line', { stroke: css('--arrow'), 'stroke-width': 2.5 });
-    const bob = el('circle', { r: 10, fill: css('--pos') });
-    const dxLine = el('line', { stroke: css('--warn'), 'stroke-width': 2 });
-    const dxT = el('text', { 'font-size': 13, fill: css('--warn') });
-    const tG = el('text', { 'font-size': 12, fill: css('--ok') }); tG.textContent = 'F_g';
-    const tE = el('text', { 'font-size': 12, fill: css('--arrow') }); tE.textContent = 'F_el';
+    const cFg = css('--ok'), cFel = css('--arrow'), cFf = css('--rope'), cRes = css('--muted'), cGeo = css('--warn'), cFg0 = css('--fg');
+    // Pfeilspitzen in der jeweiligen Pfeilfarbe
+    const defs = el('defs', {});
+    const marker = (id, color) => { const mk = el('marker', { id: 'pd-' + id, markerWidth: 9, markerHeight: 9, refX: 8, refY: 4.5, orient: 'auto', markerUnits: 'userSpaceOnUse' }, defs); el('path', { d: 'M0,0 L9,4.5 L0,9 z', fill: color }, mk); return 'url(#pd-' + id + ')'; };
+    const mField = marker('field', css('--field')), mG = marker('g', cFg), mE = marker('e', cFel), mF = marker('f', cFf), mR = marker('r', cRes);
+    // Beschriftung mit echtem Index: label(farbe, [{t:'F', it:true}, {t:'el', sub:true}])
+    const label = (color, parts, size, anchor) => {
+      const t = el('text', { 'font-size': size || 14, fill: color, 'text-anchor': anchor || 'start' });
+      let down = false;
+      parts.forEach(p => {
+        const sp = el('tspan', {}, t);
+        if (p.sub) { if (!down) sp.setAttribute('dy', 4); sp.setAttribute('font-size', Math.round((size || 14) * 0.72)); down = true; }
+        else if (down) { sp.setAttribute('dy', -4); down = false; }
+        if (p.it) sp.setAttribute('font-style', 'italic');
+        sp.textContent = p.t;
+      });
+      return t;
+    };
+    const Fsub = (sub) => [{ t: 'F', it: true }, { t: sub, sub: true }];
+    const at = (n, x, y) => { n.setAttribute('x', x); n.setAttribute('y', y); return n; };
+    const seg = (n, x1, y1, x2, y2) => { n.setAttribute('x1', x1); n.setAttribute('y1', y1); n.setAttribute('x2', x2); n.setAttribute('y2', y2); };
+    // Kondensator: Platten und Feldlinien (von + nach −)
+    el('rect', { x: 50, y: 30, width: 10, height: 312, fill: css('--pos') });
+    el('rect', { x: 452, y: 30, width: 10, height: 312, fill: css('--neg') });
+    at(label(cFg0, [{ t: '+' }], 16, 'middle'), 55, 22);
+    at(label(cFg0, [{ t: '−' }], 16, 'middle'), 457, 22);
+    for (let i = 0; i < 5; i++) el('line', { x1: 72, x2: 440, y1: 74 + i * 56, y2: 74 + i * 56, stroke: css('--field'), 'stroke-width': 1.1, opacity: 0.4, 'marker-end': mField });
+    // Aufhängung, Lot, Auslenkungsdreieck (Höhe, Δx, Faden h)
+    const pivot = { x: 212, y: 40 }, L = 198, G = 74; // G: Länge des Gewichtskraft-Pfeils in Bildpunkten
+    el('line', { x1: pivot.x - 26, x2: pivot.x + 26, y1: pivot.y - 7, y2: pivot.y - 7, stroke: cFg0, 'stroke-width': 3 });
+    el('circle', { cx: pivot.x, cy: pivot.y, r: 4, fill: cFg0 });
+    const plumb = el('line', { x1: pivot.x, y1: pivot.y, x2: pivot.x, stroke: cRes, 'stroke-dasharray': '4 4' });
+    const hoehe = el('line', { stroke: cGeo, 'stroke-width': 1.5, 'stroke-dasharray': '6 3' });
+    const tHoehe = label(cGeo, [{ t: 'Höhe' }], 12, 'end');
+    const dxLine = el('line', { stroke: cGeo, 'stroke-width': 2.5 });
+    const tDx = label(cGeo, [{ t: 'Δ' }, { t: 'x', it: true }], 14, 'middle');
+    const arcPivot = el('path', { fill: 'none', stroke: cFg0, 'stroke-width': 1.2 });
+    const tAlpha1 = label(cFg0, [{ t: 'α', it: true }], 14, 'middle');
+    const thread = el('line', { x1: pivot.x, y1: pivot.y, stroke: cFg0, 'stroke-width': 1.5 });
+    const tH = label(cFg0, [{ t: 'h', it: true }], 14, 'start');
+    // Kräfteparallelogramm (gestrichelt), Resultierende, Winkel im Kräftedreieck
+    const para = el('polyline', { fill: 'none', stroke: cRes, 'stroke-width': 1.2, 'stroke-dasharray': '5 4' });
+    const fR = el('line', { stroke: cRes, 'stroke-width': 2, 'stroke-dasharray': '7 4', 'marker-end': mR });
+    const tR = label(cRes, Fsub('g').concat([{ t: ' + ' }], Fsub('el')), 13);
+    const arcBob = el('path', { fill: 'none', stroke: cFg0, 'stroke-width': 1.2 });
+    const tAlpha2 = label(cFg0, [{ t: 'α', it: true }], 14, 'middle');
+    // Die drei Kräfte an der Kugel, alle ab Kugelmittelpunkt
+    const fF = el('line', { stroke: cFf, 'stroke-width': 3.5, 'marker-end': mF });
+    const fG = el('line', { stroke: cFg, 'stroke-width': 3.5, 'marker-end': mG });
+    const fE = el('line', { stroke: cFel, 'stroke-width': 3.5, 'marker-end': mE });
+    const bob = el('circle', { r: 11, fill: css('--pos'), stroke: css('--card'), 'stroke-width': 1.5 });
+    const tPlus = label('#ffffff', [{ t: '+' }], 15, 'middle');
+    const tG = label(cFg, Fsub('g'), 14, 'end');
+    const tE = label(cFel, Fsub('el'), 14);
+    const tF = label(cFf, Fsub('Faden'), 14, 'end');
+    const note = at(label(cRes, [{ t: '' }], 11), 72, 354);
+    function arc(path, cx, cy, r, ang) {
+      // Winkelbogen vom Lot (senkrecht nach unten) bis zur um ang nach rechts gedrehten Richtung
+      const x0 = cx, y0 = cy + r, x1 = cx + r * Math.sin(ang), y1 = cy + r * Math.cos(ang);
+      path.setAttribute('d', 'M' + x0 + ' ' + y0 + ' A' + r + ' ' + r + ' 0 0 0 ' + x1 + ' ' + y1);
+    }
     function update() {
       const U = parseFloat(uk.value) * 1e3, d = parseFloat(dc.value) * 1e-2;
       texHTML($('ukv'), '\\(' + deT(parseFloat(uk.value), 1) + '\\,\\mathrm{kV}\\)'); texHTML($('dcv'), '\\(' + deT(parseFloat(dc.value), 1) + '\\,\\mathrm{cm}\\)');
       const E = U / d, Fel = q * E, Fg = m * g;
       const tanA = Fel / Fg, alpha = Math.atan(tanA), dx = h * Math.sin(alpha);
       const Fe = 1.602e-19 * E;
-      texHTML($('capOut'), '\\(E = U/d = ' + tsdT(de(U, 0)) + '\\,\\mathrm{V} / ' + deT(d, 3) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + sciT(E, 3) + '\\,\\mathrm{V/m}}\\) (= \\(\\mathrm{N/C}\\))<br>Kraft auf ein Elektron: \\(e\\cdot E = ' + sciT(Fe, 2) + '\\,\\mathrm{N}\\)<br>Pendel (\\(q = 10\\,\\mathrm{nC}\\), \\(m = 2{,}5\\,\\mathrm{g}\\), \\(h = 410\\,\\mathrm{mm}\\)): \\(F_{\\mathrm{el}} = q\\cdot E = ' + sciT(Fel, 2) + '\\,\\mathrm{N}\\), \\(F_{\\mathrm{g}} = m\\cdot g = ' + sciT(Fg, 2) + '\\,\\mathrm{N}\\) → \\(\\Delta x = h\\cdot F_{\\mathrm{el}}/F_{\\mathrm{g}} \\approx \\htmlClass{hl}{' + deT(dx * 1e3, 1) + '\\,\\mathrm{mm}}\\)');
-      const aV = Math.min(Math.PI / 3, alpha * 4);
-      const bx = pivot.x + L * Math.sin(aV), by = pivot.y + L * Math.cos(aV);
-      thread.setAttribute('x2', bx); thread.setAttribute('y2', by); bob.setAttribute('cx', bx); bob.setAttribute('cy', by);
-      const fs = 60 / Fg;
-      fG.setAttribute('x1', bx); fG.setAttribute('y1', by); fG.setAttribute('x2', bx); fG.setAttribute('y2', by + Fg * fs);
-      fE.setAttribute('x1', bx); fE.setAttribute('y1', by); fE.setAttribute('x2', bx + Math.min(120, Fel * fs)); fE.setAttribute('y2', by);
-      tG.setAttribute('x', bx + 6); tG.setAttribute('y', by + 58); tE.setAttribute('x', bx + Math.min(120, Fel * fs) + 4); tE.setAttribute('y', by - 6);
-      dxLine.setAttribute('x1', pivot.x); dxLine.setAttribute('x2', bx); dxLine.setAttribute('y1', pivot.y + L + 14); dxLine.setAttribute('y2', pivot.y + L + 14);
-      dxT.setAttribute('x', pivot.x + 4); dxT.setAttribute('y', pivot.y + L + 30); dxT.textContent = 'Δx';
+      texHTML($('capOut'), '\\(E = U/d = ' + tsdT(de(U, 0)) + '\\,\\mathrm{V} / ' + deT(d, 3) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + sciT(E, 3) + '\\,\\mathrm{V/m}}\\) (= \\(\\mathrm{N/C}\\))<br>Kraft auf ein Elektron: \\(e\\cdot E = ' + sciT(Fe, 2) + '\\,\\mathrm{N}\\)<br>Pendel (\\(q = 10\\,\\mathrm{nC}\\), \\(m = 2{,}5\\,\\mathrm{g}\\), \\(h = 410\\,\\mathrm{mm}\\)): \\(F_{\\mathrm{el}} = q\\cdot E = ' + sciT(Fel, 2) + '\\,\\mathrm{N}\\), \\(F_{\\mathrm{g}} = m\\cdot g = ' + sciT(Fg, 2) + '\\,\\mathrm{N}\\)<br>→ \\(\\tan\\alpha = F_{\\mathrm{el}}/F_{\\mathrm{g}} = ' + deT(tanA, 4) + '\\), \\(\\alpha = ' + deT(alpha * 180 / Math.PI, 2) + '^\\circ\\), \\(\\Delta x = h\\cdot\\sin\\alpha \\approx h\\cdot F_{\\mathrm{el}}/F_{\\mathrm{g}} = \\htmlClass{hl}{' + deT(dx * 1e3, 1) + '\\,\\mathrm{mm}}\\)');
+      // Zeichnung: Winkel stark überhöht (Kubikwurzel-Abbildung, monoton, höchstens 45° am Reglerende), damit die Kräfte immer sichtbar sind.
+      // Die Kraftpfeile passen zum gezeichneten Winkel, damit das Parallelogramm aufgeht; die echten Zahlen stehen im Kasten.
+      const alphaMax = Math.atan(q * (10e3 / 0.01) / Fg);
+      const aV = (Math.PI / 4) * Math.cbrt(alpha / alphaMax);
+      const sA = Math.sin(aV), cA = Math.cos(aV);
+      const bx = pivot.x + L * sA, by = pivot.y + L * cA, El = G * Math.tan(aV);
+      seg(thread, pivot.x, pivot.y, bx, by); plumb.setAttribute('y2', by + 30);
+      seg(hoehe, pivot.x, pivot.y, pivot.x, by); at(tHoehe, pivot.x - 6, (pivot.y + by) / 2 + 4);
+      seg(dxLine, pivot.x, by, bx, by);
+      if (bx - pivot.x > 44) { at(tDx, (pivot.x + bx) / 2, by + 18); tDx.setAttribute('text-anchor', 'middle'); } else { at(tDx, pivot.x - 8, by + 18); tDx.setAttribute('text-anchor', 'end'); }
+      arc(arcPivot, pivot.x, pivot.y, 46, aV); at(tAlpha1, pivot.x + 62 * Math.sin(aV + 0.26), pivot.y + 62 * Math.cos(aV + 0.26) + 5);
+      at(tH, pivot.x + 0.5 * L * sA + 9, pivot.y + 0.5 * L * cA + 5);
+      bob.setAttribute('cx', bx); bob.setAttribute('cy', by); at(tPlus, bx, by + 5);
+      seg(fG, bx, by, bx, by + G); at(tG, bx - 9, by + G - 2);
+      seg(fE, bx, by, bx + El, by);
+      if (El > 36) { at(tE, bx + El / 2, by - 8); tE.setAttribute('text-anchor', 'middle'); } else { at(tE, bx + El + 10, by + 5); tE.setAttribute('text-anchor', 'start'); }
+      para.setAttribute('points', bx + ',' + (by + G) + ' ' + (bx + El) + ',' + (by + G) + ' ' + (bx + El) + ',' + by);
+      seg(fR, bx, by, bx + El, by + G);
+      if (bx + El > 350) { at(tR, bx + El + 4, by + G + 19); tR.setAttribute('text-anchor', 'end'); } else { at(tR, bx + El + 8, by + G + 5); tR.setAttribute('text-anchor', 'start'); }
+      arc(arcBob, bx, by, 30, aV); at(tAlpha2, bx + 46 * Math.sin(aV + 0.28), by + 46 * Math.cos(aV + 0.28) + 5);
+      seg(fF, bx, by, bx - El, by - G); at(tF, bx - El / 2 - 10, by - G / 2 + 4);
+      note.firstChild.textContent = 'Winkel gezeichnet ' + de(aV * 180 / Math.PI, 0) + '°, wirklich ' + de(alpha * 180 / Math.PI, 2) + '°: Auslenkung stark überhöht, Kraftpfeile passend zur Zeichnung';
     }
     [uk, dc].forEach(s => s.addEventListener('input', update)); update();
   })();
@@ -722,7 +816,7 @@
       { q: 'Das Feldlinienbild der Erde (alle Linien zeigen zum Mittelpunkt) entspricht dem Bild ...', o: ['einer positiven Punktladung', 'einer negativen Punktladung', 'eines Dipols'], a: 1, e: 'Linien zeigen nach innen, wie bei einer negativen Ladung: Feldlinien enden an −.' },
       { q: 'Wo bricht die Analogie?', o: ['Es gibt zwei Ladungsvorzeichen, also auch Abstoßung', 'Das E-Feld hat keine Richtung', 'Ladungen haben keine Quellen'], a: 0, e: 'Massen ziehen sich nur an; Ladungen können sich abstoßen, und Felder lassen sich abschirmen.' },
       { q: 'Ein Elektron wird im Feld nach rechts gezogen. Wohin zeigt \\(E\\)?', o: ['nach rechts', 'nach links', 'nach oben'], a: 1, e: 'Negative Ladung: Kraft entgegen der Feldrichtung.' },
-      { q: 'Ein neutraler Metallwürfel steht im homogenen Feld. Wie groß ist das Feld in seinem Inneren?', o: ['genauso groß wie außen', 'null', 'doppelt so groß'], a: 1, e: 'Influenzladungen auf der Oberfläche heben das äußere Feld innen genau auf (Faraday-Käfig).' },
+      { q: 'Ein neutraler Metallwürfel steht im homogenen Feld. Wie groß ist das Feld in seinem Inneren?', o: ['genauso groß wie außen', 'null', 'doppelt so groß'], a: 1, e: 'Abschnitt 2, Regel 5: Influenzladungen auf der Oberfläche heben das äußere Feld innen genau auf (Faraday-Käfig).' },
       { q: 'Eine positive Ladung startet aus der Ruhe im Feld eines Dipols. Bewegt sie sich exakt entlang der gekrümmten Feldlinie?', o: ['ja, immer', 'nein, nur die Anfangsrichtung stimmt', 'nein, sie bleibt stehen'], a: 1, e: 'Feldlinien zeigen die Kraft, nicht die Bahn. Wegen der Trägheit verlässt die Ladung die gekrümmte Linie.' }
     ];
     const box = $('quiz'); let score = 0, done = 0;

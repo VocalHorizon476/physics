@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 8 – Wellen II</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; overflow-x: auto; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { white-space: normal; }
+  .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; overflow-x: auto; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+  /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
+  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .out { max-width: 100%; }
+  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+</style>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="katex/katex.min.js"></script>
+  <script>
+    window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
+    // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
+    window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+    window.markWide = function () { document.querySelectorAll('.f').forEach(function (f) { f.classList.remove('wide'); var p = f.parentElement; if (p && p.clientWidth > 0 && f.getBoundingClientRect().width > p.clientWidth - 2) f.classList.add('wide'); }); };
+    window.addEventListener('resize', function () { clearTimeout(window.__mwT); window.__mwT = setTimeout(function () { if (window.markWide) markWide(); }, 150); });
+  </script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS); if (window.markWide) markWide();"></script>
+  <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Michelson</a><a href="#s2">2 Doppelspalt exakt</a><a href="#s3">3 Näherung</a><a href="#s4">4 Intensität</a><a href="#s5">5 Gitter</a><a href="#s6">6 LED objektiv</a><a href="#s7">7 Subjektiv</a><a href="#s8">8 Fehlerbetrachtung</a><a href="#s9">9 Einzelspalt</a><a href="#s10">10 Abitur</a><a href="#s11">11 Analogie</a><a href="#s12">12 Aufgaben</a><a href="#s13">13 Nicht in FS</a><a href="#s14">14 Quiz</a><a href="#s15">15 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 8 · Wellen II: Interferenz messen</h1>
+  <p class="sub">Michelson-Interferometer → Doppelspalt exakt → Näherung für <span class="f">\(e \gg d\)</span> → Intensitätsverteilung → vom Doppelspalt zum Gitter → Wellenlängenbereiche von LEDs (objektiv und subjektiv) → Fehlerbetrachtung → Einzelspalt. Grundlage: Typst-Heft (Michelsoninterferometer, Doppelspalt, Vom Doppelspalt zum Gitter, Wellenlängenbereiche von LEDs, Subjektive Methode, Fehlerbetrachtung), Buchblatt 7.3.4 Beugung am Spalt, Abitur 2021 IIa (Aufgaben 1 und 2), 2022 I (Aufgabe 1), 2022 gA IIa (Aufgabe 1), 2023 IIa (Aufgabe 1) mit Erwartungshorizonten.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Michelson-Interferometer: Lichtwege zeichnen, Gangunterschied = doppelte Spiegelverschiebung, <span class="f">\(\Delta l = n\cdot\lambda/2\)</span> aus gezählten Maxima (Abitur 2021).</li>
+    <li>Doppelspalt exakt rechnen (<span class="f">\(\Delta l = l_2 - l_1\)</span> mit Pythagoras) und die Näherung <span class="f">\(n\lambda = d\sin(\arctan(a_n/e))\)</span> <b>herleiten</b> (verlangt in 2021, 2022 und 2022 gA).</li>
+    <li>Wissen, wann die Näherung gilt (<span class="f">\(e \gg d\)</span>) und wann nicht (Ultraschall-Doppelspalt 2022: <span class="f">\(e = 71\,\mathrm{mm}\)</span>, <span class="f">\(d = 25\,\mathrm{mm}\)</span>).</li>
+    <li>Gitter: gleiche Hauptmaxima wie der Doppelspalt, dazwischen <span class="f">\(N - 2\)</span> Nebenmaxima und <span class="f">\(N - 1\)</span> Minima; Minima mit Zeigern erklären (Vierfachspalt 2021, Dreifach-/Fünffachspalt 2023).</li>
+    <li>Wellenlängenbereich einer LED messen: objektive Methode (Schirm) und subjektive Methode (durchs Gitter schauen), beide mit derselben Formel.</li>
+    <li>Fehlerbetrachtung nach Heft (Min-Max mit <span class="f">\(\Delta a\)</span>, <span class="f">\(\Delta e\)</span>) und nach Erwartungshorizont (relative Fehler addieren), Ergebnis richtig notieren.</li>
+    <li>Einzelspalt: Minima <span class="f">\(\sin\alpha_n = n\lambda/b\)</span>, Teilbündel-Erklärung, Hauptmaximum doppelt so breit.</li>
+  </ul>
+  <div class="note warn"><b>Ein Satz, der die ganze Lektion trägt:</b> Jede Interferenzaufgabe steht auf drei Beinen: (1) Huygens: jeder Spalt sendet eine Elementarwelle, (2) Gangunterschied <span class="f">\(\Delta l = n\lambda\)</span> für Maxima, <span class="f">\((n + \tfrac12)\lambda\)</span> für Minima, (3) Geometrie, die den Gangunterschied mit <span class="f">\(d\)</span>, <span class="f">\(e\)</span> und <span class="f">\(a\)</span> verbindet. Die Geometrie ist exakt (Pythagoras) oder genähert (<span class="f">\(d\sin\alpha\)</span>); welche du nimmst, musst du begründen.</div>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Alle Simulationen rechnen mit den echten Heft- und Abiturwerten.</p>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Das Michelson-Interferometer (Heft)</h2>
+  <p><b>Aufbau (Heft-Bild):</b> (1) halbdurchlässiger Spiegel (Strahlteiler), (2) verschiebbarer Spiegel, (3) fester Spiegel, (4) Schirm oder Detektor. Der Laserstrahl trifft den Strahlteiler; die Hälfte läuft weiter zu Spiegel 2 (Weg 2.2), die andere Hälfte wird zu Spiegel 3 reflektiert (Weg 2.3). Beide kommen zurück (3.2 und 3.3), werden am Strahlteiler wieder geteilt, und je ein Anteil läuft zum Detektor (4.2 und 4.3), wo sie sich überlagern. Die Anteile zurück zum Laser werden vernachlässigt.</p>
+  <ul>
+    <li><b>Gangunterschied:</b> Die beiden Arme (Strahlteiler–Spiegel) sind typischerweise verschieden lang. Weil jeder Arm <b>hin und zurück</b> durchlaufen wird, ist der Gangunterschied das <b>Doppelte</b> der Längendifferenz. Verschiebt man Spiegel 2 um <span class="f">\(\Delta x\)</span>, ändert sich der Gangunterschied um <span class="f">\(2\Delta x\)</span>.</li>
+    <li><b>Hell und dunkel:</b> Gangunterschied <span class="f">\(n\lambda\)</span> ⇒ konstruktiv (hell), <span class="f">\((n+\tfrac12)\lambda\)</span> ⇒ destruktiv (dunkel). Heft-Beispiel: Spiegel 2 um <span class="f">\(\lambda/8\)</span> verschoben ⇒ Gangunterschied <span class="f">\(\lambda/4\)</span> ⇒ Phasenverschiebung <span class="f">\(90^\circ\)</span> (Sinus wird zu Kosinus).</li>
+    <li><b>Zählen statt messen:</b> Verschiebt man den Spiegel um <span class="f">\(\lambda/2\)</span>, wandert der Gangunterschied um <span class="f">\(\lambda\)</span>: genau ein Hell-Dunkel-Hell-Zyklus. Zählt man beim Verschieben die Maxima (oder die Minima), gilt (Heft):</li>
+  </ul>
+  <div class="formula">\[\Delta l = n\cdot\frac{\lambda}{2}\qquad n\text{: Anzahl der Maxima ODER Minima, } \Delta l\text{: Verschiebung von Spiegel 2}\]</div>
+  <p>Damit misst man Längenänderungen im Bereich der Lichtwellenlänge (Heft: „So können Längenänderungen durch Zählung von Maxima und Minima gemessen werden"), oder umgekehrt die Wellenlänge, wenn die Verschiebung bekannt ist (Abitur 2021: <span class="f">\(\lambda = 2\Delta s \approx 630\,\mathrm{nm}\)</span>, <span class="f">\(\Delta s\)</span> = Abstand zweier Maxima in der Spiegelverschiebung).</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Spiegel 2 <input type="range" id="miX" min="0" max="2000" value="0" step="5"> <span id="miXv"></span></label>
+        <label><span class="f">\(\lambda\)</span> <select id="miLam"><option value="633">633 nm (He-Ne, rot)</option><option value="532">532 nm (grün)</option><option value="450">450 nm (blau)</option></select></label>
+        <button id="miReset">Zähler zurücksetzen</button>
+      </div>
+      <canvas id="miCanvas" width="480" height="300"></canvas>
+      <p class="small">Links der Aufbau mit den beiden Wegen (rot über Spiegel 2, orange über Spiegel 3). Rechts die Detektorintensität über der Spiegelverschiebung: Jeder Zyklus entspricht <span class="f">\(\lambda/2\)</span> Verschiebung. Der Zähler zählt die durchlaufenen Maxima.</p>
+    </div>
+    <div>
+      <div class="out" id="miOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa, 2.1, 11 BE):</b> „Skizzieren Sie alle Lichtwege mit Pfeilspitzen" (3 BE, auch den Rückweg zum Laser). „Erläutern Sie das Zustandekommen der Intensitätsänderung und bestimmen Sie die Wellenlänge" (6 BE): beide Wege zum Sensor unterscheiden sich um die <b>doppelte</b> Längendifferenz der Arme; Bedingung für konstruktiv/destruktiv in Abhängigkeit vom Gangunterschied; aus dem Diagramm den Abstand zweier Maxima <span class="f">\(\Delta s\)</span> ablesen ⇒ <span class="f">\(\lambda = 2\Delta s \approx 630\,\mathrm{nm}\)</span>. „Skizzieren Sie den Verlauf bei doppelter Wellenlänge" (2 BE): doppelte Periodenlänge in <span class="f">\(s\)</span>.</div>
+    </div>
+  </div>
+  <div class="note warn"><b>Verwechslungsgefahr Faktor 2:</b> Spiegelverschiebung <span class="f">\(\Delta x\)</span> ⇒ Gangunterschied <span class="f">\(2\Delta x\)</span>. Ein Zyklus hell–dunkel–hell braucht Gangunterschied <span class="f">\(\lambda\)</span>, also Verschiebung <span class="f">\(\lambda/2\)</span>. Wer den Faktor vergisst, hat die doppelte oder halbe Wellenlänge. Kontrolle: He-Ne-Laser 633 nm, 100 gezählte Maxima ⇒ Verschiebung <span class="f">\(100\cdot 316{,}5\,\mathrm{nm} = 31{,}7\,\mathrm{\mu m}\)</span>.</div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Der Doppelspalt, exakt gerechnet (Heft)</h2>
+  <p><b>Einzelspalt als Quelle:</b> Trifft eine ebene Welle auf einen schmalen Spalt, entsteht dahinter nach Huygens eine Kreiswelle (Heft-Bild „Kreiswellen nach dem Huygensschen Prinzip"). <b>Doppelspalt:</b> zwei Spalte im Abstand <span class="f">\(d\)</span> (Spaltmittenabstand; Abitur schreibt oft <span class="f">\(g\)</span>) senden zwei Kreiswellen gleicher Phase aus. Auf dem Schirm im Abstand <span class="f">\(e\)</span> überlagern sie sich: dort, wo Berg auf Berg trifft, Maxima (0., 1., 2. Ordnung von der Mitte aus), dazwischen Minima. Heft: „Liegt an einem Punkt P ein Gangunterschied von <span class="f">\(n\cdot\lambda\)</span> vor, so ergibt sich in P konstruktive Interferenz. Der Gangunterschied ist die Wegstreckendifferenz zweier Wellen", hier zwischen der Welle des oberen und der des unteren Spaltes.</p>
+  <h3>Exakte Berechnung (Heft-Skizze mit <span class="f">\(l_1\)</span>, <span class="f">\(l_2\)</span>)</h3>
+  <p>Punkt P auf dem Schirm in der Höhe <span class="f">\(a\)</span> über der Mitte. Die Spalte liegen bei <span class="f">\(+d/2\)</span> und <span class="f">\(-d/2\)</span>. Die Wege sind Hypotenusen rechtwinkliger Dreiecke mit der Kathete <span class="f">\(e\)</span> und den Katheten <span class="f">\(a - d/2\)</span> bzw. <span class="f">\(a + d/2\)</span>:</p>
+  <div class="formula">\[l_1 = \sqrt{e^2 + (a - d/2)^2},\qquad l_2 = \sqrt{e^2 + (a + d/2)^2},\qquad \Delta l = l_2 - l_1 \overset{!}{=} n\lambda\]</div>
+  <p><b>Heft-Messung, roter Laser:</b> <span class="f">\(e = 3{,}36\,\mathrm{m}\)</span>, <span class="f">\(d = 0{,}0005\,\mathrm{m}\)</span>, Maximum 3. Ordnung bei <span class="f">\(a_3 = 0{,}011\,\mathrm{m}\)</span>: <span class="f">\(\Delta l = \sqrt{3{,}36^2 + (0{,}011 + 0{,}00025)^2} - \sqrt{3{,}36^2 + (0{,}011 - 0{,}00025)^2} = 1{,}64\cdot 10^{-6}\,\mathrm{m}\)</span> ⇒ <span class="f">\(\lambda = \Delta l/3 = 5{,}46\cdot 10^{-7}\,\mathrm{m} = 545{,}6\,\mathrm{nm}\)</span>. <b>Grüner Laser:</b> <span class="f">\(a_4 = 0{,}0235\,\mathrm{m}\)</span>, <span class="f">\(n = 4\)</span> ⇒ <span class="f">\(\lambda = 437{,}1\,\mathrm{nm}\)</span>.</p>
+  <div class="note warn"><b>Rechenfalle:</b> Die beiden Wurzeln sind fast gleich (3,3600180 m und 3,3600174 m); die Differenz steckt in der sechsten Nachkommastelle. Mit gerundeten Zwischenwerten kommt Unsinn heraus. Im TR die ganze Differenz in einem Schritt eingeben oder mit <code>solve</code> arbeiten. Noch besser: die Näherung aus Abschnitt 3, die ist numerisch harmlos.</div>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(d\)</span> <input type="range" id="dgD" min="0.1" max="2" value="0.5" step="0.05"> <span id="dgDv"></span></label>
+        <label><span class="f">\(e\)</span> <input type="range" id="dgE" min="0.5" max="4" value="3.36" step="0.02"> <span id="dgEv"></span></label>
+        <label><span class="f">\(a\)</span> <input type="range" id="dgA" min="0" max="40" value="11" step="0.5"> <span id="dgAv"></span></label>
+        <label><span class="f">\(\lambda\)</span> <input type="range" id="dgL" min="400" max="700" value="633" step="1"> <span id="dgLv"></span></label>
+        <button id="dgRot">Heft rot</button><button id="dgGruen">Heft grün</button>
+      </div>
+      <canvas id="dgCanvas" width="480" height="260"></canvas>
+      <p class="small">Geometrie (nicht maßstäblich, der Spaltabstand ist stark vergrößert): zwei Wege <span class="f">\(l_1\)</span>, <span class="f">\(l_2\)</span> zum Punkt P in der Höhe <span class="f">\(a\)</span>. Darunter das Interferenzmuster auf dem Schirm mit dem aktuellen P.</p>
+    </div>
+    <div>
+      <div class="out" id="dgOut"></div>
+      <div class="note"><b>Lies ab:</b> Mit den Heft-Werten liefert die exakte Rechnung <span class="f">\(\Delta l/\lambda\)</span>; ist das eine ganze Zahl, sitzt P genau auf einem Maximum. Schiebe <span class="f">\(a\)</span>, bis <span class="f">\(\Delta l/\lambda\)</span> halbzahlig ist: Minimum. Vergleiche exakt und Näherung: Bei <span class="f">\(e = 3{,}36\,\mathrm{m}\)</span> und <span class="f">\(d = 0{,}5\,\mathrm{mm}\)</span> unterscheiden sie sich erst in der siebten Stelle.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Die Näherung für <span class="f">\(e \gg d\)</span>: die Abiturformel herleiten (Heft, parallel.png)</h2>
+  <p>Ist der Spaltabstand <span class="f">\(d\)</span> sehr viel kleiner als der Schirmabstand <span class="f">\(e\)</span> (Heft: „Spaltabstand <span class="f">\(\ll\)</span> Abstand Spalt–Schirm ⇒ ‚Lichtstrahlen' am Schirm sind ungefähr parallel"), laufen die beiden Wege zum Punkt P praktisch <b>parallel</b> unter demselben Winkel <span class="f">\(\alpha\)</span> zur Achse. Dann sieht man den Gangunterschied direkt am Doppelspalt: Fällt man vom oberen Spalt das Lot auf den unteren Weg, ist das abgeschnittene Stück <span class="f">\(\Delta l\)</span>, und im kleinen rechtwinkligen Dreieck mit Hypotenuse <span class="f">\(d\)</span> gilt <span class="f">\(\sin\alpha = \Delta l/d\)</span>. Der Winkel <span class="f">\(\alpha\)</span> ist derselbe wie im großen Dreieck Spalt–Schirmmitte–P: <span class="f">\(\tan\alpha = a/e\)</span>.</p>
+  <div class="formula">\[\tan\alpha = \frac{a}{e}\ \Rightarrow\ \alpha = \arctan\frac{a}{e},\qquad \sin\alpha = \frac{\Delta l}{d},\qquad \Delta l = n\lambda\quad\Rightarrow\quad n\cdot\lambda = d\cdot\sin\!\Big(\arctan\frac{a_n}{e}\Big)\]</div>
+  <ul>
+    <li><b>Warum zwei Winkelfunktionen?</b> <span class="f">\(\tan\)</span> kommt aus dem großen Dreieck (Schirmgeometrie), <span class="f">\(\sin\)</span> aus dem kleinen (Gangunterschied). Für kleine Winkel sind <span class="f">\(\sin\alpha \approx \tan\alpha \approx \alpha\)</span>, dann <span class="f">\(n\lambda \approx d\cdot a_n/e\)</span>; die Abiturformel ist aber die mit <span class="f">\(\sin(\arctan(\dots))\)</span>, und so wird sie auch angegeben.</li>
+    <li><b>FS S. 35:</b> <span class="f">\(k\lambda/g = \sin\alpha_k\)</span> für Maxima, <span class="f">\((2k-1)\lambda/(2g) = \sin\alpha_k\)</span> für Minima. Das ist dieselbe Formel ohne die Schirmgeometrie; <span class="f">\(g\)</span> ist der Spaltmittenabstand.</li>
+    <li><b>Probe mit den Heft-Werten:</b> rot <span class="f">\(\lambda = \frac{0{,}0005}{3}\sin(\arctan\frac{0{,}011}{3{,}36}) = 545{,}6\,\mathrm{nm}\)</span>, grün <span class="f">\(437{,}1\,\mathrm{nm}\)</span>: identisch mit der exakten Rechnung, weil <span class="f">\(e/d = 6720\)</span>.</li>
+    <li><b>Heft-Detektivarbeit:</b> Die Laser haben laut Hersteller <span class="f">\(632{,}8\,\mathrm{nm}\)</span> und <span class="f">\(532\,\mathrm{nm}\)</span>; gemessen 545,6 und 437,1, beide etwa 15 % zu klein. Vermutung im Heft: Spaltabstand ungenau. Umstellen: <span class="f">\(d = \frac{n\lambda}{\sin(\arctan(a/e))}\)</span> ⇒ rot <span class="f">\(0{,}58\,\mathrm{mm}\)</span>, grün <span class="f">\(0{,}60\,\mathrm{mm}\)</span> statt 0,5 mm. Beide Laser zeigen denselben Fehler, das stützt die Vermutung (systematischer Fehler in <span class="f">\(d\)</span>). So argumentiert man im Abitur bei „Beurteilen Sie".</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(e/d\)</span> <input type="range" id="apR" min="0.5" max="4" value="3" step="0.05"> <span id="apRv"></span></label>
+        <label>Ordnung <span class="f">\(n\)</span> <input type="range" id="apN" min="1" max="5" value="1" step="1"> <span id="apNv"></span></label>
+      </div>
+      <canvas id="apCanvas" width="480" height="260"></canvas>
+      <p class="small">Relativer Fehler der Näherung <span class="f">\(\Delta l \approx d\sin(\arctan(a/e))\)</span> gegenüber der exakten Rechnung, aufgetragen über <span class="f">\(a/e\)</span>. Der Regler stellt das Verhältnis <span class="f">\(e/d\)</span> als Zehnerpotenz ein (3 heißt <span class="f">\(e = 1000\,d\)</span>).</p>
+    </div>
+    <div>
+      <div class="out" id="apOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa 1.1, 2022 gA 1.1, 2022 I 1.2):</b> „Leiten Sie die Gleichung anhand der Skizze begründet her, wobei Sie die Skizze vervollständigen." Kernpunkte im EWH: Skizze ergänzen (Lot vom oberen Spalt auf den unteren Weg, Winkel <span class="f">\(\alpha\)</span> zweimal einzeichnen, <span class="f">\(a\)</span> und <span class="f">\(e\)</span> benennen), begründeter Ansatz <span class="f">\(\Delta s = n\lambda\)</span> (konstruktive Interferenz), trigonometrische Betrachtung in beiden Dreiecken, Hinweis <span class="f">\(e \gg g\)</span> für die Parallelität. Vier bis fünf Punkte nur für diese Herleitung.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Was man auf dem Schirm sieht: die Intensitätsverteilung</h2>
+  <p>Zwei Elementarwellen gleicher Amplitude treffen in P mit der Phasendifferenz <span class="f">\(\Delta\varphi = 2\pi\,\Delta l/\lambda\)</span> ein (Lektion 7). Ihre resultierende Amplitude ist <span class="f">\(2A|\cos(\Delta\varphi/2)|\)</span>, die Intensität das Quadrat:</p>
+  <div class="formula">\[I(\alpha) = 4I_0\cos^2\!\Big(\frac{\pi\,d\sin\alpha}{\lambda}\Big)\qquad\text{Maxima bei } d\sin\alpha = n\lambda,\ \text{Minima bei } d\sin\alpha = (n+\tfrac12)\lambda\]</div>
+  <ul>
+    <li>Die Maxima haben alle die gleiche Höhe (beim idealen, sehr schmalen Doppelspalt). In Wirklichkeit sind die Spalte endlich breit; dann legt sich die Einzelspalt-Kurve (Abschnitt 9) als <b>Einhüllende</b> darüber, und die Maxima werden nach außen schwächer. Das Heft-Bild „Doppelspalt" zeigt die ideale Version.</li>
+    <li><b>Kleine Wellenlänge, großer Spaltabstand ⇒ enge Streifen.</b> Streifenabstand (für kleine Winkel) <span class="f">\(\Delta a \approx \lambda e/d\)</span>. Größeres <span class="f">\(e\)</span> streckt das Muster und senkt die Intensität (Abitur 2022 I, 1.3: „Amplitude nimmt ab, Streckung in <span class="f">\(x\)</span>-Richtung").</li>
+    <li><b>Ultraschall statt Licht (Abitur 2022 I):</b> <span class="f">\(\lambda \approx 8{,}7\,\mathrm{mm}\)</span>, Spaltabstand <span class="f">\(g = 25\,\mathrm{mm}\)</span>, Beobachtungslinie bei <span class="f">\(e = 71\,\mathrm{mm}\)</span>. Hier ist <span class="f">\(e\)</span> <b>nicht</b> <span class="f">\(\gg g\)</span>, die Näherung ist unbrauchbar; die Aufgabe gibt deshalb die exakten Wege vor: <span class="f">\(d_1 = \sqrt{(x + 12{,}5\,\mathrm{mm})^2 + (71\,\mathrm{mm})^2}\)</span>, <span class="f">\(d_2 = \sqrt{(x - 12{,}5\,\mathrm{mm})^2 + (71\,\mathrm{mm})^2}\)</span> (Pythagoras, Kathete <span class="f">\(e\)</span> und <span class="f">\(x \pm g/2\)</span>). Maxima bei <span class="f">\(x \approx 27\,\mathrm{mm}\)</span> und <span class="f">\(69\,\mathrm{mm}\)</span> ⇒ <span class="f">\(d_1 - d_2 = 8{,}78\,\mathrm{mm}\)</span> bzw. <span class="f">\(17{,}35\,\mathrm{mm} = 2\lambda\)</span> ⇒ <span class="f">\(\lambda \approx 8{,}7\,\mathrm{mm}\)</span> ⇒ <span class="f">\(f_S = c/\lambda = 340/0{,}0087\,\mathrm{Hz} \approx 39\,\mathrm{kHz}\)</span>.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="dsLicht" class="active">Licht (Heft)</button><button id="dsUS">Ultraschall (Abitur 2022)</button>
+        <label>Spaltbreite <span class="f">\(b/d\)</span> <input type="range" id="dsB" min="0" max="0.5" value="0" step="0.05"> <span id="dsBv"></span></label>
+        <label>Messpunkt <span class="f">\(x\)</span> <input type="range" id="dsX" min="-100" max="100" value="27" step="0.5"> <span id="dsXv"></span></label>
+      </div>
+      <canvas id="dsCanvas" width="480" height="280"></canvas>
+      <p class="small">Intensität über dem Ort auf dem Schirm, exakt gerechnet aus <span class="f">\(d_1 - d_2\)</span>. Grau gestrichelt: Einhüllende durch die endliche Spaltbreite (Regler <span class="f">\(b/d\)</span>, 0 = ideal schmal). Der Marker zeigt den Messpunkt mit seinem Gangunterschied.</p>
+    </div>
+    <div>
+      <div class="out" id="dsOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2022 I, 1.1–1.3):</b> 1.1 (5 BE) „Erläutern Sie das Entstehen von Maxima und Minima unterstützt durch grafische Darstellungen": Zeigerbild oder Wellenberge/-täler, Gangunterschied oder Phasenlage, konkreter Bezug zu Maximum und Minimum. 1.2 (9 BE) <span class="f">\(d_1\)</span> mit Pythagoras herleiten (Skizze ergänzen: Kathete <span class="f">\(e\)</span>, Kathete <span class="f">\(x + g/2\)</span>), dann aus zwei Maxima <span class="f">\(\lambda\)</span> und <span class="f">\(f_S\)</span>. 1.3 (4 BE) Abstand stark vergrößern: Spannung sinkt, Muster gestreckt.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Vom Doppelspalt zum Gitter (Heft, Strahlengitter.png)</h2>
+  <p><b>Heft:</b> „Erhöht man die Spaltanzahl, ohne den Spaltabstand zu verändern, so sorgen die zusätzlichen Spalte für zusätzliche Maxima zwischen den Hauptmaxima. Diese werden Nebenmaxima genannt." Das Heft-Bild zeigt drei Fälle mit parallelen Strahlen aus benachbarten Spalten:</p>
+  <ul>
+    <li><b>Hauptmaximum:</b> Gangunterschied zwischen <b>Nachbarspalten</b> <span class="f">\(\Delta l = n\lambda\)</span> (im Bild <span class="f">\(\lambda\)</span> und <span class="f">\(2\lambda\)</span>): alle Zeiger zeigen in dieselbe Richtung, die Amplitude ist <span class="f">\(N\)</span>-mal so groß, die Intensität <span class="f">\(N^2\)</span>-mal. Lage wie beim Doppelspalt mit demselben <span class="f">\(d\)</span>, also gilt weiterhin <span class="f">\(n\lambda = d\sin(\arctan(a_n/e))\)</span> (FS: Gitter, Hauptmaxima <span class="f">\(k\lambda/g = \sin\alpha_k\)</span>).</li>
+    <li><b>Minimum (Bild oben, 2 Spalte):</b> Gangunterschied <span class="f">\(\lambda/2\)</span> ⇒ Auslöschung. Mit drei Spalten (Bild Mitte): Die äußeren beiden Strahlen haben <span class="f">\(\lambda/2\)</span> Gangunterschied und „addieren sich zu Intensität 0", der mittlere bleibt übrig: ein <b>Nebenmaximum</b> mit einem Neuntel der Hauptmaximum-Intensität (eine von drei Amplituden ⇒ <span class="f">\((1/3)^2\)</span>).</li>
+    <li><b>Allgemein <span class="f">\(N\)</span> Spalte:</b> Zwischen zwei Hauptmaxima liegen <span class="f">\(N - 1\)</span> Minima und <span class="f">\(N - 2\)</span> Nebenmaxima. Minima dort, wo die <span class="f">\(N\)</span> Zeiger ein geschlossenes Polygon bilden: Nachbarphase <span class="f">\(\Delta\varphi = 2\pi k/N\)</span> (<span class="f">\(k = 1, \dots, N-1\)</span>). Die Hauptmaxima werden mit wachsendem <span class="f">\(N\)</span> <b>schmaler und heller</b>; beim Gitter mit Hunderten Spalten pro Millimeter sind sie scharfe Linien, die Nebenmaxima verschwinden praktisch. Deshalb misst man Wellenlängen mit dem Gitter, nicht mit dem Doppelspalt.</li>
+    <li><b>Vierfachspalt (Abitur 2021, 1.3):</b> Minimum (A) liegt dort, wo auch der Doppelspalt ein Minimum hat: Nachbarphase <span class="f">\(180^\circ\)</span>, paarweise Auslöschung Spalt 1 mit 2 und 3 mit 4. Minimum (B) nur beim Vierfachspalt: Nachbarphase <span class="f">\(90^\circ\)</span> (oder <span class="f">\(270^\circ\)</span>), die vier Zeiger bilden ein Quadrat, paarweise Auslöschung 1 mit 3 und 2 mit 4 (je <span class="f">\(180^\circ\)</span>). <b>Dreifachspalt (Abitur 2023, 1.2):</b> zwei Minima zwischen den Hauptmaxima bei Nachbarphase <span class="f">\(120^\circ\)</span> und <span class="f">\(240^\circ\)</span>, dazwischen ein Nebenmaximum. <b>Fünffachspalt mit halbem <span class="f">\(d\)</span> (2023, 1.3):</b> Hauptmaxima doppelt so weit auseinander (<span class="f">\(a_n \propto 1/d\)</span>), dazwischen drei Nebenmaxima.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Spalte <span class="f">\(N\)</span> <input type="range" id="gtN" min="2" max="8" value="2" step="1"> <span id="gtNv"></span></label>
+        <label>Nachbarphase <span class="f">\(\Delta\varphi\)</span> <input type="range" id="gtPhi" min="0" max="360" value="60" step="5"> <span id="gtPhiv"></span></label>
+      </div>
+      <canvas id="gtCanvas" width="480" height="300"></canvas>
+      <p class="small">Oben: Intensität über der Nachbarphase (0 bis 720°, zwei Hauptmaxima-Abstände), normiert auf das Hauptmaximum. Unten links: Zeigerpolygon der <span class="f">\(N\)</span> Elementarwellen bei der eingestellten Phase; unten rechts: Schirmbild als Streifenmuster.</p>
+    </div>
+    <div>
+      <div class="out" id="gtOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2023 IIa, 1.2, 5 BE):</b> „Beschreiben Sie das Schirmbild des Dreifachspalts im Vergleich zum Doppelspalt. Erklären Sie das Zustandekommen der Nebenmaxima." EWH: Hauptmaxima an denselben Orten, aber schmaler; Nebenmaxima zwischen je zwei Hauptmaxima (an den Orten der Doppelspalt-Minima); Erklärung über Elementarwellen, Gang-/Phasenunterschied, zwei Minima bei Zeigerphasen <span class="f">\(120^\circ\)</span> und <span class="f">\(240^\circ\)</span>, zwischen zwei Minima muss ein Maximum liegen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Wellenlängenbereiche von LEDs, objektive Methode (Heft)</h2>
+  <p><b>Aufbau (Heft-Bild):</b> LED → Spalt → Gitter (<span class="f">\(g = \frac{0{,}001\,\mathrm{m}}{500} = 2\cdot 10^{-6}\,\mathrm{m}\)</span>, also 500 Striche pro Millimeter) → Schirm im Abstand <span class="f">\(e\)</span>. Eine LED sendet kein monochromatisches Licht, sondern einen <b>Wellenlängenbereich</b>. Da der Ort des Maximums 1. Ordnung von <span class="f">\(\lambda\)</span> abhängt, wird aus dem Maximum ein <b>Farbband</b>: innen (kleines <span class="f">\(a\)</span>) die kurzwellige Grenze, außen die langwellige. Man misst Anfang <span class="f">\(a_1\)</span> und Ende <span class="f">\(a_2\)</span> des Bandes und rechnet beide in Wellenlängen um.</p>
+  <div class="formula">\[\lambda = g\cdot\sin\!\Big(\arctan\frac{a}{e}\Big)\qquad\text{für jede Bandgrenze einzeln}\]</div>
+  <p><b>Heft-Messwerte</b> (<span class="f">\(e = 19\,\mathrm{cm}\)</span>): blau <span class="f">\(a_1 = 4{,}7\,\mathrm{cm}\)</span>, <span class="f">\(a_2 = 5{,}5\,\mathrm{cm}\)</span>; weiß <span class="f">\(a_1 = 4{,}7\,\mathrm{cm}\)</span>, <span class="f">\(a_2 = 7{,}9\,\mathrm{cm}\)</span>. Auswertung: <span class="f">\(\lambda_{1,\mathrm{blau}} = 2\cdot 10^{-6}\,\mathrm{m}\cdot\sin(\arctan\frac{0{,}047}{0{,}19}) = 480\,\mathrm{nm}\)</span>, <span class="f">\(\lambda_{2,\mathrm{blau}} = 556\,\mathrm{nm}\)</span>; weiß <span class="f">\(480\)</span> bis <span class="f">\(768\,\mathrm{nm}\)</span>. Ergebnistabelle der Mittelwerte im Heft: weiß 444–496 nm (1. Ordnung links) und 528–660 nm (rechts), rot 606–676, grün 481–582, blau 445–518, UV 392–431 nm. Weißes LED-Licht ist eine Mischung über das ganze sichtbare Spektrum, deshalb das breiteste Band (Abitur 2022 gA, 1.3).</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>LED <select id="spLed"><option value="blau">blau (445–518 nm)</option><option value="gruen">grün (481–582 nm)</option><option value="rot">rot (606–676 nm)</option><option value="weiss">weiß (400–770 nm)</option><option value="laser">Laser 532 nm</option></select></label>
+        <label><span class="f">\(e\)</span> <input type="range" id="spE" min="10" max="40" value="19" step="0.5"> <span id="spEv"></span></label>
+        <label>Gitter <select id="spG"><option value="500">500/mm</option><option value="300">300/mm</option><option value="600">600/mm</option></select></label>
+      </div>
+      <canvas id="spCanvas" width="480" height="260"></canvas>
+      <p class="small">Schirmbild (Mitte: 0. Ordnung weiß/gemischt, außen die Farbbänder 1. und 2. Ordnung) mit Lineal in cm. Lies <span class="f">\(a_1\)</span> (innere Kante) und <span class="f">\(a_2\)</span> (äußere Kante) ab; die Ausgabe rechnet beide um.</p>
+    </div>
+    <div>
+      <div class="out" id="spOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2022 gA, 1.2, 9 BE):</b> Messwerte <span class="f">\(a\)</span> und Sensorspannung <span class="f">\(U\)</span> im Bereich des Maximums 1. Ordnung ⇒ <span class="f">\(a\)</span>-<span class="f">\(U\)</span>-Diagramm zeichnen, Ort des Maximums ablesen (<span class="f">\(a_{\mathrm{max}} \approx 10{,}5\,\mathrm{cm}\)</span> bei <span class="f">\(e = 38{,}8\,\mathrm{cm}\)</span>, <span class="f">\(g = 1/500\,\mathrm{mm}\)</span>) ⇒ <span class="f">\(\lambda_{\mathrm{max}} = 2\,\mathrm{\mu m}\cdot\sin(\arctan\frac{10{,}5}{38{,}8}) = 522\,\mathrm{nm}\)</span>. „Genauer bestimmen": mehr Messpunkte im Bereich des Maximums. Dazu 1.3: weiße LED ⇒ breiteres Maximum, weil alle Spektralfarben vorkommen und der Ort des Maximums von <span class="f">\(\lambda\)</span> abhängt.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Subjektive Methode: durchs Gitter schauen (Heft, Abitur 2021 und 2023)</h2>
+  <p>Bei der <b>objektiven</b> Methode fällt das Licht durchs Gitter auf einen Schirm, alle sehen dasselbe Bild. Bei der <b>subjektiven</b> Methode schaut man <b>durch das Gitter</b> auf den beleuchteten Spalt (Abitur 2021, M1a: LED, Spaltblende, verschiebbares Gitter, Blickrichtung). Das Auge sieht den Spalt in der Mitte und daneben die farbigen Bilder 1. Ordnung, scheinbar in der Ebene der Spaltblende. Die Geometrie ist dieselbe wie auf dem Schirm, nur rückwärts gelesen: Die Lichtbündel, die unter dem Winkel <span class="f">\(\alpha_n\)</span> aus dem Gitter kommen und ins Auge fallen, scheinen vom Punkt <span class="f">\(a_n\)</span> neben dem Spalt zu kommen. Also wieder</p>
+  <div class="formula">\[n\lambda = g\sin\!\Big(\arctan\frac{a_n}{e}\Big)\qquad e\text{: Abstand Gitter–Spaltblende (Ebene des Bildes)},\ a_n\text{: Abstand Spalt–Bild } n\text{-ter Ordnung}\]</div>
+  <ul>
+    <li><b>Messtrick (Abitur 2021, M1c; Abitur 2023, M1a):</b> Statt <span class="f">\(a\)</span> an einem Lineal abzulesen, verschiebt man das Gitter, bis die Bandgrenzen 1. Ordnung genau auf den Rändern der Spaltblende (bzw. des Schirmausschnitts) liegen. Dann ist <span class="f">\(a_1\)</span> der halbe Randabstand (2021: <span class="f">\(a_1 = 10{,}0\,\mathrm{cm}/2 = 5{,}0\,\mathrm{cm}\)</span>) und <span class="f">\(e\)</span> wird gemessen: für die grüne Grenze <span class="f">\(e = 16{,}5\,\mathrm{cm}\)</span>, für die blaue <span class="f">\(e = 20{,}1\,\mathrm{cm}\)</span>.</li>
+    <li><b>Abitur 2021, 1.2:</b> <span class="f">\(\lambda_{\mathrm{grün}} = 2\,\mathrm{\mu m}\cdot\sin(\arctan\frac{5{,}0}{16{,}5}) = 580\,\mathrm{nm}\)</span>, <span class="f">\(\lambda_{\mathrm{blau}} = 2\,\mathrm{\mu m}\cdot\sin(\arctan\frac{5{,}0}{20{,}1}) = 483\,\mathrm{nm}\)</span>. Je größer <span class="f">\(e\)</span> bei gleichem <span class="f">\(a\)</span>, desto kleiner der Winkel, desto kleiner <span class="f">\(\lambda\)</span>.</li>
+    <li><b>Heft-Messung (subjektiv, <span class="f">\(e = 32\,\mathrm{cm}\)</span>):</b> rot <span class="f">\(a_1 = 9{,}7\,\mathrm{cm}\)</span> ⇒ <span class="f">\(580\,\mathrm{nm}\)</span>, <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span> ⇒ <span class="f">\(629\,\mathrm{nm}\)</span>; weiß <span class="f">\(a_1 = 6{,}8\,\mathrm{cm}\)</span> ⇒ <span class="f">\(416\,\mathrm{nm}\)</span>, <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span> ⇒ <span class="f">\(629\,\mathrm{nm}\)</span>. Alle vier Werte stehen so in der Heft-Tabelle zur Fehlerbetrachtung (Abschnitt 8).</li>
+    <li><b>Warum zwei Methoden:</b> Objektiv braucht helles Licht (Laser, starke LED) und einen dunklen Raum; subjektiv funktioniert mit schwachen Lichtquellen, weil das Auge empfindlich ist, dafür misst nur einer. Im Abitur mit Experimentieren (2023) wird subjektiv gearbeitet.</li>
+  </ul>
+  <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa, 1.1, 10 BE):</b> „Erklären Sie das Zustandekommen der seitlich von der Blendenöffnung wahrnehmbaren Maxima bei der subjektiven Methode." EWH-Kernpunkte: Elementarwellenprinzip, unterschiedliche Weglängen bzw. Phasenunterschiede, Bedingung für konstruktive Interferenz, <b>und</b> der Satz „die subjektive Methode ergibt das wahrgenommene Bild": Das Auge verlängert die unter <span class="f">\(\alpha_n\)</span> einfallenden Bündel rückwärts und sieht das Maximum neben dem Spalt. Dann die Herleitung (5 BE) wie in Abschnitt 3, „auf zwei benachbarte Spalte beschränkt".</div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Fehlerbetrachtung („kommt sicher im Abi dran", Heft)</h2>
+  <p>Jede Messung von <span class="f">\(a\)</span> und <span class="f">\(e\)</span> hat Ablesefehler. Das Heft-Bild zeigt die <b>Fehlerbereiche</b> an den Bandgrenzen: Die Grenze eines Farbbandes ist unscharf, man kann sie nur auf etwa <span class="f">\(\pm 2\,\mathrm{mm}\)</span> festlegen (Fehler bei <span class="f">\(a\)</span>), und die Entfernung Gitter–Blende auf etwa <span class="f">\(\pm 4\,\mathrm{mm}\)</span> (Fehler bei <span class="f">\(e\)</span>). Zwei Verfahren, beide klausurtauglich:</p>
+  <h3>Verfahren 1 (Heft): Minimal- und Maximalwert ausrechnen</h3>
+  <p><span class="f">\(\lambda\)</span> wächst mit <span class="f">\(a\)</span> und fällt mit <span class="f">\(e\)</span>. Der kleinstmögliche Wert entsteht also aus <span class="f">\(a - \Delta a\)</span> und <span class="f">\(e + \Delta e\)</span>, der größte aus <span class="f">\(a + \Delta a\)</span> und <span class="f">\(e - \Delta e\)</span>:</p>
+  <div class="formula">\[\lambda_{\mathrm{min}} = g\sin\!\Big(\arctan\frac{a - \Delta a}{e + \Delta e}\Big),\qquad \lambda_{\mathrm{max}} = g\sin\!\Big(\arctan\frac{a + \Delta a}{e - \Delta e}\Big)\]</div>
+  <table>
+    <tr><th>Heft-Tabelle (<span class="f">\(e = 32\,\mathrm{cm}\)</span>, <span class="f">\(g = 2\,\mathrm{\mu m}\)</span>)</th><th><span class="f">\(\lambda\)</span> in nm</th><th><span class="f">\(\lambda_{\mathrm{min}}\)</span></th><th><span class="f">\(\lambda_{\mathrm{max}}\)</span></th><th>Ergebnis</th></tr>
+    <tr><td>rot <span class="f">\(a_1 = 9{,}7\,\mathrm{cm}\)</span></td><td><span class="f">\(580\)</span></td><td><span class="f">\(563\)</span></td><td><span class="f">\(598\)</span></td><td><span class="f">\(580^{+18}_{-17}\,\mathrm{nm}\)</span></td></tr>
+    <tr><td>rot <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span></td><td><span class="f">\(629\)</span></td><td><span class="f">\(612\)</span></td><td><span class="f">\(647\)</span></td><td><span class="f">\(629^{+18}_{-17}\,\mathrm{nm}\)</span></td></tr>
+    <tr><td>weiß <span class="f">\(a_1 = 6{,}8\,\mathrm{cm}\)</span></td><td><span class="f">\(416\)</span></td><td><span class="f">\(399\)</span></td><td><span class="f">\(433\)</span></td><td><span class="f">\((416 \pm 17)\,\mathrm{nm}\)</span></td></tr>
+    <tr><td>weiß <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span></td><td><span class="f">\(629\)</span></td><td><span class="f">\(612\)</span></td><td><span class="f">\(647\)</span></td><td><span class="f">\(629^{+18}_{-17}\,\mathrm{nm}\)</span></td></tr>
+  </table>
+  <p><b>Schreibweise (Heft):</b> <span class="f">\(500^{+7}_{-3}\)</span>, wenn nach oben und unten Unterschiedliches herauskommt; <span class="f">\((500 \pm 7)\)</span>, wenn das Gleiche herauskommt. Klammer um Wert und Fehler, Einheit dahinter.</p>
+  <h3>Verfahren 2 (Erwartungshorizonte 2021 und 2023): relative Fehler</h3>
+  <p>Für kleine Winkel ist <span class="f">\(\lambda \approx g\,a/(n e)\)</span>, ein Produkt und Quotient. Dann addieren sich die <b>relativen</b> Fehler: <span class="f">\(\frac{\Delta\lambda}{\lambda} \approx \frac{\Delta a}{a} + \frac{\Delta e}{e}\)</span> (worst case) oder man nimmt den größten Anteil als Untergrenze. Abitur 2021, 1.2 (3 BE): <span class="f">\(\Delta e/e = 3\,\mathrm{mm}/201\,\mathrm{mm} = 1{,}49\,\%\)</span>, <span class="f">\(\Delta a_1/a_1 = 1\,\mathrm{mm}/50\,\mathrm{mm} = 2\,\%\)</span> ⇒ <span class="f">\(\Delta\lambda/\lambda\)</span> mindestens <span class="f">\(2\,\%\)</span> ⇒ <span class="f">\(\Delta\lambda \approx 9{,}7\,\mathrm{nm}\)</span> für die kurzwellige Grenze (483 nm). Abitur 2023, 1.1 (4 BE): <span class="f">\(\Delta a_1/a_1 = 0{,}10/0{,}75 = 13{,}3\,\%\)</span>, <span class="f">\(\Delta\lambda/\lambda \lt 0{,}1\,\%\)</span>, <span class="f">\(\Delta e/e = 0{,}2/85{,}2 = 0{,}23\,\%\)</span> ⇒ <span class="f">\(\Delta d/d \approx 13{,}3\,\%\)</span> ⇒ <span class="f">\(\Delta d \approx 9{,}6\,\mathrm{\mu m}\)</span> bei <span class="f">\(d = 71{,}9\,\mathrm{\mu m}\)</span>. Die Größe mit dem größten relativen Fehler bestimmt das Ergebnis; hier das kleine <span class="f">\(a_1 = 0{,}75\,\mathrm{cm}\)</span>.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(a\)</span> in cm <input type="number" id="fbA" value="9.7" step="0.1" style="width:70px"></label>
+        <label><span class="f">\(e\)</span> in cm <input type="number" id="fbE" value="32" step="0.1" style="width:70px"></label>
+        <label>Striche/mm <input type="number" id="fbG" value="500" step="10" style="width:70px"></label>
+        <label><span class="f">\(n\)</span> <input type="number" id="fbN" value="1" min="1" max="5" style="width:50px"></label>
+        <label><span class="f">\(\Delta a\)</span> in mm <input type="number" id="fbDa" value="2" step="0.5" style="width:60px"></label>
+        <label><span class="f">\(\Delta e\)</span> in mm <input type="number" id="fbDe" value="4" step="0.5" style="width:60px"></label>
+      </div>
+      <canvas id="fbCanvas" width="480" height="200"></canvas>
+      <p class="small">Rechner für beide Verfahren. Balken: Wert mit Fehlerintervall nach Verfahren 1 (rot) und nach Verfahren 2 (blau). Heft-Werte voreingestellt; für Abitur 2021: <span class="f">\(a = 5{,}0\)</span>, <span class="f">\(e = 20{,}1\)</span>, <span class="f">\(\Delta a = 1\)</span>, <span class="f">\(\Delta e = 3\)</span>.</p>
+    </div>
+    <div>
+      <div class="out" id="fbOut"></div>
+      <div class="note exam"><b>So fragt die Klausur:</b> „Schätzen Sie die absolute Messunsicherheit ab" (2021: 3 BE, 2023: 4 BE). Erwartet: Unsicherheiten der Messgrößen benennen (mit Zahl und Begründung: Lineal, Bandgrenze unscharf), relative Fehler bilden, auf das Ergebnis übertragen, als absoluten Wert angeben. Ohne Zahlen für <span class="f">\(\Delta a\)</span> und <span class="f">\(\Delta e\)</span> gibt es nichts. Dein Lehrer: „kommt sicher im Abi dran."</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · Beugung und Interferenz am Einzelspalt (Buchblatt 7.3.4)</h2>
+  <p><b>Beobachtung (Blatt, Abb. 306.1):</b> Hinter einem Spalt der Breite <span class="f">\(b\)</span> entsteht ein helles Hauptmaximum, <b>doppelt so breit</b> wie die Maxima höherer Ordnung, die nach außen schnell schwächer werden. Je schmaler der Spalt, desto weiter rücken die Maxima nach außen. Das ist die <b>Einhüllende</b>, die beim realen Doppelspalt die Streifen moduliert (Abschnitt 4).</p>
+  <h3>Erklärung durch Teilbündel (Blatt, Abb. 306.2)</h3>
+  <ul>
+    <li>Nach Huygens ist jeder Punkt der Spaltöffnung Ausgangspunkt einer Elementarwelle. In Richtung der Achse (<span class="f">\(\alpha = 0\)</span>) kommen alle gleichphasig an: Hauptmaximum.</li>
+    <li><b>Erstes Minimum:</b> Spalt gedanklich halbieren. Zu jeder Elementarwelle der oberen Hälfte gibt es eine „Partnerwelle" im Abstand <span class="f">\(b/2\)</span> in der unteren Hälfte. Beträgt der Gangunterschied jedes Paares <span class="f">\(\lambda/2\)</span>, löschen sich alle Paare aus. Gangunterschied der Partner: <span class="f">\((b/2)\sin\alpha\)</span> ⇒ <span class="f">\(\sin\alpha_1 = \frac{\lambda/2}{b/2} = \frac{\lambda}{b}\)</span>.</li>
+    <li><b>Minima <span class="f">\(n\)</span>-ter Ordnung:</b> Spalt in <span class="f">\(2n\)</span> Abschnitte teilen, Partner im Abstand <span class="f">\(b/(2n)\)</span> ⇒ <span class="f">\(\sin\alpha_n = \frac{\lambda/2}{b/(2n)} = n\frac{\lambda}{b}\)</span>.</li>
+    <li><b>Maxima höherer Ordnung (Näherung):</b> Spalt in <span class="f">\(2n+1\)</span> Abschnitte teilen; <span class="f">\(2n\)</span> davon löschen sich paarweise aus, <b>ein</b> Teilbündel bleibt übrig und liefert Helligkeit ⇒ <span class="f">\(\sin\alpha_n \approx \frac{2n+1}{2}\cdot\frac{\lambda}{b}\)</span>. Weil nur ein Bruchteil der Spaltbreite beiträgt, nimmt die Intensität mit der Ordnung schnell ab.</li>
+    <li><b>Zeiger (Blatt, rechts):</b> Die Elementarwellen haben gleichmäßig wachsende Phase; ihre Zeiger bilden einen Bogen. Beim ersten Minimum schließt sich der Bogen zu einem vollen Kreis (Polygon), die Summe ist null. Beim ersten Nebenmaximum ist der Bogen anderthalb Mal durchlaufen, die Resultierende klein.</li>
+  </ul>
+  <div class="formula">\[\text{Minima: } \sin\alpha_n = n\frac{\lambda}{b},\qquad \text{Maxima (Näherung): } \sin\alpha_n = \Big(n + \tfrac12\Big)\frac{\lambda}{b}\qquad (n = 1, 2, \dots;\ \text{FS S. 35})\]</div>
+  <ul>
+    <li><b>Breite des Hauptmaximums:</b> von <span class="f">\(-\alpha_1\)</span> bis <span class="f">\(+\alpha_1\)</span>, Winkelbreite <span class="f">\(2\lambda/b\)</span>; alle anderen Maxima haben die Winkelbreite <span class="f">\(\lambda/b\)</span>: deshalb „doppelt so breit".</li>
+    <li><b>Verwechslungsgefahr Doppelspalt/Einzelspalt:</b> Beim Doppelspalt steht <span class="f">\(d\sin\alpha = n\lambda\)</span> für <b>Maxima</b>; beim Einzelspalt steht <span class="f">\(b\sin\alpha = n\lambda\)</span> für <b>Minima</b>. Gleiche Formelgestalt, umgekehrte Bedeutung. Merke: Beim Einzelspalt gibt es keine ganzzahligen Vielfachen für Maxima, weil sich die Teilbündel dort gerade paarweise auslöschen.</li>
+    <li><b>Beugung an Kanten und Blenden (Blatt):</b> Jede scharfe Kante beugt; Lochblende ⇒ zentrales Scheibchen mit Ringen; Vieleck-Blenden ⇒ sternförmige Muster (die „Strahlen" an hellen Lichtpunkten auf Fotos kommen von der eckigen Irisblende).</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(b/\lambda\)</span> <input type="range" id="esB" min="1" max="20" value="6" step="0.5"> <span id="esBv"></span></label>
+        <label>Winkel <span class="f">\(\alpha\)</span> <input type="range" id="esA" min="0" max="40" value="9.6" step="0.1"> <span id="esAv"></span></label>
+      </div>
+      <canvas id="esCanvas" width="480" height="300"></canvas>
+      <p class="small">Oben: Intensität des Einzelspalts über dem Winkel (Minima markiert). Unten: Zeigerbogen der Elementarwellen beim eingestellten Winkel; beim Minimum schließt er sich zum Kreis, die Resultierende (rot) verschwindet.</p>
+    </div>
+    <div>
+      <div class="out" id="esOut"></div>
+      <div class="ex"><span class="t">Blatt-Aufgabe 1:</span> Abstand der beiden Minima 1. Ordnung 15 mm bei <span class="f">\(e = 212\,\mathrm{cm}\)</span>; eine 10-mm-Skala erscheint im Projektor 45 cm groß, der Spalt 7 mm ⇒ Vergrößerung 45 ⇒ <span class="f">\(b = 7\,\mathrm{mm}/45 = 0{,}156\,\mathrm{mm}\)</span>. Erstes Minimum bei <span class="f">\(x_1 = 7{,}5\,\mathrm{mm}\)</span>: <span class="f">\(\sin\alpha_1 \approx \tan\alpha_1 = 7{,}5/2120 = 3{,}54\cdot 10^{-3}\)</span> ⇒ <span class="f">\(\lambda = b\sin\alpha_1 = 0{,}156\,\mathrm{mm}\cdot 3{,}54\cdot 10^{-3} = 550\,\mathrm{nm}\)</span>.</div>
+      <div class="ex"><span class="t">Blatt-Aufgabe 2:</span> <span class="f">\(\lambda = 550\,\mathrm{nm}\)</span>, <span class="f">\(b = 0{,}15\,\mathrm{cm}\)</span>, <span class="f">\(e = 2{,}5\,\mathrm{m}\)</span>: <span class="f">\(\sin\alpha_1 = \lambda/b = 3{,}67\cdot 10^{-4}\)</span> ⇒ <span class="f">\(x_1 = e\tan\alpha_1 = 0{,}92\,\mathrm{mm}\)</span>. Breite des Hauptmaximums (Minimum links bis Minimum rechts) <span class="f">\(2x_1 = 1{,}8\,\mathrm{mm}\)</span>; Breite des Maximums 1. Ordnung (zwischen 1. und 2. Minimum) <span class="f">\(x_2 - x_1 = 0{,}92\,\mathrm{mm}\)</span>, halb so breit.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Die Abituraufgaben zu dieser Lektion, mit Erwartungshorizont</h2>
+  <h3>Abitur 2021 IIa, Aufgabe 1: LED subjektiv, Doppel- und Vierfachspalt (24 BE)</h3>
+  <ul>
+    <li><b>1.1 (10 BE)</b> Entstehung der Maxima bei der subjektiven Methode (5): Elementarwellen, Weglängen-/Phasenunterschiede, konstruktive Interferenz, wahrgenommenes Bild. Herleitung (5): Abschnitt 3, auf zwei Nachbarspalte beschränkt.</li>
+    <li><b>1.2 (7 BE)</b> <span class="f">\(a_1 = 10{,}0\,\mathrm{cm}/2 = 5{,}0\,\mathrm{cm}\)</span>; grün (<span class="f">\(e = 16{,}5\,\mathrm{cm}\)</span>) <span class="f">\(\lambda \approx 580\,\mathrm{nm}\)</span>, blau (<span class="f">\(e = 20{,}1\,\mathrm{cm}\)</span>) <span class="f">\(\lambda \approx 483\,\mathrm{nm}\)</span> (4). Unsicherheit (3): <span class="f">\(\Delta e/e = 1{,}49\,\%\)</span>, <span class="f">\(\Delta a/a = 2\,\%\)</span> ⇒ <span class="f">\(\Delta\lambda \approx 9{,}7\,\mathrm{nm}\)</span>.</li>
+    <li><b>1.3 (7 BE)</b> Minima vergleichen (2): gemeinsames Minimum bei 22,0 cm, Vierfachspalt zusätzlich bei 20,5 und 23,3 cm. Erklärung mit Zeigern (5): (A) Paare 1–2 und 3–4 mit <span class="f">\(180^\circ\)</span>; (B) Paare 1–3 und 2–4 mit <span class="f">\(180^\circ\)</span>.</li>
+  </ul>
+  <h3>Abitur 2021 IIa, Aufgabe 2: Michelson und CD (22 BE)</h3>
+  <ul>
+    <li><b>2.1 (11 BE)</b> Lichtwege mit Pfeilen inkl. Rückweg zum Laser (3); Erläutern: doppelte Längendifferenz, Bedingungen, Bezug zum Diagramm, <span class="f">\(\lambda = 2\Delta s \approx 630\,\mathrm{nm}\)</span> (6); Skizze mit doppelter Periode (2).</li>
+    <li><b>2.2 (6 BE)</b> In der Kunststoffschicht <span class="f">\(c_K = c/1{,}55\)</span>, <span class="f">\(f = 3{,}843\cdot 10^{14}\,\mathrm{Hz}\)</span> ⇒ <span class="f">\(\lambda_K = c_K/f = \frac{3{,}0\cdot 10^8}{1{,}55\cdot 3{,}843\cdot 10^{14}}\,\mathrm{m} \approx 503\,\mathrm{nm}\)</span> (3). Kleinste Höhendifferenz: Licht von Erhebung und Vertiefung soll sich auslöschen ⇒ Gangunterschied <span class="f">\(\lambda_K/2\)</span>; der Weg wird hin und zurück durchlaufen ⇒ <span class="f">\(2\Delta s = \lambda_K/2\)</span> ⇒ <span class="f">\(\Delta s = \lambda_K/4 \approx 126\,\mathrm{nm}\)</span> (3). Wieder der Faktor 2 wie beim Michelson.</li>
+    <li><b>2.3 (5 BE)</b> Gemeinsam: zwei Wege verschiedener Länge zum Sensor, Interferenzbedingungen über <span class="f">\(\Delta s\)</span>. Unterschied: beim Michelson zwei getrennte Lichtwege, bei der CD zwei Weglängen in einem Lichtbündel. Maximale Intensität am Sensor relativ zum Laser: Michelson <span class="f">\(\tfrac12\)</span>, CD <span class="f">\(\tfrac14\)</span> (EWH rechnet mit den Intensitätsanteilen am 50-%-Strahlteiler: Michelson je Weg <span class="f">\(\tfrac14\)</span>, zwei Wege; CD einmal hin, einmal zurück durch den Teiler).</li>
+  </ul>
+  <h3>Abitur 2022 I, Aufgabe 1: Ultraschall-Doppelspalt (24 BE)</h3>
+  <ul>
+    <li><b>1.1 (5 BE)</b> Maxima/Minima erläutern mit Grafik (Abschnitt 4). <b>1.2 (9 BE)</b> <span class="f">\(d_1\)</span> per Pythagoras herleiten (3); <span class="f">\(\lambda \approx 8{,}7\,\mathrm{mm}\)</span> aus den Maxima bei 27 und 69 mm, <span class="f">\(f_S \approx 39{,}0\,\mathrm{kHz}\)</span> (6). <b>1.3 (4 BE)</b> größerer Abstand: Amplitude kleiner, Muster gestreckt.</li>
+    <li><b>1.4 (6 BE)</b> Oszilloskopbilder: 4 Perioden in 103 µs ⇒ <span class="f">\(T_1 = 25{,}8\,\mathrm{\mu s}\)</span>, 5 Perioden in 116 µs ⇒ <span class="f">\(T_2 = 23{,}2\,\mathrm{\mu s}\)</span> ⇒ <span class="f">\(38{,}8\,\mathrm{kHz} \le f_S \le 43{,}1\,\mathrm{kHz}\)</span> (3). Beurteilen (3): Messunsicherheit 5 % von 13 mm ⇒ <span class="f">\(\Delta x = 0{,}65\,\mathrm{mm}\)</span>; die ersten Minima bei 38,0 und 44,0 kHz liegen etwa 2 mm auseinander ⇒ unterscheidbar. Wieder: Unsicherheit berechnen, mit dem Effekt vergleichen, Schluss ziehen.</li>
+  </ul>
+  <h3>Abitur 2022 gA IIa, Aufgabe 1: LED am Gitter (20 BE)</h3>
+  <ul>
+    <li><b>1.1 (8 BE)</b> Maxima erläutern (4), Formel herleiten (4). <b>1.2 (9 BE)</b> <span class="f">\(a\)</span>-<span class="f">\(U\)</span>-Diagramm (4), <span class="f">\(a_{\mathrm{max}} \approx 10{,}5\,\mathrm{cm}\)</span> ⇒ <span class="f">\(\lambda_{\mathrm{max}} \approx 522\,\mathrm{nm}\)</span> (3), genauer: mehr Messpunkte am Maximum (2). <b>1.3 (3 BE)</b> weiße LED: alle Spektralfarben ⇒ breiteres Maximum, weil <span class="f">\(a_1\)</span> von <span class="f">\(\lambda\)</span> abhängt.</li>
+  </ul>
+  <h3>Abitur 2023 IIa, Aufgabe 1 (mit Experimentieren): Doppelspalt mit LED-rot, Mehrfachspalte (24 BE)</h3>
+  <ul>
+    <li><b>1.1 (15 BE)</b> Experiment subjektiv durchführen und dokumentieren (7): z. B. <span class="f">\(e = 85{,}2\,\mathrm{cm}\)</span>, <span class="f">\(2a_1 = 1{,}5\,\mathrm{cm}\)</span>. <span class="f">\(d\)</span> ermitteln (4): <span class="f">\(d = \frac{n\lambda}{\sin(\arctan(a_1/e))} = \frac{633\,\mathrm{nm}}{\sin(\arctan(0{,}75/85{,}2))} \approx 71{,}9\,\mathrm{\mu m}\)</span>. Unsicherheit (4): <span class="f">\(\Delta a_1/a_1 = 13{,}3\,\%\)</span> dominiert ⇒ <span class="f">\(\Delta d \approx 9{,}6\,\mathrm{\mu m}\)</span>.</li>
+    <li><b>1.2 (5 BE)</b> Dreifachspalt: Hauptmaxima gleich, schmaler; Nebenmaxima an den Orten der Doppelspalt-Minima; Minima bei <span class="f">\(120^\circ\)</span>/<span class="f">\(240^\circ\)</span>. <b>1.3 (4 BE)</b> Fünffachspalt mit halbem <span class="f">\(d\)</span>: Abstände <span class="f">\(a_n\)</span> verdoppelt, drei Nebenmaxima dazwischen.</li>
+  </ul>
+  <div class="note exam"><b>Muster der Wellen-II-Aufgaben:</b> (1) Entstehung erklären (Huygens, Gangunterschied), (2) Formel herleiten mit Skizze, (3) aus Messwerten <span class="f">\(\lambda\)</span>, <span class="f">\(d\)</span> oder <span class="f">\(f\)</span> berechnen, (4) Unsicherheit abschätzen und beurteilen, (5) Transfer: mehr Spalte, anderer Abstand, andere Wellenlänge. Jede der fünf Aufgaben folgt diesem Muster. Wer die Herleitung aus Abschnitt 3 und die Fehlerrechnung aus Abschnitt 8 kann, hat die Hälfte jeder Aufgabe.</div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <h2>11 · Analogie-Trainer</h2>
+  <div class="cards">
+    <div class="acard"><h4>Zwei Wege ↔ Michelson</h4><div class="l">Gangunterschied = doppelte Armdifferenz</div><p>Zwei Läufer starten gemeinsam, laufen zu verschieden weit entfernten Wendepunkten und zurück. Der Unterschied ihrer Strecken ist doppelt so groß wie der Unterschied der Wendepunkt-Abstände.</p></div>
+    <div class="acard"><h4>Zwei Steine im Teich ↔ Doppelspalt</h4><div class="l">Knotenlinien</div><p>Zwei Kreiswellen überlagern sich; auf Hyperbeln mit <span class="f">\(\Delta l = (n+\tfrac12)\lambda\)</span> bleibt das Wasser ruhig. Der Schirm schneidet diese Hyperbeln: Minima.</p></div>
+    <div class="acard"><h4>Chor ↔ Gitter</h4><div class="l">Viele Stimmen, scharfe Resonanz</div><p>Zwei Sänger im Takt sind laut, leicht versetzt noch halblaut. Hundert Sänger sind nur dann laut, wenn alle exakt im Takt sind; kleinste Verschiebung, und es löscht sich aus. Mehr Spalte ⇒ schmalere Maxima.</p></div>
+    <div class="acard"><h4>Zeigerkreis ↔ Minimum</h4><div class="l">Polygon schließt sich</div><p>Zeiger hintereinander mit gleichem Knickwinkel: Nach einer vollen Drehung ist man am Start, die Summe ist null. Doppelspalt: 2 Zeiger gegenläufig; Einzelspalt: Bogen zum Kreis.</p></div>
+    <div class="acard"><h4>Regenbogen ↔ LED-Band</h4><div class="l">Ort hängt von <span class="f">\(\lambda\)</span> ab</div><p>Das Gitter sortiert die Wellenlängen nach Winkeln. Ein Band von <span class="f">\(\lambda\)</span>-Werten wird zum Farbstreifen; seine Kanten sind die Grenzen des Spektrums.</p></div>
+    <div class="acard"><h4>Worst case ↔ Fehlerbetrachtung</h4><div class="l">Alle Fehler in dieselbe Richtung</div><p>Für <span class="f">\(\lambda_{\mathrm{max}}\)</span> alles so wählen, dass <span class="f">\(\lambda\)</span> groß wird (<span class="f">\(a\)</span> groß, <span class="f">\(e\)</span> klein), für <span class="f">\(\lambda_{\mathrm{min}}\)</span> umgekehrt. Oder relative Fehler addieren.</p></div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="card" id="s12">
+  <h2>12 · Aufgaben zum Selbstrechnen (erst rechnen, dann aufklappen)</h2>
+  <details><summary>A1: Michelson. a) Beim Verschieben von Spiegel 2 um <span class="f">\(38{,}0\,\mathrm{\mu m}\)</span> werden 120 Maxima gezählt. Wellenlänge? b) Um wie viel muss man den Spiegel für 50 Maxima eines He-Ne-Lasers (633 nm) verschieben? c) Warum zählt man viele Maxima statt einem?</summary>
+    <p>a) <span class="f">\(\Delta l = n\lambda/2\)</span> ⇒ <span class="f">\(\lambda = 2\Delta l/n = 2\cdot 38{,}0\,\mathrm{\mu m}/120 = 0{,}633\,\mathrm{\mu m} = 633\,\mathrm{nm}\)</span> (He-Ne).<br>
+    b) <span class="f">\(\Delta l = 50\cdot 633\,\mathrm{nm}/2 = 15{,}8\,\mathrm{\mu m}\)</span>.<br>
+    c) Der Ablesefehler der Verschiebung (etwa 1 µm) verteilt sich auf <span class="f">\(n\)</span> Zyklen; bei einem einzelnen Zyklus (0,3 µm) wäre er größer als die Messgröße.</p></details>
+  <details><summary>A2: Doppelspalt <span class="f">\(d = 0{,}25\,\mathrm{mm}\)</span>, Schirm <span class="f">\(e = 1{,}80\,\mathrm{m}\)</span>, Maximum 2. Ordnung bei <span class="f">\(a_2 = 9{,}2\,\mathrm{mm}\)</span>. a) <span class="f">\(\lambda\)</span> mit der Näherungsformel. b) Prüfe mit der exakten Rechnung. c) Wie weit liegen die Maxima auseinander?</summary>
+    <p>a) <span class="f">\(\lambda = \frac{d}{n}\sin(\arctan\frac{a}{e}) = \frac{0{,}25\,\mathrm{mm}}{2}\sin(\arctan\frac{9{,}2}{1800}) = 639\,\mathrm{nm}\)</span>.<br>
+    b) <span class="f">\(\Delta l = \sqrt{1{,}8^2 + 0{,}009325^2} - \sqrt{1{,}8^2 + 0{,}009075^2} = 1{,}278\cdot 10^{-6}\,\mathrm{m}\)</span> ⇒ <span class="f">\(\lambda = \Delta l/2 = 639\,\mathrm{nm}\)</span>; <span class="f">\(e/d = 7200\)</span>, Näherung perfekt.<br>
+    c) <span class="f">\(\Delta a \approx \lambda e/d = 639\cdot 10^{-9}\cdot 1{,}8/0{,}25\cdot 10^{-3}\,\mathrm{m} = 4{,}6\,\mathrm{mm}\)</span> (und <span class="f">\(a_2 = 2\cdot 4{,}6 = 9{,}2\)</span> ✓).</p></details>
+  <details><summary>A3: Gitter 600 Striche/mm, grüner Laser <span class="f">\(532\,\mathrm{nm}\)</span>, Schirm <span class="f">\(e = 1{,}20\,\mathrm{m}\)</span>. a) Abstände <span class="f">\(a_1\)</span>, <span class="f">\(a_2\)</span>. b) Wie viele Ordnungen sind sichtbar? c) Fehler der Kleinwinkelnäherung <span class="f">\(a \approx n\lambda e/g\)</span> bei <span class="f">\(n = 1\)</span>?</summary>
+    <p>a) <span class="f">\(g = 1/600\,\mathrm{mm} = 1{,}667\,\mathrm{\mu m}\)</span>. <span class="f">\(\sin\alpha_1 = \lambda/g = 0{,}319\)</span> ⇒ <span class="f">\(\alpha_1 = 18{,}6^\circ\)</span> ⇒ <span class="f">\(a_1 = e\tan\alpha_1 = 0{,}404\,\mathrm{m}\)</span>. <span class="f">\(\sin\alpha_2 = 0{,}638\)</span> ⇒ <span class="f">\(39{,}7^\circ\)</span> ⇒ <span class="f">\(a_2 = 0{,}996\,\mathrm{m}\)</span>.<br>
+    b) <span class="f">\(\sin\alpha_n = n\lambda/g \le 1\)</span> ⇒ <span class="f">\(n \le g/\lambda = 3{,}13\)</span> ⇒ Ordnungen 0 bis 3 (<span class="f">\(\alpha_3 = 73^\circ\)</span>, <span class="f">\(a_3 = 3{,}9\,\mathrm{m}\)</span>, braucht einen sehr breiten Schirm).<br>
+    c) Näherung: <span class="f">\(a_1 \approx \lambda e/g = 0{,}383\,\mathrm{m}\)</span>, exakt 0,404 m ⇒ 5 % zu klein. Bei Gittern sind die Winkel groß; <span class="f">\(\sin(\arctan(a/e))\)</span> ist Pflicht.</p></details>
+  <details><summary>A4: Weiße LED, objektiv, <span class="f">\(g = 2\,\mathrm{\mu m}\)</span>, <span class="f">\(e = 21{,}0\,\mathrm{cm}\)</span>, Band 1. Ordnung von <span class="f">\(a_1 = 5{,}2\,\mathrm{cm}\)</span> bis <span class="f">\(a_2 = 8{,}6\,\mathrm{cm}\)</span>. a) Wellenlängenbereich. b) Fehlerbetrachtung nach Heft für <span class="f">\(\lambda_1\)</span> mit <span class="f">\(\Delta a = 2\,\mathrm{mm}\)</span>, <span class="f">\(\Delta e = 4\,\mathrm{mm}\)</span>. c) Dasselbe mit relativen Fehlern.</summary>
+    <p>a) <span class="f">\(\lambda_1 = 2\,\mathrm{\mu m}\cdot\sin(\arctan\frac{5{,}2}{21}) = 481\,\mathrm{nm}\)</span>; <span class="f">\(\lambda_2 = 2\,\mathrm{\mu m}\cdot\sin(\arctan\frac{8{,}6}{21}) = 758\,\mathrm{nm}\)</span>. Bereich 481 bis 758 nm.<br>
+    b) <span class="f">\(\lambda_{\mathrm{min}}\)</span> aus <span class="f">\(a = 5{,}0\)</span>, <span class="f">\(e = 21{,}4\)</span>: <span class="f">\(455\,\mathrm{nm}\)</span>; <span class="f">\(\lambda_{\mathrm{max}}\)</span> aus <span class="f">\(a = 5{,}4\)</span>, <span class="f">\(e = 20{,}6\)</span>: <span class="f">\(507\,\mathrm{nm}\)</span> ⇒ <span class="f">\((481 \pm 26)\,\mathrm{nm}\)</span>.<br>
+    c) <span class="f">\(\Delta a/a = 2/52 = 3{,}8\,\%\)</span>, <span class="f">\(\Delta e/e = 4/210 = 1{,}9\,\%\)</span> ⇒ zusammen 5,7 % ⇒ <span class="f">\(\Delta\lambda \approx 27\,\mathrm{nm}\)</span>. Beide Verfahren stimmen überein.</p></details>
+  <details><summary>A5: Mehrfachspalte. a) Vierfachspalt: Bei welchen Nachbarphasen liegen die Minima zwischen zwei Hauptmaxima, und welche Spalte löschen sich jeweils paarweise aus? b) Ein Fünffachspalt hat den halben Spaltabstand des Doppelspalts aus A2. Wo liegt sein Hauptmaximum 2. Ordnung, und wie viele Nebenmaxima liegen zwischen 0. und 1. Ordnung?</summary>
+    <p>a) Minima bei <span class="f">\(\Delta\varphi = 90^\circ, 180^\circ, 270^\circ\)</span>. Bei <span class="f">\(180^\circ\)</span>: 1 mit 2, 3 mit 4 (Doppelspalt-Minimum). Bei <span class="f">\(90^\circ\)</span> und <span class="f">\(270^\circ\)</span>: 1 mit 3, 2 mit 4 (je <span class="f">\(180^\circ\)</span> auseinander). Dazwischen zwei Nebenmaxima (<span class="f">\(N - 2 = 2\)</span>).<br>
+    b) <span class="f">\(d' = 0{,}125\,\mathrm{mm}\)</span> ⇒ <span class="f">\(a_n \propto 1/d\)</span> verdoppelt sich: <span class="f">\(a_2 = 18{,}4\,\mathrm{mm}\)</span>. Zwischen zwei Hauptmaxima <span class="f">\(N - 2 = 3\)</span> Nebenmaxima und 4 Minima (Abitur 2023, 1.3).</p></details>
+  <details><summary>A6: Einzelspalt <span class="f">\(b = 0{,}10\,\mathrm{mm}\)</span>, <span class="f">\(\lambda = 633\,\mathrm{nm}\)</span>, Schirm <span class="f">\(e = 2{,}0\,\mathrm{m}\)</span>. a) Lage der ersten beiden Minima. b) Breite des Hauptmaximums und des 1. Nebenmaximums. c) Wie ändert sich das Bild bei halber Spaltbreite?</summary>
+    <p>a) <span class="f">\(\sin\alpha_1 = \lambda/b = 6{,}33\cdot 10^{-3}\)</span> ⇒ <span class="f">\(x_1 = e\tan\alpha_1 = 12{,}7\,\mathrm{mm}\)</span>; <span class="f">\(x_2 = 25{,}3\,\mathrm{mm}\)</span>.<br>
+    b) Hauptmaximum <span class="f">\(2x_1 = 25{,}3\,\mathrm{mm}\)</span>; 1. Nebenmaximum <span class="f">\(x_2 - x_1 = 12{,}7\,\mathrm{mm}\)</span>: halb so breit, und viel dunkler (etwa 4,5 % der Hauptintensität).<br>
+    c) Halbe Spaltbreite ⇒ <span class="f">\(\sin\alpha_n\)</span> verdoppelt ⇒ alle Minima doppelt so weit außen, Hauptmaximum doppelt so breit und (weniger Licht) dunkler. Schmaler Spalt ⇒ breites Beugungsbild (Lektion 7, Huygens).</p></details>
+</section>
+
+<!-- 13 -->
+<section class="card" id="s13">
+  <h2>13 · Was nicht in der Formelsammlung steht (auswendig, siehe Typst-Datei)</h2>
+  <ul>
+    <li><b>Michelson:</b> Aufbau mit vier Elementen, Lichtwege, Gangunterschied = doppelte Armdifferenz, <span class="f">\(\Delta l = n\lambda/2\)</span> (Zählen von Maxima), Faktor 2 bei Spiegelverschiebung; CD: <span class="f">\(2\Delta s = \lambda/2\)</span> ⇒ <span class="f">\(\Delta s = \lambda/4\)</span>, <span class="f">\(\lambda\)</span> im Medium <span class="f">\(= c/(n f)\)</span>; Intensitätsanteile ½ bzw. ¼.</li>
+    <li><b>Exakter Doppelspalt:</b> <span class="f">\(l_{1,2} = \sqrt{e^2 + (a \mp d/2)^2}\)</span>, <span class="f">\(\Delta l = l_2 - l_1 = n\lambda\)</span>; numerisch heikel. Ultraschall 2022: <span class="f">\(d_{1,2} = \sqrt{(x \pm g/2)^2 + e^2}\)</span>.</li>
+    <li><b>Herleitung der Näherung:</b> <span class="f">\(e \gg d\)</span> ⇒ parallele Strahlen; <span class="f">\(\tan\alpha = a/e\)</span> (großes Dreieck), <span class="f">\(\sin\alpha = \Delta l/d\)</span> (kleines Dreieck), <span class="f">\(\Delta l = n\lambda\)</span> ⇒ <span class="f">\(n\lambda = d\sin(\arctan(a_n/e))\)</span>. FS hat nur <span class="f">\(k\lambda/g = \sin\alpha_k\)</span>. Kleinwinkel <span class="f">\(\lambda \approx d a/(n e)\)</span> nur für <span class="f">\(a \ll e\)</span>.</li>
+    <li><b>Intensität Doppelspalt:</b> <span class="f">\(I \propto \cos^2(\pi d\sin\alpha/\lambda)\)</span>, Streifenabstand <span class="f">\(\approx\lambda e/d\)</span>; Einhüllende durch Spaltbreite.</li>
+    <li><b>Gitter/Mehrfachspalt:</b> Hauptmaxima bei <span class="f">\(\Delta l = n\lambda\)</span> zwischen Nachbarspalten (Orte wie Doppelspalt), Intensität <span class="f">\(N^2\)</span>, schmaler mit <span class="f">\(N\)</span>; <span class="f">\(N-1\)</span> Minima (geschlossenes Zeigerpolygon, Nachbarphase <span class="f">\(2\pi k/N\)</span>) und <span class="f">\(N-2\)</span> Nebenmaxima dazwischen; Vierfachspalt-Paare (1–2/3–4 bei 180°, 1–3/2–4 bei 90°); Dreifachspalt 120°/240°; halber Spaltabstand ⇒ doppelte <span class="f">\(a_n\)</span>. <span class="f">\(g = 1/\text{Strichzahl}\)</span>.</li>
+    <li><b>LED-Spektrometer:</b> Band statt Linie, Kanten <span class="f">\(a_1\)</span>, <span class="f">\(a_2\)</span> einzeln umrechnen; objektiv (Schirm) und subjektiv (durchs Gitter, Bild in der Blendenebene, <span class="f">\(e\)</span> = Gitter–Blende, Gitter verschieben bis Kante auf Rand); weiße LED breitestes Band; <span class="f">\(a\)</span>-<span class="f">\(U\)</span>-Diagramm ⇒ <span class="f">\(\lambda_{\mathrm{max}}\)</span>.</li>
+    <li><b>Fehlerbetrachtung:</b> Heft: <span class="f">\(\lambda_{\mathrm{min}}\)</span> aus <span class="f">\((a - \Delta a, e + \Delta e)\)</span>, <span class="f">\(\lambda_{\mathrm{max}}\)</span> aus <span class="f">\((a + \Delta a, e - \Delta e)\)</span>, Schreibweise <span class="f">\(580^{+18}_{-17}\)</span> bzw. <span class="f">\((416 \pm 17)\)</span> nm; EWH: relative Fehler <span class="f">\(\Delta a/a + \Delta e/e\)</span> (oder der größte), dann absolut. Beurteilen: Unsicherheit gegen Effekt vergleichen (2022: 0,65 mm gegen 2 mm).</li>
+    <li><b>Einzelspalt:</b> Teilbündel-Argument (Partnerwellen im Abstand <span class="f">\(b/2n\)</span> mit <span class="f">\(\lambda/2\)</span>), Hauptmaximum doppelt so breit, Intensität fällt schnell, Zeigerbogen; Doppelspalt-Formel für Maxima, Einzelspalt-Formel für Minima. Heft-Detektivarbeit: Spaltabstand aus bekannter Wellenlänge zurückrechnen.</li>
+    <li><b>Steht in der FS (nur Fundort):</b> Doppelspalt Maxima <span class="f">\(k\lambda/g = \sin\alpha_k\)</span>, Minima <span class="f">\((2k-1)\lambda/(2g)\)</span>; Gitter Hauptmaxima; Einzelspalt Minima <span class="f">\(k\lambda/d = \sin\alpha_k\)</span>, Maxima <span class="f">\((2k+1)\lambda/(2d)\)</span> (S. 35; Achtung: dort heißt die Spaltbreite <span class="f">\(d\)</span>); Bragg, Rayleigh (S. 35); Brechzahl <span class="f">\(n = c_0/c\)</span> (S. 34).</li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="card" id="s14">
+  <h2>14 · Quiz</h2>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 15 -->
+<section class="card" id="s15">
+  <h2>15 · Merksätze und Fortschritt</h2>
+  <ol>
+    <li>Michelson: Spiegel um <span class="f">\(\lambda/2\)</span> verschieben = ein Hell-Dunkel-Zyklus. <span class="f">\(\Delta l = n\lambda/2\)</span>. Faktor 2, weil hin und zurück.</li>
+    <li>Doppelspalt: Maxima bei <span class="f">\(\Delta l = n\lambda\)</span>, exakt mit Pythagoras, genähert <span class="f">\(d\sin(\arctan(a/e))\)</span> für <span class="f">\(e \gg d\)</span>.</li>
+    <li>Herleitung: zwei Dreiecke, zwei Winkelfunktionen: <span class="f">\(\tan\alpha = a/e\)</span>, <span class="f">\(\sin\alpha = \Delta l/d\)</span>.</li>
+    <li>Gitter: gleiche Hauptmaxima wie der Doppelspalt mit gleichem <span class="f">\(d\)</span>, nur schmaler und heller; <span class="f">\(N - 2\)</span> Nebenmaxima dazwischen.</li>
+    <li>Minimum = geschlossenes Zeigerpolygon. Doppelspalt 180°, Dreifachspalt 120°/240°, Vierfachspalt 90°/180°/270°.</li>
+    <li>LED: Band statt Linie; beide Kanten einzeln umrechnen. Weiß ist am breitesten.</li>
+    <li>Fehlerbetrachtung immer: <span class="f">\(\Delta a\)</span> und <span class="f">\(\Delta e\)</span> mit Zahl, dann Min-Max oder relative Fehler, dann richtig notieren.</li>
+    <li>Einzelspalt: <span class="f">\(b\sin\alpha = n\lambda\)</span> sind <b>Minima</b>; Hauptmaximum doppelt so breit; schmaler Spalt ⇒ breiteres Bild.</li>
+  </ol>
+  <h3>Typische Verwechslungen</h3>
+  <table>
+    <tr><th>Das</th><th>ist nicht das</th></tr>
+    <tr><td>Spiegelverschiebung <span class="f">\(\Delta x\)</span></td><td>Gangunterschied (<span class="f">\(= 2\Delta x\)</span>)</td></tr>
+    <tr><td><span class="f">\(d\sin\alpha = n\lambda\)</span>: Maxima am Doppelspalt/Gitter</td><td><span class="f">\(b\sin\alpha = n\lambda\)</span>: Minima am Einzelspalt</td></tr>
+    <tr><td><span class="f">\(\tan\alpha = a/e\)</span> (Schirm)</td><td><span class="f">\(\sin\alpha = \Delta l/d\)</span> (Spalt); nur für kleine Winkel gleich</td></tr>
+    <tr><td>Spaltmittenabstand <span class="f">\(d\)</span> (Heft) = <span class="f">\(g\)</span> (Abitur, FS)</td><td>Spaltbreite <span class="f">\(b\)</span> (FS Einzelspalt: <span class="f">\(d\)</span>!)</td></tr>
+    <tr><td>Gitterkonstante <span class="f">\(g = 1/500\,\mathrm{mm} = 2\,\mathrm{\mu m}\)</span></td><td>500 (die Strichzahl pro mm)</td></tr>
+    <tr><td><span class="f">\(e\)</span> subjektiv: Gitter bis Spaltblende</td><td>Gitter bis Auge</td></tr>
+    <tr><td>Nebenmaxima: <span class="f">\(N - 2\)</span></td><td>Minima: <span class="f">\(N - 1\)</span></td></tr>
+    <tr><td><span class="f">\(\lambda\)</span> im Medium <span class="f">\(= \lambda_0/n\)</span> (CD: 503 nm)</td><td><span class="f">\(f\)</span> ändert sich (tut sie nicht)</td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="p1"> Michelson: Lichtwege zeichnen, Faktor 2 erklären, <span class="f">\(\lambda = 2\Delta s\)</span> aus dem Diagramm (Abitur 2021)</label>
+    <label><input type="checkbox" data-k="p2"> Doppelspalt exakt mit Pythagoras, Heft-Werte nachgerechnet (545,6 nm / 437,1 nm, <span class="f">\(d\)</span> zurückgerechnet)</label>
+    <label><input type="checkbox" data-k="p3"> Näherungsformel mit Skizze herleiten (zwei Dreiecke), Gültigkeit <span class="f">\(e \gg d\)</span> begründen</label>
+    <label><input type="checkbox" data-k="p4"> Ultraschall-Doppelspalt 2022: <span class="f">\(d_1\)</span> herleiten, <span class="f">\(\lambda\)</span> und <span class="f">\(f\)</span> aus zwei Maxima</label>
+    <label><input type="checkbox" data-k="p5"> Mehrfachspalt: Nebenmaxima zählen, Minima mit Zeigerpolygon erklären (2021, 2023)</label>
+    <label><input type="checkbox" data-k="p6"> LED-Spektrum objektiv und subjektiv auswerten, <span class="f">\(a\)</span>-<span class="f">\(U\)</span>-Diagramm (2022 gA)</label>
+    <label><input type="checkbox" data-k="p7"> Fehlerbetrachtung nach Heft und nach EWH, Ergebnis richtig notieren</label>
+    <label><input type="checkbox" data-k="p8"> Einzelspalt: Teilbündel-Argument, Minima, Hauptmaximum doppelt so breit, Blatt-Aufgaben 1–2</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 8 · erstellt 30.10.2026 · Quellen: Typst-Heft (12.2) Schwingungen und Wellen (Michelsoninterferometer, Der Doppelspalt mit exakter Berechnung und Näherung, Vom Doppelspalt zum Gitter, Bestimmung der Wellenlängenbereiche von LEDs, Subjektive Methode, Fehlerbetrachtung) mit Abbildungen, Buchblatt 7.3.4 Beugung und Interferenz am Spalt, Zentralabitur 2021 IIa Aufgaben 1–2, 2022 I Aufgabe 1, 2022 gA IIa Aufgabe 1, 2023 IIa Aufgabe 1 mit Erwartungshorizonten, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const deT = (x, d) => de(x, d).replace(',', '{,}');
+  const sciT = (x, sig) => {
+    if (x === 0) return '0';
+    let exp = Math.floor(Math.log10(Math.abs(x)));
+    const mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); exp += 1; }
+    m = m.replace(',', '{,}');
+    return exp === 0 ? m : m + '\\cdot 10^{' + exp + '}';
+  };
+  const $ = (id) => document.getElementById(id);
+  const onTheme = (fn) => window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fn);
+  function arrowAt(ctx, x, y, ux, uy, color) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(uy, ux)); ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-6, 5); ctx.lineTo(-6, -5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function arrowLine(ctx, x1, y1, x2, y2, color, w) { ctx.strokeStyle = color; ctx.lineWidth = w || 2; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); const dx = x2 - x1, dy = y2 - y1, m = Math.hypot(dx, dy) || 1; arrowAt(ctx, x2, y2, dx / m, dy / m, color); }
+  function linreg(X, Y) { const n = X.length; let sx = 0, sy = 0; for (let i = 0; i < n; i++) { sx += X[i]; sy += Y[i]; } const mx = sx / n, my = sy / n; let sxx = 0, sxy = 0, syy = 0; for (let i = 0; i < n; i++) { sxx += (X[i] - mx) ** 2; sxy += (X[i] - mx) * (Y[i] - my); syy += (Y[i] - my) ** 2; } const m = sxy / sxx; return { m, b: my - m * mx, r: syy > 0 ? sxy / Math.sqrt(sxx * syy) : 1 }; }
+  function powreg(X, Y) { const r = linreg(X.map(Math.log), Y.map(Math.log)); return { a: Math.exp(r.b), b: r.m, r: r.r }; }
+  function niceStep(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
+  function frame(ctx, W, H, pad, x0, x1, y0, y1, xl, yl, opts) {
+    opts = opts || {};
+    ctx.clearRect(0, 0, W, H);
+    const X = (x) => pad.l + (x - x0) / (x1 - x0) * (W - pad.l - pad.r);
+    const Y = (y) => H - pad.b - (y - y0) / (y1 - y0) * (H - pad.t - pad.b);
+    const xs = opts.xs || niceStep((x1 - x0) / 5), ys = opts.ys || niceStep((y1 - y0) / 4);
+    ctx.font = '11px system-ui'; ctx.fillStyle = css('--muted'); ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+    const dx = Math.max(0, -Math.floor(Math.log10(xs))), dy = Math.max(0, -Math.floor(Math.log10(ys)));
+    for (let x = Math.ceil(x0 / xs) * xs; x <= x1 + 1e-9; x += xs) { ctx.beginPath(); ctx.moveTo(X(x), pad.t); ctx.lineTo(X(x), H - pad.b); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(de(x, dx), X(x), H - pad.b + 14); }
+    for (let y = Math.ceil(y0 / ys) * ys; y <= y1 + 1e-9; y += ys) { ctx.beginPath(); ctx.moveTo(pad.l, Y(y)); ctx.lineTo(W - pad.r, Y(y)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(de(y, dy), pad.l - 4, Y(y) + 4); }
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.2;
+    if (y0 <= 0 && y1 >= 0) { ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.stroke(); }
+    if (x0 <= 0 && x1 >= 0) { ctx.beginPath(); ctx.moveTo(X(0), pad.t); ctx.lineTo(X(0), H - pad.b); ctx.stroke(); }
+    ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'right'; ctx.fillText(xl, W - pad.r, H - pad.b + 28); ctx.textAlign = 'left'; ctx.fillText(yl, pad.l + 4, pad.t - 4);
+    return { X, Y };
+  }
+  function curve(ctx, map, f, x0, x1, color, w, dash, n) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); n = n || 300; let started = false; for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; const y = f(x); if (!isFinite(y)) { started = false; continue; } const px = map.X(x), py = map.Y(y); if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py); } ctx.stroke(); ctx.restore(); }
+  function dot(ctx, x, y, color, r) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r || 4, 0, 2 * Math.PI); ctx.fill(); }
+  function poly(ctx, pts, color, w, dash) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); pts.forEach((p, i) => { if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke(); ctx.restore(); }
+  const TAU = 2 * Math.PI, degT = (a) => deT(a, 0) + '^\\circ';
+  const mod2pi = (a) => ((a % TAU) + TAU) % TAU;
+  const sinatan = (a, e) => Math.sin(Math.atan(a / e));
+  function wlColor(nm) { // Wellenlänge in nm -> CSS-Farbe (grob)
+    let r = 0, g = 0, b = 0;
+    if (nm < 380) { r = 0.4; b = 0.6; } else if (nm < 440) { r = -(nm - 440) / 60; b = 1; } else if (nm < 490) { g = (nm - 440) / 50; b = 1; } else if (nm < 510) { g = 1; b = -(nm - 510) / 20; } else if (nm < 580) { r = (nm - 510) / 70; g = 1; } else if (nm < 645) { r = 1; g = -(nm - 645) / 65; } else if (nm <= 780) { r = 1; } else { r = 0.6; }
+    let f = 1; if (nm > 700) f = 0.3 + 0.7 * (780 - nm) / 80; if (nm < 420) f = 0.3 + 0.7 * (nm - 380) / 40;
+    return 'rgb(' + Math.round(255 * Math.max(0, r) * f) + ',' + Math.round(255 * Math.max(0, g) * f) + ',' + Math.round(255 * Math.max(0, b) * f) + ')';
+  }
+
+  /* ---------- 1 Michelson ---------- */
+  (function michelson() {
+    const cv = $('miCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let maxCount = 0, lastS = 0;
+    function draw() {
+      const s = parseFloat($('miX').value), lam = parseFloat($('miLam').value);
+      texHTML($('miXv'), '\\(' + s + '\\,\\mathrm{nm}\\)');
+      const gang = 2 * s, I = Math.pow(Math.cos(Math.PI * gang / lam), 2);
+      // Zähler: Maxima bei s = k·λ/2
+      maxCount = Math.floor(s / (lam / 2) + 1e-6); lastS = s;
+      ctx.clearRect(0, 0, W, H);
+      // Aufbau links
+      const bx = 130, by = 160; const m2x = 236 + 18 * (s / 2000);
+      ctx.fillStyle = css('--soft'); ctx.fillRect(10, by - 12, 50, 24); ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Laser', 14, by + 4);
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(bx - 18, by + 18); ctx.lineTo(bx + 18, by - 18); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.fillText('1', bx + 14, by + 14);
+      ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(m2x, by - 26); ctx.lineTo(m2x, by + 26); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.fillText('2', m2x + 6, by + 30);
+      ctx.beginPath(); ctx.moveTo(bx - 26, 40); ctx.lineTo(bx + 26, 40); ctx.stroke(); ctx.fillText('3', bx + 30, 36);
+      ctx.fillStyle = css('--ok'); ctx.fillRect(bx - 22, 272, 44, 14); ctx.fillStyle = css('--muted'); ctx.fillText('4 Detektor', bx + 26, 284);
+      arrowLine(ctx, m2x - 30, by - 36, m2x - 6, by - 36, css('--muted'), 1.2); arrowLine(ctx, m2x - 6, by - 36, m2x - 30, by - 36, css('--muted'), 1.2);
+      // Wege: rot über 2, orange über 3 (leicht versetzt)
+      ctx.lineWidth = 2; ctx.strokeStyle = css('--pos'); ctx.beginPath(); ctx.moveTo(60, by); ctx.lineTo(bx, by); ctx.lineTo(m2x, by); ctx.stroke(); ctx.beginPath(); ctx.moveTo(m2x, by + 4); ctx.lineTo(bx + 4, by + 4); ctx.lineTo(bx + 4, 272); ctx.stroke();
+      ctx.strokeStyle = css('--kin'); ctx.beginPath(); ctx.moveTo(bx - 4, by - 4); ctx.lineTo(bx - 4, 40); ctx.stroke(); ctx.beginPath(); ctx.moveTo(bx - 8, 40); ctx.lineTo(bx - 8, by - 8); ctx.lineTo(bx - 4, by - 4); ctx.lineTo(bx - 4, 272); ctx.stroke();
+      arrowAt(ctx, 100, by, 1, 0, css('--pos')); arrowAt(ctx, bx + 4, 230, 0, 1, css('--pos')); arrowAt(ctx, bx - 4, 90, 0, -1, css('--kin')); arrowAt(ctx, bx - 4, 240, 0, 1, css('--kin'));
+      // Intensität rechts
+      const gx = 285, gw = W - gx - 12, gy = 40, gh = 200;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(gx, gy); ctx.lineTo(gx, gy + gh); ctx.lineTo(gx + gw, gy + gh); ctx.stroke();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 300; i++) { const ss = 2000 * i / 300; const px = gx + gw * i / 300, py = gy + gh - gh * Math.pow(Math.cos(Math.PI * 2 * ss / lam), 2); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      dot(ctx, gx + gw * s / 2000, gy + gh - gh * I, css('--pos'), 6);
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('I am Detektor', gx + 4, gy - 6); ctx.textAlign = 'right'; ctx.fillText('s (Spiegel 2) in nm, 0 … 2000', gx + gw, gy + gh + 14);
+      for (let k = 1; k * lam / 2 <= 2000; k++) { const px = gx + gw * (k * lam / 2) / 2000; ctx.strokeStyle = css('--line'); ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(px, gy); ctx.lineTo(px, gy + gh); ctx.stroke(); ctx.setLineDash([]); }
+      ctx.fillStyle = css('--fg'); ctx.font = 'bold 13px system-ui'; ctx.textAlign = 'left'; ctx.fillText('gezählte Maxima: ' + maxCount, gx + 4, gy + gh + 34);
+      texHTML($('miOut'), 'Spiegel 2 verschoben um \\(s = ' + s + '\\,\\mathrm{nm}\\) ⇒ Gangunterschied \\(2s = ' + 2 * s + '\\,\\mathrm{nm} = ' + deT(2 * s / lam, 2) + '\\,\\lambda\\)<br>Intensität \\(I = I_{\\mathrm{max}}\\cos^2(\\pi\\cdot 2s/\\lambda) = ' + deT(I * 100, 0) + '\\,\\%\\) ' + (Math.abs(I - 1) < 0.02 ? '(Maximum)' : I < 0.02 ? '(Minimum)' : '') + '<br>Ein Zyklus hell–dunkel–hell pro \\(\\lambda/2 = ' + deT(lam / 2, 1) + '\\,\\mathrm{nm}\\) Verschiebung. Gezählt: \\(n = ' + maxCount + '\\) Maxima ⇒ \\(\\Delta l = n\\lambda/2 = ' + deT(maxCount * lam / 2, 0) + '\\,\\mathrm{nm}\\)' + (maxCount > 0 && I > 0.98 ? '; umgekehrt aus \\(n\\) und \\(s\\): \\(\\lambda = 2s/n = ' + deT(2 * s / maxCount, 0) + '\\,\\mathrm{nm}\\).' : maxCount > 0 ? '. Für die Rückrechnung \\(\\lambda = 2s/n\\) den Spiegel genau auf ein Maximum stellen.' : '.'));
+    }
+    $('miX').addEventListener('input', draw); $('miLam').addEventListener('change', () => { maxCount = 0; lastS = 0; $('miX').value = 0; draw(); }); $('miReset').addEventListener('click', () => { maxCount = 0; lastS = 0; $('miX').value = 0; draw(); }); onTheme(draw); draw();
+  })();
+
+  /* ---------- 2 Doppelspalt exakt ---------- */
+  (function geometrie() {
+    const cv = $('dgCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const d = parseFloat($('dgD').value) * 1e-3, e = parseFloat($('dgE').value), a = parseFloat($('dgA').value) * 1e-3, lam = parseFloat($('dgL').value) * 1e-9;
+      texHTML($('dgDv'), '\\(' + deT(d * 1e3, 2) + '\\,\\mathrm{mm}\\)'); texHTML($('dgEv'), '\\(' + deT(e, 2) + '\\,\\mathrm{m}\\)'); texHTML($('dgAv'), '\\(' + deT(a * 1e3, 1) + '\\,\\mathrm{mm}\\)'); texHTML($('dgLv'), '\\(' + Math.round(lam * 1e9) + '\\,\\mathrm{nm}\\)');
+      const l1 = Math.hypot(e, a - d / 2), l2 = Math.hypot(e, a + d / 2), dl = l2 - l1, approx = d * sinatan(a, e), ratio = dl / lam;
+      ctx.clearRect(0, 0, W, H);
+      const sx = 60, scx = 420, cy = 100, dpx = 36, apx = Math.min(90, a / 0.04 * 90);
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(sx, 14); ctx.lineTo(sx, cy - dpx - 6); ctx.moveTo(sx, cy - dpx + 6); ctx.lineTo(sx, cy + dpx - 6); ctx.moveTo(sx, cy + dpx + 6); ctx.lineTo(sx, 186); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(scx, 10); ctx.lineTo(scx, 190); ctx.stroke();
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(sx, cy); ctx.lineTo(scx, cy); ctx.stroke(); ctx.setLineDash([]);
+      const py = cy - apx; ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(sx, cy - dpx); ctx.lineTo(scx, py); ctx.stroke(); ctx.beginPath(); ctx.moveTo(sx, cy + dpx); ctx.lineTo(scx, py); ctx.stroke(); dot(ctx, scx, py, css('--pos'), 5);
+      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('P', scx + 8, py + 4); ctx.fillText('l₁', (sx + scx) / 2, (cy - dpx + py) / 2 - 8); ctx.fillText('l₂', (sx + scx) / 2, (cy + dpx + py) / 2 + 16);
+      arrowLine(ctx, scx + 30, cy, scx + 30, py, css('--muted'), 1.2); ctx.fillStyle = css('--muted'); ctx.fillText('a', scx + 36, (cy + py) / 2 + 4);
+      arrowLine(ctx, sx - 24, cy - dpx, sx - 24, cy + dpx, css('--muted'), 1.2); arrowLine(ctx, sx - 24, cy + dpx, sx - 24, cy - dpx, css('--muted'), 1.2); ctx.fillText('d', sx - 40, cy + 4);
+      arrowLine(ctx, sx, 198, scx, 198, css('--muted'), 1.2); arrowLine(ctx, scx, 198, sx, 198, css('--muted'), 1.2); ctx.textAlign = 'center'; ctx.fillText('e (nicht maßstäblich)', (sx + scx) / 2, 212);
+      // Muster unten: Intensität über a in [-40, 40] mm
+      const my = 232, mh = 24; for (let i = 0; i < 300; i++) { const aa = (-0.04 + 0.08 * i / 300); const D = Math.hypot(e, aa + d / 2) - Math.hypot(e, aa - d / 2); const I = Math.pow(Math.cos(Math.PI * D / lam), 2); const g = Math.round(I * 255); ctx.fillStyle = 'rgba(' + g + ',' + Math.round(g * 0.3) + ',' + Math.round(g * 0.3) + ',1)'; ctx.fillRect(sx + (scx - sx) * i / 300, my, (scx - sx) / 300 + 1, mh); }
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; const mx = sx + (scx - sx) * (a + 0.04) / 0.08; ctx.beginPath(); ctx.moveTo(mx, my - 6); ctx.lineTo(mx, my + mh + 6); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Schirmbild, a von −40 bis +40 mm', sx, my - 8);
+      const n = Math.round(ratio), kind = Math.abs(ratio - n) < 0.05 ? 'Maximum ' + n + '. Ordnung' : Math.abs(ratio - Math.round(ratio - 0.5) - 0.5) < 0.05 ? 'Minimum' : 'dazwischen';
+      texHTML($('dgOut'), '\\(l_1 = \\sqrt{e^2 + (a - d/2)^2} = ' + deT(l1, 7) + '\\,\\mathrm{m}\\), \\(l_2 = ' + deT(l2, 7) + '\\,\\mathrm{m}\\)<br>\\(\\Delta l = l_2 - l_1 = \\htmlClass{hl}{' + deT(dl * 1e6, 3) + '\\,\\mathrm{\\mu m}}\\) ⇒ \\(\\Delta l/\\lambda = ' + deT(ratio, 2) + '\\): <b>' + kind + '</b><br>Näherung \\(d\\sin(\\arctan(a/e)) = ' + deT(approx * 1e6, 3) + '\\,\\mathrm{\\mu m}\\), relative Abweichung \\(' + sciT(Math.abs(approx - dl) / dl, 2) + '\\) (\\(e/d = ' + Math.round(e / d) + '\\))' + (Math.abs(d - 0.0005) < 1e-6 && Math.abs(e - 3.36) < 0.02 ? '<br>Heft-Laser: mit Herstellerwert 632,8 nm wäre \\(\\Delta l/\\lambda = ' + deT(dl / 632.8e-9, 2) + '\\), kein Maximum ⇒ \\(d\\) muss \\(' + deT(n * lam / sinatan(a, e) * 1e3 * (632.8e-9 / lam), 2) + '\\,\\mathrm{mm}\\) sein.' : ''));
+    }
+    ['dgD', 'dgE', 'dgA', 'dgL'].forEach((id) => $(id).addEventListener('input', draw));
+    $('dgRot').addEventListener('click', () => { $('dgD').value = 0.5; $('dgE').value = 3.36; $('dgA').value = 11; $('dgL').value = 546; draw(); });
+    $('dgGruen').addEventListener('click', () => { $('dgD').value = 0.5; $('dgE').value = 3.36; $('dgA').value = 23.5; $('dgL').value = 437; draw(); });
+    onTheme(draw); $('dgL').value = 546; draw();
+  })();
+
+  /* ---------- 3 Näherung: relativer Fehler ---------- */
+  (function naeherung() {
+    const cv = $('apCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    $('apN').parentElement.style.display = 'none';
+    function draw() {
+      const R = parseFloat($('apR').value), e = 1, d = e / Math.pow(10, R); texHTML($('apRv'), '\\(e/d = 10^{' + deT(R, 2) + '} \\approx ' + Math.round(Math.pow(10, R)) + '\\)');
+      const err = (q) => { const a = q * e; const ex = Math.hypot(e, a + d / 2) - Math.hypot(e, a - d / 2); return (d * sinatan(a, e) - ex) / ex * 100; };
+      let ymax = 0; for (let q = 0.01; q <= 0.5; q += 0.01) ymax = Math.max(ymax, Math.abs(err(q))); ymax = Math.max(1e-6, ymax * 1.15);
+      const map = frame(ctx, W, H, { l: 60, r: 14, t: 16, b: 36 }, 0, 0.5, 0, ymax, 'a / e', 'Fehler der Näherung in %', { xs: 0.1 });
+      curve(ctx, map, (q) => Math.abs(err(q)), 0.005, 0.5, css('--accent'), 2.2, null, 200);
+      const qus = 27 / 71, qheft = 0.011 / 3.36;
+      if (Math.abs(R - Math.log10(71 / 25)) < 0.08) { dot(ctx, map.X(qus), map.Y(Math.min(ymax, Math.abs(err(qus)))), css('--pos'), 5); ctx.fillStyle = css('--pos'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Ultraschall 2022', map.X(qus) + 6, map.Y(Math.min(ymax, Math.abs(err(qus)))) - 6); }
+      texHTML($('apOut'), 'Bei \\(e/d \\approx ' + Math.round(Math.pow(10, R)) + '\\): Fehler bei \\(a/e = 0{,}1\\): \\(' + sciT(Math.abs(err(0.1)), 2) + '\\,\\%\\); bei \\(a/e = 0{,}38\\) (Ultraschall-Maximum 1. Ordnung): \\(' + sciT(Math.abs(err(0.38)), 2) + '\\,\\%\\).<br>' + (R < 1 ? '<b>Näherung unbrauchbar</b> (Ultraschall 2022: \\(e/d = 71/25 = 2{,}8\\)): deshalb gibt die Aufgabe die exakten Wege \\(d_{1,2}\\) vor.' : R < 2.5 ? 'Für Prozentgenauigkeit reicht es, für Nanometer-Angaben nicht überall.' : '<b>Näherung exzellent</b> (Heft-Laser: \\(e/d = 6720\\), Fehler unter \\(10^{-5}\\,\\%\\)).') + '<br>Faustregel: Fehler \\(\\sim (d/e)^2\\); jede Zehnerpotenz in \\(e/d\\) bringt zwei Zehnerpotenzen Genauigkeit.');
+    }
+    $('apR').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 4 Intensität Doppelspalt ---------- */
+  (function intensitaet() {
+    const cv = $('dsCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height; let mode = 'L';
+    const P = { L: { lam: 546e-9, d: 0.5e-3, e: 3.36, range: 0.02, unit: 'mm', uf: 1e3, name: 'Heft-Laser (λ = 546 nm, d = 0,5 mm, e = 3,36 m)' }, U: { lam: 8.7e-3, d: 25e-3, e: 71e-3, range: 0.1, unit: 'mm', uf: 1e3, name: 'Ultraschall (λ = 8,7 mm, g = 25 mm, e = 71 mm)' } };
+    function draw() {
+      const p = P[mode], bf = parseFloat($('dsB').value), xs = parseFloat($('dsX').value) / 100 * p.range; texHTML($('dsBv'), '\\(' + deT(bf, 2) + '\\)'); texHTML($('dsXv'), '\\(' + deT(xs * p.uf, 1) + '\\,\\mathrm{' + p.unit + '}\\)');
+      const delta = (x) => Math.hypot(x + p.d / 2, p.e) - Math.hypot(x - p.d / 2, p.e);
+      const env = (x) => { if (bf === 0) return 1; const b = bf * p.d, s = x / Math.hypot(x, p.e), u = Math.PI * b * s / p.lam; return u === 0 ? 1 : Math.pow(Math.sin(u) / u, 2); };
+      const I = (x) => Math.pow(Math.cos(Math.PI * delta(x) / p.lam), 2) * env(x);
+      const map = frame(ctx, W, H, { l: 44, r: 12, t: 16, b: 36 }, -p.range * p.uf, p.range * p.uf, 0, 1.05, 'x in ' + p.unit, 'I / I_max', { ys: 0.25 });
+      if (bf > 0) curve(ctx, map, (xm) => env(xm / p.uf), -p.range * p.uf, p.range * p.uf, css('--muted'), 1.2, [5, 4], 400);
+      curve(ctx, map, (xm) => I(xm / p.uf), -p.range * p.uf, p.range * p.uf, css('--accent'), 2, null, 900);
+      dot(ctx, map.X(xs * p.uf), map.Y(I(xs)), css('--pos'), 6);
+      if (mode === 'U') { [27, 69, -27, -69].forEach((xm) => { ctx.strokeStyle = css('--ok'); ctx.setLineDash([3, 3]); ctx.beginPath(); ctx.moveTo(map.X(xm), map.Y(0)); ctx.lineTo(map.X(xm), map.Y(1)); ctx.stroke(); ctx.setLineDash([]); }); ctx.fillStyle = css('--ok'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Maxima M1b: 27 mm, 69 mm', map.X(-95), map.Y(1.02)); }
+      const D = delta(xs), r = D / p.lam, n = Math.round(r); const kind = Math.abs(r - n) < 0.05 ? 'Maximum ' + Math.abs(n) + '. Ordnung' : Math.abs(Math.abs(r) % 1 - 0.5) < 0.05 ? 'Minimum' : 'dazwischen';
+      let extra = '';
+      if (mode === 'U') { const d1 = (x) => Math.hypot(x + 12.5, 71), d2 = (x) => Math.hypot(x - 12.5, 71); const l1 = d1(27) - d2(27), l2 = (d1(69) - d2(69)) / 2; extra = '<br><b>Abitur 2022 I, 1.2:</b> \\(x = 27\\,\\mathrm{mm}\\): \\(d_1 - d_2 = ' + deT(d1(27), 2) + ' - ' + deT(d2(27), 2) + ' = ' + deT(l1, 2) + '\\,\\mathrm{mm} = \\lambda\\); \\(x = 69\\,\\mathrm{mm}\\): \\(' + deT(d1(69) - d2(69), 2) + '\\,\\mathrm{mm} = 2\\lambda\\) ⇒ \\(\\lambda \\approx ' + deT((l1 + l2) / 2, 1) + '\\,\\mathrm{mm}\\) ⇒ \\(f_S = c/\\lambda = 340/' + deT((l1 + l2) / 2 * 1e-3, 4) + '\\,\\mathrm{Hz} \\approx \\htmlClass{hl}{' + deT(340 / ((l1 + l2) / 2 * 1e-3) / 1e3, 1) + '\\,\\mathrm{kHz}}\\) (EWH: 39,0 kHz). Näherung \\(g\\sin(\\arctan(x/e))\\) ergäbe bei 27 mm \\(' + deT(25 * sinatan(27, 71), 2) + '\\,\\mathrm{mm}\\): 2 % daneben, bei 69 mm \\(' + deT(25 * sinatan(69, 71), 2) + '\\,\\mathrm{mm}\\) statt \\(2\\lambda = 17{,}4\\): unbrauchbar.'; }
+      texHTML($('dsOut'), p.name + '<br>Messpunkt \\(x = ' + deT(xs * p.uf, 1) + '\\,\\mathrm{' + p.unit + '}\\): Gangunterschied \\(\\Delta l = ' + (mode === 'L' ? deT(D * 1e6, 3) + '\\,\\mathrm{\\mu m}' : deT(D * 1e3, 2) + '\\,\\mathrm{mm}') + ' = ' + deT(r, 2) + '\\,\\lambda\\) ⇒ <b>' + kind + '</b>, \\(I/I_{\\mathrm{max}} = ' + deT(I(xs), 2) + '\\)<br>Streifenabstand (kleine Winkel) \\(\\lambda e/d = ' + (mode === 'L' ? deT(p.lam * p.e / p.d * 1e3, 2) + '\\,\\mathrm{mm}' : deT(p.lam * p.e / p.d * 1e3, 1) + '\\,\\mathrm{mm}') + '\\)' + (bf > 0 ? '; Einhüllende durch Spaltbreite \\(b = ' + deT(bf, 2) + '\\,d\\): erstes Einzelspalt-Minimum bei \\(\\sin\\alpha = \\lambda/b\\).' : '.') + extra);
+    }
+    $('dsLicht').addEventListener('click', () => { mode = 'L'; $('dsLicht').classList.add('active'); $('dsUS').classList.remove('active'); $('dsX').value = 11 / 20 * 100; draw(); });
+    $('dsUS').addEventListener('click', () => { mode = 'U'; $('dsUS').classList.add('active'); $('dsLicht').classList.remove('active'); $('dsX').value = 27; draw(); });
+    ['dsB', 'dsX'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); $('dsX').value = 55; draw();
+  })();
+
+  /* ---------- 5 Gitter / Mehrfachspalt ---------- */
+  (function gitter() {
+    const cv = $('gtCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function Irel(N, phiDeg) { const ph = phiDeg * Math.PI / 180; const s = Math.sin(ph / 2); if (Math.abs(s) < 1e-9) return 1; return Math.pow(Math.sin(N * ph / 2) / (N * s), 2); }
+    function draw() {
+      const N = parseInt($('gtN').value), phi = parseFloat($('gtPhi').value); texHTML($('gtNv'), '\\(' + N + '\\)'); texHTML($('gtPhiv'), '\\(' + phi + '^\\circ\\)');
+      ctx.clearRect(0, 0, W, H);
+      const pl = 40, pr = 12, gy = 14, gh = 130, X = (p) => pl + p / 720 * (W - pl - pr), Y = (v) => gy + gh - v * gh;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pl, Y(0)); ctx.lineTo(W - pr, Y(0)); ctx.moveTo(pl, gy); ctx.lineTo(pl, Y(0)); ctx.stroke();
+      [0, 360, 720].forEach((p) => { ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(X(p), gy); ctx.lineTo(X(p), Y(0)); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(p + '°', X(p), Y(0) + 12); });
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 720; i++) { const px = X(i), py = Y(Irel(N, i)); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      dot(ctx, X(phi), Y(Irel(N, phi)), css('--pos'), 5); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('I / I_Haupt über der Nachbarphase Δφ', pl + 4, gy + 10);
+      // Zeigerpolygon unten links
+      const cx = 120, cy = 232, L = 70 / N * 2.2; let x = cx - 40, y = cy + 30; const pts = [[x, y]]; for (let k = 0; k < N; k++) { const an = -k * phi * Math.PI / 180; x += L * Math.cos(an); y += L * Math.sin(an); pts.push([x, y]); }
+      poly(ctx, pts, css('--kin'), 2.5); pts.slice(1).forEach((p, i) => arrowAt(ctx, p[0], p[1], Math.cos(-i * phi * Math.PI / 180), Math.sin(-i * phi * Math.PI / 180), css('--kin')));
+      arrowLine(ctx, pts[0][0], pts[0][1], pts[N][0], pts[N][1], css('--pos'), 3);
+      ctx.fillStyle = css('--muted'); ctx.textAlign = 'center'; ctx.fillText(N + ' Zeiger, je ' + phi + '° gedreht; rot: Summe', 120, H - 6);
+      // Streifenbild unten rechts
+      const sx0 = 250, sw = W - sx0 - 12, sy = 170, sh = 110; for (let i = 0; i < sw; i++) { const p = -720 + 1440 * i / sw; const v = Irel(N, p); const g = Math.round(40 + 215 * v); ctx.fillStyle = 'rgb(' + g + ',' + Math.round(g * 0.95) + ',' + Math.round(g * 0.6) + ')'; ctx.fillRect(sx0 + i, sy, 1.5, sh); }
+      ctx.strokeStyle = css('--line'); ctx.strokeRect(sx0, sy, sw, sh); ctx.fillStyle = css('--muted'); ctx.fillText('Schirmbild (−720° … 720°)', sx0 + sw / 2, H - 6);
+      const Ic = Irel(N, phi); const minima = []; for (let k = 1; k < N; k++) minima.push(Math.round(360 * k / N));
+      const kind = Ic > 0.98 ? 'Hauptmaximum' : Ic < 0.005 ? 'Minimum (Polygon geschlossen)' : 'Nebenmaximum/Flanke';
+      texHTML($('gtOut'), '\\(N = ' + N + '\\): zwischen zwei Hauptmaxima \\(N - 1 = ' + (N - 1) + '\\) Minima bei \\(\\Delta\\varphi = ' + minima.join('^\\circ,\\ ') + '^\\circ\\) und \\(N - 2 = ' + (N - 2) + '\\) Nebenmaxima.<br>Bei \\(\\Delta\\varphi = ' + phi + '^\\circ\\): \\(I/I_{\\mathrm{Haupt}} = ' + deT(Ic, 3) + '\\) ⇒ <b>' + kind + '</b>. Hauptmaximum: alle Zeiger parallel, Amplitude \\(N\\), Intensität \\(N^2 = ' + N * N + '\\)-fach einer Einzelwelle.' + (N === 2 ? '<br>Doppelspalt: ein Minimum bei 180°, keine Nebenmaxima, breite Maxima \\(\\cos^2\\).' : N === 3 ? '<br>Dreifachspalt (Abitur 2023): Minima bei 120° und 240°, dazwischen ein Nebenmaximum mit \\(1/9\\) der Hauptintensität.' : N === 4 ? '<br>Vierfachspalt (Abitur 2021): Minimum (A) bei 180° (Paare 1–2, 3–4), Minima (B) bei 90° und 270° (Paare 1–3, 2–4).' : '<br>Mit wachsendem \\(N\\) werden die Hauptmaxima schmaler (Breite \\(\\propto 1/N\\)), die Nebenmaxima verschwinden im Vergleich: das Gitter.'));
+    }
+    ['gtN', 'gtPhi'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 6 LED-Spektrum (objektiv) ---------- */
+  (function spektrum() {
+    const cv = $('spCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const LED = { blau: [445, 518], gruen: [481, 582], rot: [606, 676], weiss: [400, 770], laser: [532, 532] };
+    function draw() {
+      const led = $('spLed').value, e = parseFloat($('spE').value), lines = parseFloat($('spG').value), g = 1e-3 / lines; texHTML($('spEv'), '\\(' + deT(e, 1) + '\\,\\mathrm{cm}\\)');
+      const [l1, l2] = LED[led]; const aOf = (nm, n) => { const s = n * nm * 1e-9 / g; return s >= 1 ? NaN : e * Math.tan(Math.asin(s)); };
+      ctx.clearRect(0, 0, W, H);
+      const cx = W / 2, sy = 60, sh = 90, scale = (W - 40) / 2 / 16; const X = (a) => cx + a * scale; // ±16 cm sichtbar
+      ctx.fillStyle = css('--soft'); ctx.fillRect(20, sy, W - 40, sh);
+      // 0. Ordnung
+      ctx.fillStyle = led === 'laser' ? wlColor(532) : (led === 'weiss' ? '#f5f5f0' : wlColor((l1 + l2) / 2)); ctx.fillRect(cx - 3, sy, 6, sh);
+      for (let n = 1; n <= 2; n++) { const steps = led === 'laser' ? 1 : 60; for (let i = 0; i <= steps; i++) { const nm = l1 + (l2 - l1) * (steps ? i / steps : 0); const a = aOf(nm, n); if (!isFinite(a)) continue; const w = led === 'laser' ? 3 : Math.max(1.2, (aOf(l2, n) - aOf(l1, n)) * scale / steps + 0.6); ctx.fillStyle = wlColor(nm); ctx.globalAlpha = n === 1 ? 1 : 0.7; ctx.fillRect(X(a), sy, w, sh); ctx.fillRect(X(-a) - w, sy, w, sh); ctx.globalAlpha = 1; } }
+      // Lineal
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(20, sy + sh + 20); ctx.lineTo(W - 20, sy + sh + 20); ctx.stroke(); for (let a = -16; a <= 16; a += 1) { const h = a % 5 === 0 ? 9 : 5; ctx.beginPath(); ctx.moveTo(X(a), sy + sh + 20); ctx.lineTo(X(a), sy + sh + 20 - h); ctx.stroke(); if (a % 5 === 0) { ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(Math.abs(a), X(a), sy + sh + 34); } }
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Schirm, Abstand a in cm (Mitte: 0. Ordnung)', 20, sy - 10); ctx.textAlign = 'right'; ctx.fillText('e = ' + de(e, 1) + ' cm, g = ' + de(g * 1e6, 2) + ' µm', W - 20, sy - 10);
+      const a1 = aOf(l1, 1), a2 = aOf(l2, 1), a1b = aOf(l1, 2), a2b = aOf(l2, 2);
+      const back = (a) => g * sinatan(a, e) * 1e9;
+      texHTML($('spOut'), '1. Ordnung: Band von \\(a_1 = ' + deT(a1, 1) + '\\,\\mathrm{cm}\\) bis \\(a_2 = ' + deT(a2, 1) + '\\,\\mathrm{cm}\\)' + (isFinite(a1b) ? '; 2. Ordnung von \\(' + deT(a1b, 1) + '\\) bis \\(' + (isFinite(a2b) ? deT(a2b, 1) : '\\infty') + '\\,\\mathrm{cm}\\)' : '; 2. Ordnung existiert nicht (\\(2\\lambda/g \\gt 1\\))') + '.<br>Rückrechnung: \\(\\lambda_1 = g\\sin(\\arctan(a_1/e)) = ' + deT(g * 1e6, 1) + '\\,\\mathrm{\\mu m}\\cdot\\sin(\\arctan\\tfrac{' + deT(a1, 1) + '}{' + deT(e, 1) + '}) = \\htmlClass{hl}{' + deT(back(a1), 0) + '\\,\\mathrm{nm}}\\), \\(\\lambda_2 = \\htmlClass{hl}{' + deT(back(a2), 0) + '\\,\\mathrm{nm}}\\)' + (led === 'laser' ? ' (eine Linie, keine Bandbreite)' : ' (Heft-Tabelle: ' + l1 + '–' + l2 + ' nm)') + '.<br>Heft-Messung blau bei \\(e = 19\\,\\mathrm{cm}\\): \\(a = 4{,}7\\) und \\(5{,}5\\,\\mathrm{cm}\\) ⇒ 480 und 556 nm; weiß 4,7 bis 7,9 cm ⇒ 480 bis 768 nm.');
+    }
+    ['spE'].forEach((id) => $(id).addEventListener('input', draw)); ['spLed', 'spG'].forEach((id) => $(id).addEventListener('change', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 7 Fehlerbetrachtung ---------- */
+  (function fehler() {
+    const cv = $('fbCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const a = parseFloat($('fbA').value), e = parseFloat($('fbE').value), lines = parseFloat($('fbG').value), n = parseInt($('fbN').value) || 1, da = parseFloat($('fbDa').value) / 10, de_ = parseFloat($('fbDe').value) / 10;
+      if (!(a > 0 && e > 0 && lines > 0)) return;
+      const g = 1e-3 / lines, lam = (x, y) => g * sinatan(x, y) / n * 1e9;
+      const l0 = lam(a, e), lmin = lam(a - da, e + de_), lmax = lam(a + da, e - de_);
+      const ra = da / a, re = de_ / e, rel = ra + re, dl2 = rel * l0;
+      ctx.clearRect(0, 0, W, H);
+      const lo = Math.min(lmin, l0 - dl2) - 5, hi = Math.max(lmax, l0 + dl2) + 5, X = (v) => 30 + (v - lo) / (hi - lo) * (W - 60);
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(30, 150); ctx.lineTo(W - 30, 150); ctx.stroke();
+      const step = niceStep((hi - lo) / 6); for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) { ctx.beginPath(); ctx.moveTo(X(v), 146); ctx.lineTo(X(v), 154); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(de(v, 0), X(v), 168); }
+      ctx.fillText('λ in nm', W / 2, 186);
+      [[lmin, lmax, 60, css('--pos'), 'Verfahren 1 (Min–Max)'], [l0 - dl2, l0 + dl2, 105, css('--accent'), 'Verfahren 2 (relative Fehler)']].forEach((b) => { ctx.strokeStyle = b[3]; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(X(b[0]), b[2]); ctx.lineTo(X(b[1]), b[2]); ctx.moveTo(X(b[0]), b[2] - 8); ctx.lineTo(X(b[0]), b[2] + 8); ctx.moveTo(X(b[1]), b[2] - 8); ctx.lineTo(X(b[1]), b[2] + 8); ctx.stroke(); dot(ctx, X(l0), b[2], b[3], 5); ctx.fillStyle = b[3]; ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText(b[4], 30, b[2] - 14); });
+      const plus = Math.round(lmax) - Math.round(l0), minus = Math.round(l0) - Math.round(lmin), sym = plus === minus;
+      texHTML($('fbOut'), '\\(\\lambda = \\frac{g}{n}\\sin(\\arctan\\frac{a}{e}) = \\htmlClass{hl}{' + deT(l0, 0) + '\\,\\mathrm{nm}}\\) mit \\(g = ' + deT(g * 1e6, 3) + '\\,\\mathrm{\\mu m}\\).<br><b>Verfahren 1:</b> \\(\\lambda_{\\mathrm{min}}(a - \\Delta a, e + \\Delta e) = ' + deT(lmin, 0) + '\\,\\mathrm{nm}\\), \\(\\lambda_{\\mathrm{max}}(a + \\Delta a, e - \\Delta e) = ' + deT(lmax, 0) + '\\,\\mathrm{nm}\\) ⇒ ' + (sym ? '\\((' + deT(l0, 0) + ' \\pm ' + deT((plus + minus) / 2, 0) + ')\\,\\mathrm{nm}\\)' : '\\(' + deT(l0, 0) + '^{+' + deT(plus, 0) + '}_{-' + deT(minus, 0) + '}\\,\\mathrm{nm}\\)') + '.<br><b>Verfahren 2:</b> \\(\\Delta a/a = ' + deT(ra * 100, 1) + '\\,\\%\\), \\(\\Delta e/e = ' + deT(re * 100, 1) + '\\,\\%\\) ⇒ \\(\\Delta\\lambda/\\lambda \\approx ' + deT(rel * 100, 1) + '\\,\\%\\) ⇒ \\(\\Delta\\lambda \\approx ' + deT(dl2, 0) + '\\,\\mathrm{nm}\\) ⇒ \\((' + deT(l0, 0) + ' \\pm ' + deT(dl2, 0) + ')\\,\\mathrm{nm}\\). Größter Beitrag: ' + (ra > re ? '\\(a\\)' : '\\(e\\)') + '.');
+    }
+    ['fbA', 'fbE', 'fbG', 'fbN', 'fbDa', 'fbDe'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 8 Einzelspalt ---------- */
+  (function einzelspalt() {
+    const cv = $('esCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const bl = parseFloat($('esB').value), alD = parseFloat($('esA').value), al = alD * Math.PI / 180; texHTML($('esBv'), '\\(' + deT(bl, 1) + '\\)'); texHTML($('esAv'), '\\(' + deT(alD, 1) + '^\\circ\\)');
+      const I = (ad) => { const u = Math.PI * bl * Math.sin(ad * Math.PI / 180); return u === 0 ? 1 : Math.pow(Math.sin(u) / u, 2); };
+      ctx.clearRect(0, 0, W, H);
+      const pl = 40, pr = 12, gy = 14, gh = 140, X = (ad) => pl + (ad + 40) / 80 * (W - pl - pr), Y = (v) => gy + gh - v * gh;
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pl, Y(0)); ctx.lineTo(W - pr, Y(0)); ctx.moveTo(X(0), gy); ctx.lineTo(X(0), Y(0)); ctx.stroke();
+      [-40, -20, 0, 20, 40].forEach((ad) => { ctx.fillStyle = css('--muted'); ctx.font = '10px system-ui'; ctx.textAlign = 'center'; ctx.fillText(ad + '°', X(ad), Y(0) + 12); });
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 600; i++) { const ad = -40 + 80 * i / 600; const px = X(ad), py = Y(I(ad)); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
+      const mins = []; for (let n = 1; n / bl < Math.sin(40 * Math.PI / 180); n++) { const ad = Math.asin(n / bl) * 180 / Math.PI; mins.push(ad); [ad, -ad].forEach((m) => dot(ctx, X(m), Y(0), css('--pos'), 4)); }
+      dot(ctx, X(alD), Y(I(alD)), css('--kin'), 6); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('I / I_0 über α; rote Punkte: Minima sin α = nλ/b', pl + 4, gy + 10);
+      // Zeigerbogen
+      const Nz = 36, tot = 2 * Math.PI * bl * Math.sin(al), dphi = tot / Nz, L = 150 / Nz; let x = 130, y = 270; const pts = [[x, y]]; for (let k = 0; k < Nz; k++) { const an = -(k + 0.5) * dphi; x += L * Math.cos(an); y += L * Math.sin(an); pts.push([x, y]); }
+      // zentrieren
+      const mx = pts.reduce((s, p) => s + p[0], 0) / pts.length, my = pts.reduce((s, p) => s + p[1], 0) / pts.length; const sh = [240 - mx, 240 - my]; const P2 = pts.map((p) => [p[0] + sh[0], p[1] + sh[1]]);
+      poly(ctx, P2, css('--kin'), 2); arrowLine(ctx, P2[0][0], P2[0][1], P2[Nz][0], P2[Nz][1], css('--pos'), 3);
+      ctx.fillStyle = css('--muted'); ctx.textAlign = 'center'; ctx.fillText('Zeigerbogen der Elementarwellen bei α = ' + de(alD, 1) + '°, Gesamtphase ' + de(tot * 180 / Math.PI, 0) + '°; rot: Resultierende', W / 2, H - 6);
+      const ratio = bl * Math.sin(al); const kind = ratio < 0.05 ? 'Hauptmaximum' : Math.abs(ratio - Math.round(ratio)) < 0.03 && Math.round(ratio) >= 1 ? 'Minimum ' + Math.round(ratio) + '. Ordnung' : Math.abs(ratio - Math.round(ratio - 0.5) - 0.5) < 0.05 ? 'Nebenmaximum (Näherung)' : 'Flanke';
+      texHTML($('esOut'), '\\(b/\\lambda = ' + deT(bl, 1) + '\\): Minima bei \\(\\sin\\alpha_n = n\\lambda/b\\) ⇒ \\(\\alpha = ' + (mins.length ? mins.map((m) => deT(m, 1)).join('^\\circ,\\ ') + '^\\circ' : '\\text{keine im Bereich}') + '\\).<br>Bei \\(\\alpha = ' + deT(alD, 1) + '^\\circ\\): \\(b\\sin\\alpha/\\lambda = ' + deT(ratio, 2) + '\\) ⇒ <b>' + kind + '</b>, \\(I/I_0 = ' + deT(I(alD), 3) + '\\). Gesamtphase über den Spalt \\(2\\pi b\\sin\\alpha/\\lambda = ' + deT(tot * 180 / Math.PI, 0) + '^\\circ\\)' + (Math.abs(ratio - 1) < 0.03 ? ' = 360°: der Bogen schließt sich zum Kreis.' : '.') + '<br>Winkelbreite Hauptmaximum \\(2\\lambda/b\\) ⇒ \\(2\\cdot' + deT(Math.asin(Math.min(1, 1 / bl)) * 180 / Math.PI, 1) + '^\\circ\\); 1. Nebenmaximum bei \\(\\sin\\alpha = 1{,}5\\lambda/b\\) mit \\(I/I_0 \\approx 0{,}045\\).');
+    }
+    ['esB', 'esA'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Michelson: Spiegel 2 wird um \\(1{,}0\\,\\mathrm{\\mu m}\\) verschoben, \\(\\lambda = 500\\,\\mathrm{nm}\\). Wie viele Maxima laufen durch?', o: ['2', '4', '8'], a: 1, e: 'Ein Maximum pro \\(\\lambda/2 = 250\\,\\mathrm{nm}\\) Verschiebung: \\(1000/250 = 4\\). Gangunterschied \\(2\\,\\mathrm{\\mu m} = 4\\lambda\\).' },
+      { q: 'Doppelspalt: Wo liegen die Maxima?', o: ['\\(d\\sin\\alpha = n\\lambda\\)', '\\(d\\sin\\alpha = (n+\\tfrac12)\\lambda\\)', '\\(b\\sin\\alpha = n\\lambda\\)'], a: 0, e: 'Gangunterschied ganzzahlige Vielfache von \\(\\lambda\\). \\((n+\\tfrac12)\\lambda\\): Minima. \\(b\\sin\\alpha = n\\lambda\\): Minima des Einzelspalts.' },
+      { q: 'Die Näherung \\(n\\lambda = d\\sin(\\arctan(a/e))\\) gilt, wenn ...', o: ['die Wellenlänge klein ist', '\\(e \\gg d\\) (Strahlen praktisch parallel)', '\\(a \\gg e\\)'], a: 1, e: 'Nur dann laufen beide Wege unter demselben Winkel und der Gangunterschied ist \\(d\\sin\\alpha\\). Ultraschall 2022: \\(e/d = 2{,}8\\), exakt rechnen.' },
+      { q: 'Gitter statt Doppelspalt mit gleichem Spaltabstand. Die Hauptmaxima ...', o: ['liegen an denselben Orten, werden schmaler und heller', 'rücken nach außen', 'rücken nach innen'], a: 0, e: 'Die Bedingung \\(\\Delta l = n\\lambda\\) zwischen Nachbarspalten ist dieselbe. Mehr Spalte ⇒ Breite \\(\\propto 1/N\\), Intensität \\(\\propto N^2\\).' },
+      { q: 'Vierfachspalt: Wie viele Minima liegen zwischen zwei Hauptmaxima?', o: ['1', '2', '3'], a: 2, e: '\\(N - 1 = 3\\) Minima (bei 90°, 180°, 270° Nachbarphase) und \\(N - 2 = 2\\) Nebenmaxima.' },
+      { q: 'Einzelspalt: Bei \\(b\\sin\\alpha = \\lambda\\) liegt ...', o: ['das 1. Maximum', 'das 1. Minimum', 'das Hauptmaximum'], a: 1, e: 'Partnerwellen im Abstand \\(b/2\\) haben Gangunterschied \\(\\lambda/2\\): Auslöschung. Beim Doppelspalt wäre \\(d\\sin\\alpha = \\lambda\\) ein Maximum.' },
+      { q: 'Weiße LED am Gitter: Das Maximum 1. Ordnung ist ...', o: ['eine scharfe weiße Linie', 'ein breites Farbband', 'nicht vorhanden'], a: 1, e: 'Alle Spektralfarben kommen vor; der Ort \\(a_1\\) hängt von \\(\\lambda\\) ab ⇒ breitestes Band (Abitur 2022 gA, 1.3).' },
+      { q: 'Fehlerbetrachtung: \\(\\lambda_{\\mathrm{max}}\\) berechnet man aus ...', o: ['\\(a + \\Delta a\\) und \\(e + \\Delta e\\)', '\\(a + \\Delta a\\) und \\(e - \\Delta e\\)', '\\(a - \\Delta a\\) und \\(e - \\Delta e\\)'], a: 1, e: '\\(\\lambda\\) wächst mit \\(a\\) und fällt mit \\(e\\): großes \\(a\\), kleines \\(e\\) ⇒ Maximum. Heft-Tabelle: \\(580^{+18}_{-17}\\,\\mathrm{nm}\\).' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      texHTML(dv, '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>');
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); texHTML(b, txt);
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; texHTML(fb, '<span class="right">Richtig.</span> ' + item.e); } else { texHTML(fb, '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a] + '". ' + item.e); }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+
+  /* ---------- Fortschritt ---------- */
+  (function progress() {
+    const key = 'physik-l8-progress'; let st = {};
+    try { st = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { st = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => { cb.checked = !!st[cb.dataset.k]; cb.addEventListener('change', () => { st[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) { } }); });
+  })();
+})();
+</script>
+</body>
+</html>

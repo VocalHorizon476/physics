@@ -1,0 +1,1260 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lektion 9 – Quanten I</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
+    --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+      --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
+    --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 16px; }
+  nav.top { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px 16px; display: flex; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+  nav.top a { color: var(--accent); text-decoration: none; padding: 2px 6px; border-radius: 6px; }
+  nav.top a:hover { background: var(--soft); }
+  header.hero { padding: 24px 0 8px; }
+  header.hero h1 { margin: 0 0 4px; font-size: 30px; }
+  header.hero p.sub { margin: 0; color: var(--muted); }
+  section.card { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 18px 0; overflow-x: auto; }
+  section.card h2 { margin: 0 0 10px; font-size: 22px; }
+  h3 { margin: 20px 0 6px; font-size: 17px; }
+  h4 { margin: 14px 0 4px; font-size: 15px; }
+  p { margin: 8px 0; }
+  ul, ol { margin: 6px 0 6px 0; padding-left: 22px; }
+  li { margin: 4px 0; }
+  .f { white-space: normal; }
+  .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; overflow-x: auto; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
+  .controls label { display: flex; align-items: center; gap: 8px; }
+  input[type=range] { width: 150px; }
+  select { font: inherit; font-size: 14px; padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--soft); color: var(--fg); }
+  button { background: var(--soft); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  button.active, button:hover { border-color: var(--accent); color: var(--accent); }
+  canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .out { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--soft); border-radius: 8px; padding: 8px 10px; margin: 8px 0; line-height: 1.5; overflow-x: auto; }
+  .out b { color: var(--accent); }
+  .note { border-left: 4px solid var(--accent); background: var(--soft); padding: 8px 12px; border-radius: 6px; margin: 10px 0; }
+  .warn { border-left-color: var(--warn); }
+  .ok { border-left-color: var(--ok); }
+  .exam { border-left-color: var(--pos); }
+  table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+  th { background: var(--soft); }
+  details { margin: 8px 0; border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; }
+  summary { cursor: pointer; font-weight: 600; }
+  .pos { color: var(--pos); font-weight: 700; } .neg { color: var(--neg); font-weight: 700; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  .acard { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--soft); }
+  .acard h4 { margin: 0 0 6px; font-size: 15px; }
+  .acard .l { color: var(--muted); font-size: 13px; }
+  .quiz .q { margin: 10px 0; padding: 10px; border: 1px solid var(--line); border-radius: 10px; }
+  .quiz .opts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .quiz .fb { margin-top: 6px; font-size: 14px; min-height: 1.2em; }
+  .right { color: var(--ok); } .wrong { color: var(--pos); }
+  .check label { display: flex; gap: 8px; align-items: flex-start; margin: 4px 0; }
+  footer { color: var(--muted); font-size: 13px; padding: 20px 0; }
+  .small { font-size: 13px; color: var(--muted); }
+  .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
+  .ex .t { font-weight: 600; }
+  /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
+  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .out { max-width: 100%; }
+  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+</style>
+  <link rel="stylesheet" href="katex/katex.min.css">
+  <script defer src="katex/katex.min.js"></script>
+  <script>
+    window.KATEX_OPTS = { delimiters: [{ left: "\\[", right: "\\]", display: true }, { left: "\\(", right: "\\)", display: false }], throwOnError: false, strict: false, trust: true, ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"] };
+    // Setzt HTML mit \( … \) in ein Element und rendert die Formeln sofort (für Widget-Ausgaben nach dem Laden).
+    window.texHTML = function (el, html) { el.innerHTML = html; if (window.renderMathInElement) renderMathInElement(el, window.KATEX_OPTS); };
+    window.markWide = function () { document.querySelectorAll('.f').forEach(function (f) { f.classList.remove('wide'); var p = f.parentElement; if (p && p.clientWidth > 0 && f.getBoundingClientRect().width > p.clientWidth - 2) f.classList.add('wide'); }); };
+    window.addEventListener('resize', function () { clearTimeout(window.__mwT); window.__mwT = setTimeout(function () { if (window.markWide) markWide(); }, 150); });
+  </script>
+  <script defer src="katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, window.KATEX_OPTS); if (window.markWide) markWide();"></script>
+  <style>.katex { font-size: 1.06em; } .formula .katex-display { margin: 0; } .formula .katex { font-size: 1.2em; } .out .katex { font-size: 1em; } .out .hl { color: var(--accent, #1d4ed8); font-weight: 700; }</style>
+</head>
+<body>
+<nav class="top">
+  <a href="#s1">1 Hallwachs</a><a href="#s2">2 Photonenmodell</a><a href="#s3">3 Photon & eV</a><a href="#s4">4 Gegenfeld</a><a href="#s5">5 f-E-Diagramm</a><a href="#s6">6 Material</a><a href="#s7">7 LED</a><a href="#s8">8 Kennlinie</a><a href="#s9">9 h aus LEDs</a><a href="#s10">10 Röntgen</a><a href="#s11">11 Abitur</a><a href="#s12">12 Analogie</a><a href="#s13">13 Aufgaben</a><a href="#s14">14 Nicht in FS</a><a href="#s15">15 Quiz</a><a href="#s16">16 Merksätze</a>
+</nav>
+<main>
+<header class="hero">
+  <h1>Lektion 9 · Quanten I: Licht gibt Energie in Paketen ab</h1>
+  <p class="sub">Hallwachs-Versuch → warum das Wellenmodell versagt → Photon und Elektronenvolt → Gegenfeldmethode → <span class="f">\(f\)</span>-<span class="f">\(E\)</span>-Diagramm mit <span class="f">\(h\)</span> und Austrittsarbeit → Materialvergleich → LED im Bändermodell → Schwellspannung aus der Kennlinie → <span class="f">\(h\)</span> aus LEDs → Röntgenröhre als dritter Weg. Grundlage: Typst-Heft Quantenmechanik (Lichtelektrischer Effekt, Gegenfeldmethode, Plancksches Wirkungsquantum mit Leuchtdioden, Elektronenvolt) und <b>alle</b> passenden Abituraufgaben aus 2016 bis 2025: 2018 II (1 und 2), 2021 IIa (3), 2021 gA IIa (3), 2024 I (3), 2017 II (3), 2019 II (3), jeweils mit Erwartungshorizont.</p>
+</header>
+
+<section class="card">
+  <h2>Lernziele</h2>
+  <ul>
+    <li>Hallwachs-Versuch: Aufbau, alle vier Fälle, warum nur „negativ + UV" die Platte entlädt, und warum bei positiver Ladung trotzdem Elektronen austreten.</li>
+    <li>Die vier Befunde nennen, die dem Wellenmodell widersprechen, und jeden mit dem Photonenmodell erklären.</li>
+    <li><span class="f">\(E = h f = hc/\lambda\)</span> sicher rechnen und zwischen Joule und Elektronenvolt umrechnen. Intensität im Wellenmodell und im Photonenmodell unterscheiden.</li>
+    <li>Gegenfeldmethode: Skizze, Durchführung, Energiebilanz <span class="f">\(e U_0 = E_{\mathrm{kin,max}}\)</span>, daraus <span class="f">\(v_{\mathrm{max}}\)</span> (Abitur 2018 und 2024).</li>
+    <li><span class="f">\(f\)</span>-<span class="f">\(E_{\mathrm{kin}}\)</span>-Diagramm zeichnen, in den fünf Schritten dokumentieren und deuten: Steigung <span class="f">\(h\)</span>, Hochachsenabschnitt <span class="f">\(-E_A\)</span>, Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span>.</li>
+    <li>Materialwechsel: parallele Geraden, Ringanode (2018), kleinere <span class="f">\(v_{\mathrm{max}}\)</span> (2024), Sonnenbrand-Hypothese (2024).</li>
+    <li>LED: Bändermodell aus dem Heft, Schaltung, Herleitung <span class="f">\(U_s = -B/A\)</span>, <span class="f">\(h\)</span> aus der Regression, Erwärmungs-Argument und Ausreißer „grün" (Abitur 2021).</li>
+    <li>Röntgenröhre: <span class="f">\(e U_B = h f_{\mathrm{max}}\)</span> und kurzwellige Grenze (Abitur 2017 und 2019, nicht im Heft).</li>
+  </ul>
+  <div class="note warn"><b>Ein Satz, der die ganze Lektion trägt:</b> Ein Photon gibt seine Energie <span class="f">\(h f\)</span> immer als Ganzes an <b>ein einziges</b> Elektron ab, oder ein einzelnes Elektron erzeugt <b>ein einziges</b> Photon. Alles Weitere ist Energiebilanz für diesen einen Vorgang: Fotoeffekt <span class="f">\(h f = E_A + E_{\mathrm{kin,max}}\)</span>, LED <span class="f">\(e U_s \approx h f\)</span>, Röntgenröhre <span class="f">\(e U_B = h f_{\mathrm{max}}\)</span>.</div>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Alle Simulationen rechnen mit den echten Heft- und Abiturwerten. Wo im Heft ein Schreibfehler steht, ist er markiert.</p>
+</section>
+
+<!-- 1 -->
+<section class="card" id="s1">
+  <h2>1 · Der Hallwachs-Versuch: Licht entlädt eine Zinkplatte (Heft)</h2>
+  <p><b>Aufbau (Heft-Bild):</b> Eine Zinkplatte sitzt auf einem Elektroskop. Das Elektroskop zeigt an, ob die Platte geladen ist: Zeiger ausgeschlagen heißt geladen, Zeiger fällt zurück heißt die Ladung fließt ab. Die Platte wird einmal positiv und einmal negativ aufgeladen und dann mit zwei Lampen beleuchtet: einer Kohlebogenlampe (sichtbares Licht) und einer UV-Lampe.</p>
+  <table>
+    <tr><th>Ladung der Platte</th><th>Kohlebogen (sichtbar)</th><th>UV</th></tr>
+    <tr><td><b>positiv</b></td><td>Ladung bleibt auf der Platte</td><td>Ladung bleibt auf der Platte</td></tr>
+    <tr><td><b>negativ</b></td><td>Ladung bleibt auf der Platte</td><td><b>Ladung fließt ab</b></td></tr>
+  </table>
+  <h3>Die Deutung in vier Schritten</h3>
+  <ol>
+    <li><b>Nur einer von vier Fällen ändert etwas:</b> negativ geladen und UV. Also muss man zwei Fragen beantworten: Warum nur negativ? Warum nur UV?</li>
+    <li><b>Warum nur negativ:</b> Eine negativ geladene Platte hat Elektronen zu viel. UV-Licht schlägt Elektronen aus dem Metall. Die negative Platte stößt diese Elektronen ab, sie fliegen davon, die Ladung nimmt ab, der Zeiger fällt.</li>
+    <li><b>Warum bei positiver Ladung nichts passiert:</b> Auch hier schlägt das UV-Licht Elektronen heraus! Aber die positive Platte zieht sie sofort wieder zurück. Netto ändert sich die Ladung nicht. „Ladung bleibt" heißt also nicht „es passiert nichts".</li>
+    <li><b>Warum nur UV:</b> Man kann den Kohlebogen beliebig hell machen oder näher heranrücken, die Platte entlädt sich trotzdem nicht. Nicht die Lichtmenge entscheidet, sondern die Art des Lichts. Heft: „Die Intensität des Lichts spielt keine Rolle, die Wellenlänge schon."</li>
+  </ol>
+  <p><b>Interpretation im Heft:</b> Licht überträgt seine Energie in Form kleinster Energiepakete auf die Elektronen in der Platte. Die Energie dieser Pakete hängt nur von der Wellenlänge ab. <b>Definition:</b> Die kleinsten Lichtenergiepakete heißen <b>Photonen</b>.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="hwNeg" class="active">Platte negativ</button><button id="hwPos">Platte positiv</button>
+        <button id="hwUV" class="active">UV-Lampe</button><button id="hwKohle">Kohlebogen</button>
+        <label>Helligkeit <input type="range" id="hwI" min="1" max="10" value="4" step="1"> <span id="hwIv"></span></label>
+        <button id="hwReset">Neu aufladen</button>
+      </div>
+      <canvas id="hwCanvas" width="480" height="300"></canvas>
+      <p class="small">Stelle alle vier Fälle ein. Regle beim Kohlebogen die Helligkeit ganz hoch: Es passiert trotzdem nichts. Beim UV-Licht auf der positiven Platte achte auf die Elektronen, die herauskommen und umkehren.</p>
+    </div>
+    <div>
+      <div class="out" id="hwOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> Der Heft-Satz „Die Intensität spielt keine Rolle" gilt nur für die Frage, <b>ob</b> überhaupt Elektronen austreten. Sobald UV-Licht auftrifft, bestimmt die Intensität sehr wohl, <b>wie viele</b> Elektronen austreten: Helleres UV entlädt die Platte schneller. Probier es im Regler aus.</div>
+      <div class="note"><b>Zum Kohlebogen:</b> Im Heft steht er für sichtbares Licht. Manche Bücher zeigen den Versuch mit einer Glasplatte im Strahl: Glas hält UV auf, die Entladung stoppt sofort. Der Schluss ist derselbe. Zink braucht etwa <span class="f">\(4{,}3\,\mathrm{eV}\)</span> pro Elektron, das schafft nur Licht unter rund <span class="f">\(290\,\mathrm{nm}\)</span> (Abschnitt 6).</div>
+      <div class="note exam"><b>Klausur:</b> Der Hallwachs-Versuch kommt im Abitur 2016 bis 2025 nicht vor, steht aber als erster Versuch im Heft. Für die Vorabi gilt die Mappe. Erwartbar sind die Tabelle, die Deutung des Falls „positiv + UV" und der Schluss auf Photonen.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="card" id="s2">
+  <h2>2 · Warum das Wellenmodell hier versagt und das Photonenmodell nicht</h2>
+  <p>Aus den Lektionen 7 und 8 weißt du: Licht interferiert, ist also eine Welle. Im Wellenmodell trägt die Welle ihre Energie gleichmäßig verteilt, und die Energie steckt in der Amplitude. Was müsste dann beim Auslösen von Elektronen passieren? Vier Vorhersagen, und alle vier sind falsch:</p>
+  <table>
+    <tr><th>Frage</th><th>Wellenmodell sagt voraus</th><th>Experiment zeigt</th><th>Photonenmodell erklärt</th></tr>
+    <tr><td><b>Helleres Licht, gleiche Farbe</b></td><td>Größere Amplitude, also schnellere Elektronen</td><td><span class="f">\(E_{\mathrm{kin,max}}\)</span> bleibt gleich, nur der Strom steigt</td><td>Mehr Photonen, also mehr Elektronen. Jedes einzelne Photon hat dieselbe Energie <span class="f">\(h f\)</span>.</td></tr>
+    <tr><td><b>Lange Wellenlänge, sehr hell</b></td><td>Jede Farbe funktioniert, wenn sie nur hell genug ist</td><td>Unter der Grenzfrequenz <span class="f">\(f_{\mathrm{Gr}}\)</span> kommt kein einziges Elektron heraus</td><td><span class="f">\(h f \lt E_A\)</span>: Ein Paket reicht nicht, und ein Elektron kann nicht zwei Pakete zusammensparen.</td></tr>
+    <tr><td><b>Sehr schwaches Licht</b></td><td>Das Elektron muss die Energie lange sammeln, also deutliche Verzögerung</td><td>Der Strom setzt praktisch sofort ein</td><td>Sobald das erste Photon trifft, ist die ganze Energie auf einmal da.</td></tr>
+    <tr><td><b>Höhere Frequenz, gleiche Helligkeit</b></td><td>Kein Grund für eine Änderung der Elektronenenergie</td><td><span class="f">\(E_{\mathrm{kin,max}}\)</span> steigt linear mit <span class="f">\(f\)</span></td><td><span class="f">\(E_{\mathrm{kin,max}} = h f - E_A\)</span>: Jedes Photon bringt mehr mit.</td></tr>
+  </table>
+  <h3>Die Natur des Lichts ist doppeldeutig (Heft)</h3>
+  <p>Heißt das, das Wellenmodell ist falsch? Nein. Interferenz am Doppelspalt und am Gitter lässt sich mit Photonen als kleinen Kügelchen nicht erklären. Der Fotoeffekt lässt sich mit einer klassischen Welle nicht erklären. Man braucht beide Beschreibungen, je nach Experiment. Das Heft stellt die zwei Sichtweisen auf dieselbe Größe gegenüber:</p>
+  <table>
+    <tr><th></th><th>Wellenmodell</th><th>Photonenmodell</th></tr>
+    <tr><td><b>Lichtintensität</b></td><td>Amplitudenquadrat des <span class="f">\(E\)</span>- oder <span class="f">\(B\)</span>-Feldes: <span class="f">\(I \propto E_0^2\)</span></td><td>Anzahl der Photonen pro Fläche und Zeit</td></tr>
+    <tr><td><b>Farbe</b></td><td>Wellenlänge <span class="f">\(\lambda\)</span> bzw. Frequenz <span class="f">\(f\)</span></td><td>Energie des einzelnen Photons <span class="f">\(E = h f\)</span></td></tr>
+  </table>
+  <p class="small">Die Heft-Fußnote „Die Wellenlängenabhängigkeit ergibt sich hier über die Mittelung über eine Periode der Welle" bezieht sich auf die Rechnung im Wellenmodell. Sie führt zu keiner Formel, die du für die Klausur brauchst. Wenn du sie genauer wissen willst, frag im Unterricht nach, im Heft steht dazu nicht mehr.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(\lambda\)</span> <input type="range" id="peL" min="200" max="800" value="436" step="2"> <span id="peLv"></span></label>
+        <label>Intensität <input type="range" id="peN" min="1" max="10" value="4" step="1"> <span id="peNv"></span></label>
+        <label>Metall <select id="peM"><option value="1.94">Cäsium (1,94 eV)</option><option value="2.25">Kalium (2,25 eV)</option><option value="2.52">Barium (2,52 eV)</option><option value="3.70">Magnesium (3,70 eV)</option><option value="4.34">Zink (4,34 eV)</option><option value="4.40">Kupfer (4,40 eV)</option><option value="5.36">Platin (5,36 eV)</option></select></label>
+      </div>
+      <canvas id="peCanvas" width="480" height="300"></canvas>
+      <p class="small">Links fliegen Photonen auf das Metall. Rechts die Energiebilanz eines einzelnen Photons. Probier: rotes Licht (650 nm) auf Cäsium, dann Intensität ganz hoch. Dann den Regler über die Grenze schieben. Elektronen sind vereinfacht 1:1 gezeichnet, in Wirklichkeit löst nur ein kleiner Teil der Photonen ein Elektron aus.</p>
+    </div>
+    <div>
+      <div class="out" id="peOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> <span class="f">\(E_{\mathrm{kin,max}}\)</span> ist die <b>größte</b> kinetische Energie. Elektronen aus tieferen Schichten verlieren auf dem Weg zur Oberfläche Energie und kommen langsamer an. Nur Elektronen direkt an der Oberfläche, die nichts unterwegs verlieren, erreichen <span class="f">\(h f - E_A\)</span>. Deshalb steht in der Formel „max".</div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2018 II, 2.1):</b> „Erklären Sie in diesem Zusammenhang die Energiebilanz beim Fotoeffekt" (3 BE). Erwartet (EWH): Energieerhaltung, Energie der Photonen, Aufteilung der Energie des Elektrons. Als Satz: Das Photon gibt seine ganze Energie <span class="f">\(h f\)</span> an ein Elektron ab. Davon wird <span class="f">\(E_A\)</span> gebraucht, um das Elektron aus dem Metall zu lösen, der Rest ist kinetische Energie.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="card" id="s3">
+  <h2>3 · Das Photon und das Elektronenvolt</h2>
+  <div class="formula">\[E = h\cdot f = \frac{h\cdot c}{\lambda}\qquad h = 6{,}626\cdot 10^{-34}\,\mathrm{Js}\]</div>
+  <p><span class="f">\(h\)</span> heißt Plancksches Wirkungsquantum oder plancksche Konstante. Die Einheit <span class="f">\(\mathrm{Js}\)</span> heißt „Einheit einer Wirkung" (Heft). In der Formelsammlung stehen <span class="f">\(E = h f\)</span> auf S. 36 und der Wert von <span class="f">\(h\)</span> auf S. 51. Die Umformung mit <span class="f">\(c = \lambda f\)</span> musst du selbst machen.</p>
+  <div class="note warn"><b>Heft-Präzisierung:</b> Das Heft sagt, die Energie hänge „nur von der Wellenlänge" ab. Genauer: von der <b>Frequenz</b>. Beim Übergang in ein Medium ändert sich <span class="f">\(\lambda\)</span>, aber <span class="f">\(f\)</span> bleibt gleich (Lektion 8, CD). Im Vakuum und in Luft ist es dasselbe, weil <span class="f">\(c\)</span> fest ist. Außerdem steht im Heft an einer Stelle <span class="f">\(f = e/\lambda\)</span>: Das ist ein Schreibfehler, gemeint ist <span class="f">\(f = c/\lambda\)</span>.</div>
+  <h3>Das Elektronenvolt (Heft-Bild: Plattenpaar mit Elektron)</h3>
+  <p>Die Energien eines Photons sind in Joule unhandlich klein. Deshalb gibt es eine passende Einheit. Sie kommt aus <span class="f">\(W = q\cdot U\)</span> (Lektion 2): Bringt man ein Elektron im Feld eines Plattenpaars von der positiven auf die negative Platte, muss man die Arbeit <span class="f">\(W = e\cdot U\)</span> verrichten. Fliegt es frei zurück, gewinnt es genau diese Energie als kinetische Energie. Für <span class="f">\(U = 1\,\mathrm{V}\)</span> ergibt das:</p>
+  <div class="formula">\[W = 1{,}602\cdot 10^{-19}\,\mathrm{C}\cdot 1\,\mathrm{V} = 1{,}602\cdot 10^{-19}\,\mathrm{J} = 1\,\mathrm{eV}\]</div>
+  <ul>
+    <li><b>eV nach Joule:</b> mal <span class="f">\(1{,}602\cdot 10^{-19}\)</span>. <b>Joule nach eV:</b> durch <span class="f">\(1{,}602\cdot 10^{-19}\)</span>. Beispiel: <span class="f">\(1{,}43\cdot 10^{-19}\,\mathrm{J} = 0{,}89\,\mathrm{eV}\)</span>.</li>
+    <li><b>Der Zahlenwert ist die Spannung:</b> Wird ein Elektron mit <span class="f">\(U = 0{,}89\,\mathrm{V}\)</span> gebremst, hatte es <span class="f">\(0{,}89\,\mathrm{eV}\)</span>. Das spart die Umrechnung, und in der Tabelle der LED-Aufgabe ist <span class="f">\(E\)</span> in eV einfach gleich <span class="f">\(U_c\)</span> in Volt.</li>
+    <li><b>Kontrolle im Kopf (nicht in der FS):</b> <span class="f">\(h c \approx 1240\,\mathrm{eV\,nm}\)</span>, also <span class="f">\(E\,[\mathrm{eV}] \approx 1240/\lambda\,[\mathrm{nm}]\)</span>. Beispiel: <span class="f">\(1240/480 = 2{,}58\,\mathrm{eV}\)</span> (genau der Wert aus dem Erwartungshorizont 2018).</li>
+    <li>Im <b>Taschenrechner</b> wird <span class="f">\(h\)</span> auch als <span class="f">\(4{,}136\cdot 10^{-15}\,\mathrm{eVs}\)</span> gerechnet. Das ist derselbe Wert: <span class="f">\(6{,}626\cdot 10^{-34}/1{,}602\cdot 10^{-19}\)</span>.</li>
+  </ul>
+  <table>
+    <tr><th>Licht</th><th>rot</th><th>grün</th><th>blau</th><th>violett</th><th>UVB</th><th>UVC</th></tr>
+    <tr><td><span class="f">\(\lambda\)</span> in nm</td><td>700</td><td>530</td><td>450</td><td>400</td><td>300</td><td>254</td></tr>
+    <tr><td><span class="f">\(E\)</span> in eV</td><td>1,77</td><td>2,34</td><td>2,76</td><td>3,10</td><td>4,13</td><td>4,88</td></tr>
+  </table>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(\lambda\)</span> <input type="range" id="phL" min="200" max="1100" value="532" step="1"> <span id="phLv"></span></label>
+        <label>Leistung <input type="range" id="phP" min="0.5" max="10" value="5" step="0.5"> <span id="phPv"></span></label>
+      </div>
+      <canvas id="phCanvas" width="480" height="230"></canvas>
+      <p class="small">Oben das Spektrum mit der eingestellten Wellenlänge. Unten die Photonen bei gleicher Lichtleistung: Jedes Kästchen ist ein Photon, seine Höhe ist seine Energie. Die Gesamtfläche bleibt gleich. Rot heißt viele kleine Pakete, UV wenige große.</p>
+    </div>
+    <div>
+      <div class="out" id="phOut"></div>
+      <div class="note"><b>Der Impuls des Photons</b> steht in der FS (S. 36): <span class="f">\(p = E/c\)</span>. Mit <span class="f">\(E = hc/\lambda\)</span> folgt <span class="f">\(p = h/\lambda\)</span>, also genau die de-Broglie-Beziehung, die in Lektion 10 auch für Elektronen gilt. In den Fotoeffekt-Aufgaben wird der Impuls nicht gebraucht.</div>
+      <div class="note exam"><b>Klausur-Routine:</b> <span class="f">\(\lambda\)</span> in Meter einsetzen! <span class="f">\(480\,\mathrm{nm} = 480\cdot 10^{-9}\,\mathrm{m}\)</span>. Ergebnis zuerst in J, dann in eV. Rechne mit der Kontrollformel nach, das kostet zehn Sekunden.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="card" id="s4">
+  <h2>4 · Die Gegenfeldmethode: die Energie der Elektronen messen (Heft, Abitur 2018 und 2024)</h2>
+  <p><b>Ziel:</b> Wir wollen wissen, mit welcher Energie die schnellsten Elektronen aus dem Metall kommen. Direkt messen kann man das nicht. Also bremst man die Elektronen mit einem elektrischen Feld ab und liest an der Spannung ab, wann selbst die schnellsten nicht mehr durchkommen.</p>
+  <h3>Aufbau (Heft-Bild „Bestimmung der Photonenenergie mit der Gegenfeldmethode")</h3>
+  <table>
+    <tr><th>Bauteil</th><th>Wozu</th></tr>
+    <tr><td><b>Quecksilberdampflampe</b> mit <b>Farbfilter</b></td><td>Die Lampe sendet nur wenige scharfe Linien aus. Der Filter lässt genau eine durch. So ist die Frequenz <span class="f">\(f\)</span> des Lichts bekannt.</td></tr>
+    <tr><td><b>Metallfläche mit Cäsium</b>, auf <span class="f">\(0\,\mathrm{V}\)</span></td><td>Hier löst das Licht die Elektronen aus. Cäsium hat eine kleine Austrittsarbeit, deshalb reicht schon sichtbares Licht.</td></tr>
+    <tr><td><b>Drahtring</b> vor der Metallfläche, auf <span class="f">\(U \lt 0\,\mathrm{V}\)</span></td><td>Der Ring lässt das Licht in der Mitte durch und fängt die Elektronen auf. Weil er negativ ist, bremst er sie.</td></tr>
+    <tr><td><b>Amperemeter</b> (sehr empfindlich)</td><td>Zeigt, ob noch Elektronen am Ring ankommen. Das sind nur sehr kleine Ströme.</td></tr>
+    <tr><td><b>Vakuum</b> (Vakuum-Fotozelle)</td><td>Elektronen dürfen unterwegs nicht mit Gasteilchen zusammenstoßen, sonst verlieren sie Energie.</td></tr>
+  </table>
+  <h3>Durchführung und Deutung, Schritt für Schritt</h3>
+  <ol>
+    <li><b>Ohne Gegenspannung</b> fliegen die ausgelösten Elektronen zum Ring. Das Amperemeter zeigt einen Strom.</li>
+    <li><b>Ring negativ machen:</b> Das Feld zeigt von der Metallfläche zum Ring (Heft: grüne Pfeile). Das Elektron fliegt in Feldrichtung, aber die Kraft auf ein negatives Teilchen zeigt <b>gegen</b> die Feldrichtung. Es wird also gebremst. Die langsamen Elektronen kehren um, der Strom sinkt.</li>
+    <li><b>Spannung so lange erhöhen, bis kein Strom mehr fließt.</b> Jetzt kehren auch die schnellsten Elektronen kurz vor dem Ring um. Diese Spannung heißt <span class="f">\(U_0\)</span>.</li>
+    <li><b>Energiebilanz:</b> Die gesamte kinetische Energie des schnellsten Elektrons ist auf dem Weg zum Ring in Feldenergie umgewandelt worden (<span class="f">\(W = q\cdot U\)</span>, Lektion 2).</li>
+    <li><b>Für jede Farbe wiederholen.</b> Das ergibt eine Tabelle <span class="f">\(\lambda\)</span> und <span class="f">\(U_0\)</span> (Abschnitt 5).</li>
+  </ol>
+  <div class="formula">\[E_{\mathrm{kin,max}} = e\cdot U_0 \qquad\Rightarrow\qquad \tfrac12 m_e v_{\mathrm{max}}^2 = e\,U_0 \qquad\Rightarrow\qquad v_{\mathrm{max}} = \sqrt{\frac{2\,e\,U_0}{m_e}}\]</div>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Filter <select id="gfL"><option value="578">578 nm (gelb)</option><option value="546">546 nm (grün)</option><option value="436" selected>436 nm (blau)</option><option value="405">405 nm (violett)</option><option value="366">366 nm (UV)</option><option value="750">750 nm (dunkelrot)</option></select></label>
+        <label>Gegenspannung <input type="range" id="gfU" min="0" max="2" value="0.3" step="0.01"> <span id="gfUv"></span></label>
+        <label>Intensität <input type="range" id="gfI" min="1" max="5" value="3" step="1"> <span id="gfIv"></span></label>
+      </div>
+      <canvas id="gfCanvas" width="480" height="360"></canvas>
+      <p class="small">Oben der Aufbau wie im Heft. Elektronen starten an der Cäsiumfläche mit verschiedenen Energien bis <span class="f">\(E_{\mathrm{kin,max}}\)</span>. Unten die Stromstärke über der Gegenspannung. <span class="f">\(U_0\)</span> sind die Heft-Messwerte. Vergleiche: Intensität ändern (Kurve wird höher, <span class="f">\(U_0\)</span> bleibt) und Filter ändern (<span class="f">\(U_0\)</span> wandert). Die Kurvenform ist schematisch.</p>
+    </div>
+    <div>
+      <div class="out" id="gfOut"></div>
+      <div class="note warn"><b>Vorzeichen:</b> Im Heft steht <span class="f">\(U \lt 0\,\mathrm{V}\)</span>, weil der Ring negativ ist. In den Abiturtabellen ist <span class="f">\(U_0\)</span> positiv angegeben, das ist der <b>Betrag</b>. In <span class="f">\(E_{\mathrm{kin,max}} = e\,U_0\)</span> rechnest du immer mit dem Betrag.</div>
+      <div class="note warn"><b>Verwechslungsgefahr: Was hängt wovon ab?</b>
+        <ul>
+          <li>Doppelte <b>Intensität</b>: doppelter Strom, <span class="f">\(U_0\)</span> gleich.</li>
+          <li>Größere <b>Frequenz</b>: <span class="f">\(U_0\)</span> größer, der Strom sagt darüber nichts.</li>
+          <li><span class="f">\(U_0\)</span> ist also <b>keine</b> Eigenschaft der Lampe, sondern hängt nur von <span class="f">\(f\)</span> und vom Kathodenmaterial ab.</li>
+        </ul>
+      </div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2024 I, 3.1, 6 BE):</b> „Erläutern Sie ein Verfahren zur Bestimmung der Geschwindigkeit dieser Elektronen anhand einer zu erstellenden Skizze des Aufbaus." Kernpunkte (EWH): <span class="f">\(U_0\)</span> so einstellen, dass der Fotostrom null wird; <span class="f">\(E_{\mathrm{kin}}\)</span> aus <span class="f">\(U_0\)</span>; <span class="f">\(v = \sqrt{2E_{\mathrm{kin}}/m_e}\)</span>. In die Skizze gehören: Vakuumfotozelle, Amperemeter, Voltmeter, Beschaltung für <span class="f">\(U_0\)</span>.</div>
+    </div>
+  </div>
+  <h3>Die zweite Methode: Kondensatormethode (nur im Erwartungshorizont 2018 genannt)</h3>
+  <p>Abitur 2018 II, 2.1 akzeptiert „z. B. Gegenfeldmethode oder Kondensatormethode". Bei der Kondensatormethode gibt es <b>keine äußere Spannungsquelle</b>. Metallfläche und Ring bilden zusammen einen kleinen Kondensator. Die ausgelösten Elektronen fliegen zum Ring und laden ihn negativ auf, die Metallfläche wird positiv. Dadurch baut sich die Gegenspannung von selbst auf, bis auch die schnellsten Elektronen nicht mehr ankommen. Dann bleibt die Spannung konstant, und man liest <span class="f">\(U_0\)</span> mit einem Voltmeter ab, das fast keinen Strom zieht (Messverstärker). Die Auswertung ist identisch. Für die Klausur reicht die Gegenfeldmethode, sie ist die aus dem Heft.</p>
+</section>
+
+<!-- 5 -->
+<section class="card" id="s5">
+  <h2>5 · Das <span class="f">\(f\)</span>-<span class="f">\(E_{\mathrm{kin}}\)</span>-Diagramm: <span class="f">\(h\)</span> und <span class="f">\(E_A\)</span> aus einer Geraden (Heft)</h2>
+  <p>Die Energiebilanz lässt sich als Geradengleichung lesen. Das ist der ganze Trick der Auswertung:</p>
+  <div class="formula">\[\underbrace{E_{\mathrm{kin,max}}}_{y} = \underbrace{h}_{m}\cdot\underbrace{f}_{x}\;\underbrace{-\,E_A}_{b}\]</div>
+  <ul>
+    <li><b>Steigung</b> <span class="f">\(m = h\)</span>: das Plancksche Wirkungsquantum, für alle Materialien gleich.</li>
+    <li><b>Hochachsenabschnitt</b> <span class="f">\(b = -E_A\)</span>: Bei <span class="f">\(f = 0\)</span> läge man bei minus Austrittsarbeit. Physikalisch gibt es dort keine Elektronen, deshalb diesen Teil der Geraden gestrichelt zeichnen.</li>
+    <li><b>Nullstelle</b> <span class="f">\(f_{\mathrm{Gr}}\)</span>: Bei <span class="f">\(E_{\mathrm{kin,max}} = 0\)</span> gilt <span class="f">\(h f_{\mathrm{Gr}} = E_A\)</span>, also <span class="f">\(f_{\mathrm{Gr}} = E_A/h\)</span> und <span class="f">\(\lambda_{\mathrm{Gr}} = h c/E_A\)</span>.</li>
+  </ul>
+  <h3>Heft-Messwerte, mit zwei markierten Korrekturen</h3>
+  <table>
+    <tr><th><span class="f">\(\lambda\)</span> in nm</th><th><span class="f">\(U_0\)</span> in V</th><th><span class="f">\(f\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span></th><th><span class="f">\(E_{\mathrm{kin,max}}\)</span> in eV</th></tr>
+    <tr><td>436</td><td><b class="pos">0,986</b> (Heft: 1,993)</td><td>6,876</td><td>0,986</td></tr>
+    <tr><td>366</td><td>1,436</td><td>8,191</td><td>1,436</td></tr>
+    <tr><td>405</td><td>1,106</td><td>7,402</td><td>1,106</td></tr>
+    <tr><td>546</td><td>0,443</td><td>5,491</td><td>0,443</td></tr>
+    <tr><td><b class="pos">578</b> (Heft: 576)</td><td>0,362</td><td>5,187</td><td>0,362</td></tr>
+  </table>
+  <div class="note warn"><b>Zwei Schreibfehler im Heft:</b> (1) In der ersten Zeile steht <span class="f">\(U_0 = 1{,}993\,\mathrm{V}\)</span>, aber <span class="f">\(E_{\mathrm{kin,max}} = 0{,}986\,\mathrm{eV}\)</span>. In eV ist der Zahlenwert immer gleich der Spannung, also kann das nicht stimmen. Mit 1,993 fiele der Korrelationskoeffizient von 0,998 auf 0,73 (im Widget unten ankreuzen). (2) Zu <span class="f">\(f = 5{,}187\cdot 10^{14}\,\mathrm{Hz}\)</span> gehört <span class="f">\(\lambda = 578\,\mathrm{nm}\)</span> (die gelbe Quecksilberlinie), nicht 576 nm. Das sind Tippfehler in der Tabelle. Rechne mit den korrigierten Werten.</div>
+  <h3>Die fünf Schritte der TR-Dokumentation (Vereinbarung im Unterricht)</h3>
+  <ol>
+    <li><b>Werte in den TR:</b> Liste 1 <span class="f">\(f\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span>, Liste 2 <span class="f">\(E_{\mathrm{kin,max}}\)</span> in eV.</li>
+    <li><b>Diagramm:</b> Rechtsachse <span class="f">\(f\)</span>, Hochachse <span class="f">\(E_{\mathrm{kin,max}}\)</span>, beide mit Einheit. Die Punkte liegen auf einer Geraden.</li>
+    <li><b>Regressionstyp begründen:</b> Linear, weil die Theorie <span class="f">\(E_{\mathrm{kin,max}} = h f - E_A\)</span> linear in <span class="f">\(f\)</span> ist und die Punkte das bestätigen (<span class="f">\(r = 0{,}998\)</span>).</li>
+    <li><b>Formel mit Einheiten, Achsenabschnitt diskutieren:</b> <span class="f">\(E_{\mathrm{kin,max}} = 0{,}3574\,\frac{\mathrm{eV}}{10^{14}\,\mathrm{Hz}}\cdot f - 1{,}503\,\mathrm{eV}\)</span>. Der Achsenabschnitt ist nicht null, und das ist richtig: Er ist <span class="f">\(-E_A\)</span>.</li>
+    <li><b>Konstante deuten:</b> <span class="f">\(h = 0{,}3574\,\mathrm{eV}/10^{14}\,\mathrm{Hz} = 3{,}574\cdot 10^{-15}\,\mathrm{eVs} = 5{,}73\cdot 10^{-34}\,\mathrm{Js}\)</span>. Abweichung vom Literaturwert <span class="f">\(6{,}626\cdot 10^{-34}\,\mathrm{Js}\)</span>: <span class="f">\(-13{,}6\,\%\)</span>. <span class="f">\(E_A = 1{,}50\,\mathrm{eV}\)</span>, <span class="f">\(f_{\mathrm{Gr}} = 4{,}20\cdot 10^{14}\,\mathrm{Hz}\)</span>.</li>
+  </ol>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Messreihe <select id="feD"><option value="heft">Heft (Cäsium, Hg-Lampe)</option><option value="a2018">Abitur 2018 II, M7</option><option value="a2024">Abitur 2024 I, M3a</option></select></label>
+        <label id="feTypoL"><input type="checkbox" id="feTypo"> mit Heft-Schreibfehler 1,993 V</label>
+      </div>
+      <canvas id="feCanvas" width="480" height="320"></canvas>
+      <p class="small">Blau die Regressionsgerade, gestrichelt der physikalisch nicht erreichbare Teil. Orange das Steigungsdreieck, so wie du es im Abitur zeichnest. Lila markiert: Hochachsenabschnitt <span class="f">\(-E_A\)</span> und Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span>.</p>
+    </div>
+    <div>
+      <div class="out" id="feOut"></div>
+      <div class="note warn"><b>Steigungsdreieck:</b> Im Abitur steht oft „anhand eines zu zeichnenden Diagramms". Dann nimmst du zwei weit auseinanderliegende Punkte <b>auf deiner Geraden</b>, nicht zwei Messpunkte. Beispiel 2024: <span class="f">\(h = \frac{(1{,}098 - 0{,}186)\cdot 10^{-19}\,\mathrm{J}}{(6{,}4 - 5{,}0)\cdot 10^{14}\,\mathrm{Hz}} = 6{,}5\cdot 10^{-34}\,\mathrm{Js}\)</span>.</div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2024 I, 3.2, 12 BE):</b> Fehlende Werte „ohne Zuhilfenahme des Literaturwertes" (2 BE): Also nicht <span class="f">\(h f - E_A\)</span>, sondern <span class="f">\(E_{\mathrm{kin}} = e U_0\)</span> und <span class="f">\(f = c/\lambda\)</span>. Ergebnis <span class="f">\(0{,}865\cdot 10^{-19}\,\mathrm{J}\)</span> und <span class="f">\(5{,}94\cdot 10^{14}\,\mathrm{Hz}\)</span>. Diagramm und Steigung (5 BE): <span class="f">\(h \approx 6{,}51\cdot 10^{-34}\,\mathrm{Js}\)</span>. Vergleich (2 BE): Abweichung etwa <span class="f">\(1{,}75\,\%\)</span>. Deutung (3 BE): Steigung ist <span class="f">\(h\)</span>, Nullstelle ist <span class="f">\(f_{\mathrm{Gr}}\)</span>, Hochachsenabschnitt liefert <span class="f">\(E_A\)</span>.</div>
+    </div>
+  </div>
+  <div class="note"><b>Warum weicht die Heft-Messung um 14 % ab, 2024 aber nur um 2 %?</b> <span class="f">\(U_0\)</span> ist schwer genau zu treffen: Der Strom geht nicht scharf auf null, sondern läuft langsam aus, und sehr kleine Ströme sind schwer zu messen. Dazu kommt, dass Ring und Metallfläche aus verschiedenen Materialien bestehen, und Streulicht kann auch am Ring Elektronen auslösen. Das sind die Fehlerquellen, die du in der Klausur nennen kannst. Auch der Heft-Wert <span class="f">\(E_A = 1{,}50\,\mathrm{eV}\)</span> liegt deshalb unter dem Tabellenwert für Cäsium (<span class="f">\(1{,}94\,\mathrm{eV}\)</span>, Abitur 2018 M8), während die Abitur-Reihe 2024 mit <span class="f">\(1{,}92\,\mathrm{eV}\)</span> fast genau passt.</div>
+</section>
+
+<!-- 6 -->
+<section class="card" id="s6">
+  <h2>6 · Anderes Material: parallele Geraden (Abitur 2018 und 2024)</h2>
+  <table>
+    <tr><th>Material</th><th>Cäsium</th><th>Kalium</th><th>Barium</th><th>Magnesium</th><th>Zink</th><th>Kupfer</th><th>Platin</th></tr>
+    <tr><td><span class="f">\(E_A\)</span> in eV</td><td>1,94</td><td>2,25</td><td>2,52</td><td>3,70</td><td>4,34</td><td>4,40</td><td>5,36</td></tr>
+    <tr><td><span class="f">\(\lambda_{\mathrm{Gr}} = hc/E_A\)</span> in nm</td><td>639</td><td>551</td><td>492</td><td>335</td><td>286</td><td>282</td><td>231</td></tr>
+  </table>
+  <p class="small">Werte aus Abitur 2018 II, M8; Zink als Literaturwert zum Vergleich mit Abschnitt 1. In der Klausur wird <span class="f">\(E_A\)</span> immer im Material angegeben, die FS enthält keine Tabelle.</p>
+  <ul>
+    <li><b>Die Steigung ändert sich nie.</b> <span class="f">\(h\)</span> ist eine Naturkonstante. Das Material verschiebt nur die Gerade parallel nach unten, je größer <span class="f">\(E_A\)</span>.</li>
+    <li><b>Abitur 2024 I, 3.3 (3 BE):</b> Größere Austrittsenergie heißt bei gleicher Frequenz: weniger kinetische Energie und damit kleinere maximale Geschwindigkeit. Liegt <span class="f">\(f\)</span> unter der neuen Grenzfrequenz, kommt gar kein Elektron mehr heraus.</li>
+    <li><b>Abitur 2018 II, 2.3 (3 BE), Ringanode:</b> Der Ring soll Elektronen auffangen, aber selbst keine aussenden, auch wenn Licht auf ihn fällt. Das kurzwelligste Licht in M7 hat <span class="f">\(\lambda = 480\,\mathrm{nm}\)</span>, also <span class="f">\(E_{\mathrm{Ph}} = 2{,}58\,\mathrm{eV}\)</span>. Der Ring braucht <span class="f">\(E_A \gt 2{,}58\,\mathrm{eV}\)</span>: geeignet sind Magnesium, Kupfer oder Platin. Barium scheitert knapp mit 2,52 eV.</li>
+    <li><b>Abitur 2024 I, 3.4 (3 BE), Sonnenbrand:</b> UVB (280 bis 315 nm) hat <span class="f">\(3{,}9\)</span> bis <span class="f">\(4{,}4\,\mathrm{eV}\)</span> pro Photon, sichtbares Licht (380 bis 770 nm) nur <span class="f">\(1{,}6\)</span> bis <span class="f">\(3{,}3\,\mathrm{eV}\)</span>. Ein Elektron in der DNA nimmt die Energie <b>eines</b> Photons auf. Nur UVB reicht, um chemische Bindungen aufzubrechen. Hohe Intensität bei sichtbarem Licht heißt nur mehr kleine Pakete und hilft nicht. Dieselbe Logik wie beim Fotoeffekt.</li>
+    <li><b>Zurück zum Hallwachs-Versuch:</b> Zink hat <span class="f">\(E_A \approx 4{,}3\,\mathrm{eV}\)</span>, also <span class="f">\(\lambda_{\mathrm{Gr}} \approx 286\,\mathrm{nm}\)</span>. Sichtbares Licht reicht nie, UV-Licht unter dieser Grenze schon. Das ist die Erklärung für die Tabelle in Abschnitt 1.</li>
+  </ul>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(\lambda\)</span> des Lichts <input type="range" id="mtL" min="200" max="800" value="480" step="1"> <span id="mtLv"></span></label>
+      </div>
+      <canvas id="mtCanvas" width="480" height="300"></canvas>
+      <p class="small">Sechs parallele Geraden mit derselben Steigung <span class="f">\(h\)</span>. Die senkrechte Linie zeigt die eingestellte Frequenz. Punkte oberhalb der Rechtsachse bedeuten: Elektronen treten aus. Stell <span class="f">\(480\,\mathrm{nm}\)</span> ein und vergleiche mit der Ringanoden-Aufgabe.</p>
+    </div>
+    <div>
+      <div class="out" id="mtOut"></div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> Ein Material mit größerer Austrittsarbeit bekommt <b>keine</b> steilere Gerade. Wenn in einer Aufgabe zwei Geraden mit verschiedener Steigung gezeichnet sind, ist das falsch oder ein Messfehler.</div>
+      <div class="note warn"><b>Bezeichnungen:</b> FS S. 36: <span class="f">\(W_A\)</span> „Auslösearbeit". Heft: <span class="f">\(E_A\)</span> „Austrittsarbeit". Abitur: <span class="f">\(E_A\)</span> „Austrittsenergie". Alles dasselbe.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="card" id="s7">
+  <h2>7 · Die Leuchtdiode: der Fotoeffekt rückwärts (Heft-Bild Bändermodell)</h2>
+  <p>Beim Fotoeffekt macht ein Photon aus seiner Energie die Bewegung eines Elektrons. Bei der LED läuft es umgekehrt: Ein Elektron verliert Energie, und daraus entsteht ein Photon. Damit bekommt man einen zweiten, viel einfacheren Weg zu <span class="f">\(h\)</span>: nur Spannung und Wellenlänge messen.</p>
+  <h3>Was im Heft-Bild steht</h3>
+  <ul>
+    <li><b>Zwei Halbleiterschichten:</b> links n-dotiert, rechts p-dotiert, dazwischen die <b>Sperrschicht</b>. Dotiert heißt: Es sind gezielt Fremdatome eingebaut.</li>
+    <li><b>n-Seite:</b> Hier gibt es überschüssige Elektronen. Sie sitzen im <b>Leitungsband</b> (blaue Punkte im Heft). Angeschlossen ist der Minuspol.</li>
+    <li><b>p-Seite:</b> Hier fehlen Elektronen. Die Lücken heißen <b>Löcher</b> und sitzen oben im <b>Valenzband</b> (rote Kringel im Heft). Angeschlossen ist der Pluspol.</li>
+    <li><b>Bandlücke</b> <span class="f">\(\Delta E\)</span>: der Energieabstand zwischen Leitungsband und Valenzband. Dazwischen gibt es für Elektronen keine erlaubten Energien.</li>
+  </ul>
+  <h3>Der Ablauf</h3>
+  <ol>
+    <li>Die Spannungsquelle liefert jedem Elektron die Energie <span class="f">\(e\cdot U\)</span>. Ist sie zu klein, kommen die Elektronen nicht über die Sperrschicht, es fließt praktisch kein Strom.</li>
+    <li>Ab einer bestimmten Spannung, der <b>Schwellspannung</b> <span class="f">\(U_s\)</span> (Abitur: charakteristische Spannung <span class="f">\(U_c\)</span>), setzt der Strom ein.</li>
+    <li>Ein Elektron wandert über die Sperrschicht und fällt vom Leitungsband in ein Loch im Valenzband. Dabei verliert es die Energie <span class="f">\(\Delta E\)</span>.</li>
+    <li>Diese Energie nimmt <b>genau ein</b> Photon mit (Heft: gelbe Wellenlinie). Seine Frequenz ist durch <span class="f">\(\Delta E\)</span> festgelegt.</li>
+  </ol>
+  <div class="formula">\[e\cdot U_s \approx \Delta E = h\cdot f = \frac{h\cdot c}{\lambda}\]</div>
+  <p><b>Daraus folgt alles Weitere:</b> Jede LED-Farbe ist ein anderer Halbleiter mit anderer Bandlücke. Blaues Licht hat energiereichere Photonen, also braucht die blaue LED mehr Spannung als die rote. Genau das zeigt die Heft-Tabelle: IR <span class="f">\(0{,}99\,\mathrm{V}\)</span>, rot <span class="f">\(1{,}68\,\mathrm{V}\)</span>, blau <span class="f">\(2{,}57\,\mathrm{V}\)</span>, UV <span class="f">\(3{,}08\,\mathrm{V}\)</span>.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>LED <select id="ledS"><option value="ir">IR 921 nm</option><option value="rot" selected>rot 632 nm</option><option value="gruen">grün 514 nm</option><option value="blau">blau 463 nm</option><option value="uv">UV 399 nm</option></select></label>
+        <label>Spannung <input type="range" id="ledU" min="0" max="4" value="1.2" step="0.01"> <span id="ledUv"></span></label>
+      </div>
+      <canvas id="ledCanvas" width="480" height="290"></canvas>
+      <p class="small">Aufbau wie im Heft-Bild, die Bandlücke ist maßstäblich. Unterhalb der Schwellspannung bleiben die Elektronen links. Darüber fallen sie über die Sperrschicht ins Loch, und pro Elektron entsteht ein Photon. Mehr Spannung heißt mehr Elektronen, aber nicht buntere Photonen.</p>
+    </div>
+    <div>
+      <div class="out" id="ledOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa, 3.1, 4 BE):</b> „Ist die Spannung an der LED groß genug, leuchtet sie wahrnehmbar. Deuten Sie diese Beobachtung mithilfe des Photonenmodells." Kernpunkte (EWH): LED-abhängige Mindestenergie, Energieabgabe durch einzelne Elektronen, Entstehung jeweils eines Photons. Als Sätze: Jedes Photon braucht mindestens die Energie <span class="f">\(h f\)</span>, die ein einzelnes Elektron abgeben muss. Das Elektron bekommt <span class="f">\(e U\)</span> von der Quelle. Erst ab <span class="f">\(e U \approx h f\)</span> reicht die Energie eines Elektrons für ein Photon, darunter nicht.</div>
+      <div class="note warn"><b>Verwechslungsgefahr:</b> Mehr Spannung über der Schwelle macht die LED <b>heller</b> (mehr Elektronen pro Sekunde), ändert aber nicht ihre Farbe. Die Farbe steckt in <span class="f">\(\Delta E\)</span>, also im Material.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="card" id="s8">
+  <h2>8 · Die Schwellspannung aus der Kennlinie bestimmen (Heft, Abitur 2021)</h2>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 330 250" style="width:100%;max-width:340px;display:block;margin:0 auto" role="img" aria-label="Schaltskizze: Reihenschaltung aus Amperemeter, LED und Widerstand an einer Spannungsquelle, Voltmeter parallel zur Quelle">
+        <g fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M40 40 H135 M165 40 H290 V85 M290 135 V180 H200 M130 180 H40 V115 M40 85 V40"/>
+          <path d="M40 180 V222 H145 M185 222 H290 V180"/>
+          <path d="M135 26 V54 L165 40 Z"/><path d="M165 26 V54"/>
+          <rect x="278" y="85" width="24" height="50"/>
+          <circle cx="40" cy="100" r="15"/><circle cx="165" cy="222" r="15"/>
+          <circle cx="135" cy="180" r="5"/><circle cx="195" cy="180" r="5"/>
+          <path d="M150 20 L162 6 M158 7 L162 6 L162 11 M162 22 L174 8 M170 9 L174 8 L174 13" stroke-width="1.5"/>
+        </g>
+        <g fill="currentColor" font-size="15" font-family="system-ui, sans-serif">
+          <text x="34" y="105">A</text><text x="159" y="227">V</text>
+          <text x="160" y="172" font-size="16">U</text>
+          <text x="141" y="72">LED: U_D</text>
+          <text x="248" y="115">R</text><text x="240" y="150" font-size="14">U_R</text>
+        </g>
+      </svg>
+      <p class="small">Schaltung wie im Heft: LED und Widerstand <span class="f">\(R\)</span> in Reihe an der Quelle. Das Amperemeter misst <span class="f">\(I\)</span>, das Voltmeter die Gesamtspannung <span class="f">\(U\)</span>.</p>
+    </div>
+    <div>
+      <p><b>Maschenregel:</b></p>
+      <div class="formula">\[U = U_D + U_R = U_D + I R \quad\Rightarrow\quad U_D = U - I R\]</div>
+      <p><b>Das Problem (linkes Heft-Diagramm, „schwierig"):</b> Die reine LED-Kennlinie <span class="f">\(I(U_D)\)</span> steigt am Ende fast senkrecht. Wo man die Tangente anlegt, ist kaum festzulegen. <b>Die Lösung (rechtes Heft-Diagramm):</b> Trägt man <span class="f">\(I\)</span> über der Gesamtspannung <span class="f">\(U\)</span> auf, flacht der Widerstand die Kurve ab, und es entsteht ein langes gerades Stück. Dort legt man die Ausgleichsgerade an.</p>
+    </div>
+  </div>
+  <h3>Warum der Schnittpunkt mit der Spannungsachse <span class="f">\(U_s\)</span> ist (Heft-Rechnung)</h3>
+  <p>Die Ausgleichsgerade heißt <span class="f">\(I = A\cdot U + B\)</span>. Umgestellt nach der Gesamtspannung und eingesetzt in die Maschenregel:</p>
+  <div class="formula">\[U = \frac{I - B}{A}\quad\Rightarrow\quad U_D = \frac{I - B}{A} - I R = \Big(\frac1A - R\Big)\cdot I - \frac{B}{A}\]</div>
+  <p>Für <span class="f">\(I = 0\)</span> fällt alles mit <span class="f">\(R\)</span> weg:</p>
+  <div class="formula">\[U_s = U_D(I = 0) = -\frac{B}{A}\]</div>
+  <p><b>In Worten:</b> Bei <span class="f">\(I = 0\)</span> fällt am Widerstand keine Spannung ab, also ist die Gesamtspannung gleich der LED-Spannung. Darum darf man den Achsenschnittpunkt der <span class="f">\(U\)</span>-<span class="f">\(I\)</span>-Geraden direkt als Schwellspannung nehmen, obwohl der Widerstand in der Schaltung sitzt.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <button id="klMod" class="active">Heft-Prinzip (rote LED)</button><button id="klAb">Abitur 2021, M3c</button>
+        <label id="klRL"><span class="f">\(R\)</span> <input type="range" id="klR" min="0" max="1000" value="500" step="10"> <span id="klRv"></span></label>
+      </div>
+      <canvas id="klCanvas" width="480" height="300"></canvas>
+      <p class="small">Heft-Prinzip: Schiebe <span class="f">\(R\)</span> auf 0 (Heft links, „schwierig") und auf 500 Ω (Heft rechts). Die Kurve wird flacher, aber der Achsenschnittpunkt bleibt fast gleich. Das Modell ist eine typische Diodenkurve, die Zahlen sind nicht gemessen. Abitur 2021: echte Messwerte, Gerade durch die letzten drei Punkte.</p>
+    </div>
+    <div>
+      <div class="out" id="klOut"></div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa, 3.3, 8 BE):</b> „Ermitteln Sie zeichnerisch einen Wert für die Spannung <span class="f">\(U_c\)</span> [...] und dafür alle geeigneten Messwerte aus M3c." Laut Aufgabe ist die Kennlinie ab <span class="f">\(30\,\mathrm{mA}\)</span> linear, also die <b>letzten drei</b> Punkte (5 BE): <span class="f">\(U_c \approx 1{,}2\,\mathrm{V}\)</span>. „Bestätigen Sie, dass das Licht dieser LED nicht zum sichtbaren Spektralbereich gehört" (3 BE): <span class="f">\(\lambda = hc/(e U_c) \approx 1030\,\mathrm{nm}\)</span> mit dem Literaturwert, <span class="f">\(\approx 1050\,\mathrm{nm}\)</span> mit dem gemessenen <span class="f">\(h\)</span>: Infrarot.</div>
+      <div class="note warn"><b>Heft-Schreibfehler:</b> In der Tabelle steht die Einheit von <span class="f">\(A\)</span> als <span class="f">\(\mathrm{mA}/U\)</span>. Gemeint ist <span class="f">\(\mathrm{mA}/\mathrm{V}\)</span>. Und <span class="f">\(1/A\)</span> ist ein Widerstand: mit <span class="f">\(A \approx 2\,\mathrm{mA/V}\)</span> rund <span class="f">\(500\,\Omega\)</span>, also im Wesentlichen <span class="f">\(R\)</span>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="card" id="s9">
+  <h2>9 · <span class="f">\(h\)</span> aus LEDs: Auswertung und ehrlicher Vergleich (Heft, Abitur 2021)</h2>
+  <p>Für jede LED: Wellenlänge bekannt, also <span class="f">\(f = c/\lambda\)</span>. Schwellspannung gemessen, also <span class="f">\(E = e\cdot U_s\)</span>. Aus <span class="f">\(E = h f\)</span> folgt: Im <span class="f">\(f\)</span>-<span class="f">\(E\)</span>-Diagramm ist die Steigung <span class="f">\(h\)</span>.</p>
+  <table>
+    <tr><th>LED</th><th><span class="f">\(\lambda\)</span> in nm</th><th><span class="f">\(A\)</span> in mA/V</th><th><span class="f">\(B\)</span> in mA</th><th><span class="f">\(U_s = -B/A\)</span> in V</th><th><span class="f">\(f\)</span> in THz</th><th><span class="f">\(E = e U_s\)</span> in <span class="f">\(10^{-19}\,\mathrm{J}\)</span></th></tr>
+    <tr><td>grün</td><td>514</td><td>2,231</td><td><span class="f">\(-3{,}99\)</span></td><td>1,79</td><td>583,3</td><td>2,865</td></tr>
+    <tr><td>rot</td><td>632</td><td>1,954</td><td><span class="f">\(-3{,}29\)</span></td><td>1,68</td><td>474,4</td><td>2,697</td></tr>
+    <tr><td>blau</td><td>463</td><td>1,846</td><td><span class="f">\(-4{,}75\)</span></td><td>2,57</td><td>647,5</td><td>4,122</td></tr>
+    <tr><td>UV</td><td>399</td><td>/</td><td>/</td><td>3,08</td><td>751,4</td><td>4,934</td></tr>
+    <tr><td>IR</td><td>921</td><td>1,950</td><td><span class="f">\(-1{,}94\)</span></td><td>0,99</td><td>325,5</td><td>1,594</td></tr>
+  </table>
+  <p><b>Heft-Ergebnis</b> (ohne grün, „scheint einem Fehler zu unterliegen"):</p>
+  <div class="formula">\[E(f) = 7{,}89\cdot 10^{-22}\,\frac{\mathrm{J}}{\mathrm{THz}}\cdot f - 1{,}00\cdot 10^{-19}\,\mathrm{J} = \underbrace{7{,}89\cdot 10^{-34}\,\frac{\mathrm{J}}{\mathrm{Hz}}}_{h\text{ gemessen}}\cdot f - 1{,}00\cdot 10^{-19}\,\mathrm{J}\]</div>
+  <p class="small">Die Achsenbeschriftung „<span class="f">\(E\)</span> (Js)" im Heft-Diagramm ist ein Schreibfehler, gemeint ist J. 1 THz sind <span class="f">\(10^{12}\,\mathrm{Hz}\)</span>, daher der Sprung von <span class="f">\(10^{-22}\)</span> zu <span class="f">\(10^{-34}\)</span>.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label>Messreihe <select id="leD"><option value="heft4">Heft: 4 LEDs (ohne grün)</option><option value="heft5">Heft: 5 LEDs (mit grün)</option><option value="a2021">Abitur 2021 IIa, M3b</option></select></label>
+        <label><input type="checkbox" id="leO"> Gerade durch den Ursprung</label>
+      </div>
+      <canvas id="leCanvas" width="480" height="300"></canvas>
+      <p class="small">Blau die Regression, die Punkte sind die Messwerte, grüne LED rot markiert. Vergleiche die Heft-Reihe mit und ohne grün und schalte die Ursprungsgerade dazu.</p>
+    </div>
+    <div>
+      <div class="out" id="leOut"></div>
+      <div class="note warn"><b>Der Heft-Satz „liegt nahe am Literaturwert" ist großzügig.</b> Die Größenordnung stimmt, aber die Abweichung beträgt <span class="f">\(\frac{7{,}89 - 6{,}626}{6{,}626} = +19\,\%\)</span>. In der Klausur nie nur „nah dran" schreiben, sondern die Prozentzahl nennen.</div>
+    </div>
+  </div>
+  <h3>Was du zu den Abweichungen sagen musst</h3>
+  <ul>
+    <li><b>Achsenabschnitt:</b> Die Theorie <span class="f">\(E = h f\)</span> ist eine Ursprungsgerade. Das Heft hat <span class="f">\(-1{,}00\cdot 10^{-19}\,\mathrm{J} = -0{,}62\,\mathrm{eV}\)</span>, also einen systematischen Fehler. Erzwingt man den Ursprung, kommt <span class="f">\(h = 6{,}22\cdot 10^{-34}\,\mathrm{Js}\)</span> heraus (<span class="f">\(-6\,\%\)</span>). Der TR liefert das nicht direkt, aber Quotienten <span class="f">\(E/f\)</span> bilden und mitteln geht (das erlaubt auch der EWH 2021). Bei Abitur 2021 ist der Achsenabschnitt mit <span class="f">\(0{,}019\,\mathrm{eV}\)</span> praktisch null.</li>
+    <li><b>Ausreißer grün:</b> Auf der Heft-Geraden läge grün bei <span class="f">\(2{,}25\,\mathrm{V}\)</span>, gemessen wurden <span class="f">\(1{,}79\,\mathrm{V}\)</span>. Mit grün fällt <span class="f">\(r\)</span> von <span class="f">\(0{,}9998\)</span> auf <span class="f">\(0{,}968\)</span>. Einen Messwert darfst du nur weglassen, wenn du es dazuschreibst und begründest.</li>
+    <li><b>Abitur 2021, 3.4 (4 BE) ist genau dieser Fall:</b> Grüne LED, <span class="f">\(\lambda = 570\,\mathrm{nm}\)</span>, aber <span class="f">\(U_c = 1{,}97\,\mathrm{V}\)</span>. Erwartet wären etwa <span class="f">\(2{,}2\,\mathrm{V}\)</span>. Hypothese (EWH): Die LED sendet neben <span class="f">\(570\,\mathrm{nm}\)</span> auch einen bedeutenden Anteil mit höherer Wellenlänge aus, deshalb setzt der Strom schon bei kleinerer Spannung ein. Das passt zu Lektion 8: LEDs haben ein breites Band, und die angegebene Wellenlänge ist nur die größter Intensität.</li>
+    <li><b>Abitur 2021, 3.2 (4 BE), Erwärmung:</b> „Beurteilen Sie die Aussage, dass der experimentell bestimmte Wert für <span class="f">\(h\)</span> zu hoch ausfällt, da die betriebsbedingte Erwärmung der LED zu einem Energieverlust führt." Argument (EWH): Ein Teil der elektrischen Energie wird zu Wärme. Für jedes Photon braucht man also mehr als <span class="f">\(h f\)</span>, die Spannungen <span class="f">\(U_c\)</span> werden größer, und damit wird auch der ermittelte Wert für <span class="f">\(h\)</span> größer. Die Aussage ist also schlüssig.</li>
+    <li><b>Weitere Fehlerquellen:</b> Die Ausgleichsgerade hängt davon ab, welche Punkte man als „linear" zählt. Verschiedene LEDs sind verschiedene Halbleiter.</li>
+  </ul>
+  <h3>Musterlösung Abitur 2021 IIa, 3.2 in den fünf Schritten (6 BE)</h3>
+  <ol>
+    <li><b>Werte:</b> <span class="f">\(f = c/\lambda\)</span> ergibt <span class="f">\(4{,}76\)</span>, <span class="f">\(5{,}03\)</span> und <span class="f">\(6{,}48\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span>. <span class="f">\(E\)</span> in eV ist der Zahlenwert von <span class="f">\(U_c\)</span>: <span class="f">\(2{,}02\)</span>, <span class="f">\(2{,}15\)</span>, <span class="f">\(2{,}75\)</span>.</li>
+    <li><b>Diagramm:</b> Rechtsachse <span class="f">\(f\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span>, Hochachse <span class="f">\(E\)</span> in eV.</li>
+    <li><b>Typ:</b> Linear, weil pro Elektron <span class="f">\(e U_c = h f\)</span> erwartet wird. Die Punkte liegen auf einer Geraden.</li>
+    <li><b>Formel:</b> <span class="f">\(E = 4{,}220\cdot 10^{-15}\,\mathrm{eVs}\cdot f + 0{,}019\,\mathrm{eV}\)</span>. Der Achsenabschnitt ist praktisch null, also gilt <span class="f">\(E \propto f\)</span>.</li>
+    <li><b>Deutung:</b> Die Steigung ist <span class="f">\(h = 4{,}220\cdot 10^{-15}\,\mathrm{eVs} = 6{,}76\cdot 10^{-34}\,\mathrm{Js}\)</span>. Das sind <span class="f">\(2\,\%\)</span> über dem Literaturwert. Der EWH weist darauf hin, dass je nach Verfahren schon die erste Nachkommastelle abweichen darf.</li>
+  </ol>
+</section>
+
+<!-- 10 -->
+<section class="card" id="s10">
+  <h2>10 · Dritter Weg: die Röntgenröhre (Abitur 2017 und 2019, nicht im Heft)</h2>
+  <div class="note warn"><b>Einordnung:</b> Die Röntgenröhre steht nicht in deiner Mappe. Sie ist also für die Vorabi wenig wahrscheinlich. Sie kommt aber in zwei Abiturjahrgängen dran, und die Energiebilanz ist dieselbe wie bei der LED. Darum hier kurz. Die Bragg-Gleichung selbst behandelt Lektion 10.</div>
+  <table>
+    <tr><th></th><th>Fotoeffekt</th><th>LED</th><th>Röntgenröhre</th></tr>
+    <tr><td><b>Umwandlung</b></td><td>Photon → Elektron</td><td>Elektron → Photon</td><td>Elektron → Photon</td></tr>
+    <tr><td><b>Energiebilanz</b></td><td><span class="f">\(h f = E_A + E_{\mathrm{kin,max}}\)</span></td><td><span class="f">\(e U_s \approx h f\)</span></td><td><span class="f">\(e U_B = h f_{\mathrm{max}}\)</span></td></tr>
+    <tr><td><b>Größenordnung</b></td><td>wenige eV</td><td>wenige eV</td><td>einige 10 keV</td></tr>
+    <tr><td><b>Gemessen wird</b></td><td><span class="f">\(U_0\)</span></td><td><span class="f">\(U_s\)</span></td><td>Grenzwinkel <span class="f">\(\beta\)</span> bei bekanntem <span class="f">\(U_B\)</span></td></tr>
+    <tr><td><b>Gerade im <span class="f">\(f\)</span>-<span class="f">\(E\)</span>-Diagramm</b></td><td>Steigung <span class="f">\(h\)</span>, Abschnitt <span class="f">\(-E_A\)</span></td><td>Steigung <span class="f">\(h\)</span>, ideal durch den Ursprung</td><td>Steigung <span class="f">\(h\)</span>, durch den Ursprung</td></tr>
+  </table>
+  <h3>Wie die Röhre funktioniert (Abitur 2019, 3.1, 3 BE)</h3>
+  <p>Eine Glühkathode sendet Elektronen aus (Glühemission). Die Beschleunigungsspannung <span class="f">\(U_B\)</span> beschleunigt sie stark zur Anode, sie haben dort <span class="f">\(E_{\mathrm{kin}} = e U_B\)</span>. In der Anode werden sie abgebremst und geben dabei Energie teilweise an Photonen ab. Das ist die <b>Bremsstrahlung</b>. Weil ein Elektron beliebig viel seiner Energie abgeben kann, entsteht ein breites, kontinuierliches Spektrum.</p>
+  <p><b>Warum es eine kleinste Wellenlänge gibt:</b> Im Extremfall gibt ein Elektron seine <b>gesamte</b> Energie an ein einziges Photon ab. Mehr geht nicht. Größte Energie heißt größte Frequenz und damit kleinste Wellenlänge:</p>
+  <div class="formula">\[h f_{\mathrm{max}} = e U_B \qquad\Rightarrow\qquad \lambda_{\mathrm{min}} = \frac{h c}{e U_B}\]</div>
+  <p><b>Die Peaks</b> (charakteristische Strahlung) liegen immer beim selben Winkel, egal welches <span class="f">\(U_B\)</span> anliegt. Sie gehören zum Anodenmaterial: Elektronen schlagen kernnahe Elektronen heraus, und Übergänge in die freien Plätze liefern feste Photonenenergien. Das behandelt Lektion 11 bei den Energieniveaus.</p>
+  <div class="grid2">
+    <div>
+      <div class="controls">
+        <label><span class="f">\(U_B\)</span> <input type="range" id="rtU" min="15" max="40" value="33" step="1"> <span id="rtUv"></span></label>
+      </div>
+      <canvas id="rtCanvas" width="480" height="250"></canvas>
+      <p class="small">Schematisches Spektrum. Die linke Kante wandert mit <span class="f">\(U_B\)</span>, die beiden Peaks bei 62,9 und 71,7 pm bleiben stehen (Abitur 2019, M8 und M9). Unter etwa 20 kV reicht die Energie nicht, um die Peaks anzuregen.</p>
+    </div>
+    <div>
+      <div class="out" id="rtOut"></div>
+      <table>
+        <tr><th colspan="5">Abitur 2019 II, 3.3 (EWH-Tabelle)</th></tr>
+        <tr><td><span class="f">\(\beta_{\mathrm{Grenz}}\)</span></td><td>3,8°</td><td>4,7°</td><td>5,5°</td><td>6,7°</td></tr>
+        <tr><td><span class="f">\(f\)</span> in <span class="f">\(10^{18}\,\mathrm{Hz}\)</span></td><td>8,02</td><td>6,49</td><td>5,55</td><td>4,56</td></tr>
+        <tr><td><span class="f">\(U_B\)</span> in kV</td><td>33</td><td>27</td><td>23</td><td>19</td></tr>
+        <tr><td><span class="f">\(E\)</span> in <span class="f">\(10^{-16}\,\mathrm{J}\)</span></td><td>52,9</td><td>43,3</td><td>36,8</td><td>30,4</td></tr>
+      </table>
+      <p class="small">Ursprungsgerade im <span class="f">\(f\)</span>-<span class="f">\(E\)</span>-Diagramm mit <span class="f">\(k \approx 6{,}6\cdot 10^{-34}\,\mathrm{Js}\)</span>, also <span class="f">\(h\)</span>. In diesen Daten die kleinste Abweichung der drei Methoden.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="card" id="s11">
+  <h2>11 · Alle Abituraufgaben zu dieser Lektion (2016 bis 2025), mit Erwartungshorizont</h2>
+  <p>Ausgewertet wurden alle zehn Jahrgänge im Ordner <code>Arbeiten/Abiturarbeiten/Physik (LK)</code>. Die Varianten „mit Experiment" enthalten dieselben Aufgaben, nur je eine Teilaufgabe ist durch ein Experiment ersetzt (zum Beispiel 2018 die Solarzelle als echter Versuch). Rechne die Aufgaben selbst und schlage den Erwartungshorizont erst danach nach. Die folgenden Punkte sind die Kontrolle.</p>
+  <h3>Abitur 2024 I, Aufgabe 3: Vakuum-Fotozelle (24 BE)</h3>
+  <ul>
+    <li><b>3.1 (6 BE)</b> Verfahren mit Skizze: Gegenfeld, <span class="f">\(U_0\)</span> einstellen bis Fotostrom null, <span class="f">\(E_{\mathrm{kin}} = e U_0\)</span>, <span class="f">\(v = \sqrt{2E_{\mathrm{kin}}/m_e}\)</span> (Abschnitt 4).</li>
+    <li><b>3.2 (12 BE)</b> Tabelle ergänzen (2): <span class="f">\(0{,}865\cdot 10^{-19}\,\mathrm{J}\)</span>, <span class="f">\(5{,}94\cdot 10^{14}\,\mathrm{Hz}\)</span>. Diagramm und Steigung (5): <span class="f">\(h \approx 6{,}51\cdot 10^{-34}\,\mathrm{Js}\)</span>. Vergleich (2): etwa <span class="f">\(1{,}75\,\%\)</span> Abweichung. Deutung (3): Steigung <span class="f">\(h\)</span>, Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span>, Hochachsenabschnitt <span class="f">\(E_A\)</span>. Zur Kontrolle die Regression: <span class="f">\(E = 6{,}52\cdot 10^{-34}\,\mathrm{Js}\cdot f - 3{,}07\cdot 10^{-19}\,\mathrm{J}\)</span>, also <span class="f">\(E_A = 1{,}92\,\mathrm{eV}\)</span> (Cäsium) und <span class="f">\(f_{\mathrm{Gr}} = 4{,}71\cdot 10^{14}\,\mathrm{Hz}\)</span>.</li>
+    <li><b>3.3 (3 BE)</b> Größere Austrittsenergie ⇒ kleinere kinetische Energie ⇒ kleinere <span class="f">\(v_{\mathrm{max}}\)</span>.</li>
+    <li><b>3.4 (3 BE)</b> Sonnenbrand: Einzelnes UVB-Photon hat genug Energie für das Aufbrechen von DNA-Bindungen, einzelnes sichtbares Photon nicht, auch bei hoher Intensität nicht (Abschnitt 6).</li>
+  </ul>
+  <h3>Abitur 2018 II, Aufgabe 2: Vakuum-Fotozelle (23 BE)</h3>
+  <ul>
+    <li><b>2.1 (11 BE)</b> Aufbau zeichnen (3): Gegenfeld- oder Kondensatormethode. Vorgänge erläutern (5): Auslösen der Elektronen, Einstellen der Spannung. Energiebilanz erklären (3): Energieerhaltung, Energie der Photonen, Aufteilung.</li>
+    <li><b>2.2 (9 BE)</b> Fehlende Werte für 635 nm (2): <span class="f">\(4{,}72\cdot 10^{14}\,\mathrm{Hz}\)</span>, <span class="f">\(0{,}35\cdot 10^{-19}\,\mathrm{J}\)</span>. Diagramm (4). <span class="f">\(h \approx 6{,}7\cdot 10^{-34}\,\mathrm{Js}\)</span> aus der Steigung (3). Die Regression im Widget liefert <span class="f">\(6{,}80\cdot 10^{-34}\,\mathrm{Js}\)</span>, beides ist in Ordnung.</li>
+    <li><b>2.3 (3 BE)</b> Ringanode: Magnesium, Kupfer oder Platin, weil <span class="f">\(E_{\mathrm{Ph}}(480\,\mathrm{nm}) = 2{,}58\,\mathrm{eV}\)</span> keine Elektronen auslösen darf.</li>
+  </ul>
+  <h3>Abitur 2018 II, Aufgabe 1: Solarzelle, Abstand und Graufilter (29 BE)</h3>
+  <p>Keine Formel zum Fotoeffekt, aber das Photonenbild dahinter: Der Strom ist proportional zur Zahl der Photonen, die pro Zeit auf die Zelle treffen. Das Licht verteilt sich auf eine Fläche, die mit <span class="f">\(d^2\)</span> wächst.</p>
+  <ul>
+    <li><b>1.1 (11 BE)</b> Aufbau ergänzen (3). Zusammenhang dokumentieren (6): <span class="f">\(I(d) = k\cdot d^{-2}\)</span> mit <span class="f">\(k \approx 70\cdot 10^{-6}\,\mathrm{A\,m^2}\)</span>, durch Regression oder Produktbildung. Wert bei 30 cm (2): <span class="f">\(I \approx 7{,}8\cdot 10^{-4}\,\mathrm{A}\)</span>.</li>
+    <li><b>1.2 (9 BE)</b> 50-%-Filter bestätigen (2): <span class="f">\(110 : 225 \approx 0{,}49\)</span>. Anzahl für unter 2 % (3): <span class="f">\(0{,}5^n \lt 0{,}02\)</span> ⇒ <span class="f">\(n = 6\)</span>. 25-%-Filter eintragen (4): <span class="f">\(224 \cdot 0{,}75^n\)</span>, also 224, 168, 126, 95, 71, 53 µA.</li>
+    <li><b>1.3 (9 BE)</b> Halogenlampe: Diagramm beschreiben (3). Beurteilen (3): Die Abnahme weicht von 50 % ab. Hypothese (3): Die Absorption der Graufilter hängt von der Wellenlänge ab, und das Spektrum der Halogenlampe enthält Wellenlängen, die weniger gefiltert werden. Die grüne LED ist dagegen fast einfarbig.</li>
+  </ul>
+  <h3>Abitur 2021 IIa, Aufgabe 3: <span class="f">\(h\)</span> mit LEDs (26 BE)</h3>
+  <ul>
+    <li><b>3.1 (4 BE)</b> Photonenmodell: Mindestenergie, einzelne Elektronen, jeweils ein Photon (Abschnitt 7).</li>
+    <li><b>3.2 (10 BE)</b> <span class="f">\(E = h f\)</span> mit <span class="f">\(h \approx 4{,}220\cdot 10^{-15}\,\mathrm{eVs} = 6{,}761\cdot 10^{-34}\,\mathrm{Js}\)</span>, Regression oder Quotientenbildung (6). Erwärmungs-Aussage beurteilen (4) (Abschnitt 9).</li>
+    <li><b>3.3 (8 BE)</b> Zeichnerisch aus den letzten drei Punkten <span class="f">\(U_c \approx 1{,}2\,\mathrm{V}\)</span> (5). <span class="f">\(\lambda \approx 1050\,\mathrm{nm}\)</span> bzw. <span class="f">\(1030\,\mathrm{nm}\)</span>, Infrarot (3).</li>
+    <li><b>3.4 (4 BE)</b> Hypothese zum Spektrum: bedeutender Anteil größerer Wellenlänge (Abschnitt 9).</li>
+  </ul>
+  <h3>Abitur 2021 gA IIa, Aufgabe 3: dieselbe Idee, gA-Fassung (19 BE)</h3>
+  <ul>
+    <li><b>3.1 (2 BE)</b> Amperemeter und Voltmeter einzeichnen. <b>3.2 (6 BE)</b> <span class="f">\(h \approx 4{,}209\cdot 10^{-15}\,\mathrm{eVs} = 6{,}743\cdot 10^{-34}\,\mathrm{Js}\)</span>.</li>
+    <li><b>3.3 (11 BE)</b> <span class="f">\(U_c \approx 2{,}0\,\mathrm{V}\)</span> aus den letzten vier Punkten (5). <span class="f">\(\lambda \approx 631\,\mathrm{nm}\)</span> bzw. <span class="f">\(620\,\mathrm{nm}\)</span> (3). Warum das nicht zum Intensitätsmaximum bei 570 nm passt (3): Anteil größerer Wellenlänge im Spektrum, der Strom setzt früher ein.</li>
+  </ul>
+  <h3>Abitur 2019 II, Aufgabe 3: <span class="f">\(h\)</span> aus der Röntgenröhre (27 BE)</h3>
+  <ul>
+    <li><b>3.1 (3 BE)</b> Glühemission, Beschleunigung, teilweise Energieübertragung auf Photonen beim Abbremsen. <b>3.2 (5 BE)</b> <span class="f">\(\beta_{\mathrm{Grenz}} \approx 3{,}5^\circ\)</span> ablesen und Bragg anwenden ⇒ <span class="f">\(34{,}4\,\mathrm{pm}\)</span>; keine kleineren Wellenlängen, weil maximal die gesamte kinetische Energie in ein Photon geht.</li>
+    <li><b>3.3 (11 BE)</b> Tabelle aus Abschnitt 10, Ursprungsgerade, <span class="f">\(k \approx 6{,}6\cdot 10^{-34}\,\mathrm{Js}\)</span> mit <span class="f">\(h\)</span> vergleichen, nach Zahlenwert <b>und Einheit</b>. <b>3.4 (8 BE)</b> Peaks bleiben beim selben Winkel: Übergänge im Anodenmaterial; <span class="f">\(62{,}9\,\mathrm{pm}\)</span> entspricht M → K, <span class="f">\(71{,}7\,\mathrm{pm}\)</span> entspricht L → K (dazu Lektion 11).</li>
+  </ul>
+  <h3>Abitur 2017 II, Aufgabe 3: Röntgenröhre und Bragg (29 BE)</h3>
+  <ul>
+    <li><b>3.1 (9 BE)</b> Bauteile benennen (Heizspannung, Beschleunigungsspannung, Glühkathode, Anode), Bremsstrahlung und charakteristische Strahlung beschreiben. <b>3.2 (4 BE)</b> Netzebenenabstand bestätigen: <span class="f">\(\beta \approx 10^\circ\)</span>, <span class="f">\(d \approx 2{,}01\cdot 10^{-10}\,\mathrm{m}\)</span>.</li>
+    <li><b>3.3 (6 BE)</b> <span class="f">\(\beta = 5{,}2^\circ\)</span> ⇒ <span class="f">\(\lambda \approx 36\,\mathrm{pm}\)</span>, <span class="f">\(f \approx 8{,}2\cdot 10^{18}\,\mathrm{Hz}\)</span>. Begründung: <span class="f">\(U_B\)</span> legt die Grenze fest, die Elektronenenergie reicht nicht für energiereichere Photonen. <b>3.4 (10 BE)</b> <span class="f">\(E = h f = hc/\lambda\)</span> mit <span class="f">\(\lambda = 2d\sin\beta\)</span> ergibt <span class="f">\(E = hc/(2d\sin\beta)\)</span>; Übergänge zuordnen.</li>
+  </ul>
+  <div class="note exam"><b>Muster der Aufgaben zu <span class="f">\(h\)</span>:</b> (1) Aufbau und Verfahren mit Skizze, (2) Tabelle ohne Literaturwert ergänzen, (3) Diagramm zeichnen und <span class="f">\(h\)</span> aus der Steigung, (4) mit dem Literaturwert in Prozent vergleichen, (5) Gerade deuten, (6) Transfer auf anderes Material, anderes Spektrum oder Alltag. Wer die Abschnitte 4, 5 und 9 sicher kann, hat etwa zwei Drittel jeder dieser Aufgaben.</div>
+  <h3>Gesamtübersicht: alle Quanten-Aufgaben 2016 bis 2025 und wo sie drankommen</h3>
+  <table>
+    <tr><th>Thema</th><th>Aufgaben (neueste zuerst)</th><th>Lektion</th></tr>
+    <tr><td>Fotozelle, Gegenfeld, <span class="f">\(h\)</span></td><td>2024 I.3 · 2018 II.2</td><td>diese</td></tr>
+    <tr><td>LED, <span class="f">\(h\)</span></td><td>2021 IIa.3 · 2021 gA IIa.3</td><td>diese</td></tr>
+    <tr><td>Solarzelle, Photonenzahl</td><td>2018 II.1</td><td>diese</td></tr>
+    <tr><td>Röntgenröhre</td><td>2019 II.3 · 2017 II.3</td><td>diese (Energie), 10 (Bragg)</td></tr>
+    <tr><td>Materiewellen, Interferenz von Quantenobjekten</td><td>2025-3 · 2024 I.2 · 2024 gA I.2 · 2021 I.3 · 2021 gA I.3 · 2018 II 3.4 · 2017 I.1 und I.2 · 2016 I.3</td><td>10</td></tr>
+    <tr><td>Atomspektren, Energieniveaus</td><td>2025-4 · 2023 IIb.3 · 2020 I.3 · 2019 I.2 · 2016 II.2</td><td>11</td></tr>
+    <tr><td>Nicht in deiner Mappe, also für die Vorabi nachrangig</td><td>Franck-Hertz: 2022 IIa.3 · 2022 gA IIa.3 · 2018 I.3. Kernphysik: 2024 II.2 · 2024 gA II.2 · 2023 I.3 · 2019 I.3 · 2016 II.3. Glühemission: 2024 gA I.3</td><td>keine</td></tr>
+  </table>
+  <p class="small">Dateien: <code>2024Physik/2024_Physik_eA_I.pdf</code> (EWH: <code>2024_Physik_eA_I_EWH.pdf</code>), <code>2018Physik/2018PhysikEAohneExp/2018PhysikEAAufg2.pdf</code> (EWH: <code>2018PhysikEALehrer/2018PhysikEAA2L.pdf</code>), <code>2021Physik/2021PhysikEAohneExp/2021PhysikEAAufg2a.pdf</code> (EWH: <code>2021PhysikEALehrer/2021PhysikEAA2aL.pdf</code>), <code>2021Physik/2021PhysikGA/2021PhysikGAAufg2a.pdf</code>, <code>2019Physik/2019PhysikEAohneExp/2019PhysikEAAufg2.pdf</code>, <code>2017Physik/2017PhysikEAohneExp/2017PhysikEAAufg2.pdf</code>.</p>
+</section>
+
+<!-- 12 -->
+<section class="card" id="s12">
+  <h2>12 · Analogie-Trainer</h2>
+  <div class="cards">
+    <div class="acard"><h4>Münzautomat ↔ Grenzfrequenz</h4><div class="l">Pakete lassen sich nicht zusammensparen</div><p>Ein Automat nimmt nur Ein-Euro-Münzen. Tausend Cent-Stücke bringen nichts, eine einzige Euro-Münze schon. Cent-Stück = rotes Photon, Euro-Münze = UV-Photon.</p></div>
+    <div class="acard"><h4>Gebühr ↔ Austrittsarbeit</h4><div class="l">Einzahlung minus Gebühr = Guthaben</div><p>Du zahlst <span class="f">\(h f\)</span> ein, die Bank (das Metall) zieht die feste Gebühr <span class="f">\(E_A\)</span> ab, der Rest ist <span class="f">\(E_{\mathrm{kin,max}}\)</span>. Jede Bank hat eine andere Gebühr, aber alle denselben Wechselkurs <span class="f">\(h\)</span>: parallele Geraden.</p></div>
+    <div class="acard"><h4>Rampe ↔ Gegenfeld</h4><div class="l">Bremsen bis zum Umkehren</div><p>Ein Wagen rollt eine Rampe hinauf. Man macht die Rampe höher, bis auch der schnellste Wagen gerade nicht mehr oben ankommt. Aus der Höhe folgt seine Startenergie. Höhe = <span class="f">\(U_0\)</span>.</p></div>
+    <div class="acard"><h4>Tropfen ↔ Intensität und Farbe</h4><div class="l">Gleiche Wassermenge, andere Tropfen</div><p>Nieselregen und Hagelschauer können gleich viel Wasser bringen. Rotes Licht ist Nieselregen: viele kleine Tropfen. UV ist Hagel: wenige, aber jeder Einschlag hat Wucht. Ob ein Blech eine Delle bekommt, hängt vom einzelnen Korn ab.</p></div>
+    <div class="acard"><h4>Stufe ↔ LED</h4><div class="l">Fallhöhe bestimmt die Farbe</div><p>Die Quelle hebt jedes Elektron auf die obere Stufe, dann fällt es hinunter und gibt seine Fallenergie als ein Photon ab. Hohe Stufe (großes <span class="f">\(\Delta E\)</span>) gibt blaues Licht, niedrige Stufe rotes. Höher heben als nötig ändert die Farbe nicht.</p></div>
+    <div class="acard"><h4>Aufprall ↔ Röntgengrenze</h4><div class="l">Mehr als alles geht nicht</div><p>Ein Wagen fährt mit fester Energie gegen die Wand, und ein Teil dieser Energie wird zu einem Photon. Es kann viel oder wenig sein, aber nie mehr als die gesamte Energie <span class="f">\(e U_B\)</span>. Das legt <span class="f">\(\lambda_{\mathrm{min}}\)</span> fest.</p></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="card" id="s13">
+  <h2>13 · Aufgaben zum Selbstrechnen (erst rechnen, dann aufklappen)</h2>
+  <details><summary>A1: Grüner Laser, <span class="f">\(\lambda = 532\,\mathrm{nm}\)</span>, Leistung <span class="f">\(5\,\mathrm{mW}\)</span>. a) <span class="f">\(f\)</span> und Photonenenergie in J und eV. b) Photonen pro Sekunde. c) Impuls eines Photons.</summary>
+    <p>a) <span class="f">\(f = c/\lambda = 5{,}64\cdot 10^{14}\,\mathrm{Hz}\)</span>; <span class="f">\(E = h f = 3{,}73\cdot 10^{-19}\,\mathrm{J} = 2{,}33\,\mathrm{eV}\)</span>. Kontrolle: <span class="f">\(1240/532 = 2{,}33\)</span> ✓.<br>
+    b) <span class="f">\(N = P/E = 5\cdot 10^{-3}\,\mathrm{W}/3{,}73\cdot 10^{-19}\,\mathrm{J} = 1{,}34\cdot 10^{16}\)</span> Photonen pro Sekunde. Darum merkt man im Alltag nichts von den Paketen.<br>
+    c) <span class="f">\(p = E/c = 1{,}25\cdot 10^{-27}\,\mathrm{kg\,m/s}\)</span>.</p></details>
+  <details><summary>A2: Kaliumkathode, <span class="f">\(E_A = 2{,}25\,\mathrm{eV}\)</span>, Licht mit <span class="f">\(436\,\mathrm{nm}\)</span>. a) <span class="f">\(\lambda_{\mathrm{Gr}}\)</span> und <span class="f">\(f_{\mathrm{Gr}}\)</span>. b) <span class="f">\(E_{\mathrm{kin,max}}\)</span> in eV und J. c) <span class="f">\(U_0\)</span>. d) <span class="f">\(v_{\mathrm{max}}\)</span>. e) Was passiert bei <span class="f">\(650\,\mathrm{nm}\)</span> und hundertfacher Intensität?</summary>
+    <p>a) <span class="f">\(\lambda_{\mathrm{Gr}} = hc/E_A = 551\,\mathrm{nm}\)</span>; <span class="f">\(f_{\mathrm{Gr}} = E_A/h = 5{,}44\cdot 10^{14}\,\mathrm{Hz}\)</span>.<br>
+    b) <span class="f">\(E_{\mathrm{Ph}} = 2{,}84\,\mathrm{eV}\)</span>; <span class="f">\(E_{\mathrm{kin,max}} = 2{,}84 - 2{,}25 = 0{,}59\,\mathrm{eV} = 9{,}5\cdot 10^{-20}\,\mathrm{J}\)</span>.<br>
+    c) <span class="f">\(U_0 = 0{,}59\,\mathrm{V}\)</span> (Zahlenwert in eV).<br>
+    d) <span class="f">\(v_{\mathrm{max}} = \sqrt{2\cdot 9{,}5\cdot 10^{-20}\,\mathrm{J}/9{,}11\cdot 10^{-31}\,\mathrm{kg}} = 4{,}6\cdot 10^{5}\,\mathrm{m/s}\)</span>.<br>
+    e) <span class="f">\(E_{\mathrm{Ph}} = 1{,}91\,\mathrm{eV} \lt 2{,}25\,\mathrm{eV}\)</span>: kein einziges Elektron, egal wie hell.</p></details>
+  <details><summary>A3: Gegenfeld-Messreihe mit den Hg-Linien: <span class="f">\(\lambda\)</span> in nm: 405, 436, 492, 546, 578; <span class="f">\(U_0\)</span> in V: 1,10; 0,92; 0,56; 0,35; 0,19. a) Tabelle mit <span class="f">\(f\)</span> und <span class="f">\(E_{\mathrm{kin,max}}\)</span> in J. b) Auswertung in den fünf Schritten. c) Abweichung, <span class="f">\(E_A\)</span> in eV, <span class="f">\(f_{\mathrm{Gr}}\)</span>. d) Welches Material aus Abschnitt 6? e) <span class="f">\(v_{\mathrm{max}}\)</span> bei 405 nm.</summary>
+    <p>a) <span class="f">\(f\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span>: 7,40; 6,88; 6,09; 5,49; 5,19. <span class="f">\(E\)</span> in <span class="f">\(10^{-19}\,\mathrm{J}\)</span>: 1,762; 1,474; 0,897; 0,561; 0,304.<br>
+    b) Linear wegen <span class="f">\(E_{\mathrm{kin,max}} = h f - E_A\)</span>. Regression: <span class="f">\(E = 6{,}58\cdot 10^{-34}\,\mathrm{Js}\cdot f - 3{,}08\cdot 10^{-19}\,\mathrm{J}\)</span>, <span class="f">\(r = 0{,}9986\)</span>.<br>
+    c) <span class="f">\(h = 6{,}58\cdot 10^{-34}\,\mathrm{Js}\)</span>, also <span class="f">\(-0{,}8\,\%\)</span>. <span class="f">\(E_A = 3{,}08\cdot 10^{-19}\,\mathrm{J} = 1{,}92\,\mathrm{eV}\)</span>. <span class="f">\(f_{\mathrm{Gr}} = E_A/h = 4{,}69\cdot 10^{14}\,\mathrm{Hz}\)</span>.<br>
+    d) Cäsium (<span class="f">\(1{,}94\,\mathrm{eV}\)</span>).<br>
+    e) <span class="f">\(v_{\mathrm{max}} = \sqrt{2\cdot 1{,}762\cdot 10^{-19}\,\mathrm{J}/9{,}11\cdot 10^{-31}\,\mathrm{kg}} = 6{,}2\cdot 10^{5}\,\mathrm{m/s}\)</span>.</p></details>
+  <details><summary>A4: Fotozelle mit Cäsiumkathode, Licht 436 nm. Was ändert sich und warum? a) Intensität verdoppeln. b) Filter auf 405 nm wechseln. c) Platin statt Cäsium. d) Ring ebenfalls aus Cäsium. e) Filter auf 700 nm wechseln.</summary>
+    <p>a) Doppelt so viele Photonen ⇒ doppelt so viele Elektronen ⇒ doppelter Strom. <span class="f">\(U_0\)</span> gleich, weil jedes Photon dieselbe Energie hat.<br>
+    b) Höhere Frequenz ⇒ größere Photonenenergie ⇒ größeres <span class="f">\(E_{\mathrm{kin,max}}\)</span> und <span class="f">\(U_0\)</span>.<br>
+    c) <span class="f">\(E_{\mathrm{Ph}} = 2{,}84\,\mathrm{eV} \lt 5{,}36\,\mathrm{eV}\)</span> ⇒ kein Fotoeffekt.<br>
+    d) Streulicht könnte am Ring selbst Elektronen auslösen. Die würden zur Kathode fliegen und einen Gegenstrom erzeugen. <span class="f">\(U_0\)</span> wäre verfälscht.<br>
+    e) <span class="f">\(E_{\mathrm{Ph}} = 1{,}77\,\mathrm{eV} \lt 1{,}94\,\mathrm{eV}\)</span> ⇒ kein Fotoeffekt, unabhängig von der Intensität.</p></details>
+  <details><summary>A5: LED mit Vorwiderstand <span class="f">\(R = 470\,\Omega\)</span>. Die Ausgleichsgerade im linearen Bereich lautet <span class="f">\(I = 2{,}10\,\frac{\mathrm{mA}}{\mathrm{V}}\cdot U - 3{,}57\,\mathrm{mA}\)</span>. a) <span class="f">\(U_s\)</span>. b) Welche Wellenlänge erwartet man? c) Gesamtspannung und LED-Spannung bei <span class="f">\(I = 5\,\mathrm{mA}\)</span>. d) Warum darf man den Achsenschnittpunkt nehmen, obwohl <span class="f">\(R\)</span> in der Schaltung sitzt?</summary>
+    <p>a) <span class="f">\(U_s = -B/A = 3{,}57/2{,}10 = 1{,}70\,\mathrm{V}\)</span>.<br>
+    b) <span class="f">\(\lambda = hc/(e U_s) = 729\,\mathrm{nm}\)</span>: dunkelrot. Reale rote LEDs liegen eher bei 630 nm, weil die Methode <span class="f">\(U_s\)</span> oft zu klein liefert (vergleiche Heft: 632 nm und 1,68 V).<br>
+    c) <span class="f">\(U = (I - B)/A = (5 + 3{,}57)/2{,}10 = 4{,}08\,\mathrm{V}\)</span>; <span class="f">\(U_D = U - I R = 4{,}08\,\mathrm{V} - 2{,}35\,\mathrm{V} = 1{,}73\,\mathrm{V}\)</span>.<br>
+    d) Bei <span class="f">\(I = 0\)</span> ist <span class="f">\(U_R = I R = 0\)</span>, also <span class="f">\(U = U_D\)</span>. Rechnerisch: <span class="f">\(U_D = (1/A - R) I - B/A\)</span> ergibt bei <span class="f">\(I = 0\)</span> <span class="f">\(-B/A\)</span>.</p></details>
+  <details><summary>A6: Fünf LEDs: <span class="f">\(\lambda\)</span> in nm: 940, 625, 590, 525, 470; <span class="f">\(U_s\)</span> in V: 1,20; 1,85; 1,98; 2,24; 2,52. a) Bestimme <span class="f">\(h\)</span> per Regression. b) Bestimme <span class="f">\(h\)</span> über die Quotienten <span class="f">\(e U_s/f\)</span> und bilde den Mittelwert. c) Warum unterscheiden sich die Ergebnisse, und was sagt der Achsenabschnitt?</summary>
+    <p>a) <span class="f">\(f\)</span> in <span class="f">\(10^{14}\,\mathrm{Hz}\)</span>: 3,19; 4,80; 5,08; 5,71; 6,38. Regression in eV: <span class="f">\(E = 4{,}14\cdot 10^{-15}\,\mathrm{eVs}\cdot f - 0{,}125\,\mathrm{eV}\)</span>, <span class="f">\(r = 0{,}9999\)</span>. Also <span class="f">\(h = 6{,}63\cdot 10^{-34}\,\mathrm{Js}\)</span> (<span class="f">\(+0{,}1\,\%\)</span>).<br>
+    b) Quotienten in <span class="f">\(10^{-34}\,\mathrm{Js}\)</span>: 6,03; 6,18; 6,24; 6,28; 6,33. Mittelwert <span class="f">\(6{,}21\cdot 10^{-34}\,\mathrm{Js}\)</span> (<span class="f">\(-6\,\%\)</span>).<br>
+    c) Die Quotienten setzen <span class="f">\(E \propto f\)</span> voraus, also eine Ursprungsgerade. Der Achsenabschnitt von <span class="f">\(-0{,}125\,\mathrm{eV}\)</span> zieht sie besonders bei kleinen <span class="f">\(f\)</span> nach unten: Der Quotient steigt von 6,03 auf 6,33. Das ist ein systematischer Fehler: <span class="f">\(U_s\)</span> kommt bei allen LEDs etwas zu klein heraus. Die Steigung ist davon nicht betroffen, deshalb ist die Regression hier besser.</p></details>
+  <details><summary>A7: Röntgenröhre mit <span class="f">\(U_B = 30\,\mathrm{kV}\)</span>. a) <span class="f">\(\lambda_{\mathrm{min}}\)</span> und <span class="f">\(f_{\mathrm{max}}\)</span>. b) Bei welchem Winkel <span class="f">\(\beta\)</span> setzt das Spektrum ein, wenn <span class="f">\(d = 282\,\mathrm{pm}\)</span> und <span class="f">\(n = 1\)</span>? c) Was ändert sich bei doppelter Spannung an der Grenze und an den Peaks?</summary>
+    <p>a) <span class="f">\(\lambda_{\mathrm{min}} = hc/(e U_B) = 41{,}3\,\mathrm{pm}\)</span>; <span class="f">\(f_{\mathrm{max}} = e U_B/h = 7{,}25\cdot 10^{18}\,\mathrm{Hz}\)</span>.<br>
+    b) <span class="f">\(\sin\beta = \lambda/(2d) = 41{,}3/564\)</span> ⇒ <span class="f">\(\beta = 4{,}2^\circ\)</span>.<br>
+    c) <span class="f">\(\lambda_{\mathrm{min}}\)</span> halbiert sich. Die Peaks bleiben an derselben Stelle, weil sie vom Anodenmaterial abhängen.</p></details>
+  <div class="note exam"><b>Danach unter Zeit:</b> Abitur 2024 I Aufgabe 3 und Abitur 2018 II Aufgabe 2 je etwa 50 Minuten (rund 2 Minuten pro BE). Nur mit Taschenrechner und Formelsammlung. Schick mir dann deine Lösung im Chat, ich korrigiere sie wie der Lehrer mit Punkten.</div>
+</section>
+
+<!-- 14 -->
+<section class="card" id="s14">
+  <h2>14 · Was nicht in der Formelsammlung steht (auswendig, siehe Typst-Datei)</h2>
+  <ul>
+    <li><b>Hallwachs:</b> Aufbau, Tabelle mit vier Fällen, Deutung: UV löst auch bei positiver Platte Elektronen aus, sie werden zurückgezogen. Intensität entscheidet nicht über das Ob, nur über das Wie-viel.</li>
+    <li><b>Vier Widersprüche zum Wellenmodell:</b> <span class="f">\(E_{\mathrm{kin,max}}\)</span> unabhängig von der Intensität, Grenzfrequenz, keine Verzögerung, linearer Anstieg mit <span class="f">\(f\)</span>. Ein Photon gibt alles an ein Elektron ab, kein Zusammensparen.</li>
+    <li><b>Intensität:</b> Wellenmodell <span class="f">\(\propto\)</span> Amplitudenquadrat, Photonenmodell <span class="f">\(\propto\)</span> Photonenzahl.</li>
+    <li><b>Umformungen:</b> <span class="f">\(E = hc/\lambda\)</span>, Kontrolle <span class="f">\(E\,[\mathrm{eV}] \approx 1240/\lambda\,[\mathrm{nm}]\)</span>; <span class="f">\(N = P/(h f)\)</span>; <span class="f">\(f_{\mathrm{Gr}} = E_A/h\)</span>; <span class="f">\(\lambda_{\mathrm{Gr}} = hc/E_A\)</span>. eV-Herleitung: <span class="f">\(W = e\cdot 1\,\mathrm{V}\)</span>.</li>
+    <li><b>Gegenfeldmethode:</b> Hg-Lampe, Farbfilter, Cäsiumfläche, Ring negativ, Amperemeter, Vakuum. <span class="f">\(U\)</span> erhöhen bis <span class="f">\(I = 0\)</span>. <span class="f">\(E_{\mathrm{kin,max}} = e U_0\)</span>, <span class="f">\(v_{\mathrm{max}} = \sqrt{2 e U_0/m_e}\)</span>. Kondensatormethode: Zelle lädt sich selbst auf <span class="f">\(U_0\)</span> auf.</li>
+    <li><b>Diagramm:</b> Steigung <span class="f">\(h\)</span>, Hochachsenabschnitt <span class="f">\(-E_A\)</span>, Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span>; Teil unter <span class="f">\(f_{\mathrm{Gr}}\)</span> gestrichelt. Anderes Material: parallel verschoben. Ringanode: <span class="f">\(E_A\)</span> größer als die größte Photonenenergie.</li>
+    <li><b>LED:</b> n- und p-Dotierung, Leitungsband, Valenzband, Bandlücke, Löcher, Sperrschicht, Minuspol an n. <span class="f">\(e U_s \approx \Delta E = h f\)</span>. Ein Elektron, ein Photon.</li>
+    <li><b>Kennlinie:</b> <span class="f">\(U = U_D + I R\)</span>; <span class="f">\(I = A U + B\)</span>; <span class="f">\(U_D = (1/A - R) I - B/A\)</span>; <span class="f">\(U_s = -B/A\)</span>. Bei <span class="f">\(I = 0\)</span> fällt an <span class="f">\(R\)</span> nichts ab.</li>
+    <li><b>Abweichungen diskutieren:</b> Prozentzahl nennen, Achsenabschnitt prüfen (Ursprungsgerade erwartet), Ausreißer benennen. Erwärmung ⇒ <span class="f">\(U_c\)</span> größer ⇒ <span class="f">\(h\)</span> zu groß. Langwelliger Anteil im Spektrum ⇒ <span class="f">\(U_c\)</span> kleiner als erwartet.</li>
+    <li><b>Röntgen:</b> Glühkathode, <span class="f">\(U_B\)</span>, Anode, Bremsstrahlung (kontinuierlich), charakteristische Strahlung (Peaks). <span class="f">\(e U_B = h f_{\mathrm{max}}\)</span>, <span class="f">\(\lambda_{\mathrm{min}} = hc/(e U_B)\)</span>.</li>
+    <li><b>Steht in der FS (nur Fundort):</b> <span class="f">\(E = h f\)</span>, <span class="f">\(E_{\mathrm{kin,max}} = h f - W_A\)</span>, <span class="f">\(p = E/c\)</span>, <span class="f">\(\lambda = h/p\)</span> (S. 36); <span class="f">\(1\,\mathrm{eV}\)</span> (S. 48); <span class="f">\(e\)</span> (S. 50); <span class="f">\(h\)</span>, <span class="f">\(c\)</span>, <span class="f">\(m_e\)</span> (S. 51); Bragg (S. 35); <span class="f">\(\Delta E = q U\)</span> (S. 25); <span class="f">\(c = \lambda f\)</span> (S. 22).</li>
+  </ul>
+</section>
+
+<!-- 15 -->
+<section class="card" id="s15">
+  <h2>15 · Quiz</h2>
+  <div class="quiz" id="quiz"></div>
+  <div class="out" id="quizScore"></div>
+</section>
+
+<!-- 16 -->
+<section class="card" id="s16">
+  <h2>16 · Merksätze und Fortschritt</h2>
+  <ol>
+    <li>Ein Photon gibt seine ganze Energie <span class="f">\(h f\)</span> an genau ein Elektron ab. Zusammensparen geht nicht.</li>
+    <li>Intensität bestimmt, <b>wie viele</b> Elektronen austreten. Frequenz bestimmt, <b>ob</b> und <b>wie schnell</b>.</li>
+    <li><span class="f">\(E_{\mathrm{kin,max}} = h f - E_A\)</span> ist eine Gerade: Steigung <span class="f">\(h\)</span>, Abschnitt <span class="f">\(-E_A\)</span>, Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span>.</li>
+    <li>Gegenfeld: <span class="f">\(U\)</span> erhöhen bis <span class="f">\(I = 0\)</span>. Dann <span class="f">\(e U_0 = E_{\mathrm{kin,max}}\)</span>. Zahlenwert in eV gleich Spannung in V.</li>
+    <li>Material wechseln: Gerade parallel verschoben, <span class="f">\(h\)</span> bleibt.</li>
+    <li>LED: Fotoeffekt rückwärts. <span class="f">\(e U_s \approx \Delta E = h f\)</span>. Mehr Spannung heißt heller, nicht andere Farbe.</li>
+    <li>Kennlinie: Gerade <span class="f">\(I = A U + B\)</span>, Schnittpunkt <span class="f">\(U_s = -B/A\)</span>, <span class="f">\(R\)</span> fällt bei <span class="f">\(I = 0\)</span> weg.</li>
+    <li>Vergleich mit dem Literaturwert immer in Prozent. Ausreißer nur mit Begründung weglassen.</li>
+  </ol>
+  <h3>Typische Verwechslungen</h3>
+  <table>
+    <tr><th>Das</th><th>ist nicht das</th></tr>
+    <tr><td>Intensität: Anzahl der Photonen</td><td>Energie eines Photons: <span class="f">\(h f\)</span></td></tr>
+    <tr><td><span class="f">\(U_0\)</span>: Gegenspannung, bei der der Strom null wird</td><td>Spannung, ab der Strom fließt (bei der LED: <span class="f">\(U_s\)</span>)</td></tr>
+    <tr><td><span class="f">\(E_{\mathrm{kin,max}}\)</span>: schnellste Elektronen</td><td>Energie aller Elektronen</td></tr>
+    <tr><td>Hochachsenabschnitt <span class="f">\(-E_A\)</span> (negativ)</td><td>Nullstelle <span class="f">\(f_{\mathrm{Gr}}\)</span></td></tr>
+    <tr><td>Positive Platte: Ladung bleibt, aber Elektronen treten aus und kehren zurück</td><td>„Es passiert nichts"</td></tr>
+    <tr><td><span class="f">\(1\,\mathrm{eV} = 1{,}602\cdot 10^{-19}\,\mathrm{J}\)</span></td><td><span class="f">\(h = 6{,}626\cdot 10^{-34}\,\mathrm{Js}\)</span> (Potenz und Einheit nicht tauschen)</td></tr>
+    <tr><td>Fotoeffekt: Abschnitt <span class="f">\(-E_A\)</span> ist richtig und erwartet</td><td>LED: Abschnitt ungleich null ist ein Fehler</td></tr>
+    <tr><td><span class="f">\(U_s\)</span> (Heft) = <span class="f">\(U_c\)</span> (Abitur)</td><td><span class="f">\(U_0\)</span> (Fotozelle) und <span class="f">\(U_B\)</span> (Röntgen)</td></tr>
+    <tr><td><span class="f">\(E_A\)</span> (Heft, Abitur) = <span class="f">\(W_A\)</span> (FS)</td><td><span class="f">\(\Delta E\)</span> (Bandlücke der LED)</td></tr>
+  </table>
+  <div class="check" id="progress">
+    <label><input type="checkbox" data-k="p1"> Hallwachs: alle vier Fälle erklären, auch „positiv + UV"</label>
+    <label><input type="checkbox" data-k="p2"> Vier Widersprüche zum Wellenmodell und ihre Erklärung mit Photonen</label>
+    <label><input type="checkbox" data-k="p3"> <span class="f">\(E = hc/\lambda\)</span> in J und eV, <span class="f">\(N = P/(h f)\)</span>, Grenzfrequenz (A1, A2)</label>
+    <label><input type="checkbox" data-k="p4"> Gegenfeldmethode mit Skizze erklären, <span class="f">\(v_{\mathrm{max}}\)</span> aus <span class="f">\(U_0\)</span></label>
+    <label><input type="checkbox" data-k="p5"> <span class="f">\(f\)</span>-<span class="f">\(E\)</span>-Diagramm in fünf Schritten: <span class="f">\(h\)</span>, <span class="f">\(E_A\)</span>, <span class="f">\(f_{\mathrm{Gr}}\)</span>, Abweichung in Prozent (A3, Abitur 2024 und 2018)</label>
+    <label><input type="checkbox" data-k="p6"> Materialvergleich: parallele Geraden, Ringanode, Sonnenbrand</label>
+    <label><input type="checkbox" data-k="p7"> LED: Bändermodell, <span class="f">\(U_s = -B/A\)</span> herleiten, <span class="f">\(h\)</span> bestimmen (A5, A6, Abitur 2021)</label>
+    <label><input type="checkbox" data-k="p8"> Abweichungen beurteilen: Erwärmung, Ausreißer grün, Achsenabschnitt</label>
+  </div>
+  <p class="small">Haken werden lokal im Browser gespeichert.</p>
+</section>
+
+<footer>Lektion 9 · erstellt 30.10.2026 · Quellen: Typst-Heft (13.1) Quantenmechanik (Der Lichtelektrische Effekt, Bestimmung der Photonenenergie mit der Gegenfeldmethode, Messung des Planckschen Wirkungsquantums mit Leuchtdioden, Das Elektronenvolt) mit Abbildungen, Zentralabitur 2018 II Aufgaben 1–2, 2021 IIa Aufgabe 3, 2021 gA IIa Aufgabe 3, 2024 I Aufgabe 3, 2017 II Aufgabe 3, 2019 II Aufgabe 3 mit Erwartungshorizonten, Sichtung aller Jahrgänge 2016–2025, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
+  const deT = (x, d) => de(x, d).replace(',', '{,}');
+  const sciT = (x, sig) => {
+    if (x === 0) return '0';
+    let exp = Math.floor(Math.log10(Math.abs(x)));
+    const mant = x / Math.pow(10, exp);
+    let m = de(mant, sig - 1);
+    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); exp += 1; }
+    m = m.replace(',', '{,}');
+    return exp === 0 ? m : m + '\\cdot 10^{' + exp + '}';
+  };
+  const $ = (id) => document.getElementById(id);
+  const onTheme = (fn) => window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', fn);
+  function arrowAt(ctx, x, y, ux, uy, color) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.atan2(uy, ux)); ctx.fillStyle = color; ctx.beginPath(); ctx.moveTo(7, 0); ctx.lineTo(-6, 5); ctx.lineTo(-6, -5); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  function arrowLine(ctx, x1, y1, x2, y2, color, w) { ctx.strokeStyle = color; ctx.lineWidth = w || 2; ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); const dx = x2 - x1, dy = y2 - y1, m = Math.hypot(dx, dy) || 1; arrowAt(ctx, x2, y2, dx / m, dy / m, color); }
+  function linreg(X, Y) { const n = X.length; let sx = 0, sy = 0; for (let i = 0; i < n; i++) { sx += X[i]; sy += Y[i]; } const mx = sx / n, my = sy / n; let sxx = 0, sxy = 0, syy = 0; for (let i = 0; i < n; i++) { sxx += (X[i] - mx) ** 2; sxy += (X[i] - mx) * (Y[i] - my); syy += (Y[i] - my) ** 2; } const m = sxy / sxx; return { m, b: my - m * mx, r: syy > 0 ? sxy / Math.sqrt(sxx * syy) : 1 }; }
+  function powreg(X, Y) { const r = linreg(X.map(Math.log), Y.map(Math.log)); return { a: Math.exp(r.b), b: r.m, r: r.r }; }
+  function niceStep(v) { const p = Math.pow(10, Math.floor(Math.log10(v))); const m = v / p; return (m < 1.5 ? 1 : m < 3.5 ? 2 : m < 7.5 ? 5 : 10) * p; }
+  function frame(ctx, W, H, pad, x0, x1, y0, y1, xl, yl, opts) {
+    opts = opts || {};
+    ctx.clearRect(0, 0, W, H);
+    const X = (x) => pad.l + (x - x0) / (x1 - x0) * (W - pad.l - pad.r);
+    const Y = (y) => H - pad.b - (y - y0) / (y1 - y0) * (H - pad.t - pad.b);
+    const xs = opts.xs || niceStep((x1 - x0) / 5), ys = opts.ys || niceStep((y1 - y0) / 4);
+    ctx.font = '11px system-ui'; ctx.fillStyle = css('--muted'); ctx.strokeStyle = css('--line'); ctx.lineWidth = 1;
+    const dx = Math.max(0, -Math.floor(Math.log10(xs))), dy = Math.max(0, -Math.floor(Math.log10(ys)));
+    for (let x = Math.ceil(x0 / xs) * xs; x <= x1 + 1e-9; x += xs) { ctx.beginPath(); ctx.moveTo(X(x), pad.t); ctx.lineTo(X(x), H - pad.b); ctx.stroke(); ctx.textAlign = 'center'; ctx.fillText(de(x, dx), X(x), H - pad.b + 14); }
+    for (let y = Math.ceil(y0 / ys) * ys; y <= y1 + 1e-9; y += ys) { ctx.beginPath(); ctx.moveTo(pad.l, Y(y)); ctx.lineTo(W - pad.r, Y(y)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(de(y, dy), pad.l - 4, Y(y) + 4); }
+    ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.2;
+    if (y0 <= 0 && y1 >= 0) { ctx.beginPath(); ctx.moveTo(pad.l, Y(0)); ctx.lineTo(W - pad.r, Y(0)); ctx.stroke(); }
+    if (x0 <= 0 && x1 >= 0) { ctx.beginPath(); ctx.moveTo(X(0), pad.t); ctx.lineTo(X(0), H - pad.b); ctx.stroke(); }
+    ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.textAlign = 'right'; ctx.fillText(xl, W - pad.r, H - pad.b + 28); ctx.textAlign = 'left'; ctx.fillText(yl, pad.l + 4, pad.t - 4);
+    return { X, Y };
+  }
+  function curve(ctx, map, f, x0, x1, color, w, dash, n) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); n = n || 300; let started = false; for (let i = 0; i <= n; i++) { const x = x0 + (x1 - x0) * i / n; const y = f(x); if (!isFinite(y)) { started = false; continue; } const px = map.X(x), py = map.Y(y); if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py); } ctx.stroke(); ctx.restore(); }
+  function dot(ctx, x, y, color, r) { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r || 4, 0, 2 * Math.PI); ctx.fill(); }
+  function poly(ctx, pts, color, w, dash) { ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = w || 2; if (dash) ctx.setLineDash(dash); ctx.beginPath(); pts.forEach((p, i) => { if (i === 0) ctx.moveTo(p[0], p[1]); else ctx.lineTo(p[0], p[1]); }); ctx.stroke(); ctx.restore(); }
+  const TAU = 2 * Math.PI, degT = (a) => deT(a, 0) + '^\\circ';
+  const mod2pi = (a) => ((a % TAU) + TAU) % TAU;
+  const sinatan = (a, e) => Math.sin(Math.atan(a / e));
+  function wlColor(nm) { // Wellenlänge in nm -> CSS-Farbe (grob)
+    let r = 0, g = 0, b = 0;
+    if (nm < 380) { r = 0.4; b = 0.6; } else if (nm < 440) { r = -(nm - 440) / 60; b = 1; } else if (nm < 490) { g = (nm - 440) / 50; b = 1; } else if (nm < 510) { g = 1; b = -(nm - 510) / 20; } else if (nm < 580) { r = (nm - 510) / 70; g = 1; } else if (nm < 645) { r = 1; g = -(nm - 645) / 65; } else if (nm <= 780) { r = 1; } else { r = 0.6; }
+    let f = 1; if (nm > 700) f = 0.3 + 0.7 * (780 - nm) / 80; if (nm < 420) f = 0.3 + 0.7 * (nm - 380) / 40;
+    return 'rgb(' + Math.round(255 * Math.max(0, r) * f) + ',' + Math.round(255 * Math.max(0, g) * f) + ',' + Math.round(255 * Math.max(0, b) * f) + ')';
+  }
+
+  /* ---------- Konstanten und Hilfen Lektion 9 ---------- */
+  const PL = 6.626e-34, LC = 2.998e8, EL = 1.602e-19, ME = 9.109e-31;
+  const eVnm = PL * LC / EL * 1e9;
+  const lamCol = (nm) => (nm < 380 ? css('--efield') : nm > 760 ? css('--pos') : wlColor(nm));
+  const setOut = (el, html) => { if (el._last !== html) { el._last = html; texHTML(el, html); } };
+  const signT = (p, d) => (p >= 0 ? '+' : '') + deT(p, d);
+  function setActive(on, off) { on.classList.add('active'); off.classList.remove('active'); }
+  // Animation nur, solange die Zeichenfläche sichtbar ist
+  function runWhenVisible(cv, step) {
+    let last = 0, vis = false, id = 0;
+    function loop(ts) { if (!vis) { id = 0; return; } const dt = Math.min(0.05, Math.max(0, (ts - last) / 1000)); last = ts; step(dt); id = requestAnimationFrame(loop); }
+    new IntersectionObserver((es) => { vis = es[es.length - 1].isIntersecting; if (vis && !id) { last = performance.now(); id = requestAnimationFrame(loop); } }).observe(cv);
+    step(0);
+  }
+  function photonWiggle(ctx, x, y, ux, uy, col, len) {
+    len = len || 18; const nx = -uy, ny = ux;
+    ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath();
+    for (let i = 0; i <= 18; i++) { const s = i / 18, a = Math.sin(s * 3 * TAU) * 3; const px = x - ux * len * (1 - s) + nx * a, py = y - uy * len * (1 - s) + ny * a; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+    ctx.stroke();
+  }
+  function ground(ctx, x, y, col) { ctx.strokeStyle = col; ctx.lineWidth = 1.5; [12, 8, 4].forEach((w, i) => { ctx.beginPath(); ctx.moveTo(x - w, y + i * 4); ctx.lineTo(x + w, y + i * 4); ctx.stroke(); }); }
+  function lampIcon(ctx, x, y, r, col) { ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.moveTo(x - r * 0.7, y - r * 0.7); ctx.lineTo(x + r * 0.7, y + r * 0.7); ctx.moveTo(x + r * 0.7, y - r * 0.7); ctx.lineTo(x - r * 0.7, y + r * 0.7); ctx.stroke(); }
+
+  /* ---------- 1 Hallwachs ---------- */
+  (function hallwachs() {
+    const cv = $('hwCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let neg = true, uv = true, Q = 1, acc = 0, photons = [], electrons = [];
+    const plate = { x: 238, y0: 24, y1: 150 }, lamp = { x: 58, y: 88 }, sc = { x: 244, y: 222, r: 56 };
+    const reset = () => { Q = 1; photons = []; electrons = []; };
+    function text() {
+      const s = neg ? 'negativ' : 'positiv';
+      if (!uv) return '<b>' + s + ' + Kohlebogen:</b> Photonen des sichtbaren Lichts tragen höchstens etwa \\(3{,}3\\,\\mathrm{eV}\\), Zink braucht etwa \\(4{,}3\\,\\mathrm{eV}\\). Kein Elektron tritt aus, auch nicht bei voller Helligkeit. Die Ladung bleibt.';
+      if (!neg) return '<b>positiv + UV:</b> Elektronen treten aus, aber die positive Platte zieht sie sofort zurück. Netto bleibt die Ladung, der Zeiger bewegt sich nicht.';
+      if (Q <= 0.02) return '<b>negativ + UV:</b> Die Platte ist entladen. Drücke „Neu aufladen".';
+      return '<b>negativ + UV:</b> Elektronen treten aus und werden abgestoßen. Die Ladung fließt ab: noch \\(' + Math.round(Q * 100) + '\\,\\%\\). Mehr Helligkeit heißt schnelleres Entladen.';
+    }
+    function step(dt) {
+      const I = parseFloat($('hwI').value);
+      $('hwIv').textContent = I + ' von 10';
+      acc += dt * I * 5;
+      while (acc > 1) { acc -= 1; photons.push({ ty: plate.y0 + 10 + Math.random() * (plate.y1 - plate.y0 - 20), t: 0 }); }
+      photons.forEach((p) => { p.t += dt * 1.5; });
+      photons = photons.filter((p) => {
+        if (p.t < 1) return true;
+        if (uv) {
+          if (neg && Q > 0.02) { electrons.push({ x: plate.x - 2, y: p.ty, vx: -50 - Math.random() * 50, vy: (Math.random() - 0.5) * 70, back: false, life: 0 }); Q = Math.max(0, Q - 0.004); }
+          else if (!neg) electrons.push({ x: plate.x - 2, y: p.ty, vx: -60 - Math.random() * 40, vy: (Math.random() - 0.5) * 40, back: true, life: 0 });
+        }
+        return false;
+      });
+      electrons.forEach((e) => { e.life += dt; if (e.back) e.vx += 340 * dt; else e.vx -= 60 * dt; e.x += e.vx * dt; e.y += e.vy * dt; });
+      electrons = electrons.filter((e) => (e.back ? e.x < plate.x : e.x > -10 && e.y > -10 && e.y < H));
+      // Zeichnen
+      ctx.clearRect(0, 0, W, H);
+      const fg = css('--fg'), mut = css('--muted'), col = uv ? css('--efield') : '#e0a020';
+      lampIcon(ctx, lamp.x, lamp.y, 20, fg);
+      ctx.font = '12px system-ui'; ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.fillText(uv ? 'UV-Lampe' : 'Kohlebogen', lamp.x, lamp.y + 38);
+      photons.forEach((p) => { const x = lamp.x + 20 + (plate.x - lamp.x - 20) * p.t, y = lamp.y + (p.ty - lamp.y) * p.t; dot(ctx, x, y, col, 2.5); });
+      ctx.fillStyle = css('--soft'); ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.fillRect(plate.x, plate.y0, 12, plate.y1 - plate.y0); ctx.strokeRect(plate.x, plate.y0, 12, plate.y1 - plate.y0);
+      ctx.fillStyle = fg; ctx.textAlign = 'left'; ctx.fillText('Zinkplatte', plate.x + 44, plate.y0 + 12);
+      const n = Math.round(Q * 7); ctx.font = '700 15px system-ui'; ctx.fillStyle = neg ? css('--neg') : css('--pos');
+      for (let i = 0; i < n; i++) ctx.fillText(neg ? '−' : '+', plate.x + 18, plate.y0 + 34 + i * 16);
+      electrons.forEach((e) => dot(ctx, e.x, e.y, css('--neg'), 3));
+      // Elektroskop
+      ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(sc.x, plate.y1); ctx.lineTo(sc.x, sc.y + 30); ctx.stroke();
+      ctx.beginPath(); ctx.arc(sc.x, sc.y, sc.r, 0, TAU); ctx.stroke();
+      const ang = (8 + Q * 42) * Math.PI / 180 * (Q <= 0.02 ? 0 : 1), dx = Math.sin(ang) * 40, dy = -Math.cos(ang) * 40;
+      ctx.lineWidth = 3; ctx.strokeStyle = fg; ctx.beginPath(); ctx.moveTo(sc.x - dx, sc.y - dy); ctx.lineTo(sc.x + dx, sc.y + dy); ctx.stroke();
+      dot(ctx, sc.x, sc.y, fg, 3);
+      ctx.font = '12px system-ui'; ctx.fillStyle = fg; ctx.fillText('Elektroskop', sc.x + 66, sc.y - 8); ctx.fillStyle = mut; ctx.fillText('Ladung: ' + Math.round(Q * 100) + ' %', sc.x + 66, sc.y + 10);
+      setOut($('hwOut'), text());
+    }
+    $('hwNeg').addEventListener('click', () => { neg = true; setActive($('hwNeg'), $('hwPos')); reset(); });
+    $('hwPos').addEventListener('click', () => { neg = false; setActive($('hwPos'), $('hwNeg')); reset(); });
+    $('hwUV').addEventListener('click', () => { uv = true; setActive($('hwUV'), $('hwKohle')); });
+    $('hwKohle').addEventListener('click', () => { uv = false; setActive($('hwKohle'), $('hwUV')); photons = []; });
+    $('hwReset').addEventListener('click', reset);
+    runWhenVisible(cv, step);
+  })();
+
+  /* ---------- 2 Photonen auf Metall ---------- */
+  (function photonen() {
+    const cv = $('peCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let acc = 0, ph = [], el = [];
+    const px = 215;
+    function step(dt) {
+      const lam = parseFloat($('peL').value), N = parseFloat($('peN').value), EA = parseFloat($('peM').value);
+      const sel = $('peM'), metal = sel.options[sel.selectedIndex].text.split(' ')[0];
+      const Eph = eVnm / lam, Ek = Eph - EA, col = lamCol(lam);
+      acc += dt * N * 2.2;
+      while (acc > 1) { acc -= 1; ph.push({ x: 0, y: 40 + Math.random() * (H - 80) }); }
+      ph.forEach((p) => { p.x += 300 * dt; });
+      ph = ph.filter((p) => {
+        if (p.x < px) return true;
+        if (Ek >= 0) { const v = 40 + 110 * Math.sqrt(Math.max(Ek, 0)), a = Math.PI + (Math.random() - 0.5) * 1.3; el.push({ x: px - 2, y: p.y, vx: v * Math.cos(a), vy: v * Math.sin(a) }); }
+        return false;
+      });
+      el.forEach((e) => { e.x += e.vx * dt; e.y += e.vy * dt; });
+      el = el.filter((e) => e.x > -8 && e.y > -8 && e.y < H + 8);
+      ctx.clearRect(0, 0, W, H);
+      const fg = css('--fg'), mut = css('--muted');
+      ph.forEach((p) => photonWiggle(ctx, p.x, p.y, 1, 0, col));
+      ctx.fillStyle = css('--soft'); ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.fillRect(px, 18, 20, H - 36); ctx.strokeRect(px, 18, 20, H - 36);
+      el.forEach((e) => dot(ctx, e.x, e.y, css('--neg'), 3));
+      ctx.font = '12px system-ui'; ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.fillText(metal, px + 10, 13);
+      // Energiebilanz
+      const base = H - 28, sc = 36, x1 = 278, x2 = 352, bw = 52, Y = (e) => base - e * sc;
+      ctx.strokeStyle = mut; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x1 - 8, base); ctx.lineTo(W - 8, base); ctx.stroke();
+      ctx.fillStyle = col; ctx.fillRect(x1, Y(Eph), bw, Eph * sc);
+      ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.fillText('Photon', x1 + bw / 2, base + 14); ctx.fillText('h·f = ' + de(Eph, 2) + ' eV', x1 + bw / 2 + 6, Math.max(14, Y(Eph) - 5));
+      ctx.fillText('Elektron', x2 + bw / 2, base + 14);
+      if (Ek >= 0) {
+        ctx.fillStyle = css('--kin'); ctx.fillRect(x2, Y(EA), bw, EA * sc); ctx.fillStyle = css('--ok'); ctx.fillRect(x2, Y(Eph), bw, Ek * sc);
+        ctx.fillStyle = '#1b1f24'; ctx.fillText('E_A', x2 + bw / 2, Y(EA / 2) + 4);
+        ctx.fillStyle = fg; ctx.textAlign = 'left'; ctx.fillText('E_kin,max', x2 + bw + 5, Y(EA + Ek / 2) + 4); ctx.fillText('= ' + de(Ek, 2) + ' eV', x2 + bw + 5, Y(EA + Ek / 2) + 18);
+      } else {
+        ctx.save(); ctx.setLineDash([5, 4]); ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.strokeRect(x2, Y(EA), bw, EA * sc); ctx.restore();
+        ctx.fillStyle = css('--pos'); ctx.fillText('reicht', x2 + bw / 2, Y(EA / 2)); ctx.fillText('nicht', x2 + bw / 2, Y(EA / 2) + 15);
+        ctx.fillStyle = css('--kin'); ctx.textAlign = 'left'; ctx.fillText('E_A', x2 + bw + 5, Y(EA) + 11);
+      }
+      setOut($('peLv'), '\\(' + lam + '\\,\\mathrm{nm}\\)');
+      $('peNv').textContent = N + ' von 10';
+      const lamGr = eVnm / EA;
+      let h = '\\(E_{\\mathrm{Ph}} = \\frac{hc}{\\lambda} = \\htmlClass{hl}{' + deT(Eph, 2) + '\\,\\mathrm{eV}}\\), \\(E_A = ' + deT(EA, 2) + '\\,\\mathrm{eV}\\), \\(\\lambda_{\\mathrm{Gr}} = ' + deT(lamGr, 0) + '\\,\\mathrm{nm}\\)<br>';
+      if (Ek >= 0) { const v = Math.sqrt(2 * Ek * EL / ME); h += '\\(E_{\\mathrm{kin,max}} = ' + deT(Eph, 2) + ' - ' + deT(EA, 2) + ' = \\htmlClass{hl}{' + deT(Ek, 2) + '\\,\\mathrm{eV}}\\), \\(v_{\\mathrm{max}} = ' + sciT(v, 2) + '\\,\\mathrm{m/s}\\)<br>Intensität ändert nur die Anzahl der Elektronen, nicht diese Werte.'; }
+      else h += '\\(E_{\\mathrm{Ph}} \\lt E_A\\): <b>kein einziges Elektron</b>, egal bei welcher Intensität. Ein Elektron kann nicht zwei Photonen zusammensparen.';
+      setOut($('peOut'), h);
+    }
+    runWhenVisible(cv, step);
+  })();
+
+  /* ---------- 3 Photonenrechner ---------- */
+  (function photonenrechner() {
+    const cv = $('phCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    function draw() {
+      const lam = parseFloat($('phL').value), P = parseFloat($('phP').value);
+      const f = LC / (lam * 1e-9), EJ = PL * f, E = EJ / EL, Nps = P * 1e-3 / EJ, p = EJ / LC;
+      setOut($('phLv'), '\\(' + lam + '\\,\\mathrm{nm}\\)'); setOut($('phPv'), '\\(' + deT(P, 1) + '\\,\\mathrm{mW}\\)');
+      ctx.clearRect(0, 0, W, H);
+      const fg = css('--fg'), mut = css('--muted'), L0 = 200, L1 = 1100, x0 = 20, x1 = W - 20, X = (l) => x0 + (l - L0) / (L1 - L0) * (x1 - x0);
+      // Spektrum
+      for (let x = x0; x < x1; x++) { const l = L0 + (x - x0) / (x1 - x0) * (L1 - L0); ctx.fillStyle = l < 380 ? css('--soft') : l > 780 ? css('--soft') : wlColor(l); ctx.fillRect(x, 20, 1.5, 22); }
+      ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.strokeRect(x0, 20, x1 - x0, 22);
+      ctx.font = '12px system-ui'; ctx.fillStyle = mut; ctx.textAlign = 'center';
+      ctx.fillText('UV', X(290), 35); ctx.fillText('Infrarot', X(940), 35);
+      [200, 400, 600, 800, 1000].forEach((l) => ctx.fillText(l + ' nm', X(l) + (l === 200 ? 14 : 0), 56));
+      ctx.strokeStyle = fg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(X(lam), 15); ctx.lineTo(X(lam), 46); ctx.stroke();
+      // Photonen: Höhe proportional E, Anzahl proportional P/E
+      const sc = 16, bw = 6, gap = 1, perRow = Math.floor((x1 - x0) / (bw + gap)), count = Math.max(1, Math.round(30 * P / E)), bh = E * sc, base = H - 8, col = lamCol(lam);
+      ctx.fillStyle = col;
+      for (let i = 0; i < count; i++) { const r = Math.floor(i / perRow), c = i % perRow; ctx.fillRect(x0 + c * (bw + gap), base - (r + 1) * bh - r * 2, bw, bh); }
+      ctx.fillStyle = fg; ctx.textAlign = 'left'; ctx.font = '12px system-ui'; ctx.fillText('Jedes Kästchen ein Photon (Anzahl schematisch), Höhe = seine Energie', x0, 74);
+      setOut($('phOut'), '\\(f = \\frac{c}{\\lambda} = ' + sciT(f, 3) + '\\,\\mathrm{Hz}\\)<br>'
+        + '\\(E = h f = ' + sciT(EJ, 3) + '\\,\\mathrm{J} = \\htmlClass{hl}{' + deT(E, 2) + '\\,\\mathrm{eV}}\\)<br>'
+        + 'Kontrolle: \\(\\frac{1240\\,\\mathrm{eV\\,nm}}{' + lam + '\\,\\mathrm{nm}} = ' + deT(1240 / lam, 2) + '\\,\\mathrm{eV}\\)<br>'
+        + 'Photonen pro Sekunde: \\(N/t = \\frac{P}{E} = ' + sciT(Nps, 2) + '\\,\\mathrm{s^{-1}}\\)<br>'
+        + 'Impuls: \\(p = \\frac{E}{c} = ' + sciT(p, 2) + '\\,\\mathrm{kg\\,m/s}\\)<br>'
+        + (lam < 380 ? 'Bereich: UV.' : lam > 780 ? 'Bereich: Infrarot, nicht sichtbar.' : 'Bereich: sichtbar.'));
+    }
+    ['phL', 'phP'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 4 Gegenfeldmethode ---------- */
+  (function gegenfeld() {
+    const cv = $('gfCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const U0s = { 578: 0.362, 546: 0.443, 436: 0.986, 405: 1.106, 366: 1.436, 750: 0 };
+    const ring = 215, cs = 400, top = 64, K = 20000;
+    let el = [], acc = 0;
+    function step(dt) {
+      const lam = parseFloat($('gfL').value), U = parseFloat($('gfU').value), I = parseFloat($('gfI').value), U0 = U0s[lam], col = lamCol(lam);
+      setOut($('gfUv'), '\\(' + deT(U, 2) + '\\,\\mathrm{V}\\)'); $('gfIv').textContent = I + ' von 5';
+      if (U0 > 0) { acc += dt * I * 3.5; while (acc > 1) { acc -= 1; const Ei = U0 * (1 - Math.sqrt(Math.random())); el.push({ s: 0, v: Math.sqrt(K * Ei), y: top - 34 + Math.random() * 68, life: 0 }); } }
+      const a = K * U / (2 * (cs - ring));
+      el.forEach((e) => { e.v -= a * dt; e.s += e.v * dt; e.life += dt; if (e.v < 0) e.back = true; });
+      el = el.filter((e) => e.s >= 0 && e.s < cs - ring && e.life < 12);
+      const map = frame(ctx, W, H, { l: 44, r: 14, t: 186, b: 34 }, 0, 2, 0, 6, '|U| in V', 'I (relativ)', { xs: 0.5, ys: 2 });
+      // Aufbau
+      const fg = css('--fg'), mut = css('--muted');
+      ctx.font = '12px system-ui'; ctx.textAlign = 'center';
+      lampIcon(ctx, 30, top, 15, fg); ctx.fillStyle = fg; ctx.fillText('Hg-Lampe', 34, top + 34);
+      ctx.fillStyle = col; ctx.globalAlpha = 0.9; ctx.fillRect(84, top - 26, 9, 52); ctx.globalAlpha = 1; ctx.strokeStyle = fg; ctx.lineWidth = 1; ctx.strokeRect(84, top - 26, 9, 52); ctx.fillStyle = fg; ctx.fillText('Filter', 88, top + 42);
+      ctx.save(); ctx.globalAlpha = 0.18; ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(93, top - 10); ctx.lineTo(cs, top - 26); ctx.lineTo(cs, top + 26); ctx.lineTo(93, top + 10); ctx.closePath(); ctx.fill(); ctx.restore();
+      ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(47, top); ctx.lineTo(84, top); ctx.stroke();
+      ctx.strokeStyle = fg; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(ring, top, 9, 44, 0, 0, TAU); ctx.stroke();
+      ctx.fillStyle = css('--soft'); ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.fillRect(cs, top - 42, 11, 84); ctx.strokeRect(cs, top - 42, 11, 84);
+      ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.fillText('Ring', ring, 14); ctx.fillText('Cäsium', cs + 6, 14);
+      // Stromkreis
+      const yw = 148; ctx.strokeStyle = mut; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(ring, top + 44); ctx.lineTo(ring, yw); ctx.lineTo(cs + 6, yw); ctx.lineTo(cs + 6, top + 42); ctx.stroke();
+      const box = (x, t) => { ctx.fillStyle = css('--card'); ctx.beginPath(); ctx.arc(x, yw, 11, 0, TAU); ctx.fill(); ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.stroke(); ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.font = '12px system-ui'; ctx.fillText(t, x, yw + 4); };
+      box(268, 'A');
+      ctx.fillStyle = css('--card'); ctx.fillRect(320, yw - 9, 34, 18); ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.strokeRect(320, yw - 9, 34, 18); ctx.fillStyle = fg; ctx.font = '11px system-ui'; ctx.fillText('U', 337, yw + 4);
+      ctx.fillStyle = css('--neg'); ctx.textAlign = 'center'; ctx.font = '700 13px system-ui'; ctx.fillText('−', 312, yw - 12); ctx.fillStyle = css('--pos'); ctx.fillText('+', 362, yw - 12);
+      ctx.font = '11px system-ui'; ctx.fillStyle = mut; ctx.textAlign = 'right'; ctx.fillText('Ring negativ: U < 0', ring - 8, yw + 4); ctx.textAlign = 'left'; ctx.fillText('0 V', cs + 18, yw + 4);
+      // Elektronen
+      el.forEach((e) => dot(ctx, cs - e.s, e.y, e.back ? mut : css('--neg'), 3));
+      // Kurve
+      const Is = I, Iof = (u) => (U0 > 0 && u < U0 ? Is * (1 - u / U0) * (1 - u / U0) : 0);
+      curve(ctx, map, Iof, 0, 2, css('--accent'), 2.5, null, 300);
+      if (U0 > 0) { ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = css('--kin'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(map.X(U0), map.Y(0)); ctx.lineTo(map.X(U0), map.Y(5.6)); ctx.stroke(); ctx.restore(); ctx.fillStyle = css('--kin'); ctx.textAlign = 'left'; ctx.font = '12px system-ui'; ctx.fillText('U₀ = ' + de(U0, 3) + ' V', map.X(U0) + 4, map.Y(5.2)); }
+      dot(ctx, map.X(U), map.Y(Iof(U)), css('--pos'), 5);
+      // Ausgabe
+      let h;
+      if (U0 === 0) h = '<b>750 nm:</b> \\(f = 4{,}00\\cdot 10^{14}\\,\\mathrm{Hz}\\) liegt unter der Grenzfrequenz des Heft-Versuchs (\\(f_{\\mathrm{Gr}} = 4{,}20\\cdot 10^{14}\\,\\mathrm{Hz}\\), Abschnitt 5). Kein Elektron tritt aus, auch nicht bei \\(U = 0\\) und größter Intensität. Es gibt deshalb auch kein \\(U_0\\).';
+      else {
+        const v = Math.sqrt(2 * EL * U0 / ME);
+        h = '\\(\\lambda = ' + lam + '\\,\\mathrm{nm}\\): \\(U_0 = \\htmlClass{hl}{' + deT(U0, 3) + '\\,\\mathrm{V}}\\) \\(\\Rightarrow\\) \\(E_{\\mathrm{kin,max}} = ' + deT(U0, 3) + '\\,\\mathrm{eV}\\)<br>\\(v_{\\mathrm{max}} = \\sqrt{\\frac{2 e U_0}{m_e}} = ' + sciT(v, 3) + '\\,\\mathrm{m/s}\\)<br>';
+        h += U < U0 ? 'Bei \\(|U| = ' + deT(U, 2) + '\\,\\mathrm{V}\\) schaffen es nur Elektronen mit \\(E_{\\mathrm{kin}} \\gt ' + deT(U, 2) + '\\,\\mathrm{eV}\\). Es fließt noch Strom.' : 'Bei \\(|U| = ' + deT(U, 2) + '\\,\\mathrm{V}\\) kehren auch die schnellsten Elektronen vor dem Ring um (grau): \\(I = 0\\).';
+      }
+      setOut($('gfOut'), h);
+    }
+    runWhenVisible(cv, step);
+  })();
+
+  /* ---------- 5 Regression f-E ---------- */
+  (function feRegression() {
+    const cv = $('feCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const sets = {
+      heft: { x: [6.876, 8.191, 7.402, 5.491, 5.187], y: [0.986, 1.436, 1.106, 0.443, 0.362], ev: true, x1: 9, y0: -2, y1: 2.5, ys: 0.5, yl: 'E_kin,max in eV' },
+      a2018: { x: [6.25, 5.35, 5.08, 4.72, 4.51], y: [1.43, 0.82, 0.66, 0.35, 0.27], ev: false, x1: 7, y0: -3.5, y1: 2, ys: 1, yl: 'E_kin,max in 10⁻¹⁹ J' },
+      a2024: { x: [4.91, 5.10, 5.71, 5.94, 6.36], y: [0.128, 0.224, 0.656, 0.865, 1.024], ev: false, x1: 7, y0: -3.5, y1: 2, ys: 1, yl: 'E_kin,max in 10⁻¹⁹ J' }
+    };
+    function draw() {
+      const key = $('feD').value, s = sets[key], typo = key === 'heft' && $('feTypo').checked;
+      $('feTypoL').style.display = key === 'heft' ? '' : 'none';
+      const ys = s.y.slice(); if (typo) ys[0] = 1.993;
+      const R = linreg(s.x, ys), m = R.m, b = R.b;
+      const map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, s.x1, s.y0, s.y1, 'f in 10¹⁴ Hz', s.yl, { xs: 1, ys: s.ys });
+      const fGr = -b / m, xmin = Math.min.apply(null, s.x), xmax = Math.max.apply(null, s.x);
+      curve(ctx, map, (x) => m * x + b, 0, fGr, css('--accent'), 2, [6, 5], 2);
+      curve(ctx, map, (x) => m * x + b, fGr, s.x1, css('--accent'), 2.5, null, 2);
+      // Steigungsdreieck auf der Geraden
+      const y1 = m * xmin + b, y2 = m * xmax + b;
+      poly(ctx, [[map.X(xmin), map.Y(y1)], [map.X(xmax), map.Y(y1)], [map.X(xmax), map.Y(y2)]], css('--kin'), 2);
+      ctx.font = '12px system-ui'; ctx.fillStyle = css('--kin'); ctx.textAlign = 'center'; ctx.fillText('Δf', map.X((xmin + xmax) / 2), map.Y(y1) + 14); ctx.textAlign = 'left'; ctx.fillText('ΔE', map.X(xmax) + 4, map.Y((y1 + y2) / 2) + 4);
+      // Achsenabschnitt und Nullstelle
+      dot(ctx, map.X(0), map.Y(b), css('--efield'), 5); dot(ctx, map.X(fGr), map.Y(0), css('--efield'), 5);
+      ctx.fillStyle = css('--efield'); ctx.textAlign = 'left'; ctx.fillText('b = −E_A', map.X(0) + 8, map.Y(b) + 4); ctx.textAlign = 'right'; ctx.fillText('f_Gr', map.X(fGr) - 4, map.Y(0) - 7);
+      s.x.forEach((x, i) => dot(ctx, map.X(x), map.Y(ys[i]), typo && i === 0 ? css('--pos') : css('--fg'), typo && i === 0 ? 6 : 4));
+      // Ausgabe
+      const unit = s.ev ? '\\mathrm{eV}' : '10^{-19}\\,\\mathrm{J}', hJ = s.ev ? m * 1e-14 * EL : m * 1e-33, ab = (hJ - PL) / PL * 100;
+      const EAJ = s.ev ? -b * EL : -b * 1e-19, EAeV = EAJ / EL, lGr = LC / (fGr * 1e14) * 1e9;
+      let h = '\\(E(f) = ' + deT(m, s.ev ? 4 : 3) + '\\,\\frac{' + unit + '}{10^{14}\\,\\mathrm{Hz}}\\cdot f ' + (b < 0 ? '-' : '+') + deT(Math.abs(b), 3) + '\\,' + unit + '\\)<br>';
+      h += '\\(r = ' + deT(R.r, s.ev && typo ? 3 : 4) + '\\)<br>';
+      h += '\\(h = \\htmlClass{hl}{' + sciT(hJ, 3) + '\\,\\mathrm{Js}}\\) (Abweichung \\(' + signT(ab, 1) + '\\,\\%\\))<br>';
+      h += '\\(E_A = ' + deT(EAeV, 2) + '\\,\\mathrm{eV}\\), \\(f_{\\mathrm{Gr}} = ' + deT(fGr, 2) + '\\cdot 10^{14}\\,\\mathrm{Hz}\\), \\(\\lambda_{\\mathrm{Gr}} = ' + deT(lGr, 0) + '\\,\\mathrm{nm}\\)';
+      if (typo) h += '<br><b>Mit dem Schreibfehler</b> liegt der rote Punkt weit neben der Geraden, und \\(r\\) fällt auf etwa \\(0{,}73\\). Daran erkennst du solche Fehler auch in deiner eigenen Tabelle.';
+      setOut($('feOut'), h);
+    }
+    ['feD', 'feTypo'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 6 Materialvergleich ---------- */
+  (function material() {
+    const cv = $('mtCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const M = [['Cs', 'Cäsium', 1.94], ['K', 'Kalium', 2.25], ['Ba', 'Barium', 2.52], ['Mg', 'Magnesium', 3.70], ['Cu', 'Kupfer', 4.40], ['Pt', 'Platin', 5.36]];
+    const m = PL / EL * 1e14, fMax = 16, Emax = 4;
+    function draw() {
+      const lam = parseFloat($('mtL').value), f = LC / (lam * 1e-9) / 1e14, Eph = eVnm / lam;
+      setOut($('mtLv'), '\\(' + lam + '\\,\\mathrm{nm}\\)');
+      const map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, fMax, -6, Emax, 'f in 10¹⁴ Hz', 'E_kin,max in eV', { xs: 2, ys: 2 });
+      ctx.font = '11px system-ui';
+      M.forEach((d) => {
+        const EA = d[2], fG = EA / m, end = Math.min(fMax, (Emax + EA) / m), g = (x) => m * x - EA;
+        curve(ctx, map, g, 0, fG, css('--accent'), 1.4, [5, 4], 2);
+        curve(ctx, map, g, fG, end, css('--accent'), 2.4, null, 2);
+        ctx.fillStyle = css('--fg'); ctx.textAlign = 'left'; ctx.fillText(d[0], map.X(fG) + 4, map.Y(0) + 13);
+      });
+      const col = lamCol(lam);
+      ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(map.X(f), map.Y(Emax)); ctx.lineTo(map.X(f), map.Y(-6)); ctx.stroke();
+      M.forEach((d) => {
+        const y = m * f - d[2], px = map.X(f), py = map.Y(y);
+        if (y >= 0) dot(ctx, px, py, css('--ok'), 5);
+        else { ctx.strokeStyle = css('--muted'); ctx.fillStyle = css('--card'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(px, py, 3.5, 0, TAU); ctx.fill(); ctx.stroke(); }
+      });
+      let h = '\\(E_{\\mathrm{Ph}} = ' + deT(Eph, 2) + '\\,\\mathrm{eV}\\)<br>';
+      M.forEach((d) => { const k = Eph - d[2]; h += d[1] + ' (\\(E_A = ' + deT(d[2], 2) + '\\,\\mathrm{eV}\\)): ' + (k >= 0 ? '\\(E_{\\mathrm{kin,max}} = \\htmlClass{hl}{' + deT(k, 2) + '\\,\\mathrm{eV}}\\)' : 'keine Elektronen') + '<br>'; });
+      setOut($('mtOut'), h);
+    }
+    $('mtL').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 7 LED im Bändermodell ---------- */
+  (function ledBand() {
+    const cv = $('ledCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const D = { ir: ['IR', 921, 0.995], rot: ['rot', 632, 1.684], gruen: ['grün', 514, 1.788], blau: ['blau', 463, 2.573], uv: ['UV', 399, 3.08] };
+    const reservoir = Array.from({ length: 10 }, (_, i) => ({ x: 34 + i * 17, ph: i * 1.9 }));
+    const holesIdle = Array.from({ length: 10 }, (_, i) => ({ x: 280 + i * 18, ph: i * 2.3 }));
+    let t = 0, acc = 0, els = [], holes = [], phot = [];
+    const bandH = 24, topBand = 38, sc = 34, jx0 = 216, jx1 = 262;
+    function step(dt) {
+      t += dt;
+      const d = D[$('ledS').value], lam = d[1], Us = d[2], U = parseFloat($('ledU').value), hfe = eVnm / lam, col = lamCol(lam), on = U >= Us;
+      setOut($('ledUv'), '\\(' + deT(U, 2) + '\\,\\mathrm{V}\\)');
+      const gap = hfe * sc, yUp = topBand + bandH / 2, yValTop = topBand + bandH + gap, yLow = yValTop + bandH / 2;
+      if (on) {
+        acc += dt * ((U - Us) * 5 + 0.8);
+        while (acc > 1) { acc -= 1; els.push({ x: 22, y: yUp + (Math.random() - 0.5) * 10, st: 0 }); holes.push({ x: 468, y: yLow + (Math.random() - 0.5) * 10 }); }
+      }
+      els.forEach((e) => { if (e.st === 0) { e.x += 75 * dt; if (e.x > 236) { e.st = 1; e.k = 0; } } else { e.k += dt * 2.6; } });
+      els = els.filter((e) => { if (e.st === 1 && e.k >= 1) { phot.push({ x: 248, y: (yUp + yLow) / 2 }); return false; } return true; });
+      holes.forEach((p) => { p.x -= 75 * dt; });
+      holes = holes.filter((p) => p.x > 252);
+      phot.forEach((p) => { p.x += 210 * dt; });
+      phot = phot.filter((p) => p.x < W + 10);
+      if (!on) { els = els.filter((e) => e.st === 1); holes = []; }
+      // Zeichnen
+      ctx.clearRect(0, 0, W, H);
+      const fg = css('--fg'), mut = css('--muted'), neg = css('--neg'), pos = css('--pos');
+      ctx.fillStyle = css('--soft'); ctx.fillRect(jx0, topBand - 8, jx1 - jx0, yValTop + bandH + 8 - topBand + 8);
+      ctx.font = '12px system-ui'; ctx.textAlign = 'center'; ctx.fillStyle = fg;
+      ctx.fillText('n-dotiert', 110, 16); ctx.fillText('p-dotiert', 365, 16); ctx.fillStyle = mut; ctx.fillText('Sperrschicht', (jx0 + jx1) / 2, 22);
+      // Bänder
+      ctx.strokeStyle = fg; ctx.lineWidth = 1.5; ctx.fillStyle = css('--card');
+      ctx.fillRect(16, topBand, 448, bandH); ctx.strokeRect(16, topBand, 448, bandH);
+      ctx.fillRect(16, yValTop, 448, bandH); ctx.strokeRect(16, yValTop, 448, bandH);
+      ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillStyle = mut; ctx.fillText('Leitungsband', 272, topBand + 16); ctx.fillText('Valenzband', 22, yValTop + 16);
+      // Bandlücke
+      const gx = 195; ctx.save(); ctx.strokeStyle = css('--kin'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(gx, topBand + bandH); ctx.lineTo(gx, yValTop); ctx.stroke(); ctx.restore();
+      arrowAt(ctx, gx, topBand + bandH + 6, 0, -1, css('--kin')); arrowAt(ctx, gx, yValTop - 6, 0, 1, css('--kin'));
+      ctx.fillStyle = css('--kin'); ctx.textAlign = 'right'; ctx.font = '12px system-ui'; ctx.fillText('ΔE ≈ ' + de(hfe, 2) + ' eV', gx - 6, topBand + bandH + gap / 2 + 4);
+      // Teilchen
+      reservoir.forEach((r) => dot(ctx, r.x + Math.min(1, U / Us) * 16 + 4 * Math.sin(t * 2 + r.ph), yUp + 5 * Math.sin(t * 1.3 + r.ph * 2), neg, 3.5));
+      holesIdle.forEach((p) => { ctx.strokeStyle = pos; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(p.x + 3 * Math.sin(t * 1.5 + p.ph), yLow + 5 * Math.sin(t * 1.1 + p.ph * 2), 3.5, 0, TAU); ctx.stroke(); });
+      els.forEach((e) => { const x = e.st === 0 ? e.x : 236 + e.k * 14, y = e.st === 0 ? e.y : yUp + (yLow - yUp) * e.k; dot(ctx, x, y, neg, 3.5); });
+      holes.forEach((p) => { ctx.strokeStyle = pos; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, TAU); ctx.stroke(); });
+      phot.forEach((p) => photonWiggle(ctx, p.x, p.y, 1, 0, col, 22));
+      // Stromkreis
+      const yb = 262; ctx.strokeStyle = mut; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(16, yUp); ctx.lineTo(6, yUp); ctx.lineTo(6, yb); ctx.lineTo(214, yb); ctx.moveTo(266, yb); ctx.lineTo(474, yb); ctx.lineTo(474, yLow); ctx.lineTo(464, yLow); ctx.stroke();
+      ctx.strokeStyle = fg; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(214, yb - 12); ctx.lineTo(214, yb + 12); ctx.moveTo(266, yb - 12); ctx.lineTo(266, yb + 12); ctx.stroke();
+      ctx.font = '700 15px system-ui'; ctx.textAlign = 'center'; ctx.fillStyle = neg; ctx.fillText('−', 200, yb + 5); ctx.fillStyle = pos; ctx.fillText('+', 280, yb + 5);
+      ctx.font = '12px system-ui'; ctx.fillStyle = fg; ctx.fillText('U = ' + de(U, 2) + ' V', 240, yb + 4);
+      const bereich = lam > 780 ? 'Infrarot (unsichtbar)' : lam < 400 ? 'UV (fast unsichtbar)' : 'sichtbar';
+      ctx.font = '700 13px system-ui'; ctx.fillStyle = on ? css('--ok') : mut; ctx.textAlign = 'center'; ctx.fillText(on ? 'LED sendet Photonen: ' + bereich : 'LED dunkel', 240, yb - 22);
+      // Ausgabe
+      const ab = (Us - hfe) / hfe * 100;
+      let h = 'LED ' + d[0] + ': \\(\\lambda = ' + lam + '\\,\\mathrm{nm}\\), \\(U_s = ' + deT(Us, 2) + '\\,\\mathrm{V}\\) (Heft)<br>\\(e U_s = ' + deT(Us, 2) + '\\,\\mathrm{eV}\\), \\(h f = \\frac{hc}{\\lambda} = ' + deT(hfe, 2) + '\\,\\mathrm{eV}\\). Abweichung \\(' + signT(ab, 0) + '\\,\\%\\)<br>';
+      h += on ? '\\(U \\ge U_s\\): Es fließt Strom. Jedes Photon hat weiter \\(' + deT(hfe, 2) + '\\,\\mathrm{eV}\\). Mehr Spannung heißt nur mehr Elektronen pro Sekunde.' : '\\(U \\lt U_s\\): Die Elektronen kommen nicht über die Sperrschicht, kein Strom, kein Licht.';
+      if ($('ledS').value === 'gruen') h += '<br>Die grüne LED fällt aus der Reihe: Das Heft lässt sie bei der Auswertung weg (Abschnitt 9).';
+      setOut($('ledOut'), h);
+    }
+    runWhenVisible(cv, step);
+  })();
+
+  /* ---------- 8 Kennlinie und Schwellspannung ---------- */
+  (function kennlinie() {
+    const cv = $('klCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    let abi = false;
+    const nV = 0.06, I0 = 5 / Math.exp(1.74 / nV); // Modell in mA, nicht gemessen
+    const UD = (I) => nV * Math.log(I / I0 + 1);
+    const Uab = [0, 0.25, 0.5, 0.75, 1, 1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35], Iab = [0, 0, 0, 0, 0, 1, 3, 9, 21, 39, 67, 99];
+    function draw() {
+      $('klRL').style.display = abi ? 'none' : '';
+      const fg = css('--fg'), acc = css('--accent'), kin = css('--kin');
+      if (abi) {
+        const map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, 1.5, 0, 110, 'U in V', 'I in mA', { xs: 0.1, ys: 20 });
+        const R = linreg(Uab.slice(-3), Iab.slice(-3)), Uc = -R.b / R.m;
+        curve(ctx, map, (u) => R.m * u + R.b, Uc, 1.5, kin, 2.5, null, 2);
+        Uab.forEach((u, i) => dot(ctx, map.X(u), map.Y(Iab[i]), i >= Uab.length - 3 ? kin : fg, 4));
+        dot(ctx, map.X(Uc), map.Y(0), css('--pos'), 6);
+        ctx.fillStyle = css('--pos'); ctx.textAlign = 'right'; ctx.font = '12px system-ui'; ctx.fillText('U_c', map.X(Uc) - 8, map.Y(0) - 8);
+        setOut($('klOut'), 'Gerade durch die letzten drei Punkte (\\(I \\ge 30\\,\\mathrm{mA}\\)):<br>\\(I = ' + deT(R.m, 0) + '\\,\\frac{\\mathrm{mA}}{\\mathrm{V}}\\cdot U - ' + deT(-R.b, 1) + '\\,\\mathrm{mA}\\)<br>\\(U_c = -\\frac{B}{A} = \\htmlClass{hl}{' + deT(Uc, 2) + '\\,\\mathrm{V}} \\approx 1{,}2\\,\\mathrm{V}\\)<br>\\(\\lambda = \\frac{hc}{e U_c} \\approx 1030\\,\\mathrm{nm}\\): Infrarot, nicht sichtbar.');
+        return;
+      }
+      const Rv = parseFloat($('klR').value);
+      setOut($('klRv'), '\\(' + Rv + '\\,\\Omega\\)');
+      const map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, 9, 0, 8, 'U in V', 'I in mA', { xs: 1, ys: 2 });
+      const X = [], Y = [];
+      for (let I = 3; I <= 7.001; I += 0.25) { X.push(UD(I) + I * Rv / 1000); Y.push(I); }
+      const r = linreg(X, Y), Us = -r.b / r.m;
+      const param = (Rx, col, w, dash) => { const pts = []; for (let i = 0; i <= 200; i++) { const I = 8 * i / 200, u = UD(I) + I * Rx / 1000; if (u <= 9) pts.push([map.X(u), map.Y(I)]); } poly(ctx, pts, col, w, dash); };
+      if (Rv > 0) param(0, css('--muted'), 1.5, [5, 4]);
+      param(Rv, acc, 2.8);
+      const uEnd = Math.min(9, (8 - r.b) / r.m);
+      curve(ctx, map, (u) => r.m * u + r.b, Us, uEnd, kin, 2, [8, 6], 2);
+      dot(ctx, map.X(Us), map.Y(0), css('--pos'), 6);
+      ctx.font = '12px system-ui'; ctx.fillStyle = css('--pos'); ctx.textAlign = 'right'; ctx.fillText('U_s', map.X(Us) - 8, map.Y(0) - 8);
+      if (Rv > 0) { ctx.fillStyle = css('--muted'); ctx.fillText('nur LED', map.X(UD(6.8)) - 6, map.Y(6.8)); }
+      let h = 'Gerade für \\(3\\,\\mathrm{mA} \\le I \\le 7\\,\\mathrm{mA}\\): \\(A = ' + deT(r.m, Rv === 0 ? 0 : 2) + '\\,\\frac{\\mathrm{mA}}{\\mathrm{V}}\\), \\(B = ' + deT(r.b, Rv === 0 ? 0 : 2) + '\\,\\mathrm{mA}\\)<br>\\(U_s = -\\frac{B}{A} = \\htmlClass{hl}{' + deT(Us, 2) + '\\,\\mathrm{V}}\\)<br>';
+      h += Rv === 0 ? 'Ohne Widerstand steigt die Kurve fast senkrecht. Eine Ausgleichsgerade ist kaum festzulegen: „schwierig" im Heft.' : '\\(\\frac{1}{A} = ' + deT(1000 / r.m, 0) + '\\,\\Omega\\), also im Wesentlichen \\(R\\). Die Kurve wird flacher, der Schnittpunkt bleibt fast gleich.';
+      setOut($('klOut'), h);
+    }
+    $('klMod').addEventListener('click', () => { abi = false; setActive($('klMod'), $('klAb')); draw(); });
+    $('klAb').addEventListener('click', () => { abi = true; setActive($('klAb'), $('klMod')); draw(); });
+    $('klR').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- 9 h aus LEDs ---------- */
+  (function hAusLeds() {
+    const cv = $('leCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const heft = { rot: [474.4, 2.697], blau: [647.5, 4.122], uv: [751.4, 4.934], ir: [325.5, 1.594], gruen: [583.3, 2.865] };
+    const a21 = [[630, 2.02], [596, 2.15], [463, 2.75]].map((p) => [LC / (p[0] * 1e-9) / 1e14, p[1]]);
+    const originFit = (X, Y) => { let a = 0, b = 0; X.forEach((x, i) => { a += x * Y[i]; b += x * x; }); return a / b; };
+    function draw() {
+      const key = $('leD').value, withO = $('leO').checked;
+      let X, Y, map, toH, eqUnit, b0unit;
+      if (key === 'a2021') {
+        X = a21.map((p) => p[0]); Y = a21.map((p) => p[1]);
+        map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, 8, 0, 3.5, 'f in 10¹⁴ Hz', 'E in eV (Zahlenwert von U_c)', { xs: 1, ys: 0.5 });
+        toH = (m) => m * 1e-14 * EL; eqUnit = '\\frac{\\mathrm{eV}}{10^{14}\\,\\mathrm{Hz}}'; b0unit = '\\mathrm{eV}';
+      } else {
+        const keys = key === 'heft4' ? ['rot', 'blau', 'uv', 'ir'] : ['rot', 'blau', 'uv', 'ir', 'gruen'];
+        X = keys.map((k) => heft[k][0]); Y = keys.map((k) => heft[k][1]);
+        map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 0, 800, -1.5, 6, 'f in THz', 'E in 10⁻¹⁹ J', { xs: 100, ys: 1 });
+        toH = (m) => m * 1e-19 / 1e12;
+      }
+      const r = linreg(X, Y), x1 = key === 'a2021' ? 8 : 800, h = toH(r.m), ab = (h - PL) / PL * 100;
+      const xStart = 0, g = (x) => r.m * x + r.b;
+      curve(ctx, map, g, xStart, x1, css('--accent'), 2.5, null, 2);
+      let origin = null;
+      if (withO) { origin = originFit(X, Y); curve(ctx, map, (x) => origin * x, 0, Math.min(x1, (key === 'a2021' ? 3.5 : 6) / origin), css('--efield'), 2, [6, 5], 2); }
+      X.forEach((x, i) => dot(ctx, map.X(x), map.Y(Y[i]), css('--fg'), 4));
+      if (key !== 'a2021') { const gp = heft.gruen; if (key === 'heft4') { ctx.strokeStyle = css('--pos'); ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(map.X(gp[0]), map.Y(gp[1]), 5, 0, TAU); ctx.stroke(); } else dot(ctx, map.X(gp[0]), map.Y(gp[1]), css('--pos'), 6); ctx.fillStyle = css('--pos'); ctx.textAlign = 'left'; ctx.font = '12px system-ui'; ctx.fillText('grün', map.X(gp[0]) + 8, map.Y(gp[1]) + 14); }
+      let t = (key === 'a2021'
+        ? '\\(E(f) = ' + deT(r.m, 3) + '\\,' + eqUnit + '\\cdot f ' + (r.b < 0 ? '-' : '+') + deT(Math.abs(r.b), 3) + '\\,' + b0unit + '\\)'
+        : '\\(E(f) = ' + sciT(r.m * 1e-19, 3) + '\\,\\frac{\\mathrm{J}}{\\mathrm{THz}}\\cdot f - ' + sciT(Math.abs(r.b) * 1e-19, 3) + '\\,\\mathrm{J}\\)') + '<br>\\(r = ' + deT(r.r, 4) + '\\)<br>\\(h = \\htmlClass{hl}{' + sciT(h, 3) + '\\,\\mathrm{Js}}\\) (Abweichung \\(' + signT(ab, 1) + '\\,\\%\\))';
+      if (origin !== null) { const h0 = toH(origin), a0 = (h0 - PL) / PL * 100; t += '<br>Ursprungsgerade (lila): \\(h = ' + sciT(h0, 3) + '\\,\\mathrm{Js}\\) (Abweichung \\(' + signT(a0, 1) + '\\,\\%\\))'; }
+      if (key === 'heft4') t += '<br>Der rote Kringel ist die grüne LED. Sie ist nicht in der Regression, das Heft lässt sie weg.';
+      if (key === 'heft5') t += '<br>Mit grün wird die Regression deutlich schlechter. Das ist der Grund, warum das Heft sie weglässt.';
+      setOut($('leOut'), t);
+    }
+    ['leD', 'leO'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
+  })();
+
+  /* ---------- 10 Röntgenspektrum ---------- */
+  (function roentgen() {
+    const cv = $('rtCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
+    const d = 282e-12;
+    function draw() {
+      const U = parseFloat($('rtU').value) * 1e3, lmin = PL * LC / (EL * U) * 1e12, fmax = EL * U / PL, EJ = EL * U;
+      setOut($('rtUv'), '\\(' + (U / 1e3) + '\\,\\mathrm{kV}\\)');
+      const map = frame(ctx, W, H, { l: 44, r: 14, t: 22, b: 36 }, 20, 110, 0, 2.4, 'λ in pm', 'I (schematisch)', { xs: 10, ys: 0.5 });
+      const C = 4 * 31 * 31, amp = U > 20e3 ? 1.5 * Math.pow(Math.min(1, (U - 20e3) / 20e3), 1.3) : 0;
+      const gauss = (l, c, a) => a * Math.exp(-(l - c) * (l - c) / (2 * 0.8 * 0.8));
+      const brems = (l) => (l > lmin ? C * (l / lmin - 1) / (l * l) : 0);
+      const I = (l) => brems(l) + (l > lmin ? gauss(l, 71.7, amp) + gauss(l, 62.9, amp * 0.5) : 0);
+      curve(ctx, map, I, 20, 110, css('--accent'), 2.4, null, 900);
+      ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = css('--pos'); ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(map.X(lmin), map.Y(0)); ctx.lineTo(map.X(lmin), map.Y(1.7)); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = css('--pos'); ctx.font = '12px system-ui'; ctx.textAlign = 'center'; ctx.fillText('λ_min', map.X(lmin), map.Y(1.7) - 5);
+      if (amp > 0) { ctx.fillStyle = css('--kin'); ctx.textAlign = 'left'; ctx.fillText('feste Peaks', map.X(74), map.Y(Math.max(I(71.7) - 0.25, 0.3))); }
+      const sinb = lmin * 1e-12 / (2 * d), beta = Math.asin(sinb) * 180 / Math.PI;
+      setOut($('rtOut'), '\\(E = e U_B = ' + sciT(EJ, 3) + '\\,\\mathrm{J}\\)<br>'
+        + '\\(f_{\\mathrm{max}} = \\frac{e U_B}{h} = ' + sciT(fmax, 3) + '\\,\\mathrm{Hz}\\)<br>'
+        + '\\(\\lambda_{\\mathrm{min}} = \\frac{hc}{e U_B} = \\htmlClass{hl}{' + deT(lmin, 1) + '\\,\\mathrm{pm}}\\)<br>'
+        + 'Grenzwinkel bei \\(d = 282\\,\\mathrm{pm}\\), \\(n = 1\\): \\(\\beta = ' + deT(beta, 2) + '{}^\\circ\\)<br>'
+        + (U >= 20e3 ? 'Die Peaks bei \\(62{,}9\\) und \\(71{,}7\\,\\mathrm{pm}\\) bleiben stehen, nur die Kante wandert.' : 'Unter etwa \\(20\\,\\mathrm{kV}\\) werden die Peaks nicht angeregt.'));
+    }
+    $('rtU').addEventListener('input', draw); onTheme(draw); draw();
+  })();
+
+  /* ---------- Quiz ---------- */
+  (function quiz() {
+    const qs = [
+      { q: 'Dasselbe Licht trifft mit doppelter Intensität auf eine Cäsiumfläche. Was ändert sich?', o: ['\\(E_{\\mathrm{kin,max}}\\) verdoppelt sich.', 'Die Zahl der Elektronen pro Sekunde steigt, \\(E_{\\mathrm{kin,max}}\\) bleibt.', 'Die Grenzfrequenz sinkt.'], a: 1, e: 'Doppelte Intensität heißt doppelt so viele Photonen pro Sekunde. Jedes einzelne Photon hat weiter dieselbe Energie \\(h f\\).' },
+      { q: 'Eine <b>positiv</b> geladene Zinkplatte wird mit UV bestrahlt. Warum bleibt der Zeiger stehen?', o: ['UV löst aus einer positiven Platte keine Elektronen.', 'Elektronen treten aus, werden aber von der positiven Platte zurückgezogen.', 'Positive Ladungen sind zu schwer, um die Platte zu verlassen.'], a: 1, e: '„Ladung bleibt" heißt nicht „es passiert nichts". Die Elektronen kommen heraus, netto ändert sich die Ladung aber nicht.' },
+      { q: 'Dunkelrotes Licht (\\(750\\,\\mathrm{nm}\\)) trifft im Heft-Versuch mit größter Intensität auf Cäsium. Was passiert?', o: ['Nach längerer Zeit treten Elektronen aus.', 'Es treten Elektronen aus, aber nur langsame.', 'Kein Elektron tritt aus.'], a: 2, e: '\\(f\\) liegt unter \\(f_{\\mathrm{Gr}}\\). Ein Photon gibt seine Energie an genau ein Elektron ab, Sparen über mehrere Photonen gibt es nicht.' },
+      { q: 'Was bedeuten im \\(f\\)-\\(E_{\\mathrm{kin,max}}\\)-Diagramm Steigung und Hochachsenabschnitt?', o: ['Steigung \\(h\\), Abschnitt \\(-E_A\\)', 'Steigung \\(E_A\\), Abschnitt \\(-h\\)', 'Steigung \\(h/e\\), Abschnitt \\(+E_A\\)'], a: 0, e: 'Aus \\(E_{\\mathrm{kin,max}} = h f - E_A\\): \\(y = m x + b\\) mit \\(m = h\\) und \\(b = -E_A\\). Die Nullstelle ist \\(f_{\\mathrm{Gr}}\\).' },
+      { q: 'Gemessen: \\(U_0 = 0{,}986\\,\\mathrm{V}\\). Wie groß ist \\(E_{\\mathrm{kin,max}}\\)?', o: ['\\(0{,}986\\,\\mathrm{eV}\\)', '\\(0{,}986\\cdot 10^{-19}\\,\\mathrm{J}\\)', '\\(1{,}58\\,\\mathrm{eV}\\)'], a: 0, e: 'In eV ist der Zahlenwert gleich der Spannung. In Joule wären es \\(1{,}58\\cdot 10^{-19}\\,\\mathrm{J}\\).' },
+      { q: 'Ein anderes Metall hat eine größere Austrittsarbeit. Was passiert mit der Geraden im \\(f\\)-\\(E_{\\mathrm{kin,max}}\\)-Diagramm?', o: ['Sie wird steiler.', 'Sie wird flacher.', 'Sie wird parallel verschoben: gleiche Steigung, größere Grenzfrequenz.'], a: 2, e: 'Die Steigung ist \\(h\\) und damit für jedes Material gleich. Nur \\(E_A\\) ändert sich.' },
+      { q: 'Die Spannung an einer leuchtenden roten LED wird erhöht. Was passiert?', o: ['Sie wird heller, die Farbe bleibt.', 'Das Licht wird blauer.', 'Die Photonen werden energiereicher, ihre Zahl bleibt gleich.'], a: 0, e: 'Die Photonenenergie ist durch die Bandlücke \\(\\Delta E\\) festgelegt. Mehr Spannung bringt mehr Elektronen pro Sekunde.' },
+      { q: 'Warum darf man den Schnittpunkt der \\(U\\)-\\(I\\)-Geraden mit der \\(U\\)-Achse als \\(U_s\\) nehmen, obwohl \\(R\\) in der Schaltung sitzt?', o: ['Weil \\(R\\) klein gegen den LED-Widerstand ist.', 'Weil bei \\(I = 0\\) an \\(R\\) keine Spannung abfällt.', 'Weil die Gerade durch den Ursprung geht.'], a: 1, e: 'Aus \\(U_D = (1/A - R)\\,I - B/A\\) folgt bei \\(I = 0\\): \\(U_s = -B/A\\). Die Gesamtspannung ist dort gleich der LED-Spannung.' },
+      { q: 'Abitur 2021: Erwärmung führt zu Energieverlust in der LED. Wie wirkt das auf das gemessene \\(h\\)?', o: ['\\(h\\) fällt zu groß aus.', '\\(h\\) fällt zu klein aus.', 'Kein Einfluss auf \\(h\\).'], a: 0, e: 'Für jedes Photon ist mehr als \\(h f\\) nötig. Also werden die Spannungen \\(U_c\\) größer und damit auch der ermittelte Wert für \\(h\\).' },
+      { q: 'Die Beschleunigungsspannung einer Röntgenröhre wird verdoppelt. Was passiert mit \\(\\lambda_{\\mathrm{min}}\\)?', o: ['Sie wird halbiert.', 'Sie wird verdoppelt.', 'Sie bleibt gleich.'], a: 0, e: '\\(\\lambda_{\\mathrm{min}} = \\frac{hc}{e U_B}\\), also antiproportional zu \\(U_B\\). Die Peaks dagegen bleiben stehen, sie gehören zum Anodenmaterial.' }
+    ];
+    const box = $('quiz'); let score = 0, done = 0;
+    qs.forEach((item, i) => {
+      const dv = document.createElement('div'); dv.className = 'q';
+      texHTML(dv, '<b>' + (i + 1) + '.</b> ' + item.q + '<div class="opts"></div><div class="fb"></div>');
+      const opts = dv.querySelector('.opts'), fb = dv.querySelector('.fb');
+      item.o.forEach((txt, j) => {
+        const b = document.createElement('button'); texHTML(b, txt);
+        b.addEventListener('click', () => {
+          if (dv.dataset.done) return; dv.dataset.done = '1'; done++;
+          if (j === item.a) { score++; texHTML(fb, '<span class="right">Richtig.</span> ' + item.e); } else { texHTML(fb, '<span class="wrong">Nein.</span> Richtig: „' + item.o[item.a].replace(/\.$/, '') + '". ' + item.e); }
+          $('quizScore').textContent = 'Stand: ' + score + ' von ' + done + ' richtig' + (done === qs.length ? ' – fertig.' : '');
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(dv);
+    });
+    $('quizScore').textContent = 'Stand: 0 von 0';
+  })();
+  (function progress() {
+    const key = 'physik-l9-progress'; let st = {};
+    try { st = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { st = {}; }
+    document.querySelectorAll('#progress input').forEach((cb) => { cb.checked = !!st[cb.dataset.k]; cb.addEventListener('change', () => { st[cb.dataset.k] = cb.checked; try { localStorage.setItem(key, JSON.stringify(st)); } catch (e) { } }); });
+  })();
+})();
+</script>
+</body>
+</html>
