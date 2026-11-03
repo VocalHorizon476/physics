@@ -76,10 +76,10 @@
   .ex .t { font-weight: 600; }
   /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
   .grid2 > *, .cards > *, .hand > * { min-width: 0; }
-  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
-  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .f.wide { display: block; position: relative; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
   .out { max-width: 100%; }
-  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+  @media (max-width: 760px) { .card table { display: block; position: relative; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -162,7 +162,6 @@
     <li>Die zugewandte Seite ist entgegengesetzt geladen → Anziehung. Die abgewandte Seite ist gleichnamig geladen → Abstoßung.</li>
     <li>Die zugewandte Seite ist näher am Stab. Die Kraft nimmt mit dem Abstand ab (Coulomb, Abschnitt 4), also ist die Anziehung stärker als die Abstoßung. Netto: Anziehung.</li>
   </ol>
-  <div class="note"><b>Analogie:</b> Influenz = Passagiere in einem Bus, die in der Kurve alle auf eine Seite rutschen (frei beweglich). Polarisation = angeleinte Hunde, die sich zur Wurst strecken, aber nicht loskommen (gebunden, nur Verformung).</div>
   <div class="note exam"><b>So fragt die Klausur:</b> „Erklären Sie mit einer Skizze, warum der neutrale Körper angezogen wird." Erwartet: Skizze mit Ladungsverteilung (zugewandte Seite entgegengesetzt), Begriff Influenz oder Polarisation richtig zugeordnet, Argument mit dem Abstand.</div>
 </section>
 
@@ -182,7 +181,7 @@
     <label><input type="checkbox" id="probeNeg"> Probeladung negativ</label>
   </div>
   <canvas id="fieldCanvas" width="640" height="360"></canvas>
-  <p class="small">Mit der Maus über das Bild fahren: der Pfeil zeigt die Kraft auf eine Probeladung an dieser Stelle. Pfeillänge = Stärke (wächst mit der Liniendichte). Haken bei „Probeladung negativ": der Pfeil dreht sich um.</p>
+  <p class="small">Mit der Maus über das Bild fahren: der Pfeil zeigt die Kraft auf eine Probeladung an dieser Stelle. Pfeillänge = Stärke, logarithmisch skaliert: gleiche Längenunterschiede bedeuten gleiche Faktoren, über drei Zehnerpotenzen; ganz nah an einer Ladung ist die Länge gesättigt (bleibt maximal). Haken bei „Probeladung negativ": der Pfeil dreht sich um.</p>
 
   <h3>Die Regeln, jede mit Begründung</h3>
   <ol>
@@ -197,7 +196,7 @@
         <li>Diese Oberflächenladungen erzeugen selbst ein Feld. Im Inneren zeigt es von <span class="pos">+</span> (rechts) nach <span class="neg">−</span> (links), also <b>gegen</b> das äußere Feld.</li>
         <li>Solange innen noch ein Rest des äußeren Feldes übrig ist, wirkt weiter eine Kraft, und es wandern weitere Elektronen nach links. Das Gegenfeld wächst. Der Vorgang hört erst auf, wenn sich innen beide Felder <b>genau aufheben</b>: <span class="f">\(E_{\mathrm{innen}} = E_{\mathrm{außen}} + E_{\mathrm{Influenz}} = 0\)</span>. Dann gibt es keine Kraft mehr, die noch etwas verschieben könnte. Das Gleichgewicht stellt sich in Sekundenbruchteilen ein.</li>
       </ol>
-      Folgen: Feldlinien enden auf der Oberfläche des Leiters und gehen nicht hindurch; im Inneren eines hohlen Leiters (Käfig, Auto, Flugzeug) ist man vor äußeren elektrischen Feldern geschützt, auch bei Gewitter. Es spielt keine Rolle, ob der Leiter massiv oder hohl ist und ob er geladen ist oder neutral. Nur im Gleichgewicht (keine Ströme) gilt das; bei fließendem Strom ist im Draht ein Feld.</li>
+      Folgen: Feldlinien enden auf der Oberfläche des Leiters und gehen nicht hindurch; im Inneren eines hohlen Leiters (Käfig, Auto, Flugzeug) ist man vor äußeren elektrischen Feldern geschützt, auch bei Gewitter. Es spielt keine Rolle, ob der Leiter massiv oder hohl ist und ob er geladen ist oder neutral. Nur im Gleichgewicht (keine Ströme) gilt das; bei fließendem Strom ist im Draht ein Feld. Heft-Beleg: Im Grießkornversuch (unten) bleibt bei zwei konzentrischen Ringen das Innere des inneren Rings leer.</li>
   </ol>
   <svg viewBox="0 0 520 170" style="width:100%;max-width:520px;display:block;margin:6px auto" aria-label="Metallwürfel im homogenen Feld">
     <defs><marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--field)"/></marker><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--pos)"/></marker></defs>
@@ -212,29 +211,30 @@
     <text x="260" y="112" font-size="12" fill="var(--fg)" text-anchor="middle">innen: E = 0</text>
     <text x="95" y="155" font-size="11" fill="var(--muted)" text-anchor="middle">äußeres Feld</text><text x="422" y="155" font-size="11" fill="var(--muted)" text-anchor="middle">äußeres Feld</text>
   </svg>
-  <div class="note exam"><b>So fragt die Klausur:</b> „Begründen Sie, dass das elektrische Feld im Inneren eines Leiters null ist." Erwartet, in dieser Reihenfolge: freie Elektronen, Kraft durch das äußere Feld, Verschiebung (Influenz), Gegenfeld der Oberflächenladungen, Verschiebung endet erst bei vollständiger Aufhebung. Vier Sätze, der letzte ist der Punktbringer: „Bliebe innen ein Feld, würden weitere Ladungen verschoben; das Gleichgewicht ist erst bei <span class="f">\(E_{\mathrm{innen}} = 0\)</span> erreicht."</div>
+  <div class="note exam"><b>So fragt die Klausur:</b> „Begründen Sie, dass das elektrische Feld im Inneren eines Leiters null ist." Antwort = die Schritte a–d oben in dieser Reihenfolge; der Punktbringer ist der letzte Satz: „Bliebe innen ein Feld, würden weitere Ladungen verschoben; das Gleichgewicht ist erst bei <span class="f">\(E_{\mathrm{innen}} = 0\)</span> erreicht."</div>
 
   <h3>Homogen oder inhomogen?</h3>
   <p><b>Homogen</b> heißt: an jedem Ort gleich stark und gleich gerichtet. Im Bild: Feldlinien parallel, gerade und gleich dicht. Das gibt es (näherungsweise) im Inneren eines Plattenkondensators, weit weg vom Rand. Am Rand biegen sich die Linien nach außen (<b>Randfeld</b>), dort ist das Feld inhomogen. Punktladung und Dipol sind überall inhomogen: Linien laufen auseinander, das Feld wird mit dem Abstand schwächer. Klick oben auf „Plattenkondensator" und vergleiche innen mit dem Rand.</p>
 
   <h3>Grießkornversuch (Beobachtung und Deutung trennen)</h3>
   <p><b>Aufbau:</b> Zwei flache Elektroden liegen in einer Schale mit Öl. Grießkörner werden auf das Öl gestreut, an die Elektroden werden mehrere kV angelegt.</p>
-  <p><b>Beobachtung:</b> Die Körner richten sich innerhalb weniger Sekunden aus und bilden Ketten entlang bestimmter Linien. Zwei parallele Platten: parallele Linien dazwischen. Punkt-Elektrode: sternförmig. Ring um eine Punkt-Elektrode: sternförmig im Inneren, außerhalb des Rings nichts. Spitze gegenüber einer Platte: Linien laufen an der Spitze eng zusammen (Feld dort am stärksten).</p>
+  <p><b>Beobachtung</b> (Heft Abb. 1, vier Anordnungen): Die Körner richten sich innerhalb weniger Sekunden aus und bilden Ketten entlang bestimmter Linien. Zwei parallele Platten: parallele Ketten dazwischen. Punkt-Elektrode in einem Ring: sternförmig vom Punkt zum Ring. Zwei konzentrische Ringe: radiale Ketten nur zwischen den Ringen, im inneren Ring keine Ketten, dort ist es feldfrei (Regel 5). Spitze gegenüber einer gebogenen Elektrode: Die Ketten laufen an der Spitze eng zusammen (Feld dort am stärksten).</p>
   <p><b>Deutung:</b> Im Feld werden die Grießkörner polarisiert (Öl und Grieß sind Nichtleiter). Die entgegengesetzt geladenen Enden benachbarter Körner ziehen sich an, deshalb bilden sich Ketten. Die Ketten liegen in Richtung der Kraft, also entlang der Feldlinien. Das Bild zeigt die Feldlinien, nicht das Feld selbst.</p>
   <div class="note warn"><b>Verwechslungsgefahr: Feldlinien sind keine Flugbahnen.</b> Eine Ladung bewegt sich nur dann entlang einer Feldlinie, wenn sie aus der Ruhe startet und die Linie gerade ist. Mit Anfangsgeschwindigkeit quer zum Feld entsteht eine Parabel (Lektion 2). Feldlinien zeigen die Kraftrichtung, nicht die Bewegungsrichtung.</div>
 
-  <h3>E-Feld vs. B-Feld (Tabelle aus dem Heft, ergänzt)</h3>
+  <h3>E-Feld vs. B-Feld (Tabelle aus dem Heft)</h3>
   <table>
     <tr><th></th><th>Elektrisches Feld</th><th>Magnetisches Feld</th></tr>
-    <tr><td>Ursache</td><td>Ladungen (ruhend reicht)</td><td>Magnete, später: bewegte Ladungen / Ströme</td></tr>
-    <tr><td>Feldlinien</td><td>beginnen an <span class="pos">+</span>, enden an <span class="neg">−</span></td><td>geschlossen: außen N → S, im Magneten S → N zurück. Kein Anfang, kein Ende</td></tr>
-    <tr><td>„Quellen"</td><td>Ladungen sind Quellen (Linien entspringen dort)</td><td>quellenfrei: nirgends entspringt eine Linie</td></tr>
-    <tr><td>Einzelpole</td><td>eine einzelne + oder − Ladung existiert (trennbar)</td><td>keine Monopole: Magnet zerbrechen → zwei Magnete, jeder wieder mit N und S</td></tr>
-    <tr><td>Wirkt auf</td><td>alle geladenen Körper, auch ruhende (<span class="f">\(F = q\cdot E\)</span>)</td><td>ferromagnetische Stoffe; auf ruhende Ladungen keine Kraft (auf bewegte: Lorentzkraft, Lektion 4)</td></tr>
-    <tr><td>Durchdringt</td><td>Nichtleiter; Leiter schirmen ab (Faraday-Käfig)</td><td>alle nicht-ferromagnetischen Stoffe; Abschirmung nur mit Eisen</td></tr>
-    <tr><td>Sichtbar machen</td><td>Grießkörner in Öl</td><td>Eisenfeilspäne</td></tr>
+    <tr><td>Kräfte</td><td>Gleiche Ladungen stoßen sich ab, ungleiche ziehen sich an.</td><td>Gleichnamige Pole stoßen sich ab, ungleichnamige ziehen sich an.</td></tr>
+    <tr><td>Laden / Magnetisieren</td><td>Leitfähige Stoffe lassen sich besonders gut elektrisch laden.</td><td>Man kann ferromagnetische Stoffe magnetisieren.</td></tr>
+    <tr><td>Anziehung</td><td>Elektrische Ladungen können z. B. Papierschnipsel anziehen.</td><td>Magnete können nur ferromagnetische Stoffe anziehen.</td></tr>
+    <tr><td>Sichtbar machen</td><td>Das elektrische Feld kann durch die Ausrichtung von Grießkörnern sichtbar gemacht werden.</td><td>Das magnetische Feld kann durch die Ausrichtung von Eisenfeilspänen sichtbar gemacht werden.</td></tr>
+    <tr><td>Einzelpole</td><td>Positive und negative Ladungen können voneinander getrennt werden.</td><td>Es gibt keine magnetischen Monopole (nur Nord- oder nur Südpol), sondern nur Dipole („Zweipole").</td></tr>
+    <tr><td>Quellen</td><td>Ladungen sind Quellen des elektrischen Feldes.</td><td>Magnetfelder haben keine Quelle (sind quellenfrei).</td></tr>
+    <tr><td>Feldlinien</td><td>Elektrische Feldlinien beginnen am Pluspol und enden am Minuspol.</td><td>Magnetfeldlinien sind immer geschlossen, kein Anfang oder Ende.</td></tr>
+    <tr><td>Wirkt auf</td><td>Elektrische Felder wirken auf alle geladenen Körper.</td><td>Magnetfelder wirken auf ferromagnetische Körper.</td></tr>
+    <tr><td>Durchdringt</td><td>Elektrische Felder durchdringen Nichtleiter.</td><td>Magnetische Felder durchdringen alle Stoffe, die nicht ferromagnetisch sind.</td></tr>
   </table>
-  <div class="note"><b>Analogie:</b> E-Feld wie Wasser, das aus einer Quelle (+) kommt und in einem Abfluss (−) verschwindet: jede Stromlinie hat Start und Ziel. B-Feld wie Wasser in einem geschlossenen Rohr-Ring mit Pumpe: es fließt im Kreis, nirgends entsteht oder verschwindet etwas. Deshalb: Ladung isolierbar, Nordpol nicht.</div>
   <div class="note exam"><b>So fragt die Klausur:</b> „Skizzieren Sie das Feldlinienbild von ..." (Richtungspfeile nicht vergessen, Dichte sinnvoll, senkrecht auf Leitern). „Begründen Sie, dass im Inneren des Leiters kein Feld herrscht." „Erläutern Sie die Beobachtung im Grießkornversuch."</div>
 </section>
 
@@ -251,50 +251,52 @@
     <li>Schluss, wenn der Kraftmesser keine Änderung mehr anzeigt.</li>
   </ol>
   <h4>Woher weiß man, dass genau halbiert wird?</h4>
-  <p>Durch <b>Symmetrie</b>, nicht durch Messen:</p>
-  <ol>
-    <li>Berühren sich die beiden Platten, bilden sie <b>einen</b> zusammenhängenden Leiter. Die Ladungen stoßen sich ab und verteilen sich, bis Ruhe herrscht (elektrostatisches Gleichgewicht: nirgends wirkt mehr eine Kraft entlang der Oberfläche, der ganze Leiter ist auf gleichem Potenzial).</li>
-    <li>Die beiden Hälften sind <b>baugleich</b> (gleiche Form, Größe, Material). Keine Hälfte ist bevorzugt. Hätte Platte 1 mehr Ladung als Platte 2, wäre die gespiegelte Situation (Platte 2 mehr) genauso gültig. Es gibt aber nur eine Gleichgewichtsverteilung, also müssen beide gleich viel tragen: je <span class="f">\(Q/2\)</span>.</li>
-    <li>Jetzt schnell trennen (an isolierten Griffen). Jede Platte behält, was sie gerade hat.</li>
-  </ol>
-  <p><b>Praktisch:</b> Platte 2 vorher erden (entladen). Beide Platten an Isoliergriffen halten. Die Teilung außerhalb des Kondensatorfelds machen oder beide Platten symmetrisch zum Feld halten, sonst verschiebt das Feld zusätzlich Ladung (Influenz) und die Teilung ist nicht mehr exakt. Wäre Platte 2 größer als Platte 1, würde sie <b>mehr</b> als die Hälfte mitnehmen: Ladung teilt sich im Verhältnis der „Fassungsvermögen" (Kapazitäten, Lektion 2). Deshalb muss sie identisch sein.</p>
-  <div class="note"><b>Analogie:</b> Zwei gleich große Wassertanks, unten verbunden. Das Wasser verteilt sich, bis der Pegel gleich ist (gleiches Potenzial). Gleiche Tanks → gleiche Menge. Ein größerer Tank würde mehr abbekommen.</div>
+  <p>Beim Berühren bilden beide Platten einen einzigen Leiter, auf dem sich die Ladung verteilt, bis Ruhe herrscht. Weil beide Platten baugleich sind, ist keine Seite bevorzugt (Symmetrie), also trägt jede genau <span class="f">\(Q/2\)</span>; eine größere Platte 2 würde mehr als die Hälfte mitnehmen (Kapazität, Lektion 3).</p>
   <p><b>Warum so umständlich:</b> Die Ladung <span class="f">\(Q\)</span> selbst kann man hier nicht direkt messen. Aber die <b>Verhältnisse</b> <span class="f">\(1 : 1/2 : 1/4 : 1/8 : 1/16\)</span> sind exakt bekannt. Das reicht, um den Zusammenhang <span class="f">\(F(Q)\)</span> zu untersuchen.</p>
   <div class="grid2">
     <div>
       <table>
-        <tr><th>Anteil</th><th><span class="f">\(Q\)</span> in nC</th><th><span class="f">\(F\)</span> in mN</th></tr>
+        <tr><th>Anteil der Ladung (Heft)</th><th><span class="f">\(Q\)</span> in nC, <b>Annahme</b> Anteil 1 ≙ 10 nC</th><th><span class="f">\(F\)</span> in mN</th></tr>
         <tr><td>1</td><td>10</td><td>4,3</td></tr>
-        <tr><td>½</td><td>5</td><td>2,4</td></tr>
-        <tr><td>¼</td><td>2,5</td><td>1,5</td></tr>
-        <tr><td>⅛</td><td>1,25</td><td>1,2</td></tr>
-        <tr><td>1/16</td><td>0,625</td><td>0,9</td></tr>
+        <tr><td>1/2 = 0,5</td><td>5</td><td>2,4</td></tr>
+        <tr><td>1/4 = 0,25</td><td>2,5</td><td>1,5</td></tr>
+        <tr><td>1/8 = 0,125</td><td>1,25</td><td>1,2</td></tr>
+        <tr><td>1/16 = 0,0625</td><td>0,625</td><td>0,9</td></tr>
+        <tr><td>1/32 = 0,03125</td><td>0,3125</td><td>0,8</td></tr>
       </table>
+      <p class="small">Das Heft misst nur den <b>Anteil</b> der Ladung (1, ½, ¼ …), nicht die Ladung selbst; die nC-Spalte ist eine Annahme, damit <span class="f">\(E\)</span> eine Zahl bekommt (Heft S. 19 setzt beim Pendel „1 = 10 nC"). Der 6. Messpunkt steht in der Heft-Tabelle als „0,3125"; gemeint ist 1/32 = 0,03125, so zeigt es das TR-Diagramm im Heft. „Möglichst genau" heißt: alle sechs Punkte verwenden.</p>
       <div class="out" id="regOut"></div>
     </div>
     <div>
       <canvas id="regCanvas" width="480" height="300"></canvas>
-      <p class="small">Messpunkte und Ausgleichsgerade (lineare Regression).</p>
+      <p class="small">Messpunkte und Ausgleichsgerade (lineare Regression); x-Achse: Anteil der Ladung <span class="f">\(Q/Q_0\)</span>.</p>
     </div>
   </div>
   <p><b>Ergebnis:</b> Die Punkte liegen auf einer Geraden, also <span class="f">\(F \propto Q\)</span>: halbe Ladung, halbe Kraft. Der Quotient <span class="f">\(F/Q\)</span> ist an diesem Ort immer gleich, egal welche Probeladung man hineinhängt. Diese Zahl beschreibt also nur noch das <b>Feld</b>, nicht die Probeladung. Genau das nennt man Feldstärke:</p>
   <div class="formula">\[E = \frac{F}{q},\qquad [E] = 1\,\mathrm{\frac{N}{C}} = 1\,\mathrm{\frac{V}{m}}\]</div>
   <ul>
     <li><span class="f">\(E\)</span> ist die Steigung der Geraden im <span class="f">\(F\)</span>-<span class="f">\(Q\)</span>-Diagramm.</li>
-    <li><span class="f">\(E\)</span> ist ein <b>Vektor</b>. Richtung = Kraftrichtung auf eine positive Ladung. Auf eine <span class="neg">negative</span> Ladung wirkt die Kraft <b>entgegen</b> der Feldrichtung: <span class="f">\(F = q\cdot E\)</span> mit <span class="f">\(q < 0\)</span>.</li>
+    <li><span class="f">\(E\)</span> ist ein <b>Vektor</b>. Richtung = Kraftrichtung auf eine positive Ladung. Auf eine <span class="neg">negative</span> Ladung wirkt die Kraft <b>entgegen</b> der Feldrichtung: <span class="f">\(F = q\cdot E\)</span> mit <span class="f">\(q \lt 0\)</span>.</li>
     <li>Umgekehrt: Kennt man <span class="f">\(E\)</span>, bekommt man die Kraft auf jede Ladung: <span class="f">\(F = q\cdot E\)</span>. Analogie: <span class="f">\(F = m\cdot g\)</span>.</li>
-    <li>Der y-Achsenabschnitt (<span class="f">\(0{,}7\,\mathrm{mN}\)</span> bei <span class="f">\(Q = 0\)</span>) müsste eigentlich 0 sein: keine Ladung, keine Kraft. Die Abweichung kommt aus Messfehlern bzw. dem Randfeld an der Plattenkante. In der Klausur: Erwartung nennen, Abweichung erklären.</li>
+    <li>Der y-Achsenabschnitt (<span class="f">\(0{,}67\,\mathrm{mN}\)</span> bei <span class="f">\(Q = 0\)</span>) müsste eigentlich 0 sein: keine Ladung, keine Kraft. Das Heft erklärt die Abweichung mit Messungenauigkeit. Ein Randfeld allein erklärt sie nicht: Bei <span class="f">\(Q = 0\)</span> erzeugt auch ein Randfeld keine Kraft <span class="f">\(q\cdot E\)</span>; nur wenn das inhomogene Randfeld in der ungeladenen Platte Ladungen verschiebt (Influenz), bleibt eine kleine Kraft übrig. In der Klausur: Erwartung nennen, Abweichung erklären.</li>
   </ul>
   <div class="note"><b>Analogie:</b> Wind messen mit einem Segel. Doppeltes Segel, doppelte Kraft. Kraft pro Segelfläche beschreibt den Wind, nicht das Segel. Ladung = Segel, Feld = Wind.</div>
   <h3>Auswertung mit dem Taschenrechner dokumentieren (5 Schritte, gibt Punkte)</h3>
   <ol>
     <li><b>Werte in den TR</b> übernehmen; Umrechnungen mit einem Beispiel zeigen (z. B. <span class="f">\(\mathrm{mN}\)</span> in <span class="f">\(\mathrm{N}\)</span>).</li>
-    <li><b>Diagramm anlegen:</b> x-Achse: <span class="f">\(Q\)</span> in nC, y-Achse: <span class="f">\(F\)</span> in mN. Größen und Einheiten hinschreiben.</li>
-    <li><b>Regressionstyp begründen:</b> „Die Punkte liegen augenscheinlich auf einer Geraden → lineare Regression." TR-Ergebnis angeben: <span class="f">\(y = 0{,}36\cdot x + 0{,}7\)</span>.</li>
-    <li><b>In Physik übersetzen:</b> <span class="f">\(x\)</span>, <span class="f">\(y\)</span> durch Formelzeichen ersetzen, Einheiten dran: <span class="f">\(F = 0{,}36 \,\mathrm{mN/nC} \cdot Q + 0{,}7 \,\mathrm{mN}\)</span>. Achsenabschnitt diskutieren (siehe oben).</li>
-    <li><b>Konstante interpretieren:</b> Steigung = Feldstärke, <span class="f">\(E = 0{,}36 \,\mathrm{mN/nC} = 3{,}6\cdot 10^{5} \,\mathrm{N/C}\)</span>. Umrechnung: <span class="f">\(1\,\mathrm{mN/nC} = 10^{-3}\,\mathrm{N} / 10^{-9}\,\mathrm{C} = 10^{6}\,\mathrm{N/C}\)</span>.</li>
+    <li><b>Diagramm anlegen:</b> x-Achse: Anteil der Ladung <span class="f">\(Q/Q_0\)</span> (ohne Einheit), y-Achse: <span class="f">\(F\)</span> in mN. Größen und Einheiten hinschreiben.</li>
+    <li><b>Regressionstyp begründen:</b> „Die Punkte liegen augenscheinlich auf einer Geraden → lineare Regression." TR-Ergebnis <b>ungerundet</b> abschreiben (Heft-TR, alle sechs Punkte): <span class="f">\(y = 3{,}58664\cdot x + 0{,}673134\)</span>.</li>
+    <li><b>In Physik übersetzen:</b> <span class="f">\(x\)</span>, <span class="f">\(y\)</span> durch Formelzeichen ersetzen, Einheiten dran, erst jetzt runden: <span class="f">\(F = 3{,}59\,\mathrm{mN}\cdot Q/Q_0 + 0{,}67\,\mathrm{mN}\)</span>; mit der Annahme <span class="f">\(Q_0 = 10\,\mathrm{nC}\)</span>: <span class="f">\(F = 0{,}359\,\mathrm{mN/nC}\cdot Q + 0{,}67\,\mathrm{mN}\)</span>. Achsenabschnitt diskutieren (siehe oben).</li>
+    <li><b>Konstante interpretieren:</b> Steigung = Feldstärke, <span class="f">\(E = 0{,}359\,\mathrm{mN/nC} \approx 3{,}6\cdot 10^{5}\,\mathrm{N/C}\)</span>. Umrechnung: <span class="f">\(1\,\mathrm{mN/nC} = 10^{-3}\,\mathrm{N} / 10^{-9}\,\mathrm{C} = 10^{6}\,\mathrm{N/C}\)</span>. Heft: <span class="f">\(F = 355\,000\,\mathrm{N/C}\cdot Q\)</span> mit der Notiz „Vorsicht: ggf. um Faktor 10 falsch", denn die Zehnerpotenz hängt an der Annahme, wie viel Ladung „Anteil 1" ist.</li>
   </ol>
-  <div class="note exam"><b>So fragt die Klausur:</b> „Erläutern Sie, wie man mit dem Versuch zeigt, dass die Kraft proportional zur Ladung ist." Erwartet: Halbierungstrick erklären (warum genau die Hälfte), Diagramm, Gerade durch den Ursprung, Steigung = <span class="f">\(E\)</span>.</div>
+
+  <h3>Methodik aus dem Heft: Fehlerbalken, Min-Max-Steigung, geltende Ziffern</h3>
+  <p><b>Fehlerbalken und Min-Max-Steigung</b> (Heft S. 2, Beispiel: Umfang <span class="f">\(U\)</span> und Durchmesser <span class="f">\(d\)</span> von Kreisen). Jeder Messwert hat eine Messunsicherheit, hier <span class="f">\(\Delta d = 1\,\mathrm{mm}\)</span> und <span class="f">\(\Delta U = 5\,\mathrm{mm}\)</span>. Im Diagramm zeichnet man sie als Fehlerbalken an jeden Punkt (waagerecht <span class="f">\(\Delta d\)</span>, senkrecht <span class="f">\(\Delta U\)</span>). Dann legt man zwei Ausgleichsgeraden, die im Rahmen der Fehlerbalken gerade noch durch alle Punkte passen: eine mit <b>maximaler</b> und eine mit <b>minimaler</b> Steigung. Die Steigung wird mit beiden Abweichungen angegeben:</p>
+  <div class="formula">\[m = 0{,}8^{+0{,}05}_{-0{,}10}\qquad(\text{Heft: } m_{\max} = 0{,}85,\; m_{\min} = 0{,}70)\]</div>
+  <p>Lies: Bestwert 0,8, nach oben höchstens 0,85, nach unten höchstens 0,70. Die Schreibweise <span class="f">\(\text{Wert}^{+\text{Abweichung nach oben}}_{-\text{Abweichung nach unten}}\)</span> ist die Klausurform einer Fehlerbetrachtung.</p>
+  <p><b>Geltende Ziffern</b> (Heft S. 3): Ein Ergebnis kann nicht genauer sein als der ungenaueste Wert, der in die Rechnung eingeht (schwächstes Glied einer Kette). Zählen: <span class="f">\(510{,}4\)</span> hat 4 geltende Ziffern (Wert zwischen 510,35 und 510,45), <span class="f">\(510\)</span> hat 3, <span class="f">\(51\cdot 10^{1}\)</span> hat 2, <span class="f">\(5\cdot 10^{2}\)</span> hat 1. <b>Endnullen zählen, Vornullen nicht:</b> <span class="f">\(0{,}00051\)</span> hat 2 geltende Ziffern, <span class="f">\(0{,}000510\)</span> hat 3.</p>
+  <p>Heft-Beispiel: <span class="f">\(2{,}0\,\mathrm{km}\)</span> (2 geltende Ziffern) in <span class="f">\(510{,}4\,\mathrm{s}\)</span> (4 geltende Ziffern): <span class="f">\(v = 2000\,\mathrm{m}/510{,}4\,\mathrm{s} = 3{,}9184952978\,\mathrm{m/s}\)</span> ist mathematisch korrekt, aber so genau darf man es in der Physik nicht angeben. Mit den Grenzen der gerundeten Werte: <span class="f">\(v_{\max} = 2{,}05\,\mathrm{km}/510{,}35\,\mathrm{s} = 4{,}017\,\mathrm{m/s}\)</span>, <span class="f">\(v_{\min} = 1{,}95\,\mathrm{km}/510{,}45\,\mathrm{s} = 3{,}820\,\mathrm{m/s}\)</span>. Sinnvoll ist deshalb <span class="f">\(v \approx 3{,}9\,\mathrm{m/s}\)</span>: zwei geltende Ziffern wie das schwächste Glied.</p>
+  <div class="note exam"><b>So fragt die Klausur:</b> „Erläutern Sie, wie man mit dem Versuch zeigt, dass die Kraft proportional zur Ladung ist." Erwartet: Halbierungstrick erklären (warum genau die Hälfte), Diagramm, Gerade durch den Ursprung, Steigung = <span class="f">\(E\)</span>. Bei jeder Messauswertung außerdem: Fehlerbalken, Min-Max-Steigung, Ergebnis mit passend vielen geltenden Ziffern.</div>
 </section>
 
 <!-- 4 -->
@@ -306,7 +308,7 @@
     <li><span class="f">\(Q_{1}\)</span>, <span class="f">\(Q_{2}\)</span>: die Ladungen <b>mit Vorzeichen</b>, in Coulomb. <span class="f">\(\mathrm{nC} = 10^{-9}\,\mathrm{C}\)</span>, <span class="f">\(\mathrm{\mu C} = 10^{-6}\,\mathrm{C}\)</span>.</li>
     <li><span class="f">\(r\)</span>: Abstand der <b>Mittelpunkte</b>, in Metern (nicht cm!), und er steht im Quadrat.</li>
     <li><span class="f">\(\varepsilon _{0}\)</span>: elektrische Feldkonstante (Naturkonstante, steht in der FS). <span class="f">\(k = 1/(4\pi \varepsilon _{0})\)</span> ist nur die ausgerechnete Abkürzung.</li>
-    <li><b>Vorzeichen des Ergebnisses:</b> <span class="f">\(F > 0\)</span> (gleichnamig) = Abstoßung, <span class="f">\(F < 0\)</span> (ungleichnamig) = Anziehung. In der Antwort immer in Worten dazuschreiben.</li>
+    <li><b>Vorzeichen des Ergebnisses:</b> <span class="f">\(F \gt 0\)</span> (gleichnamig) = Abstoßung, <span class="f">\(F \lt 0\)</span> (ungleichnamig) = Anziehung. In der Antwort immer in Worten dazuschreiben.</li>
     <li>In der FS steht zusätzlich <span class="f">\(\varepsilon _{r}\)</span> im Nenner (Dielektrizitätszahl des Stoffs dazwischen). In Luft/Vakuum ist <span class="f">\(\varepsilon _{r} = 1\)</span>, du kannst es weglassen.</li>
   </ul>
   <div class="grid2">
@@ -320,7 +322,7 @@
     </div>
     <div>
       <canvas id="coulCanvas" width="480" height="300"></canvas>
-      <p class="small">Kurve: Betrag der Kraft in Abhängigkeit vom Abstand; Punkt = aktuelle Einstellung. Doppelter Abstand → ein Viertel der Kraft.</p>
+      <p class="small">Kurve: Betrag der Kraft in mN in Abhängigkeit vom Abstand. <span class="pos">Roter Punkt</span> = aktuelle Einstellung <span class="f">\(r\)</span>; <span style="color:var(--ok)"><b>grüner Punkt</b></span> = doppelter Abstand <span class="f">\(2r\)</span> mit einem Viertel der Kraft (sichtbar, solange <span class="f">\(2r \le 10\,\mathrm{cm}\)</span>).</p>
     </div>
   </div>
   <div class="ex"><div class="t">Rechenbeispiel (so sieht der Rechenweg in der Klausur aus)</div>
@@ -329,23 +331,17 @@
     Antwort: Die Kugeln ziehen sich mit <span class="f">\(0{,}25\,\mathrm{mN}\)</span> an (negatives Vorzeichen, ungleichnamige Ladungen). Zwei geltende Ziffern, weil die Eingangswerte zwei haben.</p></div>
   <div class="note warn"><b>Typische Fehler:</b> <span class="f">\(r\)</span> in <span class="f">\(\mathrm{cm}\)</span> eingesetzt (Faktor <span class="f">\(10^{4}\)</span> falsch). Quadrat vergessen. <span class="f">\(\mathrm{nC}\)</span> nicht in <span class="f">\(\mathrm{C}\)</span> umgerechnet. Vorzeichen ignoriert und dann „abstoßend" geschrieben.</div>
 
-  <h3>Warum <span class="f">\(1/r^{2}\)</span>? Die Feldlinien verdünnen sich wie Farbe auf einem wachsenden Ballon</h3>
-  <p><b>Die Frage:</b> Warum sinkt die Kraft zwischen zwei Ladungen bei doppeltem Abstand auf ein Viertel und nicht auf die Hälfte? Die Antwort steckt im Feldlinienbild, und zwar in zwei Regeln aus Abschnitt 2: Die Linien <b>enden nirgends im leeren Raum</b>, und ihre <b>Dichte</b> (Linien pro Fläche) ist ein Maß für die Feldstärke.</p>
+  <h3>Warum <span class="f">\(1/r^{2}\)</span>? Herleitung über die Feldliniendichte (wie im Heft)</h3>
+  <p><b>Die Frage:</b> Warum sinkt die Kraft bei doppeltem Abstand auf ein Viertel und nicht auf die Hälfte? Die Antwort steckt in zwei Regeln aus Abschnitt 2: Feldlinien enden nirgends im leeren Raum, und ihre Dichte ist ein Maß für die Feldstärke.</p>
   <ol>
-    <li><b>Feste Linienzahl.</b> Beim Zeichnen vereinbart man: Pro Ladungsmenge eine feste Zahl Linien, zum Beispiel 16 Linien für 1 nC. Diese 16 Linien starten auf der Ladung und laufen geradlinig nach außen, immer weiter, ohne zu enden. Weit weg von der Ladung sind es immer noch genau 16 Linien, keine kommt dazu, keine verschwindet.</li>
-    <li><b>Gedachte Kugel.</b> Lege eine Kugel mit Radius <span class="f">\(r\)</span> um die Ladung. Jede der 16 Linien durchstößt die Kugeloberfläche genau einmal. Die Oberfläche einer Kugel ist <span class="f">\(O = 4\pi r^{2}\)</span>; sie wächst mit dem <b>Quadrat</b> des Radius (doppelter Radius, vierfache Fläche, wie bei jeder Fläche: Länge mal Breite, beides verdoppelt).</li>
-    <li><b>Dichte ausrechnen.</b> Liniendichte = Linien pro Fläche = <span class="f">\(n/(4\pi r^{2})\)</span>. Dieselben 16 Linien verteilen sich auf eine immer größere Fläche: Bei <span class="f">\(r = 1\,\mathrm{cm}\)</span> sind es <span class="f">\(16/12{,}6\,\mathrm{cm^2} = 1{,}3\)</span> Linien pro cm², bei <span class="f">\(2\,\mathrm{cm}\)</span> nur noch <span class="f">\(16/50{,}3\,\mathrm{cm^2} = 0{,}32\)</span> pro cm² (ein Viertel), bei <span class="f">\(3\,\mathrm{cm}\)</span> <span class="f">\(0{,}14\)</span> (ein Neuntel). Das ist <span class="f">\(\propto 1/r^{2}\)</span>.</li>
-    <li><b>Dichte ist Feldstärke.</b> Regel 2 sagt: Wo die Linien dichter liegen, ist das Feld stärker, und zwar proportional. Also <span class="f">\(E \propto 1/r^{2}\)</span>. Und auf eine Probeladung wirkt <span class="f">\(F = q\cdot E\)</span>, also auch <span class="f">\(F \propto 1/r^{2}\)</span>.</li>
+    <li>Von einer Punktladung gehen <span class="f">\(n\)</span> Feldlinien aus. Lege eine gedachte Kugel mit Radius <span class="f">\(r\)</span> um die Ladung; ihre Oberfläche ist <span class="f">\(O = 4\pi r^{2}\)</span>.</li>
+    <li>Durch ein kleines Flächenstück <span class="f">\(A\)</span> der Kugel gehen <span class="f">\(n_A = \dfrac{A}{O}\cdot n\)</span> Linien (Anteil der Fläche an der ganzen Kugel).</li>
+    <li>Dichte der Feldlinien = Anzahl der Linien pro Volumen: <span class="f">\(\rho = \dfrac{n_A}{V} = \dfrac{A}{V\cdot O}\cdot n = \dfrac{A}{V}\cdot\dfrac{1}{4\pi r^{2}}\cdot n\)</span>. <span class="f">\(A\)</span>, <span class="f">\(V\)</span> und <span class="f">\(n\)</span> sind fest, also <span class="f">\(\rho \propto 1/r^{2}\)</span>.</li>
+    <li>Die Kraft ist proportional zur Dichte (Regel 2): <span class="f">\(F \propto \rho \;\Rightarrow\; F \propto 1/r^{2}\)</span>.</li>
   </ol>
-  <table>
-    <tr><th>Abstand <span class="f">\(r\)</span></th><td><span class="f">\(1\,\mathrm{cm}\)</span></td><td><span class="f">\(2\,\mathrm{cm}\)</span></td><td><span class="f">\(3\,\mathrm{cm}\)</span></td><td><span class="f">\(4\,\mathrm{cm}\)</span></td></tr>
-    <tr><th>Kugelfläche <span class="f">\(4\pi r^{2}\)</span></th><td><span class="f">\(12{,}6\,\mathrm{cm^2}\)</span></td><td><span class="f">\(50{,}3\,\mathrm{cm^2}\)</span></td><td><span class="f">\(113\,\mathrm{cm^2}\)</span></td><td><span class="f">\(201\,\mathrm{cm^2}\)</span></td></tr>
-    <tr><th>Linien pro cm² (16 Linien)</th><td><span class="f">\(1{,}27\)</span></td><td><span class="f">\(0{,}32\)</span></td><td><span class="f">\(0{,}14\)</span></td><td><span class="f">\(0{,}08\)</span></td></tr>
-    <tr><th>relativ zu 1 cm</th><td><span class="f">\(1\)</span></td><td><span class="f">\(1/4\)</span></td><td><span class="f">\(1/9\)</span></td><td><span class="f">\(1/16\)</span></td></tr>
-  </table>
-  <div class="note"><b>Analogie:</b> Sprühfarbe aus einer Düse. Pro Sekunde kommt immer gleich viel Farbe heraus (feste Linienzahl). Hältst du ein Blatt in 1 cm Abstand, wird es dick bedeckt; in 2 cm Abstand verteilt sich dieselbe Farbe auf die vierfache Fläche, die Schicht ist nur ein Viertel so dick. Oder: Das Licht einer Lampe wird mit dem Abstand schwächer, weil sich dieselbe Lichtmenge auf eine immer größere Kugel verteilt. Die Feldstärke ist die „Schichtdicke" der Feldlinien.</div>
-  <div class="note warn"><b>Warum nicht <span class="f">\(1/r\)</span>?</b> Im gezeichneten Bild (flach, auf Papier) verteilen sich die Linien nur auf einen Kreis<b>umfang</b> <span class="f">\(2\pi r\)</span>, das sähe nach <span class="f">\(1/r\)</span> aus. Das Papier täuscht: Die Linien gehen in Wirklichkeit in alle drei Raumrichtungen, also durch eine Kugel<b>oberfläche</b> <span class="f">\(4\pi r^{2}\)</span>. Deshalb das Quadrat. Dasselbe Argument gilt für die Gravitation, darum hat auch Newtons Gesetz <span class="f">\(1/r^{2}\)</span> (Tabelle unten).</div>
-  <p><b>Daraus folgt das Feld einer Punktladung</b> (steht in der FS): <span class="f">\(E = F/q = k\cdot Q/r^{2}\)</span>. Jetzt kannst du die Formel lesen: <span class="f">\(Q\)</span> im Zähler, weil mehr Ladung mehr Linien bedeutet; <span class="f">\(r^{2}\)</span> im Nenner, weil sich die Linien auf die Kugelfläche verteilen. Schreibt man <span class="f">\(k = 1/(4\pi\varepsilon_0)\)</span> aus, steht da <span class="f">\(E = \dfrac{Q/\varepsilon_0}{4\pi r^{2}}\)</span>: oben die „Linienmenge" der Ladung, unten genau die Kugeloberfläche. Das <span class="f">\(4\pi\)</span> in der Konstante ist die Kugel. Richtung: radial nach außen bei <span class="f">\(Q > 0\)</span>, nach innen bei <span class="f">\(Q < 0\)</span>.</p>
+  <div class="note"><b>Analogie:</b> Sprühfarbe aus einer Düse. Pro Sekunde kommt immer gleich viel Farbe heraus (feste Linienzahl). Hältst du ein Blatt in 1 cm Abstand, wird es dick bedeckt; in 2 cm Abstand verteilt sich dieselbe Farbe auf die vierfache Fläche, die Schicht ist nur ein Viertel so dick. Die Feldstärke ist die „Schichtdicke" der Feldlinien.</div>
+  <p><b>Warum nicht <span class="f">\(1/r\)</span>?</b> Auf dem Papier verteilen sich die Linien nur auf einen Kreisumfang <span class="f">\(2\pi r\)</span>; in Wirklichkeit gehen sie in alle drei Raumrichtungen durch die Kugeloberfläche <span class="f">\(4\pi r^{2}\)</span>, deshalb das Quadrat (bei Newton genauso).</p>
+  <p><b>Daraus folgt das Feld einer Punktladung</b> (steht in der FS): <span class="f">\(E = F/q = k\cdot Q/r^{2}\)</span>. Schreibt man <span class="f">\(k = 1/(4\pi\varepsilon_0)\)</span> aus, steht die Kugeloberfläche <span class="f">\(4\pi r^{2}\)</span> direkt im Nenner. Richtung: radial nach außen bei <span class="f">\(Q \gt 0\)</span>, nach innen bei <span class="f">\(Q \lt 0\)</span>.</p>
 
   <h3>Vergleich Newton ↔ Coulomb</h3>
   <table>
@@ -355,7 +351,7 @@
     <tr><td>Feldgröße</td><td>Masse (nur positiv)</td><td>Ladung (positiv oder negativ)</td></tr>
     <tr><td>Wechselwirkung</td><td>nur anziehend</td><td>anziehend oder abstoßend</td></tr>
     <tr><td>Abschirmung</td><td>nicht möglich</td><td>möglich (Kräfte können sich neutralisieren, Faraday-Käfig)</td></tr>
-    <tr><td>Stärke</td><td>sehr schwach (<span class="f">\(G = 6{,}67\cdot 10^{-11}\)</span>)</td><td>sehr stark (<span class="f">\(k = 8{,}99\cdot 10^{9}\)</span>); im H-Atom ist die Coulombkraft <span class="f">\(\approx 10^{39}\)</span>-mal größer als die Gravitation</td></tr>
+    <tr><td>Stärke</td><td>sehr schwach: <span class="f">\(G = 6{,}674\cdot 10^{-11}\,\mathrm{N\,m^2/kg^2}\)</span></td><td>sehr stark: <span class="f">\(k = 8{,}99\cdot 10^{9}\,\mathrm{N\,m^2/C^2}\)</span>. Die beiden Zahlen haben verschiedene Einheiten und lassen sich nicht direkt vergleichen; der Vergleich braucht ein Beispiel, Heft 5b (Aufgabe A5): Elektron und Proton im H-Atom, <span class="f">\(F_{\mathrm C} = -9{,}2\cdot 10^{-8}\,\mathrm{N}\)</span> gegen <span class="f">\(F_{\mathrm G} = 4{,}1\cdot 10^{-47}\,\mathrm{N}\)</span>, Faktor <span class="f">\(\approx 10^{39}\)</span></td></tr>
     <tr><td>Feldstärke</td><td><span class="f">\(g = F/m\)</span> (<span class="f">\(\mathrm{N/kg}\)</span>)</td><td><span class="f">\(E = F/q\)</span> (<span class="f">\(\mathrm{N/C}\)</span>)</td></tr>
   </table>
   <div class="note exam"><b>So fragt die Klausur:</b> „Vergleichen Sie Gravitations- und Coulombgesetz formal und inhaltlich." Formal = gleiche Struktur (Tabelle Zeile 1–2). Inhaltlich = Vorzeichen, Abschirmung, Stärke.</div>
@@ -381,23 +377,21 @@
     </div>
     <div>
       <svg class="vis" id="pendSvg" viewBox="0 0 520 360" aria-label="Pendel im Plattenkondensator mit allen Kräften"></svg>
-      <p class="small"><b>Lesehilfe zur Zeichnung.</b> An der Kugel (positiv geladen, „+") greifen drei Kräfte an; alle Pfeile beginnen im Kugelmittelpunkt. <span style="color:var(--ok)"><b>Grün</b></span>: Gewichtskraft \(\vec F_{\mathrm g}\) senkrecht nach unten. <span style="color:var(--arrow)"><b>Rot</b></span>: elektrische Kraft \(\vec F_{\mathrm{el}}\) waagerecht zur negativen Platte (positive Ladung wird in Feldrichtung gezogen). <span style="color:var(--rope)"><b>Violett</b></span>: Fadenkraft \(\vec F_{\mathrm{Faden}}\) entlang des Fadens zum Aufhängepunkt. Die Kugel ruht, also heben sich die drei Kräfte auf: \(\vec F_{\mathrm{Faden}} = -(\vec F_{\mathrm g} + \vec F_{\mathrm{el}})\). Das gestrichelte Parallelogramm aus Grün und Rot liefert die graue Resultierende \(\vec F_{\mathrm g} + \vec F_{\mathrm{el}}\), und die zeigt genau in die Verlängerung des Fadens; deshalb stellt sich der Faden so ein. Der Winkel \(\alpha\) zwischen Lot und Faden taucht im Kräftedreieck zwischen \(\vec F_{\mathrm g}\) und der Resultierenden wieder auf, beide Dreiecke sind ähnlich: \(\tan\alpha = F_{\mathrm{el}}/F_{\mathrm g}\) und \(\tan\alpha = \Delta x/\text{Höhe}\), für kleine Winkel \(\approx \Delta x/h\). Regler oben bewegen: mehr Spannung, größere elektrische Kraft, größerer Winkel.</p>
+      <p class="small"><b>Lesehilfe zur Zeichnung.</b> An der Kugel (positiv geladen, „+") greifen drei Kräfte an; alle Pfeile beginnen im Kugelmittelpunkt. <span style="color:var(--ok)"><b>Grün</b></span>: Gewichtskraft \(\vec F_{\mathrm g}\) senkrecht nach unten. <span style="color:var(--arrow)"><b>Rot</b></span>: elektrische Kraft \(\vec F_{\mathrm{el}}\) waagerecht zur negativen Platte (positive Ladung wird in Feldrichtung gezogen). <span style="color:var(--rope)"><b>Violett</b></span>: Fadenkraft \(\vec F_{\mathrm{Faden}}\) entlang des Fadens zum Aufhängepunkt. Die Kugel ruht, also heben sich die drei Kräfte auf: \(\vec F_{\mathrm{Faden}} = -(\vec F_{\mathrm g} + \vec F_{\mathrm{el}})\). Das gestrichelte Parallelogramm aus Grün und Rot liefert die graue Resultierende \(\vec F_{\mathrm g} + \vec F_{\mathrm{el}}\), und die zeigt genau in die Verlängerung des Fadens; deshalb stellt sich der Faden so ein. Der Winkel \(\alpha\) zwischen Lot und Faden taucht im Kräftedreieck zwischen \(\vec F_{\mathrm g}\) und der Resultierenden wieder auf, beide Dreiecke sind ähnlich: \(\tan\alpha = F_{\mathrm{el}}/F_{\mathrm g}\) und \(\tan\alpha = \Delta x/\text{Höhe}\). Bezeichnungen: \(h\) ist hier wie in der Heft-Hauptformel die Fadenlänge, „Höhe" die senkrechte Kathete (orange gestrichelt); der Heft-Exkurs (S. 22) schreibt dafür \(l\) für den Faden, \(h\) für die Höhe und \(s\) für die Auslenkung. Bei kleinen Winkeln ist Höhe \(\approx h\), deshalb \(\tan\alpha \approx \Delta x/h\). Regler oben bewegen: mehr Spannung, größere elektrische Kraft, größerer Winkel.</p>
     </div>
   </div>
 
-  <h3>Wie wurde <span class="f">\(E = U/d\)</span> in der Mappe gemessen? (Pendelmethode)</h3>
-  <ol>
-    <li>Eine kleine Kugel (<span class="f">\(m = 2{,}5\,\mathrm{g}\)</span>) wird mit <span class="f">\(q \approx 10\,\mathrm{nC}\)</span> aufgeladen und hängt an einem Faden (<span class="f">\(h = 410\,\mathrm{mm}\)</span>) zwischen den Platten.</li>
-    <li>Drei Kräfte: Gewichtskraft <span class="f">\(F_{g} = m\cdot g\)</span> nach unten, elektrische Kraft <span class="f">\(F_{\mathrm{el}}\)</span> waagerecht, Fadenkraft entlang des Fadens. Die Kugel hängt schräg, Auslenkung <span class="f">\(\Delta x\)</span>.</li>
-    <li>Das Kräftedreieck (<span class="f">\(F_{\mathrm{el}}\)</span>, <span class="f">\(F_{g}\)</span>, Fadenkraft) ist ähnlich zum Auslenkungsdreieck (<span class="f">\(\Delta x\)</span>, Höhe, Faden). Gleiche Winkel, also gleiche Seitenverhältnisse:</li>
-  </ol>
+  <h3>Wie wurde <span class="f">\(E = U/d\)</span> in der Mappe gemessen? Zwei Messreihen</h3>
+  <h4>Messreihe 1: <span class="f">\(E\)</span> in Abhängigkeit von <span class="f">\(U\)</span> (Pendelmethode; <span class="f">\(d\)</span> fest, <span class="f">\(d = 70\,\mathrm{mm}\)</span>)</h4>
+  <p>Eine kleine Kugel (<span class="f">\(m = 2{,}5\,\mathrm{g}\)</span>, Ladung <span class="f">\(q\)</span>) hängt an einem Faden der Länge <span class="f">\(h\)</span> zwischen den Platten und wird um <span class="f">\(\Delta x\)</span> ausgelenkt (Zeichnung oben). Kräftedreieck und Auslenkungsdreieck sind ähnlich, also gilt die Heft-Formel:</p>
   <div class="formula">\[\frac{F_{\mathrm{el}}}{F_g} = \frac{\Delta x}{h}\quad\Rightarrow\quad F_{\mathrm{el}} = \frac{m\,g\,\Delta x}{h}\quad\Rightarrow\quad E = \frac{F_{\mathrm{el}}}{q}\]</div>
-  <p>Beispiel aus dem Heft: <span class="f">\(\Delta x = 5\,\mathrm{mm}\)</span> → <span class="f">\(F_{\mathrm{el}} = 9{,}81\,\mathrm{m/s^2} \cdot 0{,}0025\,\mathrm{kg} \cdot 5/405 \approx 3{,}0\cdot 10^{-4}\,\mathrm{N}\)</span> → <span class="f">\(E = 3{,}0\cdot 10^{-4}\,\mathrm{N} / 9\cdot 10^{-9}\,\mathrm{C} \approx 33\,000\,\mathrm{N/C}\)</span>. (Kleine Auslenkung, deshalb darf man <span class="f">\(\Delta x/h\)</span> statt des Tangens nehmen.)</p>
-  <h4>Auswertung 1: <span class="f">\(E\)</span> in Abhängigkeit von <span class="f">\(U\)</span> (<span class="f">\(d\)</span> fest, <span class="f">\(77\,\mathrm{mm}\)</span>)</h4>
-  <p>Diagramm <span class="f">\(E\)</span> über <span class="f">\(U\)</span>: Gerade. Lineare Regression: <span class="f">\(E = 12{,}98 \,\mathrm{1/m} \cdot U - 35\,396 \,\mathrm{V/m}\)</span>. Zwei Dinge zu diskutieren: (1) Der Achsenabschnitt sollte 0 sein (ohne Spannung kein Feld), die Abweichung ist Messungenauigkeit. (2) Die Steigung hat die Einheit <span class="f">\(\mathrm{1/m}\)</span>, also „1 durch eine Länge". Vermutung: Steigung = <span class="f">\(1/d\)</span>. Kontrolle: <span class="f">\(1/(12{,}98\,\mathrm{1/m}) = 0{,}077\,\mathrm{m} = 77\,\mathrm{mm}\)</span> = Plattenabstand. Passt.</p>
-  <h4>Auswertung 2: <span class="f">\(E\)</span> in Abhängigkeit von <span class="f">\(d\)</span> (<span class="f">\(U\)</span> fest, <span class="f">\(7{,}1\,\mathrm{V}\)</span>)</h4>
-  <p>Diagramm <span class="f">\(E\)</span> über <span class="f">\(d\)</span>: fallende Kurve. Eine Potenzregression liefert <span class="f">\(E \propto d^{-1{,}6}\)</span>, krumme Exponenten sind ein Zeichen für Messfehler. Besser: <span class="f">\(E\)</span> über <span class="f">\(1/d\)</span> auftragen → Gerade mit Steigung <span class="f">\(9{,}74\,\mathrm{V}\)</span>. Die Steigung hat die Einheit <span class="f">\(\mathrm{V}\)</span> und entspricht der angelegten Spannung (<span class="f">\(7{,}1\,\mathrm{V}\)</span>, Abweichung durch Messfehler). Also <span class="f">\(E = U \cdot (1/d)\)</span>.</p>
-  <p><b>Zusammen:</b> <span class="f">\(E = U/d\)</span>. Das ist der Standardweg, wie die Klausur einen Zusammenhang aus zwei Messreihen abfragt: erst eine Größe variieren, dann die andere, dann beides kombinieren.</p>
+  <p>Beispiel aus dem Heft (S. 19): <span class="f">\(h = 405\,\mathrm{mm}\)</span>, <span class="f">\(\Delta x = 5\,\mathrm{mm}\)</span> → <span class="f">\(F_{\mathrm{el}} = 9{,}81\,\mathrm{m/s^2} \cdot 0{,}0025\,\mathrm{kg} \cdot 5\,\mathrm{mm}/405\,\mathrm{mm} \approx 0{,}000303\,\mathrm{N} = 303\,\mathrm{\mu N}\)</span> → <span class="f">\(E = F_{\mathrm{el}}/q = 3{,}03\cdot 10^{-4}\,\mathrm{N} / 9\cdot 10^{-9}\,\mathrm{C} \approx 33\,000\,\mathrm{N/C}\)</span>. Kleine Auslenkung, deshalb darf man <span class="f">\(\Delta x/h\)</span> statt des Tangens nehmen. (Das Heft ist bei den Werten nicht einheitlich: In der Skizze stehen <span class="f">\(h = 405\,\mathrm{mm}\)</span> und „1 = 10 nC", gerechnet wird mit <span class="f">\(9\cdot 10^{-9}\,\mathrm{C}\)</span>, die TR-Tabelle nutzt <span class="f">\(l = 410\,\mathrm{mm}\)</span> und <span class="f">\(q = 1{,}02\cdot 10^{-8}\,\mathrm{C}\)</span>; der Regler oben rechnet mit den Tabellenwerten.)</p>
+  <p>Diagramm <span class="f">\(E\)</span> über <span class="f">\(U\)</span> (sieben Spannungen von 4000 V bis 7000 V): Gerade. Lineare Regression (Heft): <span class="f">\(E = 12{,}98 \,\mathrm{1/m} \cdot U - 35\,396 \,\mathrm{V/m}\)</span>. Zwei Dinge zu diskutieren: (1) Der Achsenabschnitt sollte 0 sein (ohne Spannung kein Feld); das Heft erklärt ihn mit einer ungenauen Durchführung des Experiments. (2) Die Steigung hat die Einheit <span class="f">\(\mathrm{1/m}\)</span>, also „1 durch eine Länge". Heft: „Verdacht: Der Vorfaktor könnte <span class="f">\(1/d\)</span> sein, mit <span class="f">\(d\)</span>: Plattenabstand." Kontrolle: <span class="f">\(1/(12{,}98\,\mathrm{1/m}) = 0{,}077\,\mathrm{m} = 77\,\mathrm{mm}\)</span>; eingestellt war <span class="f">\(d = 70\,\mathrm{mm}\)</span>. Die 77 mm sind also das Regressionsergebnis, nicht der Plattenabstand; die Abweichung von etwa 10 % liegt im Rahmen einer Pendelmessung mit Millimeter-Ablesung, der Verdacht hält.</p>
+  <h4>Messreihe 2: <span class="f">\(E\)</span> in Abhängigkeit von <span class="f">\(d\)</span> (<span class="f">\(U\)</span> fest, <span class="f">\(7{,}1\,\mathrm{V}\)</span>; <span class="f">\(E\)</span> direkt gemessen)</h4>
+  <p>Hier wurde <b>nicht</b> mehr mit dem Pendel gearbeitet. Heft: „<span class="f">\(d\)</span> wird variiert und <span class="f">\(E\)</span> direkt gemessen", mit einem Feldstärkemessgerät zwischen den Platten (Elektrofeldmeter, Exkurs unten). Diagramm <span class="f">\(E\)</span> über <span class="f">\(d\)</span>: fallende Kurve. Eine Potenzregression liefert <span class="f">\(E = 0{,}5971\cdot d^{-1{,}596}\)</span>; Heft: „Potenz führt zu Problemen, Verdacht: Messungenauigkeiten." Neue Auswertung: <span class="f">\(E\)</span> über <span class="f">\(1/d\)</span> auftragen → Gerade, lineare Regression <span class="f">\(y = 9{,}74\cdot x - 144{,}8\)</span>, im Sachzusammenhang <span class="f">\(E = 9{,}74\,\mathrm{Nm/C}\cdot \frac{1}{d} - 144{,}8\,\mathrm{N/C}\)</span>. Achsenabschnitt: Erwartung 0 (für <span class="f">\(1/d \to 0\)</span>, also sehr große Abstände, kein Feld); <span class="f">\(-144{,}8\,\mathrm{N/C}\)</span> „kann tatsächlich durch Messfehler erklärt werden" (Heft). Vorfaktor: <span class="f">\(\mathrm{Nm/C} = \mathrm{J/C} = \mathrm{VAs/C} = \mathrm{V}\)</span>, also eine Spannung; <span class="f">\(9{,}74\,\mathrm{V}\)</span> passt ungefähr zur angelegten Spannung <span class="f">\(7{,}1\,\mathrm{V}\)</span>. Also <span class="f">\(E = U\cdot (1/d)\)</span>.</p>
+  <h4>Exkurs: Elektrofeldmeter (Heft S. 22)</h4>
+  <p>Vor einer Metallplatte rotiert ein geerdetes Flügelrad. Das zu messende Feld endet an der Ladung, die es auf der Platte influenziert, aber nur, wenn das Flügelrad die Öffnung gerade freigibt; die Influenzladung fließt deshalb periodisch der Platte zu und wieder ab. Je stärker das Feld, desto größer die Stromstärke dieses Wechselstroms: Die Ladung schwankt zwischen null und einem Maximalwert, der zur Feldstärke <span class="f">\(E\)</span> proportional ist.</p>
+  <p><b>Zusammen:</b> <span class="f">\(E = U/d\)</span>, <span class="f">\([E] = 1\,\mathrm{V/m} = 1\,\mathrm{N/C}\)</span>. Das ist der Standardweg, wie die Klausur einen Zusammenhang aus zwei Messreihen abfragt: erst eine Größe variieren, dann die andere, dann beides kombinieren.</p>
   <div class="note warn"><b>Verwechslungsgefahr:</b> <span class="f">\(E = U/d\)</span> gilt nur im <b>homogenen</b> Feld (Plattenkondensator innen). Für Punktladungen gilt <span class="f">\(E = k\cdot Q/r^{2}\)</span>. Und: <span class="f">\(d\)</span> ist der Plattenabstand, nicht die Position der Ladung.</div>
 
   <h3>Anwendung: schwebende Ladung (Klausur-Klassiker)</h3>
@@ -407,7 +401,7 @@
     <p>Wattestück <span class="f">\(m = 0{,}01\,\mathrm{g} = 1{,}0\cdot 10^{-5}\,\mathrm{kg}\)</span>, <span class="f">\(q = -0{,}1\,\mathrm{nC}\)</span>. Welches Feld lässt es schweben?<br>
     <span class="f">\(E = m\cdot g/|q| = 1{,}0\cdot 10^{-5} \,\mathrm{kg} \cdot 9{,}81 \,\mathrm{m/s^2} / 1{,}0\cdot 10^{-10} \,\mathrm{C} = 9{,}8\cdot 10^{5} \,\mathrm{N/C}\)</span>.<br>
     <b>Richtung:</b> Die Kraft muss nach oben zeigen. Die Ladung ist negativ, also zeigt das Feld <b>entgegen</b> der Kraft: nach unten (obere Platte positiv, untere negativ). Prüfe deine Notiz im Heft dazu: dort steht sinngemäß „Feld nach oben", gemeint sein kann nur die Kraft. In der Klausur immer beide Richtungen getrennt nennen: Kraft nach oben, Feld nach unten.</p></div>
-  <p>Zweites Beispiel aus dem Heft: <span class="f">\(m = 2\,\mathrm{g}\)</span>, <span class="f">\(U = 25\,\mathrm{kV}\)</span>, <span class="f">\(d = 2\,\mathrm{cm}\)</span> → <span class="f">\(|q| = m\cdot g\cdot d/U = 0{,}002\cdot 9{,}81\cdot 0{,}02/25\,000 \,\mathrm{C} \approx 1{,}6\cdot 10^{-8} \,\mathrm{C} = 16 \,\mathrm{nC}\)</span>. Vorzeichen je nach Plattenanordnung: Kraft muss zur oberen Platte zeigen.</p>
+  <p>Zweites Beispiel aus dem Heft (S. 29, „Anwendung: schwebendes Teilchen"): obere Platte <span class="pos">+</span>, untere Platte <span class="neg">−</span>, also zeigt <span class="f">\(E\)</span> nach unten; <span class="f">\(m = 2\,\mathrm{g}\)</span>, <span class="f">\(U = 25\,000\,\mathrm{V}\)</span>, <span class="f">\(d = 2\,\mathrm{cm}\)</span>. Ansatz mit Vorzeichen wie im Heft: <span class="f">\(F_g + F_{\mathrm{el}} = 0 \;\Rightarrow\; q = -\dfrac{m\,g}{E} = -\dfrac{m\,g\,d}{U} = -\dfrac{0{,}002\,\mathrm{kg}\cdot 9{,}81\,\mathrm{m/s^2}\cdot 0{,}02\,\mathrm{m}}{25\,000\,\mathrm{V}} \approx -1{,}57\cdot 10^{-8}\,\mathrm{C} = -15{,}7\,\mathrm{nC}\)</span>. Richtungsargument: Die Kraft muss nach oben zeigen, das Feld zeigt nach unten, also ist die Ladung negativ.</p>
   <div class="note exam"><b>So fragt die Klausur:</b> „Bestimmen Sie die Ladung des Tröpfchens, das bei <span class="f">\(U = \dots\)</span> schwebt." Kräftegleichgewicht ansetzen, <span class="f">\(E = U/d\)</span> einsetzen, nach <span class="f">\(q\)</span> auflösen, Richtung des Feldes begründen. Bei mehreren Tröpfchen: Unterschiede der Ladungen bilden → immer Vielfache von <span class="f">\(e\)</span> (Lehrer-Klausur 1, Aufgabe 2).</div>
 </section>
 
@@ -419,8 +413,6 @@
     <div class="acard"><h4>Masse ↔ Ladung</h4><div class="l">Die Eigenschaft des Körpers, an der das Feld „zieht". Masse gibt es nur positiv, Ladung mit beiden Vorzeichen.</div></div>
     <div class="acard"><h4><span class="f">\(g\)</span> ↔ <span class="f">\(E\)</span></h4><div class="l">Feldstärke = Kraft pro Eigenschaft: <span class="f">\(g = F/m\)</span> (<span class="f">\(\mathrm{N/kg}\)</span>), <span class="f">\(E = F/q\)</span> (<span class="f">\(\mathrm{N/C}\)</span>). Beides sind Vektoren.</div></div>
     <div class="acard"><h4><span class="f">\(F = m\cdot g\)</span> ↔ <span class="f">\(F = q\cdot E\)</span></h4><div class="l">Kraft = Feldstärke · Eigenschaft. Bei negativem <span class="f">\(q\)</span> dreht sich die Kraft um; bei Masse nie.</div></div>
-    <div class="acard"><h4><span class="f">\(m\cdot g\cdot h\)</span> ↔ <span class="f">\(q\cdot E\cdot s\)</span></h4><div class="l">Energie = Kraft · Weg entlang des Feldes. <span class="f">\(s\)</span> = Strecke parallel zu den Feldlinien (Lektion 2).</div></div>
-    <div class="acard"><h4>Fallen ↔ Beschleunigung im Feld</h4><div class="l">Im homogenen Feld: gleichmäßig beschleunigt, <span class="f">\(a = q\cdot E/m\)</span>; mit Querbewegung: Parabel wie beim waagerechten Wurf (Lektion 2).</div></div>
     <div class="acard"><h4>Wo die Analogie bricht</h4><div class="l">Zwei Ladungsvorzeichen → auch Abstoßung. Abschirmung möglich. Das Feld einer <b>positiven</b> Ladung zeigt nach außen, das Gravitationsfeld der Erde nach innen (wie bei einer <b>negativen</b> Ladung).</div></div>
   </div>
   <div class="quiz" id="quiz"></div>
@@ -430,41 +422,65 @@
 <!-- 7 -->
 <section class="card" id="s7">
   <h2>7 · Checkfragen und Aufgaben</h2>
-  <p class="small">Rechenweg immer so: geg./ges. mit Einheiten umgerechnet (<span class="f">\(\mathrm{nC} \to \mathrm{C}\)</span>, <span class="f">\(\mathrm{cm} \to \mathrm{m}\)</span>), Formel allgemein, Zahlen mit Einheiten einsetzen, Ergebnis mit sinnvoller Anzahl geltender Ziffern, Antwortsatz.</p>
+  <p class="small">Rechenweg immer so: geg./ges. mit Einheiten umgerechnet (<span class="f">\(\mathrm{nC} \to \mathrm{C}\)</span>, <span class="f">\(\mathrm{cm} \to \mathrm{m}\)</span>), Formel allgemein, Zahlen mit Einheiten einsetzen, Ergebnis mit sinnvoller Anzahl geltender Ziffern, Antwortsatz. <b>TR-Benutzung muss in der Klausur angegeben werden</b> (Heft S. 23): Gleichung hinschreiben und den Solver notieren, Heft-Beispiel <span class="f">\(3x^{2} - 4x = 0 \;|\; \text{solve nach } x \;\Leftrightarrow\; x = 0 \,\vee\, x = \tfrac{4}{3}\)</span>. „Bestätigen Sie" oder „Zeigen Sie" heißt: herleiten, nicht nur einsetzen (A4). BE-Vorschläge stehen bei jeder Lösung.</p>
   <details><summary>Checkfrage 1: Warum stehen Feldlinien senkrecht auf einer Metalloberfläche?</summary>
     <p>Eine Komponente parallel zur Oberfläche würde die freien Elektronen entlang der Oberfläche verschieben, bis diese Komponente verschwunden ist. Übrig bleibt die senkrechte Komponente; sie kann die Elektronen nicht aus dem Metall ziehen. Im elektrostatischen Gleichgewicht ist das Feld an der Oberfläche daher senkrecht.</p></details>
   <details><summary>Checkfrage 2: Elektron im Feld, das nach unten zeigt. Kraftrichtung?</summary>
-    <p>Nach oben. Feldrichtung ist die Kraftrichtung auf eine positive Ladung; das Elektron ist negativ, also Kraft entgegen <span class="f">\(E\)</span>: <span class="f">\(F = q\cdot E\)</span> mit <span class="f">\(q < 0\)</span>.</p></details>
+    <p>Nach oben. Feldrichtung ist die Kraftrichtung auf eine positive Ladung; das Elektron ist negativ, also Kraft entgegen <span class="f">\(E\)</span>: <span class="f">\(F = q\cdot E\)</span> mit <span class="f">\(q \lt 0\)</span>.</p></details>
   <details><summary>Checkfrage 3: Influenz vs. Polarisation</summary>
     <p>Influenz: im Leiter verschieben sich freie Elektronen durch den ganzen Körper, es entstehen getrennte Ladungsbereiche. Polarisation: im Nichtleiter bleiben die Elektronen am Atom, jedes Atom wird zum Dipol, nur die Oberflächen tragen netto Ladung.</p></details>
   <details><summary>A1: Plattenkondensator <span class="f">\(d = 4{,}0\,\mathrm{mm}\)</span>, <span class="f">\(U = 2{,}4\,\mathrm{kV}\)</span></summary>
     <p>a) <span class="f">\(E = U/d = 2400 \,\mathrm{V} / 0{,}0040 \,\mathrm{m} = 6{,}0\cdot 10^{5} \,\mathrm{V/m}\)</span><br>
        b) <span class="f">\(F = e\cdot E = 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 6{,}0\cdot 10^{5} \,\mathrm{N/C} = 9{,}6\cdot 10^{-14} \,\mathrm{N}\)</span><br>
        c) <span class="f">\(m = F/g = 9{,}6\cdot 10^{-14} \,\mathrm{N} / 9{,}81 \,\mathrm{m/s^2} \approx 9{,}8\cdot 10^{-15} \,\mathrm{kg}\)</span> (etwa 10 Pikogramm, ein Staubkorn)</p></details>
-  <details><summary>A2: <span class="f">\(Q_1 = +5{,}0\,\mathrm{nC}\)</span>, <span class="f">\(Q_2 = -5{,}0\,\mathrm{nC}\)</span>, <span class="f">\(r = 3{,}0\,\mathrm{cm}\)</span></summary>
-    <p><span class="f">\(F = 8{,}99\cdot 10^{9} \,\mathrm{Nm^2/C^2} \cdot (5{,}0\cdot 10^{-9} \,\mathrm{C})\cdot (-5{,}0\cdot 10^{-9} \,\mathrm{C}) / (0{,}030 \,\mathrm{m})^{2} = -2{,}5\cdot 10^{-4} \,\mathrm{N}\)</span><br>
-       Betrag <span class="f">\(0{,}25\,\mathrm{mN}\)</span>, negatives Vorzeichen = anziehend (ungleichnamig). Zwei geltende Ziffern, weil die Eingangswerte zwei haben.</p></details>
-  <details><summary>Zusatz: Warum ist das Innere eines Stabmagneten nicht feldfrei wie das Innere eines geladenen Leiters?</summary>
-    <p>Die B-Feldlinien sind geschlossen und laufen im Magneten von S nach N zurück; es gibt keine Influenzladungen, die ein Gegenfeld aufbauen könnten. Beim Leiter dagegen verschieben sich Ladungen, bis das Feld innen null ist.</p></details>
+  <details><summary>A2: Kraft und Ladung im Feld (Heft, Aufgabe 1a/1b). a) Welche Kraft erfährt <span class="f">\(q = 10\,\mathrm{nC}\)</span> in einem Feld <span class="f">\(E = 10\,\mathrm{kN/C}\)</span>? b) Auf welche Ladung wirkt in diesem Feld die Kraft <span class="f">\(10\,\mathrm{mN}\)</span>?</summary>
+    <p>a) geg.: <span class="f">\(Q = 10\,\mathrm{nC} = 10\cdot 10^{-9}\,\mathrm{C}\)</span>, <span class="f">\(E = 10\,\mathrm{kN/C} = 10\cdot 10^{3}\,\mathrm{N/C}\)</span>; ges.: <span class="f">\(F\)</span>.<br>
+       <span class="f">\(F = E\cdot Q = 10\cdot 10^{3}\,\mathrm{N/C} \cdot 10\cdot 10^{-9}\,\mathrm{C} = 100\cdot 10^{-6}\,\mathrm{N} = 0{,}1\,\mathrm{mN}\)</span>.<br>
+       b) geg.: <span class="f">\(E = 10\cdot 10^{3}\,\mathrm{N/C}\)</span>, <span class="f">\(F = 10\,\mathrm{mN} = 10\cdot 10^{-3}\,\mathrm{N}\)</span>; ges.: <span class="f">\(Q\)</span>.<br>
+       <span class="f">\(Q = \dfrac{F}{E} = \dfrac{10\cdot 10^{-3}\,\mathrm{N}}{10\cdot 10^{3}\,\mathrm{N/C}} = 1{,}0\cdot 10^{-6}\,\mathrm{C} = 1{,}0\,\mathrm{\mu C}\)</span>.<br>
+       Antwort: a) Die Kraft beträgt 0,1 mN. b) Die Ladung beträgt 1,0 µC (nur der Betrag, weil nur der Kraftbetrag gegeben ist). BE-Vorschlag: 2 + 2 (Formel, Umstellen, Einheiten, Ergebnis).</p></details>
+  <details><summary>A3: Regentropfen im Gewitterfeld (Heft, Anwendung 2). Das Gewitterfeld kurz vor einem Blitz ist <span class="f">\(E = 3{,}2\cdot 10^{6}\,\mathrm{N/C}\)</span>, vertikal nach unten. Bei welcher Ladung eines Regentropfens (Durchmesser 2 bis 3 mm) wird die Erdanziehung kompensiert? Muss der Tropfen dabei in Ruhe sein?</summary>
+    <p>Masse über Dichte und Kugelvolumen (Heft: <span class="f">\(m = \rho\cdot V = 1{,}41\cdot 10^{-5}\,\mathrm{kg}\)</span>; das entspricht <span class="f">\(d = 3\,\mathrm{mm}\)</span>, <span class="f">\(r = 1{,}5\,\mathrm{mm}\)</span>, <span class="f">\(\rho = 1{,}0\,\mathrm{g/cm^3}\)</span>): <span class="f">\(V = \tfrac{4}{3}\pi r^{3} = \tfrac{4}{3}\pi\,(1{,}5\cdot 10^{-3}\,\mathrm{m})^{3} = 1{,}41\cdot 10^{-8}\,\mathrm{m^3}\)</span>, <span class="f">\(m = 1000\,\mathrm{kg/m^3}\cdot 1{,}41\cdot 10^{-8}\,\mathrm{m^3} = 1{,}41\cdot 10^{-5}\,\mathrm{kg}\)</span>.<br>
+       Kräftegleichgewicht: <span class="f">\(F_{\mathrm{el}} = F_g \;\Rightarrow\; |q|\cdot E = m\cdot g \;\Rightarrow\; |q| = \dfrac{m\,g}{E} = \dfrac{1{,}41\cdot 10^{-5}\,\mathrm{kg}\cdot 9{,}81\,\mathrm{m/s^2}}{3{,}2\cdot 10^{6}\,\mathrm{N/C}} = 4{,}3\cdot 10^{-11}\,\mathrm{C} = 43\,\mathrm{pC}\)</span> (etwa <span class="f">\(2{,}7\cdot 10^{8}\)</span> Elementarladungen).<br>
+       Vorzeichen: Das Feld zeigt nach unten, die Kraft muss nach oben zeigen (gegen <span class="f">\(F_g\)</span>), also ist der Tropfen <b>negativ</b> geladen: <span class="f">\(q \approx -43\,\mathrm{pC}\)</span>.<br>
+       Ruhe oder Bewegung: Kräftegleichgewicht heißt nur „keine resultierende Kraft", also keine Beschleunigung. Der Tropfen kann ruhen oder sich mit konstanter Geschwindigkeit geradlinig bewegen (Trägheitssatz). BE-Vorschlag: 2 (Masse) + 2 (Gleichgewicht, Ladung) + 1 (Vorzeichen) + 1 (Bewegung).</p>
+    <table>
+      <tr><th colspan="2">Werte einiger elektrischer Feldstärken in N/C (Heft S. 14), zum Einordnen von Ergebnissen</th></tr>
+      <tr><td>Kurz vor Durchschlag in Glimmer</td><td><span class="f">\(7\cdot 10^{7}\)</span></td></tr>
+      <tr><td>In Beschleunigungsstrecken des LHC (CERN)</td><td><span class="f">\(5\cdot 10^{6}\)</span></td></tr>
+      <tr><td>Kurz vor Blitzschlag in Luft</td><td><span class="f">\(3{,}2\cdot 10^{6}\)</span></td></tr>
+      <tr><td>Zwischen Hochspannungsleitungen</td><td><span class="f">\(1\cdot 10^{5}\)</span></td></tr>
+      <tr><td>Elektrisches Erdfeld bei schönem Wetter</td><td><span class="f">\(1{,}3\cdot 10^{2}\)</span></td></tr>
+      <tr><td>D-Netz, Grenzwert der EU für Menschen</td><td><span class="f">\(41\text{–}43\)</span></td></tr>
+      <tr><td>Für Radioempfang (stereo)</td><td><span class="f">\(50\cdot 10^{-6}\)</span></td></tr>
+    </table></details>
+  <details><summary>A4: „Zeigen Sie, dass für die Erdbeschleunigung gilt: <span class="f">\(g = G\cdot m_{\mathrm{Erde}}/r_{\mathrm{Erde}}^{2}\)</span>" (Heft, Aufgabe 5a). Zeigen Sie außerdem, dass beim Fall eines Apfels die Beschleunigung der Erde vernachlässigbar klein ist. <span class="f">\(m_{\mathrm{Erde}} = 5{,}974\cdot 10^{24}\,\mathrm{kg}\)</span>, <span class="f">\(r_{\mathrm{Erde}} \approx 6370\,\mathrm{km}\)</span>.</summary>
+    <p>„Zeigen Sie" = herleiten, nicht nur Zahlen einsetzen. Gravitationsgesetz: <span class="f">\(F_G = G\cdot\dfrac{m_1\, m_2}{r^{2}}\)</span>. Für einen Körper der Masse <span class="f">\(m\)</span> auf der Erdoberfläche ist <span class="f">\(m_1 = m_{\mathrm{Erde}}\)</span>, <span class="f">\(m_2 = m\)</span>, <span class="f">\(r = r_{\mathrm{Erde}}\)</span>; dieselbe Kraft ist die Gewichtskraft <span class="f">\(F_G = m\cdot g\)</span>. Gleichsetzen und durch <span class="f">\(m\)</span> kürzen:</p>
+    <div class="formula">\[m\,g = G\cdot\frac{m_{\mathrm{Erde}}\cdot m}{r_{\mathrm{Erde}}^{2}}\quad\Rightarrow\quad g = G\cdot\frac{m_{\mathrm{Erde}}}{r_{\mathrm{Erde}}^{2}} = 6{,}674\cdot 10^{-11}\,\mathrm{\frac{N\,m^2}{kg^2}}\cdot\frac{5{,}974\cdot 10^{24}\,\mathrm{kg}}{(6\,370\,000\,\mathrm{m})^{2}} \approx 9{,}825\,\mathrm{m/s^2}\]</div>
+    <p>Typischer Fehler (steht so im Heft-TR-Protokoll): <span class="f">\(r\)</span> in km eingesetzt → <span class="f">\(9{,}8259\cdot 10^{6}\)</span>; der Faktor <span class="f">\(10^{6}\)</span> verrät sofort den Einheitenfehler.<br>
+       Beschleunigung der Erde (Apfel <span class="f">\(m \approx 0{,}2\,\mathrm{kg}\)</span>): Nach Newton 3 zieht der Apfel die Erde mit derselben Kraft <span class="f">\(F = m\cdot g = 0{,}2\,\mathrm{kg}\cdot 9{,}81\,\mathrm{m/s^2} \approx 1{,}962\,\mathrm{N}\)</span>. Mit <span class="f">\(F = m\cdot a\)</span>: <span class="f">\(a_{\mathrm{Erde}} = \dfrac{F}{m_{\mathrm{Erde}}} = \dfrac{1{,}962\,\mathrm{N}}{5{,}974\cdot 10^{24}\,\mathrm{kg}} \approx 3{,}28\cdot 10^{-25}\,\mathrm{m/s^2}\)</span>. Antwort (Heft): Die Beschleunigung der Erde ist extrem klein und somit vernachlässigbar. BE-Vorschlag: 3 (Herleitung mit Gleichsetzen und Kürzen) + 1 (Zahlenwert) + 2 (Newton 3, <span class="f">\(a_{\mathrm{Erde}}\)</span>).</p></details>
+  <details><summary>A5: Elektron und Proton haben im Wasserstoffatom den Abstand <span class="f">\(r = 5\cdot 10^{-11}\,\mathrm{m}\)</span>. Bestimmen Sie die Anziehungskraft zwischen beiden (Heft, Aufgabe 5b) und vergleichen Sie mit der Gravitationskraft.</summary>
+    <p>geg.: <span class="f">\(Q_1 = +e = 1{,}602\cdot 10^{-19}\,\mathrm{C}\)</span>, <span class="f">\(Q_2 = -e\)</span>, <span class="f">\(r = 5\cdot 10^{-11}\,\mathrm{m}\)</span>; ges.: <span class="f">\(F_{\mathrm C}\)</span>.</p>
+    <div class="formula">\[F_{\mathrm C} = \frac{1}{4\pi\varepsilon_0}\cdot\frac{Q_1\,Q_2}{r^{2}} = \frac{1}{4\pi\cdot 8{,}854\cdot 10^{-12}\,\mathrm{\frac{As}{Vm}}}\cdot\frac{1{,}602\cdot 10^{-19}\,\mathrm{C}\cdot(-1{,}602\cdot 10^{-19}\,\mathrm{C})}{(5\cdot 10^{-11}\,\mathrm{m})^{2}} = -9{,}226\cdot 10^{-8}\,\mathrm{N}\]</div>
+    <p>Negatives Vorzeichen: anziehend (ungleichnamig). Antwort: Elektron und Proton ziehen sich mit etwa <span class="f">\(9{,}2\cdot 10^{-8}\,\mathrm{N}\)</span> an.<br>
+       Vergleich mit der Gravitation (Heft-TR; <span class="f">\(m_{\mathrm e} = 9{,}109\cdot 10^{-31}\,\mathrm{kg}\)</span>, <span class="f">\(m_{\mathrm p} = 1{,}673\cdot 10^{-27}\,\mathrm{kg}\)</span>, Konstanten aus der FS): <span class="f">\(F_G = G\cdot\dfrac{m_{\mathrm e}\, m_{\mathrm p}}{r^{2}} = 4{,}07\cdot 10^{-47}\,\mathrm{N}\)</span>. Verhältnis <span class="f">\(F_{\mathrm C}/F_G \approx 2{,}3\cdot 10^{39}\)</span>: Im Atom spielt die Gravitation keine Rolle; das ist der Zahlenbeleg für die Zeile „Stärke" in der Newton-Coulomb-Tabelle (Abschnitt 4). BE-Vorschlag: 3 (Formel, Einsetzen mit Einheiten, Ergebnis mit Vorzeichen) + 2 (<span class="f">\(F_G\)</span>, Verhältnis).</p></details>
 </section>
 
 <!-- 8 -->
 <section class="card" id="s8">
-  <h2>8 · Nicht in der Formelsammlung (auswendig)</h2>
-  <p>Vollständige Liste mit Erklärungen: Datei <i>Vorabi 2026 Auswendig Physik.typ</i>. Kurzfassung:</p>
+  <h2>8 · Nicht in der Formelsammlung (auswendig) und FS-Fundorte</h2>
+  <p>Vollständige Liste mit Erklärungen: Datei <i>Vorabi 2026 Auswendig Physik.typ</i>. Hier nur, was weder in der FS steht noch in Abschnitt 9 wiederholt wird:</p>
   <ul>
     <li>Begriffe: Influenz, Polarisation, Elektronenmangel/-überschuss, Atomrümpfe ortsfest, Probeladung, homogenes Feld, Randfeld, Ladungserhaltung, <span class="f">\(Q = n\cdot e\)</span>.</li>
-    <li>Die 5 Feldlinien-Regeln, jede mit Begründung (senkrecht auf Leitern; innen feldfrei = Faraday-Käfig). Feldlinien sind keine Flugbahnen.</li>
-    <li>Grießkornversuch: Aufbau, Beobachtung, Deutung getrennt.</li>
-    <li>Vergleiche: E-Feld/B-Feld (Tabelle), Newton/Coulomb (formal + inhaltlich), <span class="f">\(F = m\cdot g\)</span> ↔ <span class="f">\(F = q\cdot E\)</span>.</li>
-    <li>Versuch <span class="f">\(F \propto Q\)</span> mit Halbierungstrick; <span class="f">\(E\)</span> = Steigung; Vektorcharakter (negative Ladung: Kraft gegen <span class="f">\(E\)</span>).</li>
-    <li>Coulomb-Konstante <span class="f">\(k \approx 8{,}99\cdot 10^{9} \,\mathrm{Nm^2/C^2}\)</span>; Vorzeichenregel; <span class="f">\(\varepsilon _{r} = 1\)</span> in Luft.</li>
-    <li>Herleitung <span class="f">\(1/r^{2}\)</span> über Feldliniendichte auf der Kugeloberfläche.</li>
-    <li>Pendel-Messung <span class="f">\(F_{\mathrm{el}}/F_{g} = \Delta x/h\)</span>; Auswertung <span class="f">\(E(U)\)</span>, <span class="f">\(E(d)\)</span> → <span class="f">\(E = U/d\)</span>; Einheitenweg <span class="f">\(\mathrm{V/m} = \mathrm{N/C}\)</span>; <span class="f">\(U = W/Q\)</span>.</li>
-    <li>Schwebende Ladung: <span class="f">\(|q| = m\cdot g\cdot d/U\)</span> plus Richtungsargument.</li>
-    <li>Methodik: geltende Ziffern, Fehlerbalken mit max./min. Steigung, TR-Dokumentation (5 Schritte), TR-Benutzung angeben, „möglichst genau" = Mittelwert.</li>
+    <li>Begründungen der Feldlinienregeln (senkrecht auf Leitern: laterale Kraft verschiebt Elektronen; innen feldfrei: Gegenfeld der Influenzladungen). Grießkornversuch: Aufbau, Beobachtung, Deutung getrennt.</li>
+    <li>Vergleiche: E-Feld/B-Feld (Heft-Tabelle), Newton/Coulomb (formal + inhaltlich, Zahlenbeleg Heft 5b).</li>
+    <li>Versuch <span class="f">\(F \propto Q\)</span> mit Halbierungstrick (Symmetrie baugleicher Platten); <span class="f">\(E\)</span> = Steigung im <span class="f">\(F\)</span>-<span class="f">\(Q\)</span>-Diagramm.</li>
+    <li>Coulomb-Konstante <span class="f">\(k = 1/(4\pi\varepsilon_0) \approx 8{,}99\cdot 10^{9} \,\mathrm{Nm^2/C^2}\)</span> (die FS nennt nur <span class="f">\(\varepsilon_0\)</span>); <span class="f">\(\varepsilon _{r} = 1\)</span> in Luft.</li>
+    <li>Herleitung <span class="f">\(1/r^{2}\)</span> über die Feldliniendichte auf der Kugeloberfläche <span class="f">\(O = 4\pi r^{2}\)</span>.</li>
+    <li>Pendel-Messung <span class="f">\(F_{\mathrm{el}}/F_{g} = \Delta x/h\)</span> und der Messweg zu <span class="f">\(E = U/d\)</span>: Messreihe <span class="f">\(E(U)\)</span> (Steigung <span class="f">\(1/d\)</span>), Messreihe <span class="f">\(E(1/d)\)</span> (Steigung <span class="f">\(U\)</span>); Einheitenweg <span class="f">\(\mathrm{V/m} = \mathrm{N/C}\)</span>; <span class="f">\(U = W/Q\)</span>.</li>
+    <li>Methodik: geltende Ziffern (Endnullen zählen, Vornullen nicht, schwächstes Glied), Fehlerbalken mit Min-Max-Steigung in der Schreibweise <span class="f">\(0{,}8^{+0{,}05}_{-0{,}10}\)</span>, TR-Dokumentation in 5 Schritten (TR-Ergebnis erst ungerundet), TR-Benutzung angeben („| solve nach x"), „möglichst genau" = alle Messwerte nutzen, also Mittelwert bilden (Heft S. 35: „in jedem Fall, solange es sich nicht um eine Regression handelt"), „bestätigen Sie" = herleiten.</li>
   </ul>
-  <p class="small">In der FS (nur Fundort): <span class="f">\(E = F/q\)</span>, <span class="f">\(E = U/d\)</span>, Radialfeld, Coulomb (S. 25/26); <span class="f">\(\Delta E = q\cdot U\)</span> (S. 25); Konstanten (S. 50/51); <span class="f">\(1\,\mathrm{V/m} = 1\,\mathrm{N/C}\)</span> (S. 47).</p>
+  <p class="small">In der FS (nur Fundort): <span class="f">\(E = F/q\)</span>, <span class="f">\(E = U/d\)</span>, Radialfeld <span class="f">\(E = \frac{1}{4\pi\varepsilon_0\varepsilon_r}\cdot\frac{Q}{r^2}\)</span> (S. 26); Coulomb <span class="f">\(F_{\mathrm C}\)</span> und <span class="f">\(\Delta E = q\cdot U\)</span> (S. 25); Konstanten (S. 50/51); <span class="f">\(1\,\mathrm{V/m} = 1\,\mathrm{N/C}\)</span> (S. 47).</p>
 </section>
 
 <!-- 9 -->
@@ -496,12 +512,12 @@
     <label><input type="checkbox" data-k="c"> <span class="f">\(E = F/q\)</span> inkl. Versuch, Halbierungstrick und Vektorrichtung</label>
     <label><input type="checkbox" data-k="d"> Coulomb anwenden (Einheiten, Vorzeichen), <span class="f">\(1/r^{2}\)</span> begründen, Newton-Vergleich</label>
     <label><input type="checkbox" data-k="e"> <span class="f">\(E = U/d\)</span> herleiten, Pendelmessung, Einheiten, schwebende Ladung</label>
-    <label><input type="checkbox" data-k="f"> Checkfragen + A1/A2 gelöst</label>
+    <label><input type="checkbox" data-k="f"> Checkfragen + A1–A5 gelöst</label>
   </div>
   <p class="small">Haken werden lokal im Browser gespeichert.</p>
 </section>
 
-<footer>Lektion 1 · erstellt 26.10.2026 · Quelle: Hefteinträge Elektrostatik (Kurs PH1, 12.1) und Pool-Formelsammlung (Stand 14.02.2024).</footer>
+<footer>Lektion 1 · erstellt 26.10.2026, überarbeitet 31.10.2026 nach Prüfbericht · Quelle: Hefteinträge Elektrostatik (Kurs PH1, 12.1) und Pool-Formelsammlung (Stand 14.02.2024).</footer>
 </main>
 
 <script>
@@ -509,14 +525,6 @@
   'use strict';
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
-  const sci = (x, sig) => {
-    if (x === 0) return '0';
-    const exp = Math.floor(Math.log10(Math.abs(x)));
-    let mant = x / Math.pow(10, exp);
-    let m = de(mant, sig - 1);
-    if (m.replace(',', '.').replace('-', '') === '10.0' || m === '10' || m === '-10') { m = de(mant / 10, sig - 1); return m + '·10<sup>' + (exp + 1) + '</sup>'; }
-    return m + '·10<sup>' + exp + '</sup>';
-  };
   /* TeX-Varianten für KaTeX-Ausgaben (Komma als {,}, Zehnerpotenzen als \cdot 10^{n}) */
   const deT = (x, d) => de(x, d).replace(',', '{,}');
   const sciT = (x, sig) => {
@@ -539,40 +547,40 @@
     const rnd = (seed => () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; })(7);
     const leiter = { x: 260, y: 20, w: 200, h: 80 };
     const nichtleiter = { x: 260, y: 130, w: 200, h: 80 };
-    el('rect', { x: leiter.x, y: leiter.y, width: leiter.w, height: leiter.h, rx: 8, fill: 'none', stroke: css('--fg'), 'stroke-width': 1.5 });
-    el('rect', { x: nichtleiter.x, y: nichtleiter.y, width: nichtleiter.w, height: nichtleiter.h, rx: 8, fill: 'none', stroke: css('--fg'), 'stroke-width': 1.5, 'stroke-dasharray': '6 4' });
-    const t1 = el('text', { x: leiter.x + leiter.w + 10, y: leiter.y + 48, fill: css('--muted'), 'font-size': 13 }); t1.textContent = 'Leiter (Influenz)';
-    const t2 = el('text', { x: nichtleiter.x + nichtleiter.w + 10, y: nichtleiter.y + 48, fill: css('--muted'), 'font-size': 13 }); t2.textContent = 'Nichtleiter (Polarisation)';
+    el('rect', { x: leiter.x, y: leiter.y, width: leiter.w, height: leiter.h, rx: 8, fill: 'none', stroke: 'var(--fg)', 'stroke-width': 1.5 });
+    el('rect', { x: nichtleiter.x, y: nichtleiter.y, width: nichtleiter.w, height: nichtleiter.h, rx: 8, fill: 'none', stroke: 'var(--fg)', 'stroke-width': 1.5, 'stroke-dasharray': '6 4' });
+    const t1 = el('text', { x: leiter.x + leiter.w + 10, y: leiter.y + 48, fill: 'var(--muted)', 'font-size': 13 }); t1.textContent = 'Leiter (Influenz)';
+    const t2 = el('text', { x: nichtleiter.x + nichtleiter.w + 10, y: nichtleiter.y + 48, fill: 'var(--muted)', 'font-size': 13 }); t2.textContent = 'Nichtleiter (Polarisation)';
     const electrons = [];
     for (let i = 0; i < 36; i++) {
       const bx = leiter.x + 14 + rnd() * (leiter.w - 28), by = leiter.y + 10 + rnd() * (leiter.h - 20);
-      electrons.push({ bx, by, node: el('circle', { cx: bx, cy: by, r: 3, fill: css('--neg') }) });
+      electrons.push({ bx, by, node: el('circle', { cx: bx, cy: by, r: 3, fill: 'var(--neg)' }) });
     }
     const lblL = el('text', { x: leiter.x + 8, y: leiter.y - 5, 'font-size': 14, 'font-weight': 700 });
     const lblR = el('text', { x: leiter.x + leiter.w - 16, y: leiter.y - 5, 'font-size': 14, 'font-weight': 700 });
     const atoms = [];
     for (let r = 0; r < 2; r++) for (let c = 0; c < 5; c++) {
       const cx = nichtleiter.x + 25 + c * 38, cy = nichtleiter.y + 22 + r * 36;
-      const cloud = el('circle', { cx, cy, r: 11, fill: css('--neg'), 'fill-opacity': 0.25, stroke: css('--neg'), 'stroke-width': 1 });
-      const core = el('circle', { cx, cy, r: 3.5, fill: css('--pos') });
+      const cloud = el('circle', { cx, cy, r: 11, fill: 'var(--neg)', 'fill-opacity': 0.25, stroke: 'var(--neg)', 'stroke-width': 1 });
+      const core = el('circle', { cx, cy, r: 3.5, fill: 'var(--pos)' });
       atoms.push({ cx, cy, cloud, core });
     }
     const lblL2 = el('text', { x: nichtleiter.x + 8, y: nichtleiter.y + nichtleiter.h + 18, 'font-size': 14, 'font-weight': 700 });
     const lblR2 = el('text', { x: nichtleiter.x + nichtleiter.w - 16, y: nichtleiter.y + nichtleiter.h + 18, 'font-size': 14, 'font-weight': 700 });
-    const ext = el('circle', { cx: 100, cy: 115, r: 18, fill: css('--pos') });
+    const ext = el('circle', { cx: 100, cy: 115, r: 18, fill: 'var(--pos)' });
     const extT = el('text', { x: 100, y: 121, 'text-anchor': 'middle', 'font-size': 20, 'font-weight': 700, fill: '#fff' }); extT.textContent = '+';
     const dist = $('infDist'), signBtn = $('infSign');
     function draw() {
       const v = parseFloat(dist.value);
       const x = 220 - v * 1.6;
       ext.setAttribute('cx', x); extT.setAttribute('x', x);
-      ext.setAttribute('fill', sign > 0 ? css('--pos') : css('--neg')); extT.textContent = sign > 0 ? '+' : '−';
+      ext.setAttribute('fill', sign > 0 ? 'var(--pos)' : 'var(--neg)'); extT.textContent = sign > 0 ? '+' : '−';
       const gap = Math.max(leiter.x - x, 30);
       const amount = Math.min(28, 1800 / gap);
       const s = -sign * amount;
       electrons.forEach((e) => { const t = (e.bx - leiter.x) / leiter.w; const dx = s * (1.2 - 0.8 * Math.abs(t - 0.5)); e.node.setAttribute('cx', e.bx + dx); });
       lblL.textContent = sign > 0 ? '−' : '+'; lblR.textContent = sign > 0 ? '+' : '−';
-      lblL.setAttribute('fill', sign > 0 ? css('--neg') : css('--pos')); lblR.setAttribute('fill', sign > 0 ? css('--pos') : css('--neg'));
+      lblL.setAttribute('fill', sign > 0 ? 'var(--neg)' : 'var(--pos)'); lblR.setAttribute('fill', sign > 0 ? 'var(--pos)' : 'var(--neg)');
       const dAt = Math.min(6, amount * 0.25);
       atoms.forEach((a) => { a.cloud.setAttribute('cx', a.cx - sign * dAt); });
       lblL2.textContent = lblL.textContent; lblR2.textContent = lblR.textContent;
@@ -639,7 +647,8 @@
       if (mouse) {
         const [ex, ey] = E(mouse[0], mouse[1]); const m = Math.hypot(ex, ey);
         if (m > 0) {
-          const ref = 1 / (60 * 60); const L = 14 + 56 * Math.min(1, m / ref); const s = probeNeg ? -1 : 1;
+          // Pfeillänge logarithmisch: 14 px bei |E| <= 1e-5 (weit weg), 70 px ab |E| >= 1e-2 (dicht an einer Ladung, Sättigung), dazwischen gleiche Längenschritte pro Faktor
+          const mLo = 1e-5, mHi = 1e-2; const L = 14 + 56 * Math.min(1, Math.max(0, Math.log10(m / mLo) / Math.log10(mHi / mLo))); const s = probeNeg ? -1 : 1;
           const ux = s * ex / m, uy = s * ey / m;
           ctx.strokeStyle = css('--arrow'); ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(mouse[0], mouse[1]); ctx.lineTo(mouse[0] + ux * L, mouse[1] + uy * L); ctx.stroke();
           arrowAt(mouse[0] + ux * L, mouse[1] + uy * L, ux, uy, css('--arrow'));
@@ -661,21 +670,23 @@
 
   /* ---------- 3 Regression F(Q) ---------- */
   (function regression() {
-    const Q = [10, 5, 2.5, 1.25, 0.625], F = [4.3, 2.4, 1.5, 1.2, 0.9];
+    // Heft-Tabelle: Anteil der Ladung (1, 1/2, ..., 1/32) und Kraft in mN, alle sechs Messpunkte
+    const Q = [1, 0.5, 0.25, 0.125, 0.0625, 0.03125], F = [4.3, 2.4, 1.5, 1.2, 0.9, 0.8];
+    const Q0 = 10; // Annahme: Anteil 1 entspricht 10 nC
     const n = Q.length, mx = Q.reduce((a, b) => a + b) / n, my = F.reduce((a, b) => a + b) / n;
     let sxy = 0, sxx = 0; for (let i = 0; i < n; i++) { sxy += (Q[i] - mx) * (F[i] - my); sxx += (Q[i] - mx) ** 2; }
     const m = sxy / sxx, b = my - m * mx;
-    const Evalue = m * 1e-3 / 1e-9;
-    texHTML($('regOut'), 'Lineare Regression (TR): \\(F = \\htmlClass{hl}{' + deT(m, 3) + '\\,\\mathrm{mN/nC}}\\cdot Q ' + (b < 0 ? '- ' : '+ ') + deT(Math.abs(b), 2) + '\\,\\mathrm{mN}\\)<br>Steigung → \\(E = ' + deT(m, 2) + '\\,\\mathrm{mN/nC} = \\htmlClass{hl}{' + sciT(Evalue, 2) + '\\,\\mathrm{N/C}}\\)<br><span class="small">Achsenabschnitt \\(' + deT(b, 1) + '\\,\\mathrm{mN}\\): Erwartung 0 (ohne Ladung keine Kraft) → Messfehler / Randfeld diskutieren.</span>');
+    const mPerNC = m / Q0, Evalue = mPerNC * 1e-3 / 1e-9;
+    texHTML($('regOut'), 'Lineare Regression (alle 6 Punkte, wie der Heft-TR): \\(F = \\htmlClass{hl}{' + deT(m, 4) + '\\,\\mathrm{mN}}\\cdot Q/Q_0 ' + (b < 0 ? '- ' : '+ ') + deT(Math.abs(b), 4) + '\\,\\mathrm{mN}\\)<br>Mit der Annahme \\(Q_0 = 10\\,\\mathrm{nC}\\): Steigung \\(' + deT(mPerNC, 3) + '\\,\\mathrm{mN/nC}\\) → \\(E = \\htmlClass{hl}{' + sciT(Evalue, 2) + '\\,\\mathrm{N/C}}\\) (Heft: \\(355\\,000\\,\\mathrm{N/C}\\), „ggf. um Faktor 10 falsch")<br><span class="small">Achsenabschnitt \\(' + deT(b, 2) + '\\,\\mathrm{mN}\\): Erwartung 0 (ohne Ladung keine Kraft) → Messungenauigkeit (Heft); ein Randfeld wirkt auf die ungeladene Platte nur über Influenz.</span>');
     const cv = $('regCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
     const pad = { l: 50, r: 16, t: 16, b: 40 };
-    const xs = (q) => pad.l + (q / 11) * (W - pad.l - pad.r), ys = (f) => H - pad.b - (f / 5) * (H - pad.t - pad.b);
+    const xs = (q) => pad.l + (q / 1.1) * (W - pad.l - pad.r), ys = (f) => H - pad.b - (f / 5) * (H - pad.t - pad.b);
     function draw() {
       ctx.clearRect(0, 0, W, H); ctx.strokeStyle = css('--line'); ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.lineWidth = 1;
-      for (let q = 0; q <= 10; q += 2) { ctx.beginPath(); ctx.moveTo(xs(q), pad.t); ctx.lineTo(xs(q), H - pad.b); ctx.stroke(); ctx.fillText(String(q), xs(q) - 4, H - pad.b + 16); }
+      for (let q = 0; q <= 1.001; q += 0.25) { ctx.beginPath(); ctx.moveTo(xs(q), pad.t); ctx.lineTo(xs(q), H - pad.b); ctx.stroke(); ctx.fillText(de(q, 2), xs(q) - 12, H - pad.b + 16); }
       for (let f = 0; f <= 5; f += 1) { ctx.beginPath(); ctx.moveTo(pad.l, ys(f)); ctx.lineTo(W - pad.r, ys(f)); ctx.stroke(); ctx.fillText(String(f), pad.l - 18, ys(f) + 4); }
-      ctx.fillStyle = css('--fg'); ctx.fillText('Q in nC', W - pad.r - 50, H - 6); ctx.save(); ctx.translate(14, pad.t + 60); ctx.rotate(-Math.PI / 2); ctx.fillText('F in mN', 0, 0); ctx.restore();
-      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xs(0), ys(b)); ctx.lineTo(xs(11), ys(m * 11 + b)); ctx.stroke();
+      ctx.fillStyle = css('--fg'); ctx.fillText('Anteil Q/Q₀', W - pad.r - 76, H - 6); ctx.save(); ctx.translate(14, pad.t + 60); ctx.rotate(-Math.PI / 2); ctx.fillText('F in mN', 0, 0); ctx.restore();
+      ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(xs(0), ys(b)); ctx.lineTo(xs(1.1), ys(m * 1.1 + b)); ctx.stroke();
       ctx.fillStyle = css('--pos'); for (let i = 0; i < n; i++) { ctx.beginPath(); ctx.arc(xs(Q[i]), ys(F[i]), 5, 0, 2 * Math.PI); ctx.fill(); }
     }
     draw(); window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
@@ -686,23 +697,38 @@
     const k = 8.99e9;
     const q1 = $('q1'), q2 = $('q2'), rr = $('rr');
     const cv = $('coulCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-    const pad = { l: 56, r: 16, t: 16, b: 40 };
+    const pad = { l: 70, r: 16, t: 22, b: 40 };
+    // „schöne" Achsenteilung: 1, 2 oder 5 mal Zehnerpotenz
+    const niceStep = (range) => { const p = Math.pow(10, Math.floor(Math.log10(range))); const f = range / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p; };
     function update() {
       const Q1 = parseFloat(q1.value) * 1e-9, Q2 = parseFloat(q2.value) * 1e-9, r = parseFloat(rr.value) * 1e-2;
       texHTML($('q1v'), '\\(' + deT(parseFloat(q1.value), 1) + '\\,\\mathrm{nC}\\)'); texHTML($('q2v'), '\\(' + deT(parseFloat(q2.value), 1) + '\\,\\mathrm{nC}\\)'); texHTML($('rrv'), '\\(' + deT(parseFloat(rr.value), 1) + '\\,\\mathrm{cm}\\)');
       const Fv = k * Q1 * Q2 / (r * r);
       let art = Fv > 0 ? '<span class="pos">abstoßend</span> (gleichnamig)' : Fv < 0 ? '<span class="neg">anziehend</span> (ungleichnamig)' : 'keine Kraft';
-      texHTML($('coulOut'), '\\(F = k\\cdot Q_1 Q_2 / r^2 = \\htmlClass{hl}{' + sciT(Fv, 2) + '\\,\\mathrm{N}} = ' + deT(Fv * 1e3, 3) + '\\,\\mathrm{mN}\\) → ' + art + '<br><span class="small">Verdoppelt man \\(r\\), sinkt die Kraft auf ein Viertel.</span>');
+      texHTML($('coulOut'), '\\(F = k\\cdot Q_1 Q_2 / r^2 = \\htmlClass{hl}{' + sciT(Fv, 2) + '\\,\\mathrm{N}} = ' + deT(Fv * 1e3, 3) + '\\,\\mathrm{mN}\\) → ' + art + '<br><span class="small">Verdoppelt man \\(r\\), sinkt die Kraft auf ein Viertel: bei \\(2r = ' + deT(2 * parseFloat(rr.value), 1) + '\\,\\mathrm{cm}\\) sind es \\(' + deT(Math.abs(Fv) * 1e3 / 4, 3) + '\\,\\mathrm{mN}\\).</span>');
       ctx.clearRect(0, 0, W, H);
-      const Fmax = k * Math.abs(Q1 * Q2) / (0.01 * 0.01) || 1;
-      const xs = (rc) => pad.l + ((rc - 1) / 9) * (W - pad.l - pad.r), ys = (f) => H - pad.b - (f / Fmax) * (H - pad.t - pad.b);
+      // y-Achse in mN: Maximum ist |F| bei r = 1 cm, auf eine schöne Teilung aufgerundet
+      const FmaxmN = k * Math.abs(Q1 * Q2) / (0.01 * 0.01) * 1e3;
+      const step = FmaxmN > 0 ? niceStep(FmaxmN / 4) : 1, yMax = FmaxmN > 0 ? Math.ceil(FmaxmN / step - 1e-9) * step : 4;
+      const dec = Math.max(0, -Math.floor(Math.log10(step)));
+      const xs = (rc) => pad.l + ((rc - 1) / 9) * (W - pad.l - pad.r), ys = (fmN) => H - pad.b - (fmN / yMax) * (H - pad.t - pad.b);
       ctx.strokeStyle = css('--line'); ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.lineWidth = 1;
       for (let rc = 1; rc <= 10; rc++) { ctx.beginPath(); ctx.moveTo(xs(rc), pad.t); ctx.lineTo(xs(rc), H - pad.b); ctx.stroke(); ctx.fillText(String(rc), xs(rc) - 4, H - pad.b + 16); }
-      ctx.fillStyle = css('--fg'); ctx.fillText('r in cm', W - pad.r - 44, H - 6); ctx.fillText('|F| (relativ)', 6, pad.t + 4);
+      for (let f = 0; f <= yMax + 1e-9; f += step) { ctx.beginPath(); ctx.moveTo(pad.l, ys(f)); ctx.lineTo(W - pad.r, ys(f)); ctx.stroke(); ctx.textAlign = 'right'; ctx.fillText(de(f, dec), pad.l - 6, ys(f) + 4); ctx.textAlign = 'start'; }
+      ctx.fillStyle = css('--fg'); ctx.fillText('r in cm', W - pad.r - 44, H - 6); ctx.save(); ctx.translate(12, pad.t + 72); ctx.rotate(-Math.PI / 2); ctx.fillText('|F| in mN', 0, 0); ctx.restore();
       ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2; ctx.beginPath();
-      for (let i = 0; i <= 180; i++) { const rc = 1 + i / 20; const f = k * Math.abs(Q1 * Q2) / ((rc * 1e-2) ** 2); const x = xs(rc), y = ys(f); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
+      for (let i = 0; i <= 180; i++) { const rc = 1 + i / 20; const f = k * Math.abs(Q1 * Q2) / ((rc * 1e-2) ** 2) * 1e3; const x = xs(rc), y = ys(f); if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y); }
       ctx.stroke();
-      ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(xs(parseFloat(rr.value)), ys(Math.abs(Fv)), 6, 0, 2 * Math.PI); ctx.fill();
+      // Zweiter Punkt bei 2r (ein Viertel der Kraft), solange er noch im Diagramm liegt
+      const rc = parseFloat(rr.value), FmN = Math.abs(Fv) * 1e3;
+      if (2 * rc <= 10) {
+        ctx.strokeStyle = css('--ok'); ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(xs(rc), ys(FmN)); ctx.lineTo(xs(2 * rc), ys(FmN)); ctx.lineTo(xs(2 * rc), ys(FmN / 4)); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = css('--ok'); ctx.beginPath(); ctx.arc(xs(2 * rc), ys(FmN / 4), 6, 0, 2 * Math.PI); ctx.fill();
+        ctx.fillText('2r: F/4 = ' + de(FmN / 4, dec + 1) + ' mN', Math.min(xs(2 * rc) + 8, W - pad.r - 130), ys(FmN / 4) + 16);
+      }
+      ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(xs(rc), ys(FmN), 6, 0, 2 * Math.PI); ctx.fill();
+      ctx.fillText('r: F = ' + de(FmN, dec + 1) + ' mN', Math.min(xs(rc) + 8, W - pad.r - 120), Math.max(pad.t + 10, ys(FmN) - 10));
     }
     [q1, q2, rr].forEach(s => s.addEventListener('input', update)); update();
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', update);
@@ -713,11 +739,11 @@
     const uk = $('uk'), dc = $('dc'), svg = $('pendSvg'), NS = 'http://www.w3.org/2000/svg';
     const el = (tag, attrs, parent) => { const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); (parent || svg).appendChild(n); return n; };
     const m = 2.5e-3, q = 10e-9, h = 0.41, g = 9.81;
-    const cFg = css('--ok'), cFel = css('--arrow'), cFf = css('--rope'), cRes = css('--muted'), cGeo = css('--warn'), cFg0 = css('--fg');
+    const cFg = 'var(--ok)', cFel = 'var(--arrow)', cFf = 'var(--rope)', cRes = 'var(--muted)', cGeo = 'var(--warn)', cFg0 = 'var(--fg)';
     // Pfeilspitzen in der jeweiligen Pfeilfarbe
     const defs = el('defs', {});
     const marker = (id, color) => { const mk = el('marker', { id: 'pd-' + id, markerWidth: 9, markerHeight: 9, refX: 8, refY: 4.5, orient: 'auto', markerUnits: 'userSpaceOnUse' }, defs); el('path', { d: 'M0,0 L9,4.5 L0,9 z', fill: color }, mk); return 'url(#pd-' + id + ')'; };
-    const mField = marker('field', css('--field')), mG = marker('g', cFg), mE = marker('e', cFel), mF = marker('f', cFf), mR = marker('r', cRes);
+    const mField = marker('field', 'var(--field)'), mG = marker('g', cFg), mE = marker('e', cFel), mF = marker('f', cFf), mR = marker('r', cRes);
     // Beschriftung mit echtem Index: label(farbe, [{t:'F', it:true}, {t:'el', sub:true}])
     const label = (color, parts, size, anchor) => {
       const t = el('text', { 'font-size': size || 14, fill: color, 'text-anchor': anchor || 'start' });
@@ -735,16 +761,16 @@
     const at = (n, x, y) => { n.setAttribute('x', x); n.setAttribute('y', y); return n; };
     const seg = (n, x1, y1, x2, y2) => { n.setAttribute('x1', x1); n.setAttribute('y1', y1); n.setAttribute('x2', x2); n.setAttribute('y2', y2); };
     // Kondensator: Platten und Feldlinien (von + nach −)
-    el('rect', { x: 50, y: 30, width: 10, height: 312, fill: css('--pos') });
-    el('rect', { x: 452, y: 30, width: 10, height: 312, fill: css('--neg') });
+    el('rect', { x: 50, y: 30, width: 10, height: 312, fill: 'var(--pos)' });
+    el('rect', { x: 452, y: 30, width: 10, height: 312, fill: 'var(--neg)' });
     at(label(cFg0, [{ t: '+' }], 16, 'middle'), 55, 22);
     at(label(cFg0, [{ t: '−' }], 16, 'middle'), 457, 22);
-    for (let i = 0; i < 5; i++) el('line', { x1: 72, x2: 440, y1: 74 + i * 56, y2: 74 + i * 56, stroke: css('--field'), 'stroke-width': 1.1, opacity: 0.4, 'marker-end': mField });
+    for (let i = 0; i < 5; i++) el('line', { x1: 72, x2: 440, y1: 74 + i * 56, y2: 74 + i * 56, stroke: 'var(--field)', 'stroke-width': 1.1, opacity: 0.4, 'marker-end': mField });
     // Aufhängung, Lot, Auslenkungsdreieck (Höhe, Δx, Faden h)
     const pivot = { x: 212, y: 40 }, L = 198, G = 74; // G: Länge des Gewichtskraft-Pfeils in Bildpunkten
     el('line', { x1: pivot.x - 26, x2: pivot.x + 26, y1: pivot.y - 7, y2: pivot.y - 7, stroke: cFg0, 'stroke-width': 3 });
     el('circle', { cx: pivot.x, cy: pivot.y, r: 4, fill: cFg0 });
-    const plumb = el('line', { x1: pivot.x, y1: pivot.y, x2: pivot.x, stroke: cRes, 'stroke-dasharray': '4 4' });
+    const plumb = el('line', { stroke: cRes, 'stroke-dasharray': '4 4' }); // Lot nur unterhalb der Kugel (oberhalb zeigt die orange Höhe dieselbe Linie)
     const hoehe = el('line', { stroke: cGeo, 'stroke-width': 1.5, 'stroke-dasharray': '6 3' });
     const tHoehe = label(cGeo, [{ t: 'Höhe' }], 12, 'end');
     const dxLine = el('line', { stroke: cGeo, 'stroke-width': 2.5 });
@@ -763,7 +789,7 @@
     const fF = el('line', { stroke: cFf, 'stroke-width': 3.5, 'marker-end': mF });
     const fG = el('line', { stroke: cFg, 'stroke-width': 3.5, 'marker-end': mG });
     const fE = el('line', { stroke: cFel, 'stroke-width': 3.5, 'marker-end': mE });
-    const bob = el('circle', { r: 11, fill: css('--pos'), stroke: css('--card'), 'stroke-width': 1.5 });
+    const bob = el('circle', { r: 11, fill: 'var(--pos)', stroke: 'var(--card)', 'stroke-width': 1.5 });
     const tPlus = label('#ffffff', [{ t: '+' }], 15, 'middle');
     const tG = label(cFg, Fsub('g'), 14, 'end');
     const tE = label(cFel, Fsub('el'), 14);
@@ -780,14 +806,14 @@
       const E = U / d, Fel = q * E, Fg = m * g;
       const tanA = Fel / Fg, alpha = Math.atan(tanA), dx = h * Math.sin(alpha);
       const Fe = 1.602e-19 * E;
-      texHTML($('capOut'), '\\(E = U/d = ' + tsdT(de(U, 0)) + '\\,\\mathrm{V} / ' + deT(d, 3) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + sciT(E, 3) + '\\,\\mathrm{V/m}}\\) (= \\(\\mathrm{N/C}\\))<br>Kraft auf ein Elektron: \\(e\\cdot E = ' + sciT(Fe, 2) + '\\,\\mathrm{N}\\)<br>Pendel (\\(q = 10\\,\\mathrm{nC}\\), \\(m = 2{,}5\\,\\mathrm{g}\\), \\(h = 410\\,\\mathrm{mm}\\)): \\(F_{\\mathrm{el}} = q\\cdot E = ' + sciT(Fel, 2) + '\\,\\mathrm{N}\\), \\(F_{\\mathrm{g}} = m\\cdot g = ' + sciT(Fg, 2) + '\\,\\mathrm{N}\\)<br>→ \\(\\tan\\alpha = F_{\\mathrm{el}}/F_{\\mathrm{g}} = ' + deT(tanA, 4) + '\\), \\(\\alpha = ' + deT(alpha * 180 / Math.PI, 2) + '^\\circ\\), \\(\\Delta x = h\\cdot\\sin\\alpha \\approx h\\cdot F_{\\mathrm{el}}/F_{\\mathrm{g}} = \\htmlClass{hl}{' + deT(dx * 1e3, 1) + '\\,\\mathrm{mm}}\\)');
+      texHTML($('capOut'), '\\(E = U/d = ' + tsdT(de(U, 0)) + '\\,\\mathrm{V} / ' + deT(d, 3) + '\\,\\mathrm{m} = \\htmlClass{hl}{' + sciT(E, 3) + '\\,\\mathrm{V/m}}\\) (= \\(\\mathrm{N/C}\\))<br>Kraft auf ein Elektron: \\(e\\cdot E = ' + sciT(Fe, 2) + '\\,\\mathrm{N}\\)<br>Pendel (Werte der Heft-Tabelle: \\(q = 10\\,\\mathrm{nC}\\), \\(m = 2{,}5\\,\\mathrm{g}\\), Faden \\(h = 410\\,\\mathrm{mm}\\)): \\(F_{\\mathrm{el}} = q\\cdot E = ' + sciT(Fel, 2) + '\\,\\mathrm{N}\\), \\(F_{\\mathrm{g}} = m\\cdot g = ' + sciT(Fg, 2) + '\\,\\mathrm{N}\\)<br>→ \\(\\tan\\alpha = F_{\\mathrm{el}}/F_{\\mathrm{g}} = ' + deT(tanA, 4) + '\\), \\(\\alpha = ' + deT(alpha * 180 / Math.PI, 2) + '^\\circ\\), \\(\\Delta x = h\\cdot\\sin\\alpha \\approx h\\cdot F_{\\mathrm{el}}/F_{\\mathrm{g}} = \\htmlClass{hl}{' + deT(dx * 1e3, 1) + '\\,\\mathrm{mm}}\\)');
       // Zeichnung: Winkel stark überhöht (Kubikwurzel-Abbildung, monoton, höchstens 45° am Reglerende), damit die Kräfte immer sichtbar sind.
       // Die Kraftpfeile passen zum gezeichneten Winkel, damit das Parallelogramm aufgeht; die echten Zahlen stehen im Kasten.
       const alphaMax = Math.atan(q * (10e3 / 0.01) / Fg);
       const aV = (Math.PI / 4) * Math.cbrt(alpha / alphaMax);
       const sA = Math.sin(aV), cA = Math.cos(aV);
       const bx = pivot.x + L * sA, by = pivot.y + L * cA, El = G * Math.tan(aV);
-      seg(thread, pivot.x, pivot.y, bx, by); plumb.setAttribute('y2', by + 30);
+      seg(thread, pivot.x, pivot.y, bx, by); seg(plumb, pivot.x, by, pivot.x, by + 30);
       seg(hoehe, pivot.x, pivot.y, pivot.x, by); at(tHoehe, pivot.x - 6, (pivot.y + by) / 2 + 4);
       seg(dxLine, pivot.x, by, bx, by);
       if (bx - pivot.x > 44) { at(tDx, (pivot.x + bx) / 2, by + 18); tDx.setAttribute('text-anchor', 'middle'); } else { at(tDx, pivot.x - 8, by + 18); tDx.setAttribute('text-anchor', 'end'); }
@@ -802,7 +828,7 @@
       if (bx + El > 350) { at(tR, bx + El + 4, by + G + 19); tR.setAttribute('text-anchor', 'end'); } else { at(tR, bx + El + 8, by + G + 5); tR.setAttribute('text-anchor', 'start'); }
       arc(arcBob, bx, by, 30, aV); at(tAlpha2, bx + 46 * Math.sin(aV + 0.28), by + 46 * Math.cos(aV + 0.28) + 5);
       seg(fF, bx, by, bx - El, by - G); at(tF, bx - El / 2 - 10, by - G / 2 + 4);
-      note.firstChild.textContent = 'Winkel gezeichnet ' + de(aV * 180 / Math.PI, 0) + '°, wirklich ' + de(alpha * 180 / Math.PI, 2) + '°: Auslenkung stark überhöht, Kraftpfeile passend zur Zeichnung';
+      note.firstChild.textContent = 'gezeichnet ' + de(aV * 180 / Math.PI, 0) + '°, wirklich ' + de(alpha * 180 / Math.PI, 2) + '° (stark überhöht; Kraftpfeile passend zur Zeichnung)';
     }
     [uk, dc].forEach(s => s.addEventListener('input', update)); update();
   })();

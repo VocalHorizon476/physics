@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Physik Vorabi – Übersicht</title>
+<style>
+:root { --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1; --accent: #1f6feb; --pos: #d93025; --ok: #188038; --warn: #b26a00; --soft: #eef2f7; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a; --accent: #58a6ff; --pos: #ff6b61; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c; } }
+:root[data-theme="dark"] { --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a; --accent: #58a6ff; --pos: #ff6b61; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 16px 16px 48px; }
+header.hero { padding: 28px 0 8px; }
+header.hero h1 { margin: 0 0 6px; font-size: 30px; }
+header.hero p { margin: 0; color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin: 16px 0; }
+.card h2 { margin: 0 0 10px; font-size: 20px; }
+.note { border-left: 4px solid var(--accent); background: var(--soft); border-radius: 8px; padding: 10px 14px; margin: 12px 0; }
+.note.warn { border-left-color: var(--warn); }
+.note.ok { border-left-color: var(--ok); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.grid > * { min-width: 0; }
+.les { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.les .num { color: var(--muted); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; }
+.les h3 { margin: 0; font-size: 17px; }
+.les h3 a { color: var(--fg); text-decoration: none; }
+.les h3 a:hover { color: var(--accent); }
+.les .topics { color: var(--muted); font-size: 14px; }
+.les .links { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 14px; margin-top: 4px; }
+.les .abi { font-size: 13px; color: var(--muted); }
+a { color: var(--accent); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; vertical-align: top; text-align: left; }
+th { background: var(--soft); }
+@media (max-width: 760px) { table { display: block; overflow-x: auto; } }
+ul.tight { margin: 6px 0; padding-left: 20px; }
+ul.tight li { margin: 3px 0; }
+footer { color: var(--muted); font-size: 13px; margin-top: 24px; }
+.pill { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+  <h1>Physik Vorabi 2026 – Übersicht</h1>
+  <p>Vorabitur Physik eA am <b>Mittwoch, 11.11.2026</b>. Stoff = die Mappe (Hefteinträge 12.1, 12.2, 13.1) plus Pool-Formelsammlung. Elf Lektionen, eine Übungsklausur, eine Auswendig-Liste.</p>
+</header>
+
+<section class="card">
+  <h2>So arbeitest du damit</h2>
+  <ul class="tight">
+    <li><b>Reihenfolge:</b> Lektion 1 bis 11 in dieser Reihenfolge. Jede Lektion hat Theorie mit Simulationen, Klausur-Kästen („So fragt die Klausur"), Aufgaben zum Selbstrechnen (erst rechnen, dann Lösung aufklappen), „Nicht in der Formelsammlung" und Merksätze mit Fortschritts-Checkboxen.</li>
+    <li><b>Rechnen statt lesen:</b> Zu jeder Lektion die Aufgaben A1 ff. schriftlich lösen und im Chat posten. Dort wird wie vom Lehrer korrigiert (Punkte, Fehlerliste).</li>
+    <li><b>Lehrer-Konventionen</b> (gelten in jeder Rechnung): physikalische Stromrichtung = Elektronenfluss, Kraft mit der linken Hand · TR-Auswertung in fünf Schritten (Werte, Diagramm mit Einheiten, Regressionstyp physikalisch begründen, Formel mit Einheiten und Achsenabschnitt, Konstante deuten) · „solve nach x" angeben · „möglichst genau" = alle Messwerte (Regression/Mittelwert) · „bestätigen Sie" = herleiten, Schlusssatz nicht vergessen · Fehlerbetrachtung Min-Max, Schreibweise 580<sup>+18</sup><sub>−17</sub> nm.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h2>Lektionen</h2>
+  <div class="grid">
+    <article class="les">
+      <div class="num">Lektion 1 · 12.1</div>
+      <h3><a href="01-Elektrostatik-I.html">Elektrostatik I</a></h3>
+      <div class="topics">Ladung und Materie, Feldlinien, Feldstärke E = F/q, Coulomb-Gesetz, Plattenkondensator E = U/d mit Pendelmessung, Methodik (Fehlerbalken, geltende Ziffern, TR-Dokumentation).</div>
+      <div class="links"><a href="01-Elektrostatik-I.html">Lektion öffnen</a><a href="../Hefteinträge/(12.1)%20Elektrostatik/(12.1)%20Elektrostatik.pdf">Heft Elektrostatik (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2022 I T2, 2021 I T2, 2020 I.2 (Felder, Elektronen im Feld)</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 2 · 12.1</div>
+      <h3><a href="02-Elektrostatik-II.html">Elektrostatik II</a></h3>
+      <div class="topics">Energie im Feld, Spannung U = W/q, Elektronenvolt, Beschleunigung, Elektronenstrahlablenkröhre, Klausur 2 Aufgabe 3 mit Musterlösung, schwebende Ladung, Millikan.</div>
+      <div class="links"><a href="02-Elektrostatik-II.html">Lektion öffnen</a><a href="../Hefteinträge/(12.1)%20Elektrostatik/(12.1)%20Elektrostatik.pdf">Heft Elektrostatik (PDF)</a><a href="../../../Arbeiten/12.1/Physikarbeit%20Nr.%201%20-%20(12.1).pdf">Klausur 2 mit Korrektur (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2022 I T2 (Elektronen im Kondensatorfeld), 2020 I.2 (Ablenkröhre)</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 3 · 12.1</div>
+      <h3><a href="03-Kondensator.html">Kondensator</a></h3>
+      <div class="topics">Kapazität, Dielektrikum, Faraday-Käfig, Reihen- und Parallelschaltung, Energie ½CU², Lade- und Entladekurve mit DGL, Zeitkonstante, Halbwertszeit, Oszilloskop, Klausur 2 Aufgaben 1, 2, 4.</div>
+      <div class="links"><a href="03-Kondensator.html">Lektion öffnen</a><a href="../Hefteinträge/(12.1)%20Elektrodynamik/(12.1)%20Elektrodynamik.pdf">Heft Elektrodynamik (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2025-2 (Ladekurve), 2024 gA II.3, 2023 IIa T3, 2019 I.1, 2016 I.1</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 4 · 12.2</div>
+      <h3><a href="04-Magnetfeld-Lorentzkraft.html">Magnetfeld und Lorentzkraft</a></h3>
+      <div class="topics">Ørsted, Stromwaage F = B·I·l, Lorentzkraft, Kreisbahn und Fadenstrahlrohr (e/m), Spulenfeld, Helmholtzspule, Wienfilter, Massenspektrometer, Hall-Effekt, Klausur 3 Aufgabe 1.</div>
+      <div class="links"><a href="04-Magnetfeld-Lorentzkraft.html">Lektion öffnen</a><a href="../Hefteinträge/(12.2)%20Elektromagnetismus/Elektromagnetismus.pdf">Heft Elektromagnetismus (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2024 II T3, 2022 IIb T3, 2022 I T3, 2021 IIb T3, 2020 II.3, 2020 I.1, 2017 I.3, 2016 I.2</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 5 · 12.2</div>
+      <h3><a href="05-Induktion.html">Induktion</a></h3>
+      <div class="topics">Magnetischer Fluss, Induktionsgesetz, Generator, Lenzsche Regel, fallender Magnet, Selbstinduktion, Ein- und Ausschaltvorgang (τ = L/R), Energie ½LI², Klausur 3 Aufgabe 2.</div>
+      <div class="links"><a href="05-Induktion.html">Lektion öffnen</a><a href="../Hefteinträge/(12.2)%20Elektromagnetismus/Elektromagnetismus.pdf">Heft Elektromagnetismus (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2023 I T2 (Dreieckstrom, fallender Magnet), 2018 I.2</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 6 · 12.2</div>
+      <h3><a href="06-Schwingungen.html">Schwingungen</a></h3>
+      <div class="topics">Feder-Masse-Pendel, Differentialgleichung, Energie, Fadenpendel, Zeigerformalismus, gedämpfte und erzwungene Schwingung, Resonanz, LC-Schwingkreis (Thomson), Klausur 3 Aufgabe 3.</div>
+      <div class="links"><a href="06-Schwingungen.html">Lektion öffnen</a><a href="../Hefteinträge/(12.2)%20Schwingungen%20und%20Wellen/Schwingungen_und_Wellen.pdf">Heft Schwingungen und Wellen (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2023 IIa T2, 2023 I T1, 2022 IIa T2, 2021 I T1, 2020 II.1, 2018 I.1</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 7 · 12.2</div>
+      <h3><a href="07-Wellen-I.html">Wellen I</a></h3>
+      <div class="topics">Wellenfunktion, Phase und Zeigerkette, Huygens, Brechung (Snellius), Interferenz, Reflexion am festen und losen Ende, stehende Wellen mit Ultraschall, Polarisation (Malus), Abitur 2025 Aufgabe 1.</div>
+      <div class="links"><a href="07-Wellen-I.html">Lektion öffnen</a><a href="../Hefteinträge/(12.2)%20Schwingungen%20und%20Wellen/Schwingungen_und_Wellen.pdf">Heft Schwingungen und Wellen (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2025-1 (Polarisation), 2024 I T1 (Ultraschall), 2017 I.1</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 8 · 12.2</div>
+      <h3><a href="08-Wellen-II.html">Wellen II</a></h3>
+      <div class="topics">Michelson-Interferometer, Doppelspalt exakt und Näherung, Gitter, Wellenlängen von LEDs (objektiv und subjektiv), Fehlerbetrachtung, Einzelspalt.</div>
+      <div class="links"><a href="08-Wellen-II.html">Lektion öffnen</a><a href="../Hefteinträge/(12.2)%20Schwingungen%20und%20Wellen/Schwingungen_und_Wellen.pdf">Heft Schwingungen und Wellen (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2024 II T1, 2023 IIa T1, 2022 IIa T1, 2022 I T1, 2021 IIa T1+T2, 2020 II.2, 2019 II.1+II.2, 2018 II.3, 2017 II.1+II.2, 2016 II.1</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 9 · 13.1</div>
+      <h3><a href="09-Quanten-I.html">Quanten I</a></h3>
+      <div class="topics">Hallwachs, Photonenmodell, Elektronenvolt, Gegenfeldmethode, f-E-Diagramm (h und Austrittsarbeit), Materialvergleich, Leuchtdioden und Bändermodell, Schwellspannung, h aus LEDs.</div>
+      <div class="links"><a href="09-Quanten-I.html">Lektion öffnen</a><a href="../Hefteinträge/(13.1)%20Quantenmechanik/quantenmechanik.pdf">Heft Quantenmechanik (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2024 I T3, 2021 IIa T3, 2021 gA IIa T3, 2018 II.1+II.2; Zusatz Röntgen 2019 II.3, 2017 II.3</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 10 · 13.1</div>
+      <h3><a href="10-Quanten-II.html">Quanten II</a></h3>
+      <div class="topics">Bragg-Bedingung, Elektronenbeugung (Heft-Daten), de-Broglie-Wellenlänge, Elektronen am Doppelspalt (Jönsson, Tonomura), Mach-Zehnder und Delayed Choice, Wellenfunktion, Komplementarität, Unschärfe, Verschränkung.</div>
+      <div class="links"><a href="10-Quanten-II.html">Lektion öffnen</a><a href="../Hefteinträge/(13.1)%20Quantenmechanik/quantenmechanik.pdf">Heft Quantenmechanik (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2025-3, 2024 I T2, 2024 gA I.2, 2021 I T3, 2021 gA I.3, 2018 II 3.4, 2017 I.2, 2016 I.3</div>
+    </article>
+    <article class="les">
+      <div class="num">Lektion 11 · 13.1</div>
+      <h3><a href="11-Quanten-III.html">Quanten III: Atom</a></h3>
+      <div class="topics">Bohrsches Atommodell (Blatt-Herleitung bis E<sub>n</sub> und r<sub>n</sub>), Spektrallinien und Serien, Energieniveauschemata, Absorption, Spektrometer, unendlich tiefer Potentialtopf, Schrödingergleichung (FS-Form).</div>
+      <div class="links"><a href="11-Quanten-III.html">Lektion öffnen</a><a href="../Hefteinträge/(13.1)%20Quantenmechanik/quantenmechanik.pdf">Heft Quantenmechanik (PDF)</a></div>
+      <div class="abi">Abitur dazu: 2025-4 (Natrium), 2023 IIb T3, 2020 I.3, 2019 I.2, 2016 II.2</div>
+    </article>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Übungsklausur und Auswendig-Liste</h2>
+  <ul class="tight">
+    <li><b>Übungsklausur 1</b> (Lehrerstil, 100 BE, vier Aufgaben: Feld/Kondensator, Magnetfeld/Induktion, Schwingungen/Wellen, Quanten): <a href="../Übungsklausuren/Uebungsklausur-1-Aufgaben.pdf">Aufgaben (PDF)</a> · <a href="../Übungsklausuren/Uebungsklausur-1-Erwartungshorizont.pdf">Erwartungshorizont zum Selbstkorrigieren (PDF)</a>. Erst komplett schreiben (nur TR und Formelsammlung), dann korrigieren, Punkte und Fehler im Chat melden.</li>
+    <li><b>Was nicht in der Formelsammlung steht</b> (auswendig, nach Lektionen geordnet): <a href="../../../Vorabi%202026%20Auswendig%20Physik.pdf">Vorabi 2026 Auswendig Physik (PDF)</a>.</li>
+    <li><b>Formelsammlung</b> (Pool, Stand 14.02.2024): <a href="../Dokumente/Formelsammlung.pdf">PDF</a> · <b>TR-Dokumentation</b> (Lehrer-Blatt): <a href="../Dokumente/TR-Dokumentation.pdf">PDF</a>.</li>
+  </ul>
+  <div class="note warn"><b>Stand der Aufgaben:</b> Zu Lektion 1 bis 11 sind noch keine Aufgaben gerechnet und eingereicht. Die Lektionen allein bringen keine Punkte; die Klausur fragt Rechenwege, Herleitungen und Dokumentation.</div>
+</section>
+
+<section class="card">
+  <h2>Abituraufgaben nach Thema (2016 bis 2025)</h2>
+  <p>Ordner: <code>Arbeiten/Abiturarbeiten/Physik (LK)/</code>. 2016–2020: Aufgabe I und II (80 BE, je 3 Teilaufgaben), Lösungen in <code>…Lehrer/</code>. 2021–2024: Aufgabe I und II a / II b (72 BE, 3 Teilaufgaben à 24 BE), Lösungen in <code>…Lehrer/</code> bzw. <code>…_EWH.pdf</code>. 2025: Aufgaben 1–4 à 40 BE, EWH in <code>2025_Physik_eA/EWH/</code>. <code>mitExp…</code>-Ordner: gleiche Aufgaben, eine Teilaufgabe durch ein Experiment ersetzt.</p>
+  <table>
+    <tr><th>Thema (Lektion)</th><th>Aufgaben, neueste zuerst</th></tr>
+    <tr><td>Kondensator, E-Feld (L1–L3)</td><td>2025-2 (Ladekurve, RC) · 2024 gA II.3 (Kondensatorentladung) · 2023 IIa T3 (Kapazität, Dielektrikum) · 2022 I T2 (Elektronen im Kondensatorfeld) · 2021 I T2 (Plattenkondensator) · 2020 I.2 (Ablenkröhre) · 2019 I.1 (Kondensatorentladung) · 2016 I.1 (Polystyrol, Füllstand)</td></tr>
+    <tr><td>Magnetfeld, Lorentzkraft (L4)</td><td>2024 II T3 (Wien-Filter, Massenspektrometer) · 2022 IIb T3 (Spule, Hall) · 2022 I T3 (Stromwaage) · 2021 IIb T3 (Hallsonde) · 2020 II.3 (Stromwaage) · 2020 I.1 (Hall) · 2017 I.3 (Wien, Hall, Spule) · 2016 I.2 (Fadenstrahlrohr)</td></tr>
+    <tr><td>Induktion (L5)</td><td>2023 I T2 (Dreieckstrom, fallender Magnet) · 2018 I.2 (Induktion, Lenz); sonst Klausur 3 Aufgabe 2</td></tr>
+    <tr><td>Schwingungen (L6)</td><td>2023 IIa T2 (Fahrradkette) · 2023 I T1 (Schwingkreis, Resonanz) · 2022 IIa T2 (Feder-Masse-Pendel) · 2021 I T1 (Schwingkreis, Resonanz) · 2020 II.1 (Fadenpendel) · 2018 I.1 (Fadenpendel, Feder)</td></tr>
+    <tr><td>Wellen, Interferenz (L7, L8)</td><td>2025-1 (Polarisation, LCD) · 2024 II T1 (LED weiß, Lichtsensor) · 2024 I T1 (Wellen, Ultraschall) · 2023 IIa T1 (Doppel-/Mehrfachspalt, Messunsicherheit) · 2022 IIa T1 (LED, Doppelspalt, Gitter) · 2022 I T1 (Ultraschall-Doppelspalt) · 2021 IIa T1 (Gitter) · 2021 IIa T2 (Michelson, CD) · 2020 II.2 (Gitter, LED rot) · 2019 II.1 (Interferenz, c in Wasser) · 2019 II.2 (Michelson, Mikrowellen) · 2018 II.3 (Gitter, Vierfachspalt) · 2017 II.1 (CD-ROM) · 2017 II.2 (Michelson) · 2017 I.1 (Ultraschall) · 2016 II.1 (Gitter, LED, IR, Unsicherheit)</td></tr>
+    <tr><td>Quanten I: Photonen, h (L9)</td><td>2024 I T3 (Fotozelle) · 2021 IIa T3 (h mit LEDs) · 2021 gA IIa T3 · 2018 II.2 (Fotozelle) · 2018 II.1 (Solarzelle) · Zusatz Röntgen: 2019 II.3, 2017 II.3</td></tr>
+    <tr><td>Quanten II: Materiewellen (L10)</td><td>2025-3 (Elektroneninterferenz, Komplementarität) · 2024 I T2 (C60) · 2024 gA I.2 (Farbstoffmoleküle) · 2021 I T3 (Elektronenbeugungsröhre) · 2021 gA I.3 · 2018 II 3.4 (Einzelphoton) · 2017 I.2 (He an LiF, de Broglie) · 2016 I.3 (Elektronenbeugungsröhre)</td></tr>
+    <tr><td>Quanten III: Atom (L11)</td><td>2025-4 (Natriumspektrum) · 2023 IIb T3 (H-Spektrum) · 2020 I.3 (He-Spektrum) · 2019 I.2 (Natriumabsorption, H-Spektrum) · 2016 II.2 (Natrium)</td></tr>
+    <tr><td>Nicht in der Mappe (fürs Vorabi weglassen)</td><td>Franck-Hertz: 2022 IIa T3, 2022 gA, 2018 I.3 · Kernphysik: 2024 II T2+T3, 2023 I T3, 2019 I.3, 2016 II.3 · Glühemission: 2024 gA I.3</td></tr>
+  </table>
+  <p class="abi" style="color:var(--muted);font-size:14px;margin-top:8px">Häufigkeit 2016–2025 (61 Teilaufgaben eA, grob nach Hauptthema): Quanten 18, Wellen 15, Magnetfeld 8, Kondensator 7, Schwingungen 6, Kern 5, Induktion 2. Fehlerbetrachtung kommt in fast jeder Wellen-Aufgabe vor. In der Mappe, aber 2021–2025 nie im Abitur (trotzdem Vorabi-Stoff): Fadenstrahlrohr, Lenz, Brechung, Selbstinduktion, stehende Wellen, Mach-Zehnder, Hallwachs, Unschärfe, Potentialtopf.</p>
+</section>
+
+<section class="card">
+  <h2>Termine</h2>
+  <ul class="tight">
+    <li><b>Mi 11.11.2026</b> Vorabi Physik · Di 17.11. Vorabi Mathe · Fr 20.11. Vorabi Informatik.</li>
+    <li>Probeklausur unter Bedingungen: Abitur 2025 (Aufgaben 2, 1, 3) am So 8.11., Korrektur am Mo 9.11. Übungsklausur 1 an einem freien Tag davor oder am Sa 7.11.</li>
+  </ul>
+</section>
+
+<footer>Übersicht erstellt 31.10.2026. Quellen der Lektionen: Hefteinträge (Kurs PH1, Lehrer Tepe), Klausuren 2 und 3, Zentralabitur Niedersachsen 2016–2025 mit Erwartungshorizonten, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+</main>
+</body>
+</html>

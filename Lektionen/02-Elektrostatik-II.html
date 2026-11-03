@@ -81,10 +81,10 @@
   .barlbl { font-size: 12px; text-align: center; margin-top: 4px; }
   /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
   .grid2 > *, .cards > *, .hand > * { min-width: 0; }
-  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
-  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .f.wide { display: block; position: relative; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
   .out { max-width: 100%; }
-  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+  @media (max-width: 760px) { .card table { display: block; position: relative; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -132,7 +132,7 @@
   <div class="formula">\[U = \frac{W}{q},\qquad W = q\cdot U,\qquad 1\,\mathrm{V} = 1\,\mathrm{\frac{J}{C}}\]</div>
   <p>Das gilt für <b>jeden</b> Weg von Platte zu Platte, nicht nur für den geraden. Deshalb ist die Spannung die praktischere Größe: Man muss den Weg nicht kennen. In der Formelsammlung steht das als <span class="f">\(\Delta E = q\cdot U\)</span> („Energiedifferenz eines geladenen Teilchens beim Durchlaufen einer Spannung").</p>
   <h3>Potenzial (steht in der FS, Grundidee reicht)</h3>
-  <p>Das <b>Potenzial</b> <span class="f">\(\varphi\)</span> an einem Ort ist die potenzielle Energie pro Ladung an diesem Ort: <span class="f">\(\varphi = W_{\mathrm{pot}}/q\)</span>. Die Spannung zwischen zwei Orten ist die Potenzialdifferenz: <span class="f">\(U = \varphi _{2} - \varphi _{1}\)</span>. Im Plattenkondensator wächst das Potenzial linear mit dem Abstand <span class="f">\(s\)</span> von der negativen Platte: <span class="f">\(\varphi = (U/d)\cdot s\)</span>. Analogie: Potenzial = Höhe, Spannung = Höhenunterschied. Energie entsteht nur aus Unterschieden.</p>
+  <p>Das <b>Potenzial</b> <span class="f">\(\varphi\)</span> an einem Ort ist die potenzielle Energie pro Ladung an diesem Ort: <span class="f">\(\varphi = W_{\mathrm{pot}}/q\)</span>. Die Spannung zwischen zwei Orten ist die Potenzialdifferenz: <span class="f">\(U = \varphi _{2} - \varphi _{1}\)</span>. Im Plattenkondensator wächst das Potenzial linear mit dem Abstand <span class="f">\(s\)</span> von der negativen Platte: <span class="f">\(\varphi = (U/d)\cdot s\)</span>. Analogie zum Schwerefeld: Dem Potenzial <span class="f">\(\varphi\)</span> entspricht <span class="f">\(g\cdot h\)</span> (Lageenergie pro Masse), der Spannung <span class="f">\(U\)</span> der Unterschied <span class="f">\(g\cdot \Delta h\)</span>. Energie entsteht nur aus Unterschieden.</p>
   <h3>Elektronenvolt</h3>
   <p>Für Teilchen ist das Joule unhandlich klein. Das Elektronenvolt ist die Energie, die ein Teilchen mit der Ladung <span class="f">\(e\)</span> beim Durchlaufen von <span class="f">\(1\,\mathrm{V}\)</span> gewinnt:</p>
   <div class="formula">\[1\,\mathrm{eV} = 1{,}602\cdot 10^{-19}\,\mathrm{J}\qquad\text{(Umrechnung: Zahl in eV = Zahl in J geteilt durch } e\text{)}\]</div>
@@ -145,7 +145,7 @@
   <div class="grid2">
     <div>
       <div class="controls">
-        <label>Position <span class="f">\(s/d\)</span> <input type="range" id="eng" min="0" max="100" value="40"></label>
+        <label>Weg ab der Startplatte <span class="f">\(x/d\)</span> <input type="range" id="eng" min="0" max="100" value="40"></label>
       </div>
       <div class="bars">
         <div><div class="bar p"><div id="barP" style="height:60%"></div></div><div class="barlbl"><span class="f">\(W_{\mathrm{pot}}\)</span></div></div>
@@ -155,9 +155,9 @@
     </div>
     <div>
       <div class="ex"><div class="t">Rechenbeispiel aus der Klausur (3b): Elektron, <span class="f">\(U_B = 0{,}75\,\mathrm{kV}\)</span></div>
-        <p><span class="f">\(v = \sqrt{2\cdot e\cdot U_{B}/m_{e}} = \sqrt{2 \cdot 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 750 \,\mathrm{V} / 9{,}109\cdot 10^{-31} \,\mathrm{kg}} = \sqrt{2{,}64\cdot 10^{14} \,\mathrm{m^2/s^2}} = 1{,}62\cdot 10^{7} \,\mathrm{m/s}\)</span></p>
+        <p><span class="f">\(v = \sqrt{2\cdot e\cdot U_{B}/m_{e}} = \sqrt{2 \cdot 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 750 \,\mathrm{V} / (9{,}109\cdot 10^{-31} \,\mathrm{kg})} = \sqrt{2{,}64\cdot 10^{14} \,\mathrm{m^2/s^2}} = 1{,}62\cdot 10^{7} \,\mathrm{m/s}\)</span></p>
         <p>Einheiten-Check: <span class="f">\(\mathrm{C\cdot V} = \mathrm{J} = \mathrm{kg\cdot m^2/s^2}\)</span>, geteilt durch <span class="f">\(\mathrm{kg}\)</span> bleibt <span class="f">\(\mathrm{m^2/s^2}\)</span>, Wurzel gibt <span class="f">\(\mathrm{m/s}\)</span>.</p></div>
-      <div class="note warn"><b>Fehler aus Klausur 2 (Punktabzug):</b> Ergebnis als <span class="f">\(1{,}624\,\mathrm{m/s}\)</span> notiert, die Zehnerpotenz <span class="f">\(10^{7}\)</span> ging im TR verloren. <b>Größenordnungs-Check angewöhnen:</b> Elektronen nach einigen hundert Volt bis <span class="f">\(\mathrm{kV}\)</span>: <span class="f">\(10^{7}\,\mathrm{m/s}\)</span> (einige Prozent der Lichtgeschwindigkeit <span class="f">\(3\cdot 10^{8}\,\mathrm{m/s}\)</span>). Ein Elektron mit <span class="f">\(1{,}6\,\mathrm{m/s}\)</span> wäre langsamer als ein Fußgänger, unmöglich bei <span class="f">\(750\,\mathrm{V}\)</span>. Ab etwa <span class="f">\(30\,\mathrm{kV}\)</span> wird es relativistisch, das kommt im Vorabi nicht vor.</div>
+      <div class="note warn"><b>Fehler aus Klausur 2 (Punktabzug):</b> Ergebnis als <span class="f">\(1{,}624\,\mathrm{m/s}\)</span> notiert, die Zehnerpotenz <span class="f">\(10^{7}\)</span> ging im TR verloren. <b>Größenordnungs-Check angewöhnen:</b> Elektronen nach einigen hundert Volt bis <span class="f">\(\mathrm{kV}\)</span>: <span class="f">\(10^{7}\,\mathrm{m/s}\)</span> (einige Prozent der Lichtgeschwindigkeit <span class="f">\(3\cdot 10^{8}\,\mathrm{m/s}\)</span>). Ein Elektron mit <span class="f">\(1{,}6\,\mathrm{m/s}\)</span> wäre langsamer als ein Fußgänger, unmöglich bei <span class="f">\(750\,\mathrm{V}\)</span>.</div>
     </div>
   </div>
 </section>
@@ -191,8 +191,8 @@
     </div>
   </div>
   <div class="ex"><div class="t">Beispiel vom Arbeitsblatt: <span class="f">\(q = 2\,\mathrm{nC}\)</span>, <span class="f">\(m = 0{,}1\,\mathrm{g}\)</span>, <span class="f">\(d = 2\,\mathrm{cm}\)</span>, <span class="f">\(U = 100\,\mathrm{V}\)</span></div>
-    <p><span class="f">\(E = U/d = 5000 \,\mathrm{V/m}\)</span>; <span class="f">\(F = q\cdot E = 2\cdot 10^{-9} \,\mathrm{C} \cdot 5000 \,\mathrm{N/C} = 1{,}0\cdot 10^{-5} \,\mathrm{N}\)</span>; <span class="f">\(a = F/m = 1{,}0\cdot 10^{-5} \,\mathrm{N} / 1{,}0\cdot 10^{-4} \,\mathrm{kg} = 0{,}10 \,\mathrm{m/s^2}\)</span>;<br>
-    <span class="f">\(t = \sqrt{2\cdot d/a} = \sqrt{2\cdot 0{,}02 \,\mathrm{m} / 0{,}10 \,\mathrm{m/s^2}} = 0{,}63 \,\mathrm{s}\)</span>; <span class="f">\(v = a\cdot t = 0{,}063 \,\mathrm{m/s}\)</span>. Kontrolle: <span class="f">\(\sqrt{2\cdot q\cdot U/m} = \sqrt{2\cdot 2\cdot 10^{-9}\cdot 100/10^{-4}} \,\mathrm{m/s} = 0{,}063 \,\mathrm{m/s}\)</span>. ✓</p></div>
+    <p><span class="f">\(E = U/d = 5000 \,\mathrm{V/m}\)</span>; <span class="f">\(F = q\cdot E = 2\cdot 10^{-9} \,\mathrm{C} \cdot 5000 \,\mathrm{N/C} = 1{,}0\cdot 10^{-5} \,\mathrm{N}\)</span>; <span class="f">\(a = F/m = \frac{1{,}0\cdot 10^{-5} \,\mathrm{N}}{1{,}0\cdot 10^{-4} \,\mathrm{kg}} = 0{,}10 \,\mathrm{m/s^2}\)</span>;<br>
+    <span class="f">\(t = \sqrt{2\cdot d/a} = \sqrt{\frac{2\cdot 0{,}02 \,\mathrm{m}}{0{,}10 \,\mathrm{m/s^2}}} = 0{,}63 \,\mathrm{s}\)</span>; <span class="f">\(v = a\cdot t = 0{,}063 \,\mathrm{m/s}\)</span>. Kontrolle: <span class="f">\(\sqrt{2\cdot q\cdot U/m} = \sqrt{\frac{2\cdot 2\cdot 10^{-9}\cdot 100}{10^{-4}}} \,\mathrm{m/s} = 0{,}063 \,\mathrm{m/s}\)</span>. ✓</p></div>
 </section>
 
 <!-- 3 -->
@@ -242,8 +242,8 @@
     <p class="small">Bewertung: je 1 BE pro Spannung, 1 BE Polung, 1 BE Bahnkurve. Hattest du komplett (5/5).</p></details>
   <details><summary>3b) Herleitung <span class="f">\(v_x = \sqrt{2\cdot U_B\cdot e/m_e}\)</span>; Wert für <span class="f">\(U_B = 0{,}75\,\mathrm{kV}\)</span> [5 BE]</summary>
     <p>Energieerhaltung: <span class="f">\(W_{\mathrm{el}} = W_{\mathrm{kin}}\)</span> ⇒ <span class="f">\(e\cdot U_{B} = \tfrac{1}{2}\cdot m_{e}\cdot v_{x}^{2}\)</span> ⇒ <span class="f">\(v_{x} = \sqrt{2\cdot e\cdot U_{B}/m_{e}}\)</span>.<br>
-    <span class="f">\(v_{x} = \sqrt{2 \cdot 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 750 \,\mathrm{V} / 9{,}109\cdot 10^{-31} \,\mathrm{kg}} = 1{,}62\cdot 10^{7} \,\mathrm{m/s}\)</span>.</p>
-    <p class="small">Bewertung: Herleitung 3 BE (hattest du), Wert mit Einheit 2 BE (1,5, „Wert falsch": <span class="f">\(1{,}624\,\mathrm{m/s}\)</span> ohne <span class="f">\(10^{7}\)</span>).</p></details>
+    <span class="f">\(v_{x} = \sqrt{2 \cdot 1{,}602\cdot 10^{-19} \,\mathrm{C} \cdot 750 \,\mathrm{V} / (9{,}109\cdot 10^{-31} \,\mathrm{kg})} = 1{,}62\cdot 10^{7} \,\mathrm{m/s}\)</span>.</p>
+    <p class="small">Bewertung: Herleitung 3 BE (2,5 erreicht), Wert mit Einheit 2 BE (1,5 erreicht, „Wert falsch": <span class="f">\(1{,}624\,\mathrm{m/s}\)</span> ohne <span class="f">\(10^{7}\)</span>).</p></details>
   <details><summary>3c) <span class="f">\(U_A = U_B\)</span>: Auftreffpunkt <span class="f">\(x_0\)</span> [3 BE]</summary>
     <p>Mit <span class="f">\(U_{A} = U_{B}\)</span> wird <span class="f">\(\Delta y = x^{2}/(4\cdot d)\)</span>. Einschuss in der Mitte, Treffer bei <span class="f">\(\Delta y = d/2 = 0{,}02 \,\mathrm{m}\)</span>: <span class="f">\(0{,}02 \,\mathrm{m} = x_{0}^{2}/(4\cdot 0{,}04 \,\mathrm{m})\)</span> ⇒ <span class="f">\(x_{0}^{2} = 0{,}0032 \,\mathrm{m^2}\)</span> ⇒ <span class="f">\(x_{0} = 0{,}0566 \,\mathrm{m} = 5{,}66 \,\mathrm{cm}\)</span>. (Allgemein: <span class="f">\(x_{0} = d\cdot \sqrt{2}\)</span>.) TR-Doku: „mit solve im TR nach <span class="f">\(x\)</span> gelöst".</p>
     <p class="small">Bewertung: 3/3.</p></details>
@@ -254,13 +254,13 @@
     </table>
     <ol>
       <li><b>Werte in den TR</b> (Tabelle <span class="f">\(U_A\)</span>, <span class="f">\(x_0\)</span>), keine Umrechnung nötig.</li>
-      <li><b>Diagramm:</b> x-Achse <span class="f">\(U_{A}\)</span> in <span class="f">\(\mathrm{V}\)</span>, y-Achse <span class="f">\(x_{0}\)</span> in <span class="f">\(\mathrm{cm}\)</span>, Punkte eintragen, fallende Kurve. („Diagramm reicht nicht": nur die Achsen hinzuschreiben gab 0,5/1. Skizze mit Punkten und Verlauf dazu.)</li>
+      <li><b>Diagramm:</b> x-Achse <span class="f">\(U_{A}\)</span> in <span class="f">\(\mathrm{V}\)</span>, y-Achse <span class="f">\(x_{0}\)</span> in <span class="f">\(\mathrm{cm}\)</span>, Punkte eintragen, fallende Kurve.</li>
       <li><b>Regressionstyp begründen, physikalisch:</b> Aus der Bahngleichung folgt für den Treffer bei <span class="f">\(y = d/2\)</span>: <span class="f">\(x_{0} = d\cdot \sqrt{2\cdot U_{B}} \cdot U_{A}^{-1/2}\)</span>. Erwartet wird also ein Potenzzusammenhang mit Exponent <span class="f">\(-0{,}5\)</span> → <b>Potenzregression</b>. („Punkte verlaufen augenscheinlich entlang einer Kurve" allein reicht dem Lehrer nicht: 0,5/1.) TR: <span class="f">\(y = 182{,}2 \cdot x^{-0{,}503}\)</span>.</li>
       <li><b>Physikalisch:</b> <span class="f">\(x_{0}(U_{A}) = 182 \,\mathrm{cm\,V}^{0{,}5} \cdot U_{A}^{-0{,}5}\)</span>. Einheit der Konstante: <span class="f">\(\mathrm{cm}\)</span> mal <span class="f">\(\mathrm{V^{0{,}5}}\)</span>, damit nach Division durch <span class="f">\(\sqrt{\mathrm{V}}\)</span> wieder <span class="f">\(\mathrm{cm}\)</span> herauskommt. („Einheit falsch" kostete 0,5.) Exponent <span class="f">\(-0{,}503 \approx -0{,}5\)</span>, Abweichung durch Messfehler, passt zur Theorie.</li>
-      <li><b>Konstante deuten und <span class="f">\(U_B\)</span> bestimmen:</b> Vergleich mit der Theorie: <span class="f">\(a = d\cdot \sqrt{2\cdot U_{B}}\)</span> ⇒ <span class="f">\(U_{B} = a^{2}/(2\cdot d^{2})\)</span>. Mit <span class="f">\(a = 182{,}2\,\mathrm{cm\cdot V^{0{,}5}} = 1{,}822\,\mathrm{m\cdot V^{0{,}5}}\)</span> und <span class="f">\(d = 0{,}04\,\mathrm{m}\)</span>: <span class="f">\(U_{B} = 3{,}32 \,\mathrm{V\,m^2} / 0{,}0032 \,\mathrm{m^2} \approx 1{,}0\cdot 10^{3} \,\mathrm{V}\)</span>. „Möglichst genau" heißt: über die Regression (alle Messwerte), nicht aus einem einzelnen Wertepaar. („<span class="f">\(U_B\)</span> nicht bestimmt": 0/3.)</li>
+      <li><b>Konstante deuten und <span class="f">\(U_B\)</span> bestimmen:</b> Vergleich mit der Theorie: <span class="f">\(a = d\cdot \sqrt{2\cdot U_{B}}\)</span> ⇒ <span class="f">\(U_{B} = a^{2}/(2\cdot d^{2})\)</span>. Mit <span class="f">\(a = 182{,}2\,\mathrm{cm\cdot V^{0{,}5}} = 1{,}822\,\mathrm{m\cdot V^{0{,}5}}\)</span> und <span class="f">\(d = 0{,}04\,\mathrm{m}\)</span>: <span class="f">\(U_{B} = \frac{3{,}32 \,\mathrm{V\,m^2}}{0{,}0032 \,\mathrm{m^2}} \approx 1{,}0\cdot 10^{3} \,\mathrm{V}\)</span>. „Möglichst genau" heißt: über die Regression (alle Messwerte), nicht aus einem einzelnen Wertepaar. („<span class="f">\(U_B\)</span> nicht bestimmt": 0/3.)</li>
     </ol>
     <div class="out" id="regOut"></div>
-    <p class="small">Bewertung: TR-Vorgehen 2, Diagramm 1, Regression begründet 1, Ergebnis physikalisch 2, <span class="f">\(U_B\)</span> 3, insgesamt 10. Du hattest 6.</p></details>
+    <p class="small">Bewertung: TR-Vorgehen 2, Diagramm 2, Regression begründet 1, Ergebnis physikalisch 2, <span class="f">\(U_B\)</span> 3, insgesamt 10. Du hattest 6 (2 + 2 + 0,5 + 1,5 + 0).</p></details>
   <details><summary>3e) Versuch in dünner Gasatmosphäre statt Vakuum [3 BE]</summary>
     <p>Die Elektronen stoßen mit Gasatomen. Bei jedem Stoß geben sie Bewegungsenergie ab, <span class="f">\(v_{x}\)</span> wird kleiner (<span class="f">\(\Delta v_x\)</span>). Langsamere Elektronen sind länger im Ablenkfeld und werden bei gleichem <span class="f">\(U_{A}\)</span> stärker abgelenkt: Die Bahn krümmt sich stärker, die Elektronen treffen früher auf die Platte (<b>Verkürzung der Bahnkurve</b>). Außerdem wird der Strahl durch Streuung breiter, und das Gas leuchtet an der Bahn (die Atome werden angeregt), der Strahl wird sichtbar.</p>
     <div class="note warn"><b>Was falsch war:</b> Erklärung über ein größeres <span class="f">\(\varepsilon _{r}\)</span> des Gases und eine größere Kapazität. Die Dielektrizitätszahl eines dünnen Gases ist praktisch 1, und die Kapazität hat mit der Bahn nichts zu tun. Erwartet war: Verkürzung nennen (1 BE) + Begründung mit Elektron-Atom-Stößen (2 BE).</div></details>
@@ -297,7 +297,7 @@
 <section class="card" id="s6">
   <h2>6 · Analogie-Trainer</h2>
   <div class="cards">
-    <div class="acard"><h4>Höhe ↔ Potenzial</h4><div class="l">Höhenunterschied ↔ Spannung. Energie steckt im Unterschied, nicht im absoluten Wert.</div></div>
+    <div class="acard"><h4><span class="f">\(g\cdot h\)</span> ↔ Potenzial <span class="f">\(\varphi\)</span></h4><div class="l"><span class="f">\(g\cdot \Delta h\)</span> ↔ Spannung <span class="f">\(U\)</span>. Energie steckt im Unterschied, nicht im absoluten Wert.</div></div>
     <div class="acard"><h4><span class="f">\(m\cdot g\cdot h\)</span> ↔ <span class="f">\(q\cdot U\)</span></h4><div class="l">Lageenergie ↔ elektrische Energie. Freier Fall aus Höhe <span class="f">\(h\)</span> ↔ Beschleunigung durch Spannung <span class="f">\(U\)</span>.</div></div>
     <div class="acard"><h4><span class="f">\(v = \sqrt{2gh}\)</span> ↔ <span class="f">\(v = \sqrt{2qU/m}\)</span></h4><div class="l">Beides aus Energieerhaltung. Unterschied: beim Fall kürzt sich <span class="f">\(m\)</span> weg, im Feld nicht. Leichte Teilchen werden schneller.</div></div>
     <div class="acard"><h4>Waagerechter Wurf ↔ Ablenkröhre</h4><div class="l"><span class="f">\(y = g/(2v_0^{2})\cdot x^{2}\)</span> ↔ <span class="f">\(y = U_A/(4U_B d)\cdot x^{2}\)</span>. Parabel, Tangente durch die Mitte.</div></div>
@@ -315,11 +315,11 @@
   <details><summary>Checkfrage 1: Warum hängt die Bahn in der Ablenkröhre nicht von <span class="f">\(e\)</span> und <span class="f">\(m_e\)</span> ab?</summary>
     <p>Die Ablenkkraft ist proportional zu <span class="f">\(e\)</span>, die Beschleunigung also zu <span class="f">\(e/m_{e}\)</span>. Die Geschwindigkeit <span class="f">\(v_{x}^{2}\)</span> ist ebenfalls proportional zu <span class="f">\(e/m_{e}\)</span>. In <span class="f">\(y = \tfrac{1}{2}\cdot a_{y}\cdot x^{2}/v_{x}^{2}\)</span> kürzt sich <span class="f">\(e/m_{e}\)</span> heraus. Ein Proton (durch dieselbe <span class="f">\(U_{B}\)</span> beschleunigt) flöge dieselbe Bahn, nur zur anderen Platte.</p></details>
   <details><summary>Checkfrage 2: Elektron und Proton durchlaufen beide <span class="f">\(2{,}0\,\mathrm{kV}\)</span>. Energie? Geschwindigkeit?</summary>
-    <p>Energie gleich: je <span class="f">\(2{,}0\,\mathrm{keV} = 3{,}2\cdot 10^{-16}\,\mathrm{J}\)</span>. Geschwindigkeiten: Elektron <span class="f">\(v = \sqrt{2\cdot 1{,}602\cdot 10^{-19}\cdot 2000/9{,}109\cdot 10^{-31}} \,\mathrm{m/s} = 2{,}65\cdot 10^{7} \,\mathrm{m/s}\)</span>; Proton <span class="f">\(\sqrt{2\cdot 1{,}602\cdot 10^{-19}\cdot 2000/1{,}673\cdot 10^{-27}} \,\mathrm{m/s} = 6{,}2\cdot 10^{5} \,\mathrm{m/s}\)</span>. Verhältnis <span class="f">\(\sqrt{m_{p}/m_{e}} \approx 43\)</span>.</p></details>
+    <p>Energie gleich: je <span class="f">\(2{,}0\,\mathrm{keV} = 3{,}2\cdot 10^{-16}\,\mathrm{J}\)</span>. Geschwindigkeiten: Elektron <span class="f">\(v = \sqrt{\frac{2\cdot 1{,}602\cdot 10^{-19}\cdot 2000}{9{,}109\cdot 10^{-31}}} \,\mathrm{m/s} = 2{,}65\cdot 10^{7} \,\mathrm{m/s}\)</span>; Proton <span class="f">\(\sqrt{\frac{2\cdot 1{,}602\cdot 10^{-19}\cdot 2000}{1{,}673\cdot 10^{-27}}} \,\mathrm{m/s} = 6{,}2\cdot 10^{5} \,\mathrm{m/s}\)</span>. Verhältnis <span class="f">\(\sqrt{m_{p}/m_{e}} \approx 43\)</span>.</p></details>
   <details><summary>A1: Ablenkröhre, <span class="f">\(U_B = 1{,}5\,\mathrm{kV}\)</span>, <span class="f">\(U_A = 300\,\mathrm{V}\)</span>, <span class="f">\(d = 5{,}0\,\mathrm{cm}\)</span>, Plattenlänge <span class="f">\(l = 8{,}0\,\mathrm{cm}\)</span>. Ablenkung am Plattenende? Trifft der Strahl die Platte?</summary>
-    <p><span class="f">\(y(l) = U_{A}\cdot l^{2}/(4\cdot U_{B}\cdot d) = 300 \,\mathrm{V} \cdot (0{,}080 \,\mathrm{m})^{2} / (4 \cdot 1500 \,\mathrm{V} \cdot 0{,}050 \,\mathrm{m}) = 1{,}92 \,\mathrm{V\,m^2} / 300 \,\mathrm{V\,m} = 6{,}4\cdot 10^{-3} \,\mathrm{m} = 6{,}4 \,\mathrm{mm}\)</span>. Platte bei <span class="f">\(d/2 = 25\,\mathrm{mm}\)</span>, also kein Treffer. Austrittswinkel: <span class="f">\(\tan \alpha = U_{A}\cdot l/(2\cdot U_{B}\cdot d) = 0{,}16\)</span> ⇒ <span class="f">\(\alpha \approx 9^\circ\)</span>.</p></details>
+    <p><span class="f">\(y(l) = U_{A}\cdot l^{2}/(4\cdot U_{B}\cdot d) = 300 \,\mathrm{V} \cdot (0{,}080 \,\mathrm{m})^{2} / (4 \cdot 1500 \,\mathrm{V} \cdot 0{,}050 \,\mathrm{m}) = \frac{1{,}92 \,\mathrm{V\,m^2}}{300 \,\mathrm{V\,m}} = 6{,}4\cdot 10^{-3} \,\mathrm{m} = 6{,}4 \,\mathrm{mm}\)</span>. Platte bei <span class="f">\(d/2 = 25\,\mathrm{mm}\)</span>, also kein Treffer. Austrittswinkel: <span class="f">\(\tan \alpha = U_{A}\cdot l/(2\cdot U_{B}\cdot d) = 0{,}16\)</span> ⇒ <span class="f">\(\alpha \approx 9^\circ\)</span>.</p></details>
   <details><summary>A2: Elektron startet aus der Ruhe, <span class="f">\(d = 2{,}0\,\mathrm{cm}\)</span>, <span class="f">\(U = 100\,\mathrm{V}\)</span>. Flugzeit bis zur anderen Platte?</summary>
-    <p><span class="f">\(E = 5000 \,\mathrm{V/m}\)</span>, <span class="f">\(a = e\cdot E/m_{e} = 1{,}602\cdot 10^{-19}\cdot 5000/9{,}109\cdot 10^{-31} \,\mathrm{m/s^2} = 8{,}8\cdot 10^{14} \,\mathrm{m/s^2}\)</span>, <span class="f">\(t = \sqrt{2\cdot d/a} = \sqrt{0{,}04/8{,}8\cdot 10^{14}} \,\mathrm{s} = 6{,}7\cdot 10^{-9} \,\mathrm{s} = 6{,}7\,\mathrm{ns}\)</span>. Endgeschwindigkeit <span class="f">\(\sqrt{2\cdot e\cdot U/m_{e}} = 5{,}9\cdot 10^{6} \,\mathrm{m/s}\)</span>.</p></details>
+    <p><span class="f">\(E = 5000 \,\mathrm{V/m}\)</span>, <span class="f">\(a = e\cdot E/m_{e} = \frac{1{,}602\cdot 10^{-19}\cdot 5000}{9{,}109\cdot 10^{-31}} \,\mathrm{m/s^2} = 8{,}8\cdot 10^{14} \,\mathrm{m/s^2}\)</span>, <span class="f">\(t = \sqrt{2\cdot d/a} = \sqrt{\frac{0{,}04}{8{,}8\cdot 10^{14}}} \,\mathrm{s} = 6{,}7\cdot 10^{-9} \,\mathrm{s} = 6{,}7\,\mathrm{ns}\)</span>. Endgeschwindigkeit <span class="f">\(\sqrt{2\cdot e\cdot U/m_{e}} = 5{,}9\cdot 10^{6} \,\mathrm{m/s}\)</span>.</p></details>
   <details><summary>A3: Öltröpfchen <span class="f">\(m = 2{,}5\cdot 10^{-15}\,\mathrm{kg}\)</span> schwebt bei <span class="f">\(U = 460\,\mathrm{V}\)</span>, <span class="f">\(d = 6{,}0\,\mathrm{mm}\)</span>, obere Platte positiv. Ladung mit Vorzeichen und Anzahl der Elementarladungen?</summary>
     <p><span class="f">\(|q| = m\cdot g\cdot d/U = 2{,}5\cdot 10^{-15}\cdot 9{,}81\cdot 0{,}0060/460 \,\mathrm{C} = 3{,}2\cdot 10^{-19} \,\mathrm{C}\)</span>. Kraft nach oben, obere Platte positiv → Feld nach unten → Tröpfchen negativ: <span class="f">\(q = -3{,}2\cdot 10^{-19} \,\mathrm{C} = -2e\)</span>, also zwei Elektronen zu viel.</p></details>
   <details><summary>A4: Was ändert sich an der Bahn in der Ablenkröhre, wenn man <span class="f">\(U_B\)</span> verdoppelt?</summary>
@@ -330,7 +330,7 @@
 <section class="card" id="s8">
   <h2>8 · Nicht in der Formelsammlung (auswendig)</h2>
   <ul>
-    <li><span class="f">\(W = q\cdot E\cdot s\)</span> (Arbeit im homogenen Feld), <span class="f">\(U = W/q\)</span>, Potenzial = Energie pro Ladung, Spannung = Potenzialdifferenz.</li>
+    <li><span class="f">\(W = q\cdot E\cdot s\)</span> (Arbeit im homogenen Feld).</li>
     <li><span class="f">\(v = \sqrt{2\cdot q\cdot U/m}\)</span> mit Herleitung aus <span class="f">\(q\cdot U = \tfrac{1}{2}\cdot m\cdot v^{2}\)</span> (die FS hat nur die beiden Einzelformeln).</li>
     <li>Kinematische Kette: <span class="f">\(F = q\cdot U/d\)</span>, <span class="f">\(a = q\cdot U/(m\cdot d)\)</span>, <span class="f">\(v = a\cdot t\)</span>, <span class="f">\(s = \tfrac{1}{2}\cdot a\cdot t^{2}\)</span>, <span class="f">\(t = \sqrt{2\cdot d\cdot m/(q\cdot E)}\)</span>; Vergleich der beiden Lösungswege.</li>
     <li>Größenordnung: Elektronen nach Volt bis <span class="f">\(\mathrm{kV}\)</span> <span class="f">\(\approx 10^{6}\)</span> bis <span class="f">\(10^{7}\,\mathrm{m/s}\)</span>.</li>
@@ -340,7 +340,7 @@
     <li>Schwebende Ladung <span class="f">\(|q| = m\cdot g\cdot d/U\)</span> + Richtungsargument; Millikan: Differenzen = Vielfache von <span class="f">\(e\)</span>; „möglichst genau" = Mittelwert bzw. Regression über alle Werte.</li>
     <li>Auswertung einer Potenzregression: Exponent mit Theorie vergleichen, Konstante mit Einheit (z. B. <span class="f">\(\mathrm{cm\cdot V^{0{,}5}}\)</span>) angeben und physikalisch deuten.</li>
   </ul>
-  <p class="small">In der FS: <span class="f">\(\Delta E = q\cdot U\)</span> (S. 25), Potenzial (S. 26), <span class="f">\(E_{\mathrm{kin}} = \tfrac{1}{2}\cdot m\cdot v^{2}\)</span>, <span class="f">\(F = m\cdot a\)</span>, Kinematik und waagerechter Wurf (S. 15–17), <span class="f">\(1\,\mathrm{eV} = 1{,}602\cdot 10^{-19}\,\mathrm{J}\)</span> (S. 48), <span class="f">\(e\)</span>, <span class="f">\(m_{e}\)</span>, <span class="f">\(m_{p}\)</span> (S. 50/51).</p>
+  <p class="small">In der FS: <span class="f">\(\Delta E = q\cdot U\)</span> (S. 25), Potenzial und Spannung als Potenzialdifferenz (S. 26), <span class="f">\(E_{\mathrm{kin}} = \tfrac{1}{2}\cdot m\cdot v^{2}\)</span> (S. 18), <span class="f">\(F = m\cdot a\)</span>, Kinematik und waagerechter Wurf (S. 15–17), <span class="f">\(1\,\mathrm{eV} = 1{,}602\cdot 10^{-19}\,\mathrm{J}\)</span> (S. 48), <span class="f">\(e\)</span>, <span class="f">\(m_{e}\)</span>, <span class="f">\(m_{p}\)</span> (S. 50/51).</p>
 </section>
 
 <!-- 9 -->
@@ -407,6 +407,18 @@
   // Slider-Wertanzeige als Formel: Zahl + Einheit
   const valT = (id, x, d, u) => texHTML($(id), '\\(' + deT(x, d) + '\\,\\mathrm{' + u + '}\\)');
   const e0 = 1.602e-19, me = 9.109e-31, mp = 1.673e-27, g = 9.81;
+  // Canvas-Hilfen: Pfeil mit Spitze; Beschriftung mit tiefgestelltem Index (Teile abwechselnd normal / tiefgestellt)
+  const arrow = (ctx, x0, y0, x1, y1, color, w) => {
+    if (Math.hypot(x1 - x0, y1 - y0) < 3) return;
+    const a = Math.atan2(y1 - y0, x1 - x0), h = 6 + 2 * w;
+    ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = w;
+    ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1 - Math.cos(a) * h * 0.7, y1 - Math.sin(a) * h * 0.7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - h * Math.cos(a - 0.45), y1 - h * Math.sin(a - 0.45)); ctx.lineTo(x1 - h * Math.cos(a + 0.45), y1 - h * Math.sin(a + 0.45)); ctx.closePath(); ctx.fill();
+  };
+  const lbl = (ctx, x, y, parts, size) => {
+    parts.forEach((t, i) => { ctx.font = (i % 2 ? Math.round(size * 0.75) : size) + 'px system-ui'; ctx.fillText(t, x, y + (i % 2 ? 3 : 0)); x += ctx.measureText(t).width; });
+    ctx.font = size + 'px system-ui';
+  };
 
   /* ---------- 1 Energie-Balken ---------- */
   (function energie() {
@@ -415,7 +427,7 @@
       const f = parseFloat(sl.value) / 100;
       $('barP').style.height = Math.round((1 - f) * 100) + '%';
       $('barK').style.height = Math.round(f * 100) + '%';
-      texHTML($('engOut'), 'Position \\(s = ' + deT(f * 100, 0) + '\\,\\%\\) von \\(d\\)<br>\\(W_{\\mathrm{pot}} = q \\cdot U \\cdot (1 - s/d) = \\htmlClass{hl}{' + deT((1 - f) * 100, 0) + '\\,\\%}\\) von \\(q \\cdot U\\)<br>\\(W_{\\mathrm{kin}} = q \\cdot U \\cdot s/d = \\htmlClass{hl}{' + deT(f * 100, 0) + '\\,\\%}\\) von \\(q \\cdot U\\)<br>Summe immer \\(q \\cdot U\\). Geschwindigkeit an dieser Stelle: \\(v = \\sqrt{2 \\cdot q \\cdot U \\cdot (s/d)/m}\\).');
+      texHTML($('engOut'), 'Weg ab der Startplatte \\(x = ' + deT(f * 100, 0) + '\\,\\%\\) von \\(d\\)<br>\\(W_{\\mathrm{pot}} = q \\cdot U \\cdot (1 - x/d) = \\htmlClass{hl}{' + deT((1 - f) * 100, 0) + '\\,\\%}\\) von \\(q \\cdot U\\)<br>\\(W_{\\mathrm{kin}} = q \\cdot U \\cdot x/d = \\htmlClass{hl}{' + deT(f * 100, 0) + '\\,\\%}\\) von \\(q \\cdot U\\)<br>Summe immer \\(q \\cdot U\\). Geschwindigkeit an dieser Stelle: \\(v = \\sqrt{2 \\cdot q \\cdot U \\cdot (x/d)/m}\\).');
     }
     sl.addEventListener('input', update); update();
   })();
@@ -440,8 +452,7 @@
       ctx.fillStyle = css('--fg'); ctx.font = '14px system-ui';
       ctx.fillText(p.P.q < 0 ? '−' : '+', x1 - 12, 30); ctx.fillText(p.P.q < 0 ? '+' : '−', x2 + 2, 30);
       ctx.fillText('d = ' + de(p.d * 100, 1) + ' cm, U = ' + de(p.U, 0) + ' V', x1, H - 12);
-      ctx.strokeStyle = css('--field'); ctx.lineWidth = 1;
-      for (let i = 0; i < 5; i++) { const y = 60 + i * 35; ctx.beginPath(); ctx.moveTo(p.P.q < 0 ? x2 : x1, y); ctx.lineTo(p.P.q < 0 ? x1 + 14 : x2 - 14, y); ctx.stroke(); }
+      for (let i = 0; i < 5; i++) { const y = 60 + i * 35; arrow(ctx, p.P.q < 0 ? x2 : x1, y, p.P.q < 0 ? x1 + 14 : x2 - 14, y, css('--field'), 1); }
       ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.fillText('Feldrichtung E: ' + (p.P.q < 0 ? '←' : '→') + ', Kraft auf Teilchen: →', x1, 56);
       // trail marks at equal time steps
       ctx.fillStyle = css('--muted');
@@ -450,10 +461,14 @@
       ctx.beginPath(); ctx.arc(x, H / 2, 9, 0, 2 * Math.PI); ctx.fillStyle = p.P.q < 0 ? css('--neg') : css('--pos'); ctx.fill();
       ctx.fillStyle = css('--fg'); ctx.font = '13px system-ui'; ctx.fillText(p.P.name, x - 20, H / 2 - 16);
       ctx.fillText('Striche: gleiche Zeitabstände', x1, H / 2 + 50);
+      // Kraft am Teilchen (zeigt immer zur Gegenplatte) und Farblegende
+      const fl = Math.min(34, x2 - 4 - (x + 11));
+      if (fl >= 10) { arrow(ctx, x + 11, H / 2, x + 11 + fl, H / 2, css('--arrow'), 2.5); ctx.fillStyle = css('--arrow'); lbl(ctx, x + 14, H / 2 + 22, ['F', 'el'], 13); }
+      ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui'; ctx.textAlign = 'right'; ctx.fillText('rot = +, blau = −', x2 + 12, H - 12); ctx.textAlign = 'left';
     }
     function out() {
       const p = params();
-      texHTML($('accOut'), p.P.name + ': \\(q = ' + sciT(p.P.q, 3) + '\\,\\mathrm{C}\\), \\(m = ' + sciT(p.P.m, 3) + '\\,\\mathrm{kg}\\)<br>\\(E = U/d = ' + sciT(p.E, 3) + '\\,\\mathrm{V/m}\\)<br>\\(F = |q| \\cdot E = ' + sciT(p.F, 3) + '\\,\\mathrm{N}\\)<br>\\(a = F/m = \\htmlClass{hl}{' + sciT(p.a, 3) + '\\,\\mathrm{m/s^2}}\\)<br>\\(t = \\sqrt{2d/a} = \\htmlClass{hl}{' + sciT(p.t, 3) + '\\,\\mathrm{s}}\\)<br>\\(v = a \\cdot t = \\sqrt{2|q|U/m} = \\htmlClass{hl}{' + sciT(p.v, 3) + '\\,\\mathrm{m/s}}\\)' + (p.v > 3e7 ? '<br><span class="small">über 10 % der Lichtgeschwindigkeit: hier müsste man relativistisch rechnen</span>' : ''));
+      texHTML($('accOut'), p.P.name + ': \\(q = ' + sciT(p.P.q, 3) + '\\,\\mathrm{C}\\), \\(m = ' + sciT(p.P.m, 3) + '\\,\\mathrm{kg}\\)<br>\\(E = U/d = ' + sciT(p.E, 3) + '\\,\\mathrm{V/m}\\)<br>\\(F = |q| \\cdot E = ' + sciT(p.F, 3) + '\\,\\mathrm{N}\\)<br>\\(a = F/m = \\htmlClass{hl}{' + sciT(p.a, 3) + '\\,\\mathrm{m/s^2}}\\)<br>\\(t = \\sqrt{2d/a} = \\htmlClass{hl}{' + sciT(p.t, 3) + '\\,\\mathrm{s}}\\)<br>\\(v = a \\cdot t = \\sqrt{2|q|U/m} = \\htmlClass{hl}{' + sciT(p.v, 3) + '\\,\\mathrm{m/s}}\\)');
     }
     function start() {
       if (anim) cancelAnimationFrame(anim);
@@ -483,9 +498,11 @@
       const scale = 2600;                                // 1 cm = 26 px
       const px0 = 200, midY = H / 2;
       ctx.clearRect(0, 0, W, H);
-      // gun
-      ctx.fillStyle = css('--muted'); ctx.fillRect(30, midY - 6, 60, 12); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Glühwendel, U_H', 20, midY - 12);
-      ctx.fillStyle = css('--muted'); ctx.fillRect(130, midY - 60, 6, 52); ctx.fillRect(130, midY + 8, 6, 52); ctx.fillStyle = css('--fg'); ctx.fillText('Lochblende (+), U_B', 100, midY - 66);
+      // gun: Glühwendel (−), Lochblende (+), Feld E₁ (←) und Kraft F_el (→) auf das Elektron
+      ctx.fillStyle = css('--muted'); ctx.fillRect(30, midY - 6, 60, 12); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Glühwendel (−)', 20, midY - 26); lbl(ctx, 20, midY - 13, ['U', 'H'], 12);
+      ctx.fillStyle = css('--muted'); ctx.fillRect(130, midY - 60, 6, 52); ctx.fillRect(130, midY + 8, 6, 52); ctx.fillStyle = css('--fg'); lbl(ctx, 100, midY - 66, ['Lochblende (+), U', 'B'], 12);
+      arrow(ctx, 126, midY + 24, 96, midY + 24, css('--field'), 1.5); ctx.fillStyle = css('--field'); ctx.fillText('E₁', 104, midY + 40);
+      ctx.beginPath(); ctx.arc(99, midY, 4, 0, 2 * Math.PI); ctx.fillStyle = css('--neg'); ctx.fill(); arrow(ctx, 105, midY, 127, midY, css('--arrow'), 2.5); ctx.fillStyle = css('--arrow'); lbl(ctx, 103, midY - 9, ['F', 'el'], 12);
       // plates
       const pl = l * scale, pd = d * scale;
       ctx.fillStyle = css('--pos'); ctx.fillRect(px0, midY - pd / 2 - 8, pl, 8);
@@ -504,6 +521,15 @@
       }
       ctx.stroke();
       if (hit) { ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(px0 + x0 * scale, midY - pd / 2, 5, 0, 2 * Math.PI); ctx.fill(); ctx.fillStyle = css('--fg'); ctx.fillText('trifft Platte bei x₀ = ' + de(x0 * 100, 2) + ' cm', px0 + x0 * scale + 8, midY - pd / 2 - 14); }
+      // Kondensator: Feld E₂ (↓, von + nach −) und Kraft F_el (↑) auf das Elektron; ohne U_A gibt es kein Feld
+      if (UA > 0) {
+        const ea = Math.min(36, pd / 2 - 8), fl = Math.min(30, pd / 2 - 12), xe = 0.25 * xend, ex = px0 + xe * scale, ey = midY - k * xe * xe * scale;
+        [0.5, 0.8].forEach((fr) => arrow(ctx, px0 + fr * pl, midY + 6, px0 + fr * pl, midY + 6 + ea, css('--field'), 1.5));
+        ctx.fillStyle = css('--field'); ctx.fillText('E₂', px0 + 0.5 * pl + 6, midY + 6 + ea / 2 + 4);
+        ctx.beginPath(); ctx.arc(ex, ey, 4, 0, 2 * Math.PI); ctx.fillStyle = css('--neg'); ctx.fill();
+        arrow(ctx, ex, ey - 5, ex, ey - 5 - fl, css('--arrow'), 2.5); ctx.fillStyle = css('--arrow'); lbl(ctx, ex - 23, ey - 5 - fl + 8, ['F', 'el'], 12);
+      }
+      ctx.fillStyle = css('--muted'); lbl(ctx, 14, 18, ['Platten: rot = +, blau = −.  Pfeile: E = Feld, F', 'el', ' = Kraft auf das Elektron'], 12);
       // screen
       ctx.fillStyle = css('--muted'); ctx.fillRect(W - 10, 20, 4, H - 40); ctx.fillStyle = css('--fg'); ctx.fillText('Schirm', W - 52, 16);
       texHTML($('tubeOut'), '\\(y(x) = U_A/(4 \\cdot U_B \\cdot d) \\cdot x^2 = ' + deT(k, 2) + '\\,\\mathrm{1/m} \\cdot x^2\\)<br>Ablenkung am Plattenende: \\(y(l) = \\htmlClass{hl}{' + deT(yl * 1000, 2) + '\\,\\mathrm{mm}}\\) (Platte bei \\(d/2 = ' + deT(d * 500, 1) + '\\,\\mathrm{mm}\\))<br>Austrittswinkel: \\(\\tan\\alpha = U_A \\cdot l/(2 \\cdot U_B \\cdot d) = ' + deT(tanA, 3) + ' \\;\\Rightarrow\\; \\alpha = ' + deT(Math.atan(tanA) * 180 / Math.PI, 1) + '^\\circ\\)<br>' + (UA > 0 ? 'Treffer auf der Platte bei \\(x_0 = d \\cdot \\sqrt{2U_B/U_A} = ' + deT(x0 * 100, 2) + '\\,\\mathrm{cm}\\)' + (hit ? ' → <b>Strahl trifft die Platte</b>' : ' (liegt hinter dem Plattenende, kein Treffer)') : '\\(U_A = 0\\): keine Ablenkung'));
@@ -572,7 +598,7 @@
   (function quiz() {
     const qs = [
       { q: 'Ein Elektron durchläuft \\(500\\,\\mathrm{V}\\). Welche Energie hat es danach?', o: ['\\(500\\,\\mathrm{V}\\)', '\\(500\\,\\mathrm{eV}\\)', '\\(500\\,\\mathrm{J}\\)'], a: 1, e: 'Energie pro Ladung mal Ladung: \\(500\\,\\mathrm{V} \\cdot e = 500\\,\\mathrm{eV} = 8 \\cdot 10^{-17}\\,\\mathrm{J}\\). Volt ist keine Energieeinheit.' },
-      { q: 'Welche Größe im Gravitationsfeld entspricht der Spannung \\(U\\)?', o: ['die Höhe \\(h\\)', 'der Höhenunterschied \\(g \\cdot \\Delta h\\) (Energie pro Masse)', 'die Masse \\(m\\)'], a: 1, e: '\\(U = W/q\\) ist Energie pro Ladung; \\(g \\cdot \\Delta h\\) ist Energie pro Masse. Beides sind Unterschiede, keine absoluten Werte.' },
+      { q: 'Welche Größe im Gravitationsfeld entspricht der Spannung \\(U\\)?', o: ['die Höhe \\(h\\)', 'der Unterschied \\(g \\cdot \\Delta h\\) (Energie pro Masse)', 'die Masse \\(m\\)'], a: 1, e: '\\(U = W/q\\) ist Energie pro Ladung; \\(g \\cdot \\Delta h\\) ist Energie pro Masse. Beides sind Unterschiede (zwischen den Potenzialen \\(\\varphi\\) bzw. \\(g \\cdot h\\)), keine absoluten Werte.' },
       { q: 'Proton und Elektron durchlaufen dieselbe Spannung. Was ist gleich?', o: ['die Geschwindigkeit', 'die kinetische Energie', 'die Beschleunigung'], a: 1, e: '\\(W = q \\cdot U\\), gleiche Ladung (Betrag), gleiche Energie. Geschwindigkeiten unterscheiden sich um \\(\\sqrt{m_p/m_e} \\approx 43\\).' },
       { q: 'In der Ablenkröhre wird \\(U_B\\) vervierfacht. Die Ablenkung am Plattenende ...', o: ['vervierfacht sich', 'bleibt gleich', 'wird ein Viertel'], a: 2, e: '\\(y \\propto 1/U_B\\). Schnellere Elektronen sind kürzer im Feld.' },
       { q: 'Die Bahn in der Ablenkröhre hängt ab von ...', o: ['\\(U_A\\), \\(U_B\\) und \\(d\\)', 'zusätzlich von \\(e\\) und \\(m_e\\)', 'nur von \\(U_A\\)'], a: 0, e: '\\(e/m_e\\) kürzt sich heraus. Jedes durch \\(U_B\\) beschleunigte Teilchen fliegt dieselbe Parabel.' },

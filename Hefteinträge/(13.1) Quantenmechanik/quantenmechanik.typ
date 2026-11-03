@@ -657,3 +657,84 @@ Im stationären Fall:
 $
   E Psi(x) & = - planck^2/(2m) dot d^2/(d x^2) dot Psi(x) + V(x) dot Psi(x)
 $
+
+
+#pagebreak()
+= Die Schrödingergleichung
+== Beispiel: Elektron im unendlich tiefen Potentialtopf
+
+#v(1em)
+$
+  V(x) = cases(0 & "für" 0 < x < l, oo & "sonst")
+$
+
+$=>$ Außerhalb von $[0; l]$ kann sich das Elektron nicht aufhalten.
+
+$
+  => Psi(x < 0) = Psi(x > l) = 0
+$
+$
+  => E Psi = - planck^2/(2m) dot d^2/(d x^2) Psi
+$
+
+*Ansatz:*
+$
+    Psi(x) & = A sin(k x) + B cos(k x) \
+   Psi'(x) & = A k cos(k x) - B k sin(k x) \
+  Psi''(x) & = - A k^2 sin(k x) - B k^2 cos(k x)
+$
+
+*Einsetzen:*
+$
+  E A sin(k x) + E B cos(k x) & = planck^2/(2m) A k^2 sin(k x) + planck^2/(2m) B k^2 cos(k x) \
+                        E Psi & = planck^2/(2m) k^2 Psi \
+  (E - planck^2/(2m) k^2) Psi & = 0 \
+                 <=> quad Psi & = 0 or E = (planck^2 k^2)/(2m)
+$
+
+*Randbedingungen für $x = 0$ und $x = l$:*
+$
+      Psi(0) & = A sin(k dot 0) + B cos(k dot 0) = 0 + B limits(=)^"!" 0 \
+  <=> quad B & = 0
+$
+$
+            Psi(l) & = A dot sin(k dot l) limits(=)^"!" 0 \
+  <=> quad k dot l & = n pi quad quad n in ZZ \
+        <=> quad k & = (n pi)/l
+$
+$
+  => Psi(x) = A dot sin((n pi)/l dot x)
+$
+$
+  E_n & = planck^2/(2m) dot ((n pi)/l)^2 \
+      & = h^2/(8 pi^2 m) dot (n^2 pi^2)/l^2 \
+      & = h^2/(8 m l^2) dot n^2 quad quad => n "bedeutet: Die Energieniveaus sind diskret"
+$
+
+#pagebreak()
+*Normierung:*\
+$Psi^2$ ist die Aufenthaltswahrscheinlichkeitsfunktion.
+$
+  => integral_0^l Psi^2 d x = 1
+$
+$
+  integral_0^l A^2 sin^2(k x) d x & = integral_0^l A^2 (1/2 - cos(2 k x)/2) d x \
+                                  & = A^2/2 integral_0^l (1 - cos(2 k x)) d x \
+                                  & = A^2/2 [x - 1/(2k) sin(2 k x)]_0^l \
+                                  & = A^2/2 ((l - 1/(2k) dot sin((2 n pi)/l dot l)) - (0 - 0)) \
+                                  & = A^2/2 (l - 1/(2k) dot 0) = A^2/2 dot l limits(=)^"!" 1 \
+                     <=> quad A^2 & = 2/l \
+                       <=> quad A & = sqrt(2/l) quad quad "o.B.d.A. " A > 0
+$
+
+*Ergebnis:*
+$
+  Psi(x) & = sqrt(2/l) dot sin((n pi)/l dot x) \
+       E & = h^2/(8 m l^2) dot n^2
+$
+
+#v(1em)
+*HA:* Diagramm im TR
+- $l = 1 angstrom$ (Ångström)
+- $1 <= n <= 5$
+- h-Serien: Energie der Elektronen auf der y-Achse, auf der x-Achse schwarze Linien nach $n$

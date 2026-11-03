@@ -76,10 +76,10 @@
   .ex .t { font-weight: 600; }
   /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
   .grid2 > *, .cards > *, .hand > * { min-width: 0; }
-  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
-  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .f.wide { display: block; position: relative; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
   .out { max-width: 100%; }
-  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+  @media (max-width: 760px) { .card table { display: block; position: relative; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -95,7 +95,7 @@
 </head>
 <body>
 <nav class="top">
-  <a href="#s1">1 Welle</a><a href="#s2">2 Wellenfunktion</a><a href="#s3">3 Phase & Zeiger</a><a href="#s4">4 Huygens</a><a href="#s5">5 Brechung</a><a href="#s6">6 Interferenz</a><a href="#s7">7 Reflexion</a><a href="#s8">8 Stehende Wellen</a><a href="#s9">9 Polarisation</a><a href="#s10">10 Abitur 2025</a><a href="#s11">11 Analogie</a><a href="#s12">12 Aufgaben</a><a href="#s13">13 Nicht in FS</a><a href="#s14">14 Quiz</a><a href="#s15">15 Merksätze</a>
+  <a href="#s1">1 Welle</a><a href="#s2">2 Wellenfunktion</a><a href="#s3">3 Phase & Zeiger</a><a href="#s4">4 Huygens</a><a href="#s5">5 Brechung</a><a href="#s6">6 Interferenz</a><a href="#s7">7 Reflexion</a><a href="#s8">8 Stehende Wellen</a><a href="#s9">9 Polarisation</a><a href="#s10">10 Abitur 2025</a><a href="#s11">11 Analogien</a><a href="#s12">12 Aufgaben</a><a href="#s13">13 Nicht in FS</a><a href="#s14">14 Quiz</a><a href="#s15">15 Verwechslungen</a>
 </nav>
 <main>
 <header class="hero">
@@ -127,7 +127,7 @@
     <li><b>Die Welle</b> (das Muster, die Störung, die Phase) wandert mit der Ausbreitungsgeschwindigkeit <span class="f">\(c\)</span>. Sie transportiert <b>Energie</b>, aber keine Materie.</li>
     <li><b>Zwei Geschwindigkeiten:</b> Die Teilchengeschwindigkeit <span class="f">\(\dot y\)</span> (schwankt, maximal <span class="f">\(\hat y\omega\)</span>) und die Wellengeschwindigkeit <span class="f">\(c\)</span> (konstant, vom Medium bestimmt). In der Klausur nie verwechseln.</li>
   </ul>
-  <h3>Transversal und longitudinal (Heft S. 6, Abitur 2025, 1.1)</h3>
+  <h3>Transversal und longitudinal (Heft S. 23–24, Abitur 2025, 1.1)</h3>
   <table>
     <tr><th></th><th>Transversalwelle (Querwelle)</th><th>Longitudinalwelle (Längswelle)</th></tr>
     <tr><td>Schwingungsrichtung</td><td><b>senkrecht</b> zur Ausbreitungsrichtung</td><td><b>parallel</b> zur Ausbreitungsrichtung</td></tr>
@@ -146,7 +146,7 @@
     </div>
     <div>
       <div class="out" id="wmOut"></div>
-      <div class="note exam"><b>So fragt die Klausur (Abitur 2025, 1.1, 5 BE):</b> „Beschreiben Sie den Unterschied zwischen longitudinalen und transversalen Wellen und gehen Sie dabei auch auf den Begriff Polarisation ein." EWH: Schwingungsrichtung senkrecht zur Ausbreitungsrichtung bei transversalen Wellen, parallel bei longitudinalen; <b>daher</b> ist Polarisation ausschließlich bei transversalen Wellen möglich. Drei Sätze, und das Wort „daher" muss drinstehen: Die Polarisation ist die Folge, nicht ein weiteres Merkmal.</div>
+      <div class="note exam"><b>So fragt die Klausur (Abitur 2025, 1.1, 5 BE):</b> „Beschreiben Sie den Unterschied zwischen longitudinalen und transversalen Wellen und gehen Sie dabei auch auf den Begriff Polarisation ein." EWH: Schwingungsrichtung senkrecht zur Ausbreitungsrichtung bei transversalen Wellen, parallel bei longitudinalen; <b>daher</b> ist Polarisation ausschließlich bei transversalen Wellen möglich. Den Begründungszusammenhang ausdrücklich formulieren: Die Polarisation ist die Folge der Schwingungsrichtung, nicht ein weiteres Merkmal neben ihr.</div>
       <div class="note"><b>Analogie:</b> La-Ola-Welle im Stadion. Jeder Zuschauer steht nur kurz auf und setzt sich wieder (Schwingung um die Ruhelage), niemand läuft mit. Die Welle läuft trotzdem ums Stadion. Transversal: Arme hoch (quer zur Laufrichtung). Longitudinal: jeder schubst seinen Nachbarn in Laufrichtung an.</div>
     </div>
   </div>
@@ -154,7 +154,7 @@
 
 <!-- 2 -->
 <section class="card" id="s2">
-  <h2>2 · Die Wellenfunktion: zwei Sichtweisen, eine Formel (Heft S. 2–3)</h2>
+  <h2>2 · Die Wellenfunktion: zwei Sichtweisen, eine Formel (Heft S. 17–18)</h2>
   <p>Das Heft führt die Welle über zwei Momentaufnahmen ein. Beide zeigen eine Sinuskurve, aber auf verschiedenen Achsen:</p>
   <ul>
     <li><b>Räumliche Sichtweise (<span class="f">\(t\)</span> fest, Foto):</b> <span class="f">\(y\)</span> über dem Ort <span class="f">\(x\)</span>. Der Abstand zweier gleicher Zustände (Berg zu Berg) ist die <b>Wellenlänge</b> <span class="f">\(\lambda\)</span>, <span class="f">\([\lambda] = 1\,\mathrm{m}\)</span>. Wie beim Zeitverlauf der Schwingung <span class="f">\(2\pi/T\)</span> die Kreisfrequenz liefert, liefert hier <span class="f">\(2\pi/\lambda\)</span> die <b>Wellenzahl</b> <span class="f">\(k\)</span>, <span class="f">\([k] = 1/\mathrm{m}\)</span>: der Phasenunterschied pro Meter. <span class="f">\(y(x) = \hat y\sin(k\,x + \dots)\)</span>.</li>
@@ -204,7 +204,7 @@
         <button id="phHeft">Heft-Werte</button>
       </div>
       <canvas id="phCanvas" width="480" height="260"></canvas>
-      <p class="small">Oben die Welle (Foto zur Zeit <span class="f">\(t\)</span>), unten die sechs Zeiger an den Orten 0 bis 10 cm. Jeder Zeiger zeigt die Phase an seinem Ort; seine Projektion nach oben ist die Auslenkung dort. Verschiebe <span class="f">\(t\)</span> um 0,02 ms (ein Rasterschritt) und sieh, wie alle Zeiger gemeinsam weiterdrehen.</p>
+      <p class="small">Oben die Welle (Foto zur Zeit <span class="f">\(t\)</span>), unten die sechs Zeiger an den Orten 0 bis 10 cm. Jeder Zeiger zeigt die Phase an seinem Ort; seine Projektion nach oben ist die Auslenkung dort. Der Winkel wird von der positiven waagerechten Achse (Marke „0°") aus gezählt; der kleine Bogenpfeil zeigt den Drehsinn: Mit wachsendem <span class="f">\(t\)</span> drehen alle Zeiger gegen den Uhrzeigersinn. Verschiebe <span class="f">\(t\)</span> um 0,02 ms (ein Rasterschritt) und sieh, wie alle Zeiger gemeinsam weiterdrehen.</p>
     </div>
     <div>
       <div class="out" id="phOut"></div>
@@ -220,17 +220,18 @@
   <p><b>Heft-Wortlaut:</b> „Jeder Punkt auf der Oberfläche eines Wellenerregers ist die Quelle einer Kugel-/Kreiswelle. Ebene Wellen entstehen durch die Überlagerung sehr vieler Kugelwellen." Das Heft-Bild zeigt oben einen punktförmigen Erreger (Bewegung aus der Ebene heraus) mit Kreiswellen und unten eine Reihe von Erregern, deren Kreiswellen sich zu einer geraden Wellenfront, der <b>ebenen Welle</b>, zusammensetzen.</p>
   <ul>
     <li><b>Elementarwellen:</b> Man kann jede Wellenfront in viele Punkte zerlegen; jeder Punkt sendet eine Kreiswelle (Elementarwelle) aus. Die neue Wellenfront ist die Einhüllende aller Elementarwellen. Bei einer geraden Front ergibt das wieder eine gerade Front; nichts Neues. Interessant wird es an Hindernissen.</li>
-    <li><b>An Hindernissen (Heft-Bild 2):</b> „Das Prinzip gilt auch an Hindernissen." Trifft die ebene Welle auf eine Kante, ist der letzte freie Punkt vor der Kante Quelle einer Kreiswelle: Die Welle läuft hinter der Kante <b>in den Schattenraum</b> hinein. Das ist <b>Beugung</b>. Deshalb hört man um Ecken, und deshalb entsteht hinter einem schmalen Spalt eine Kreiswelle (Doppelspalt, Lektion 8).</li>
+    <li><b>An Hindernissen (Heft-Bild 2):</b> „Das Prinzip gilt auch an Hindernissen." Trifft die ebene Welle auf eine Kante, ist der letzte freie Punkt vor der Kante Quelle einer Kreiswelle: Die Welle läuft hinter der Kante <b>in den Schattenraum</b> hinein. Das ist <b>Beugung</b>. Deshalb hört man um Ecken, und deshalb entsteht hinter einem schmalen Spalt eine Kreiswelle (Doppelspalt, Lektion 8). Das Heft-Bild (Wand nur auf einer Seite, Fronten biegen um die Kante) ist in der Simulation der Modus „Kante".</li>
     <li><b>Spaltbreite entscheidet:</b> Schmaler Spalt (Breite <span class="f">\(\lesssim\lambda\)</span>): dahinter fast eine reine Kreiswelle, die Welle wird in alle Richtungen gebeugt. Breiter Spalt (Breite <span class="f">\(\gg\lambda\)</span>): die Welle läuft im Wesentlichen geradeaus weiter, nur an den Rändern wird gebeugt.</li>
   </ul>
   <div class="grid2">
     <div>
       <div class="controls">
+        <button id="hyModeS" class="active">Spalt</button><button id="hyModeK">Kante</button>
         <label>Spaltbreite <input type="range" id="hyB" min="0.3" max="6" value="0.8" step="0.1"> <span id="hyBv"></span></label>
         <label>Elementarwellen <input type="checkbox" id="hyShow" checked></label>
       </div>
       <canvas id="hyCanvas" width="480" height="300"></canvas>
-      <p class="small">Ebene Welle läuft von links gegen eine Wand mit Spalt. Hinter dem Spalt ist das Wellenfeld als Überlagerung von Elementarwellen aus dem Spalt berechnet (hell = Berg, dunkel = Tal). Spaltbreite in Wellenlängen.</p>
+      <p class="small">Ebene Welle läuft von links gegen eine Wand mit Spalt oder (Modus „Kante", Heft-Bild 2) gegen eine Wand, die nur die obere Hälfte abdeckt. Hinter dem Hindernis ist das Wellenfeld als Überlagerung von Elementarwellen aus der Öffnung berechnet (hell = Berg, dunkel = Tal); rote Halbkreise: die Elementarwellen. Spaltbreite in Wellenlängen.</p>
     </div>
     <div>
       <div class="out" id="hyOut"></div>
@@ -247,12 +248,12 @@
   <h3>Herleitung (Heft-Bild: schräge Wellenfronten an der Grenze)</h3>
   <p>Eine Wellenfront trifft schräg auf die Grenzfläche. Der Winkel zwischen Front und Grenze ist gleich dem Winkel zwischen Ausbreitungsrichtung und Lot: <span class="f">\(\alpha_1\)</span> im Medium 1, <span class="f">\(\alpha_2\)</span> im Medium 2. Betrachte das Stück Front, das die Grenze auf der Länge <span class="f">\(d\)</span> überstreicht. In der Zeit <span class="f">\(t\)</span>, in der das eine Ende der Front die Strecke <span class="f">\(d\)</span> entlang der Grenze zurücklegt, läuft die Welle im Medium 1 senkrecht zur Front die Strecke <span class="f">\(s_1 = v_1 t\)</span>, im Medium 2 die Strecke <span class="f">\(s_2 = v_2 t\)</span>. Aus den rechtwinkligen Dreiecken mit der gemeinsamen Hypotenuse <span class="f">\(d\)</span>:</p>
   <div class="formula">\[s_1 = d\sin\alpha_1 = v_1 t,\qquad s_2 = d\sin\alpha_2 = v_2 t\qquad\Rightarrow\qquad \frac{\sin\alpha_1}{\sin\alpha_2} = \frac{v_1}{v_2}\]</div>
-  <p>Für Licht ist <span class="f">\(v = c_0/n\)</span> mit der <b>Brechzahl</b> <span class="f">\(n\)</span> des Mediums (<span class="f">\(c_0\)</span>: Vakuumlichtgeschwindigkeit). Einsetzen und I durch II teilen (Heft): <span class="f">\(t\,c_0/n_1 = d\sin\alpha_1\)</span> und <span class="f">\(t\,c_0/n_2 = d\sin\alpha_2\)</span> ⇒</p>
+  <p>Für Licht ist <span class="f">\(v = c_0/n\)</span> mit der <b>Brechzahl</b> <span class="f">\(n\)</span> des Mediums (<span class="f">\(c_0\)</span>: Vakuumlichtgeschwindigkeit). Einsetzen (Heft): I <span class="f">\(t\,c_0/n_1 = d\sin\alpha_1\)</span> und II <span class="f">\(t\,c_0/n_2 = d\sin\alpha_2\)</span>. I durch II teilen: links kürzen sich <span class="f">\(t\)</span> und <span class="f">\(c_0\)</span>, übrig bleibt <span class="f">\(\frac{1/n_1}{1/n_2} = \frac{n_2}{n_1}\)</span> ⇒</p>
   <div class="formula">\[\frac{\sin\alpha_1}{\sin\alpha_2} = \frac{n_2}{n_1} = \frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2}\qquad\text{(Snelliussches Brechungsgesetz; FS S. 34: } \tfrac{\sin\alpha}{\sin\beta} = \tfrac{n_2}{n_1} = \tfrac{c_1}{c_2}\text{)}\]</div>
   <ul>
     <li>Ins optisch dichtere Medium (<span class="f">\(n_2 \gt n_1\)</span>, langsamer): <b>zum Lot hin</b> gebrochen, <span class="f">\(\alpha_2 \lt \alpha_1\)</span>. Ins dünnere: vom Lot weg.</li>
     <li>Vom Lot weg gibt es eine Grenze: Wird <span class="f">\(\sin\alpha_2 = \frac{n_1}{n_2}\sin\alpha_1 \gt 1\)</span>, existiert kein gebrochener Strahl, die Welle wird vollständig reflektiert (<b>Totalreflexion</b>, FS: <span class="f">\(\sin\alpha_G = n_2/n_1\)</span>). Glasfaser, Lichtleiter.</li>
-    <li>Heft-Hinweis zu „<span class="f">\(1/n\)</span>": Das Heft nennt <span class="f">\(1/n\)</span> den Brechungsindex; gemeint ist <span class="f">\(v = c_0/n\)</span> mit dem Brechungsindex <span class="f">\(n \ge 1\)</span> (Wasser 1,33, Glas 1,5). Je größer <span class="f">\(n\)</span>, desto langsamer das Licht.</li>
+    <li><b>Zwei Stellen im Heft, die so nicht stimmen:</b> (1) Die Heft-Endzeile lautet „I:II ⇒ <span class="f">\(n_1/n_2 = \sin\alpha_1/\sin\alpha_2\)</span>": Die Brechzahlen sind dort <b>vertauscht</b>. Aus I:II folgt <span class="f">\(\frac{1/n_1}{1/n_2} = \frac{n_2}{n_1}\)</span>, richtig ist also <span class="f">\(\sin\alpha_1/\sin\alpha_2 = n_2/n_1\)</span> (FS S. 34: <span class="f">\(\sin\alpha/\sin\beta = n_2/n_1\)</span>). Probe: Luft → Glas, <span class="f">\(n_2 \gt n_1\)</span>, also <span class="f">\(\sin\alpha_1 \gt \sin\alpha_2\)</span>, Brechung zum Lot ✓. (2) Das Heft nennt <span class="f">\(1/n\)</span> den Brechungsindex; gemeint ist <span class="f">\(v = c_0/n\)</span> mit dem Brechungsindex <span class="f">\(n \ge 1\)</span> (Wasser 1,33, Glas 1,5). Je größer <span class="f">\(n\)</span>, desto langsamer das Licht.</li>
   </ul>
   <div class="grid2">
     <div>
@@ -262,10 +263,11 @@
         <label><span class="f">\(n_2\)</span> <input type="range" id="brN2" min="1" max="2" value="1.5" step="0.05"> <span id="brN2v"></span></label>
       </div>
       <canvas id="brCanvas" width="480" height="300"></canvas>
-      <p class="small">Wellenfronten (gelb) und Ausbreitungsrichtung (Pfeil) oben im Medium 1, unten im Medium 2. Die Fronten rücken im langsameren Medium enger zusammen (kleineres <span class="f">\(\lambda\)</span>) und knicken ab. Lot gestrichelt.</p>
+      <p class="small">Wellenfronten (orange) und Ausbreitungsrichtung (rote Pfeile <span class="f">\(v_1\)</span>, <span class="f">\(v_2\)</span>) oben im Medium 1, unten im Medium 2. Die Winkel <span class="f">\(\alpha_1\)</span>, <span class="f">\(\alpha_2\)</span> sind als Bögen zwischen Strahl und Lot (gestrichelt) eingezeichnet. Die Fronten rücken im langsameren Medium enger zusammen (kleineres <span class="f">\(\lambda\)</span>) und knicken ab.</p>
     </div>
     <div>
       <div class="out" id="brOut"></div>
+      <div class="note exam"><b>So fragt die Klausur:</b> „Erläutern Sie mit dem Huygensschen Prinzip, warum die Wellenfronten an der Grenzfläche abknicken" oder „Bestätigen Sie das Brechungsgesetz". Antwortgerüst (= die Herleitung oben, „bestätigen" heißt herleiten, nicht die FS zitieren): (1) Jeder Punkt der Grenzfläche, den die Front erreicht, wird Quelle einer Elementarwelle im Medium 2. (2) Während das rechte Ende der Front noch die Strecke <span class="f">\(s_1 = v_1 t\)</span> bis zur Grenze zurücklegt, ist die Elementarwelle vom linken Ende schon <span class="f">\(s_2 = v_2 t\)</span> weit ins Medium 2 gelaufen. (3) Die neue Front ist die Tangente an alle Elementarwellen; sie liegt flacher, weil <span class="f">\(s_2 \lt s_1\)</span> (für <span class="f">\(v_2 \lt v_1\)</span>). (4) Beide Strecken liegen in rechtwinkligen Dreiecken mit der gemeinsamen Hypotenuse <span class="f">\(d\)</span>: <span class="f">\(\sin\alpha_1 = s_1/d\)</span>, <span class="f">\(\sin\alpha_2 = s_2/d\)</span> ⇒ <span class="f">\(\sin\alpha_1/\sin\alpha_2 = v_1/v_2 = n_2/n_1\)</span>. Dazu die Skizze mit <span class="f">\(d\)</span>, <span class="f">\(s_1\)</span>, <span class="f">\(s_2\)</span>, <span class="f">\(\alpha_1\)</span>, <span class="f">\(\alpha_2\)</span> und dem Lot.</div>
       <div class="note warn"><b>Verwechslungsgefahr:</b> (1) Winkel immer zum <b>Lot</b> (Senkrechte auf der Grenzfläche), nicht zur Grenzfläche. (2) <span class="f">\(n_2/n_1\)</span> steht auf der Seite von <span class="f">\(\sin\alpha_1\)</span>: Das Verhältnis der Sinus ist <b>umgekehrt</b> zu den Brechzahlen, aber gleich zu den Geschwindigkeiten und Wellenlängen. Merkhilfe: großes <span class="f">\(n\)</span> ⇒ kleiner Winkel, kleines <span class="f">\(\lambda\)</span>, kleines <span class="f">\(v\)</span>. (3) Die Frequenz ändert sich bei Brechung nie.</div>
     </div>
   </div>
@@ -276,9 +278,10 @@
   <h2>6 · Interferenz: Wellen addieren sich (Heft, Welleneigenschaften 3)</h2>
   <p><b>Heft:</b> Treffen zwei Wellen <span class="f">\(a(x,t)\)</span> und <span class="f">\(b(x,t)\)</span> zur Zeit <span class="f">\(t_1\)</span> am Ort <span class="f">\(x_1\)</span> aufeinander, so gilt für die Auslenkung <span class="f">\(y_{\mathrm{ges}}(x_1,t_1) = a(x_1,t_1) + b(x_1,t_1)\)</span>. Das ist das <b>Superpositionsprinzip</b>: Wellen stören sich nicht, sie addieren sich einfach, Punkt für Punkt, mit Vorzeichen. Zwei Wellen gleicher Frequenz und gleicher Ausbreitungsrichtung unterscheiden sich dann nur in der Phase:</p>
   <div class="formula">\[a \sim a_0\sin(\omega t),\qquad b_1 \sim b_0\sin(\omega t + 2\pi n)\ \Rightarrow\ y = 2a\ \text{(maximal konstruktiv)},\qquad b_2 \sim b_0\sin(\omega t + (2n+1)\pi)\ \Rightarrow\ y = 0\ \text{(maximal destruktiv)}\]</div>
+  <p class="small">Beide Ergebnisse gelten für <b>gleiche Amplituden</b> <span class="f">\(a_0 = b_0\)</span> (so meint es das Heft). Bei verschiedenen Amplituden bleibt konstruktiv <span class="f">\(a_0 + b_0\)</span>, destruktiv <span class="f">\(|a_0 - b_0|\)</span> übrig, also keine vollständige Auslöschung.</p>
   <ul>
     <li><b>Phasendifferenz <span class="f">\(\Delta\varphi\)</span> und Gangunterschied <span class="f">\(\Delta s\)</span>:</b> Haben zwei Wellen bis zum Treffpunkt verschieden lange Wege zurückgelegt, ist ihr Gangunterschied <span class="f">\(\Delta s\)</span> und die Phasendifferenz <span class="f">\(\Delta\varphi = 2\pi\,\Delta s/\lambda\)</span>. Konstruktiv: <span class="f">\(\Delta s = n\lambda\)</span> (<span class="f">\(n = 0, 1, 2, \dots\)</span>). Destruktiv: <span class="f">\(\Delta s = (n + \tfrac12)\lambda\)</span>. Das ist die Grundlage jeder Doppelspaltaufgabe (Lektion 8).</li>
-    <li><b>Zeiger:</b> Zwei Zeiger mit Winkel <span class="f">\(\Delta\varphi\)</span> zwischen ihnen addieren sich wie Vektoren. Resultierende Amplitude <span class="f">\(A_{\mathrm{res}} = \sqrt{A^2 + B^2 + 2AB\cos\Delta\varphi}\)</span>; für <span class="f">\(A = B\)</span>: <span class="f">\(2A|\cos(\Delta\varphi/2)|\)</span>. Bei <span class="f">\(\Delta\varphi = 0\)</span>: <span class="f">\(2A\)</span>; bei <span class="f">\(\pi\)</span>: 0; bei <span class="f">\(\pi/2\)</span>: <span class="f">\(\sqrt 2 A\)</span>.</li>
+    <li><b>Zeiger:</b> Zwei Zeiger mit dem Winkel <span class="f">\(\Delta\varphi\)</span> zwischen ihnen addieren sich wie Vektoren (Parallelogramm, Zeigerbild rechts in der Simulation). Bei <span class="f">\(\Delta\varphi = 0\)</span> liegen sie hintereinander: Länge <span class="f">\(2A\)</span>; bei <span class="f">\(\pi\)</span> entgegengesetzt: 0; bei <span class="f">\(\pi/2\)</span> stehen sie senkrecht, die Resultierende ist die Diagonale des Quadrats, <span class="f">\(\sqrt 2 A\)</span>.</li>
     <li><b>Intensität</b> ist proportional zum Amplitudenquadrat: konstruktiv <span class="f">\((2A)^2 = 4A^2\)</span>, also das Vierfache einer Einzelwelle, nicht das Doppelte. Die Energie fehlt dafür an den destruktiven Stellen; insgesamt bleibt sie erhalten.</li>
     <li>Das Heft-Bild zeigt <span class="f">\(a = 2{,}5\sin(\pi x/3)\)</span>, <span class="f">\(b = 2{,}5\cos(\pi x/3)\)</span> (Phasendifferenz <span class="f">\(90^\circ\)</span>) und die Summe mit Amplitude <span class="f">\(2{,}5\sqrt 2 = 3{,}5\)</span>: weder voll konstruktiv noch destruktiv.</li>
   </ul>
@@ -305,8 +308,8 @@
   <ul>
     <li><b>Festes Ende (Seil an der Wand):</b> Der Berg zieht die Wand nach oben; die Wand gibt nicht nach und übt nach Newton 3 eine Gegenkraft nach unten aus. Diese erzeugt ein Tal, das zurückläuft: Berg wird Tal. Am festen Ende ist die Auslenkung immer null, dort entsteht ein <b>Knoten</b>.</li>
     <li><b>Loses Ende (Seil an frei beweglichem Ring):</b> Das Ende schwingt frei mit, schießt sogar über (doppelte Amplitude) und schickt den Berg als Berg zurück. Am losen Ende ist die Auslenkung maximal, dort entsteht ein <b>Bauch</b>.</li>
-    <li>Allgemein: Reflexion am <b>dichteren</b> Medium (Welle wird dort langsamer) wie am festen Ende, mit Phasensprung; am dünneren Medium ohne. Bei Licht: Reflexion an Glas (von Luft kommend) mit Phasensprung <span class="f">\(\pi\)</span>; wichtig bei dünnen Schichten, hier nur als Merksatz.</li>
-    <li>Schall am harten Spiegel (Ultraschall-Versuch, Abschnitt 8): Der Druck hat am harten Ende einen Bauch, die Teilchenauslenkung einen Knoten. Das Heft rechnet mit den Knoten der Auslenkung.</li>
+    <li>Allgemein: Reflexion am <b>dichteren</b> Medium (Welle wird dort langsamer) wie am festen Ende, mit Phasensprung; am dünneren Medium ohne. Bei Licht: Reflexion an Glas (von Luft kommend) mit Phasensprung <span class="f">\(\pi\)</span>.</li>
+    <li>Schall am harten Spiegel (Ultraschall-Versuch, Abschnitt 8): Der Druck hat am harten Ende einen Bauch, die Teilchenauslenkung einen Knoten. Für die Messung ist das egal: Die Amplitudenminima liegen in jedem Fall im Abstand <span class="f">\(\lambda/2\)</span>.</li>
   </ul>
   <div class="grid2">
     <div>
@@ -314,11 +317,11 @@
         <button id="rfFix" class="active">festes Ende</button><button id="rfFree">loses Ende</button><button id="rfStart">Puls starten</button>
       </div>
       <canvas id="rfCanvas" width="480" height="200"></canvas>
-      <p class="small">Ein Wellenberg läuft nach rechts auf das Ende zu. Festes Ende: kommt als Tal zurück (Phasensprung <span class="f">\(\pi\)</span>). Loses Ende: kommt als Berg zurück, das Ende schwingt dabei bis zur doppelten Höhe aus.</p>
+      <p class="small">Ein Wellenberg läuft nach rechts auf das Ende zu (Pfeil „einlaufend"); sobald der Puls zurückläuft, erscheint der Pfeil „reflektiert". Festes Ende: kommt als Tal zurück (Phasensprung <span class="f">\(\pi\)</span>). Loses Ende: kommt als Berg zurück, das Ende schwingt dabei bis zur doppelten Höhe aus.</p>
     </div>
     <div>
       <div class="out" id="rfOut"></div>
-      <div class="note"><b>Analogie:</b> Ball gegen die Wand (festes Ende): Er kommt mit umgekehrter Geschwindigkeit zurück, die Wand hat „umgedreht". Loses Ende: wie ein Peitschenende, das frei schwingt und die Welle gleichsinnig zurückwirft.</div>
+      <div class="note"><b>Merkhilfe:</b> Festes Ende: Die Wand antwortet auf den Zug nach oben mit einer Gegenkraft nach unten (Newton 3), aus dem Berg wird ein Tal. Loses Ende: wie ein Peitschenende, das frei ausschwingt und die Welle gleichsinnig zurückwirft.</div>
     </div>
   </div>
 </section>
@@ -326,8 +329,8 @@
 <!-- 8 -->
 <section class="card" id="s8">
   <h2>8 · Stehende Wellen und der Ultraschall-Versuch (Heft, Welleneigenschaften 5 + „Stehende Wellen mit Ultraschall")</h2>
-  <p><b>Heft:</b> Treffen zwei Wellen mit gleicher Wellenlänge <span class="f">\(\lambda\)</span> und gleicher Amplitude <span class="f">\(\hat y\)</span> aus entgegengesetzten Richtungen aufeinander, so entsteht eine <b>stehende Welle</b>. Rechnung (FS S. 22 gibt das Ergebnis): Welle nach rechts <span class="f">\(\hat y\sin(\omega t - kx)\)</span> plus Welle nach links <span class="f">\(\hat y\sin(\omega t + kx)\)</span>, Additionstheorem:</p>
-  <div class="formula">\[y(x,t) = 2\hat y\,\cos(kx)\,\sin(\omega t) = 2\hat y\cos\!\left(2\pi\frac{x}{\lambda}\right)\sin\!\left(2\pi\frac{t}{T}\right)\]</div>
+  <p><b>Heft:</b> Treffen zwei Wellen mit gleicher Wellenlänge <span class="f">\(\lambda\)</span> und gleicher Amplitude <span class="f">\(\hat y\)</span> aus entgegengesetzten Richtungen aufeinander, so entsteht eine <b>stehende Welle</b>. Rechnung (FS S. 22 gibt das Ergebnis): Welle nach rechts <span class="f">\(\hat y\sin(\omega t - kx)\)</span> plus Welle nach links <span class="f">\(\hat y\sin(\omega t + kx)\)</span>, Additionstheorem <span class="f">\(\sin a + \sin b = 2\sin\frac{a+b}{2}\cos\frac{a-b}{2}\)</span> mit <span class="f">\(a = \omega t - kx\)</span>, <span class="f">\(b = \omega t + kx\)</span>:</p>
+  <div class="formula">\[\frac{a+b}{2} = \omega t,\qquad \frac{a-b}{2} = -kx,\qquad \cos(-kx) = \cos(kx)\quad\Rightarrow\quad y(x,t) = 2\hat y\,\cos(kx)\,\sin(\omega t) = 2\hat y\cos\!\left(2\pi\frac{x}{\lambda}\right)\sin\!\left(2\pi\frac{t}{T}\right)\]</div>
   <ul>
     <li>Ort und Zeit sind <b>getrennt</b>: Jeder Punkt schwingt mit <span class="f">\(\sin(\omega t)\)</span>, aber mit seiner eigenen, ortsfesten Amplitude <span class="f">\(2\hat y|\cos(kx)|\)</span>. Das Muster läuft nicht mehr, es „steht".</li>
     <li><b>Knoten</b> (Heft: ortsfest, Auslenkung immer null) dort, wo <span class="f">\(\cos(kx) = 0\)</span>: <span class="f">\(x = \lambda/4, 3\lambda/4, \dots\)</span>. <b>Bäuche</b> (schwingen mit <span class="f">\(2\hat y\)</span> auf und ab) dort, wo <span class="f">\(|\cos(kx)| = 1\)</span>: <span class="f">\(x = 0, \lambda/2, \lambda, \dots\)</span>.</li>
@@ -348,6 +351,7 @@
     <div>
       <div class="out" id="swOut"></div>
       <div class="note"><b>Analogie:</b> Zwei Menschen schütteln ein Seil von beiden Enden im gleichen Takt: Das Seil zeigt feste Knoten und schwingende Bäuche, keine Welle läuft mehr sichtbar. Gitarrensaite: beide Enden fest ⇒ Knoten an beiden Enden ⇒ die Grundschwingung hat <span class="f">\(\lambda = 2l\)</span>.</div>
+      <div class="note exam"><b>So fragt die Klausur:</b> „Unterscheiden Sie eine fortschreitende von einer stehenden Welle." Erwartet: <b>Fortschreitend:</b> Das Muster läuft mit <span class="f">\(c\)</span> weiter; alle Punkte schwingen mit derselben Amplitude <span class="f">\(\hat y\)</span>, aber zeitlich versetzt (Phase <span class="f">\(\omega t - kx\)</span>); Energie wird transportiert. <b>Stehend:</b> Das Muster bleibt ortsfest; jeder Punkt hat seine eigene Amplitude <span class="f">\(2\hat y|\cos(kx)|\)</span> (Knoten null, Bäuche <span class="f">\(2\hat y\)</span>); alle Punkte zwischen zwei Knoten schwingen in Phase, benachbarte Abschnitte gegenphasig; kein Energietransport. <b>Entstehung:</b> Überlagerung zweier gegenläufiger Wellen gleicher Wellenlänge und Amplitude, zum Beispiel einlaufende und reflektierte Welle.</div>
     </div>
   </div>
 
@@ -358,7 +362,7 @@
     <li><b>Beobachtung:</b> Abhängig von der Position des Empfängers ändert sich die Amplitude. <b>Messung:</b> Die Positionen der Amplituden<b>minima</b> (= Knoten) werden gemessen; Minima lassen sich schärfer orten als Maxima.</li>
     <li><b>Auswertung (Heft):</b> Position <span class="f">\(s\)</span> gegen Nummer des Minimums <span class="f">\(u\)</span> auftragen ⇒ Gerade, Steigung = Abstand benachbarter Minima <span class="f">\(\Delta s \approx 0{,}787\,\mathrm{cm}\)</span> ⇒ <span class="f">\(\lambda = 2\Delta s = 1{,}573\,\mathrm{cm}\)</span>. Frequenz des Schalls <span class="f">\(f = 24\,000\,\mathrm{Hz}\)</span> ⇒ <span class="f">\(c = \lambda f = 0{,}01573\,\mathrm{m}\cdot 24\,000\,\mathrm{s^{-1}} = 377{,}6\,\mathrm{m/s}\)</span>. Literaturwert <span class="f">\(343\,\mathrm{m/s}\)</span> (IQB-Tabelle), relativer Fehler <span class="f">\(10\,\%\)</span>.</li>
     <li><b>Warum die Gerade statt eines einzelnen Abstands:</b> Die Steigung der Regressionsgeraden mittelt über alle Minima; ein einzelner Knotenabstand hätte den vollen Ablesefehler. Gleiche Idee wie <span class="f">\(t(n)\)</span> beim Schwingkreis (Lektion 6).</li>
-    <li><b>Fehlerbetrachtung (im Abitur verlangt):</b> Ein Fehler von 10 % bei <span class="f">\(c\)</span> heißt 10 % bei <span class="f">\(\Delta s\)</span>, also knapp 0,8 mm pro Knotenabstand. Quellen: Minima sind nicht scharf (Empfänger hat Ausdehnung, Nebenreflexionen), Position des Empfängers nur auf etwa 1 mm ablesbar, Generatorfrequenz nicht exakt 24,0 kHz. Die Temperatur erklärt es nicht: <span class="f">\(377\,\mathrm{m/s}\)</span> entspräche etwa <span class="f">\(80\,{}^\circ\mathrm{C}\)</span>.</li>
+    <li><b>Fehlerbetrachtung (im Abitur verlangt):</b> Ein Fehler von 10 % bei <span class="f">\(c\)</span> heißt 10 % bei <span class="f">\(\Delta s\)</span>, also knapp 0,8 mm pro Knotenabstand. Hauptquellen: Die Minima lassen sich nur auf etwa 1 mm genau orten (Empfänger hat Ausdehnung, Nebenreflexionen), und die Skala wird auf etwa 1 mm abgelesen; die Lufttemperatur erklärt 10 % nicht.</li>
   </ul>
   <div class="grid2">
     <div>
@@ -379,16 +383,72 @@
 <!-- 9 -->
 <section class="card" id="s9">
   <h2>9 · Polarisation: Schwingungsrichtung auswählen (Heft, Welleneigenschaften 6)</h2>
-  <p><b>Heft:</b> Wellen können sich abhängig vom Medium transversal und longitudinal ausbreiten. <b>Nur transversale Wellen können polarisiert werden.</b> Wird eine Schwingungsrichtung der Welle bevorzugt, so spricht man von einer polarisierten Welle. Von vorne betrachtet schwingt eine <b>linear polarisierte</b> Welle immer in derselben Ebene (Doppelpfeil); bei <b>zirkularer</b> Polarisation rotiert die Schwingungsrichtung (rotierender Zeiger). Licht aus einer Lampe ist <b>unpolarisiert</b>: alle Richtungen kommen vor.</p>
+  <div class="grid2">
+    <div>
+      <p><b>Heft:</b> Wellen können sich abhängig vom Medium transversal und longitudinal ausbreiten. <b>Nur transversale Wellen können polarisiert werden.</b> Wird eine Schwingungsrichtung der Welle bevorzugt, so spricht man von einer polarisierten Welle. Von vorne betrachtet schwingt eine <b>linear polarisierte</b> Welle immer in derselben Ebene (Doppelpfeil); bei <b>zirkularer</b> Polarisation rotiert die Schwingungsrichtung (rotierender Zeiger). Licht aus einer Lampe ist <b>unpolarisiert</b>: alle Richtungen kommen vor.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 150" width="100%" style="max-width:380px;display:block;margin:4px auto" role="img" aria-label="Linear und zirkular polarisierte Welle von vorne betrachtet">
+        <defs>
+          <marker id="pvArrowFg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--fg)"/></marker>
+          <marker id="pvArrowKin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--kin)"/></marker>
+        </defs>
+        <line x1="20" y1="70" x2="160" y2="70" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#pvArrowFg)"/>
+        <text x="164" y="74" fill="var(--fg)" font-size="12" font-style="italic">z</text>
+        <line x1="90" y1="130" x2="90" y2="14" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#pvArrowFg)"/>
+        <text x="96" y="20" fill="var(--fg)" font-size="12" font-style="italic">y</text>
+        <line x1="60" y1="118" x2="60" y2="22" stroke="var(--kin)" stroke-width="2.6" marker-start="url(#pvArrowKin)" marker-end="url(#pvArrowKin)"/>
+        <text x="20" y="146" fill="var(--muted)" font-size="11">linear: Doppelpfeil, feste Schwingungsebene</text>
+        <line x1="200" y1="70" x2="340" y2="70" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#pvArrowFg)"/>
+        <text x="344" y="74" fill="var(--fg)" font-size="12" font-style="italic">z</text>
+        <line x1="270" y1="130" x2="270" y2="14" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#pvArrowFg)"/>
+        <text x="276" y="20" fill="var(--fg)" font-size="12" font-style="italic">y</text>
+        <line x1="270" y1="70" x2="238" y2="24" stroke="var(--kin)" stroke-width="2.6" marker-end="url(#pvArrowKin)"/>
+        <path d="M232.5,28.4 A56,56 0 0 0 215.9,55.5" fill="none" stroke="var(--kin)" stroke-width="2" marker-end="url(#pvArrowKin)"/>
+        <text x="200" y="146" fill="var(--muted)" font-size="11">zirkular: Schwingungsrichtung rotiert</text>
+      </svg>
+      <p class="small">Heft-Zeichnungen „von vorne" (Blick gegen die Ausbreitungsrichtung, die aus dem Bild heraus auf dich zeigt): links lineare, rechts zirkulare Polarisation.</p>
+    </div>
+  </div>
   <h3>Der Polarisationsfilter</h3>
   <p>Ein Polfilter lässt nur die Schwingungskomponente <b>parallel</b> zu seiner Durchlassrichtung durch. Heft-Bild: linear polarisierte Welle (Amplitude <span class="f">\(y\)</span>) unter dem Winkel <span class="f">\(\alpha\)</span> zur Filterachse; Zerlegung in parallelen Anteil <span class="f">\(y_\parallel\)</span> und senkrechten Anteil <span class="f">\(y_\perp\)</span>:</p>
   <div class="formula">\[y_\parallel = y\cos\alpha\ \ (\text{geht durch}),\qquad y_\perp = y\sin\alpha\ \ (\text{wird absorbiert}),\qquad I = I_0\cos^2\alpha\ \ (\text{Malus, FS S. 36: } I/I_0 = (\cos\varphi)^2)\]</div>
-  <ul>
-    <li><span class="f">\(\alpha = 0^\circ\)</span> oder <span class="f">\(180^\circ\)</span>: <span class="f">\(|y_\parallel| = |y|\)</span>, alles geht durch. <span class="f">\(\alpha = 90^\circ\)</span> oder <span class="f">\(270^\circ\)</span>: <span class="f">\(y_\parallel = 0\)</span>, nichts geht durch (gekreuzte Filter). Heft-Satz wörtlich.</li>
-    <li><b>Intensität</b> ist proportional zum Quadrat der Amplitude (Energie einer Schwingung <span class="f">\(\propto\hat y^2\)</span>, Lektion 6). Aus <span class="f">\(y_\parallel = y\cos\alpha\)</span> folgt daher <span class="f">\(I = I_0\cos^2\alpha\)</span>. Bei <span class="f">\(45^\circ\)</span>: Amplitude <span class="f">\(0{,}71\)</span>, Intensität <span class="f">\(0{,}5\)</span>.</li>
-    <li>Unpolarisiertes Licht durch <b>einen</b> Filter: Mittelwert von <span class="f">\(\cos^2\)</span> über alle Richtungen ist <span class="f">\(\tfrac12\)</span>, es kommt die Hälfte durch, und sie ist jetzt linear polarisiert. Der zweite Filter (Analysator) misst dann mit <span class="f">\(\cos^2\)</span>.</li>
-    <li>Der Lichtsensor misst die Intensität; seine Spannung <span class="f">\(U\)</span> ist ein Maß dafür. Also gilt für die Messkurve <span class="f">\(U(\alpha) = U_{\mathrm{max}}\cos^2(\alpha - \alpha_0)\)</span>, <span class="f">\(\alpha_0\)</span> = Stellung, bei der beide Achsen parallel sind.</li>
-  </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 400 300" width="100%" style="max-width:420px;display:block;margin:0 auto" role="img" aria-label="Zerlegung der Schwingungsrichtung in den Anteil parallel und senkrecht zur Filterachse">
+        <defs>
+          <marker id="pzArrowFg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--fg)"/></marker>
+          <marker id="pzArrowKin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--kin)"/></marker>
+          <marker id="pzArrowEf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--efield)"/></marker>
+        </defs>
+        <line x1="120" y1="280" x2="120" y2="28" stroke="var(--fg)" stroke-width="1.6" marker-end="url(#pzArrowFg)"/>
+        <text x="128" y="38" fill="var(--fg)" font-size="12">Durchlassrichtung des Filters</text>
+        <line x1="120" y1="82.6" x2="223.2" y2="82.6" stroke="var(--efield)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <line x1="223.2" y1="230" x2="223.2" y2="82.6" stroke="var(--efield)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <line x1="120" y1="230" x2="120" y2="82.6" stroke="var(--efield)" stroke-width="3" marker-end="url(#pzArrowEf)"/>
+        <line x1="120" y1="230" x2="223.2" y2="230" stroke="var(--efield)" stroke-width="3" marker-end="url(#pzArrowEf)"/>
+        <line x1="120" y1="230" x2="223.2" y2="82.6" stroke="var(--kin)" stroke-width="3.2" marker-end="url(#pzArrowKin)"/>
+        <path d="M120,180 A50,50 0 0 1 148.7,189" fill="none" stroke="var(--pos)" stroke-width="1.5"/>
+        <text x="129" y="170" fill="var(--pos)" font-size="14" font-style="italic">α</text>
+        <text x="232" y="80" fill="var(--kin)" font-size="12">y: einlaufende Welle,</text>
+        <text x="232" y="95" fill="var(--kin)" font-size="12">linear polarisiert</text>
+        <text x="20" y="158" fill="var(--efield)" font-size="12">y<tspan dy="4" font-size="9">∥</tspan><tspan dy="-4"> = y·cos α</tspan></text>
+        <text x="20" y="174" fill="var(--efield)" font-size="12">geht durch</text>
+        <text x="132" y="252" fill="var(--efield)" font-size="12">y<tspan dy="4" font-size="9">⊥</tspan><tspan dy="-4"> = y·sin α</tspan></text>
+        <text x="132" y="268" fill="var(--efield)" font-size="12">wird absorbiert</text>
+        <text x="20" y="292" fill="var(--muted)" font-size="11">Blick gegen die Ausbreitungsrichtung (von vorne)</text>
+      </svg>
+      <p class="small">Heft-Bild nachgezeichnet: Die linear polarisierte Welle (orange) wird in den Anteil parallel zur Filterachse (geht durch) und den senkrechten Anteil (wird absorbiert) zerlegt. Hier <span class="f">\(\alpha = 35^\circ\)</span>: <span class="f">\(y_\parallel = 0{,}82\,y\)</span>, Intensität <span class="f">\(\cos^2 35^\circ = 0{,}67\)</span>.</p>
+    </div>
+    <div>
+      <ul>
+        <li><span class="f">\(\alpha = 0^\circ\)</span> oder <span class="f">\(180^\circ\)</span>: <span class="f">\(|y_\parallel| = |y|\)</span>, alles geht durch. <span class="f">\(\alpha = 90^\circ\)</span> oder <span class="f">\(270^\circ\)</span>: <span class="f">\(y_\parallel = 0\)</span>, nichts geht durch (gekreuzte Filter). Heft-Satz sinngemäß; im Heft steht bei <span class="f">\(\alpha = 0^\circ\)</span> versehentlich <span class="f">\(|y_\perp|\)</span> statt <span class="f">\(|y_\parallel|\)</span>.</li>
+        <li><b>Intensität</b> ist proportional zum Quadrat der Amplitude (Energie einer Schwingung <span class="f">\(\propto\hat y^2\)</span>, Lektion 6). Aus <span class="f">\(y_\parallel = y\cos\alpha\)</span> folgt daher <span class="f">\(I = I_0\cos^2\alpha\)</span>. Bei <span class="f">\(45^\circ\)</span>: Amplitude <span class="f">\(0{,}71\)</span>, Intensität <span class="f">\(0{,}5\)</span>.</li>
+        <li>Unpolarisiertes Licht durch <b>einen</b> Filter: Mittelwert von <span class="f">\(\cos^2\)</span> über alle Richtungen ist <span class="f">\(\tfrac12\)</span>, es kommt die Hälfte durch, und sie ist jetzt linear polarisiert. Der zweite Filter (Analysator) misst dann mit <span class="f">\(\cos^2\)</span>.</li>
+        <li>Der Lichtsensor misst die Intensität; seine Spannung <span class="f">\(U\)</span> ist ein Maß dafür. Also gilt für die Messkurve <span class="f">\(U(\alpha) = U_{\mathrm{max}}\cos^2(\alpha - \alpha_0)\)</span>, <span class="f">\(\alpha_0\)</span> = Stellung, bei der beide Achsen parallel sind.</li>
+      </ul>
+    </div>
+  </div>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -397,7 +457,7 @@
         <label><span class="f">\(\beta\)</span> <input type="range" id="poB" min="0" max="180" value="45" step="5"> <span id="poBv"></span></label>
       </div>
       <canvas id="poCanvas" width="480" height="220"></canvas>
-      <p class="small">Aufbau wie Abitur 2025: Filter 1 fest auf <span class="f">\(90^\circ\)</span>, Filter 2 wird um <span class="f">\(\alpha\)</span> aus der gekreuzten Stellung gedreht. Die Pfeile zeigen die Polarisationsrichtung und (durch ihre Länge) die Amplitude nach jedem Filter, die Balken die Intensität.</p>
+      <p class="small">Aufbau wie Abitur 2025: Filter 1 fest auf <span class="f">\(90^\circ\)</span>, Filter 2 wird um <span class="f">\(\alpha\)</span> aus der gekreuzten Stellung gedreht. Rote Doppelpfeile: Polarisationsrichtung und (durch ihre Länge) Amplitude <b>nach</b> jedem Filter; grau gestrichelt: die Polarisation <b>vor</b> dem Filter, deren Projektion <span class="f">\(y\cos\alpha\)</span> auf die Filterachse durchkommt. Schwarze Linie: Filterachse. Balken: Intensität.</p>
     </div>
     <div>
       <div class="out" id="poOut"></div>
@@ -407,7 +467,7 @@
   <h3>Die Messreihe im Heft und was die Sinusregression bedeutet</h3>
   <p>Im Heft steht eine Messtabelle (Winkel <span class="f">\(-100^\circ\)</span> bis <span class="f">\(100^\circ\)</span>, Sensorspannung 0,02 bis 1,9 V) und der TR-Graph mit einer <b>Sinusregression</b>: <span class="f">\(y = 0{,}951\cdot\sin(0{,}0322\,x + 1{,}772) + 0{,}958\)</span>. Das Feld „Formeln" blieb leer. Hier die Auflösung: Nach <span class="f">\(\cos^2\theta = \tfrac12 + \tfrac12\cos(2\theta)\)</span> ist das Malus-Gesetz</p>
   <div class="formula">\[U(\alpha) = U_{\mathrm{max}}\cos^2(\alpha - \alpha_0) = \underbrace{\tfrac12 U_{\mathrm{max}}}_{\text{Offset}} + \underbrace{\tfrac12 U_{\mathrm{max}}}_{\text{Amplitude}}\cos\!\big(2(\alpha - \alpha_0)\big)\]</div>
-  <p>also eine Sinusfunktion mit <b>Offset = Amplitude = <span class="f">\(U_{\mathrm{max}}/2\)</span></b> und Periode <span class="f">\(180^\circ\)</span>. Genau das hat der TR gefunden: Amplitude 0,951 V, Offset 0,958 V (gleich groß ✓) ⇒ <span class="f">\(U_{\mathrm{max}} \approx 1{,}91\,\mathrm{V}\)</span>. Die Periode sollte <span class="f">\(180^\circ\)</span> sein, also <span class="f">\(b = 2\pi/180^\circ = 0{,}0349\)</span> pro Grad; gemessen 0,0322 (Periode 195°, 8 % Abweichung, die Messkurve ist rechts etwas breiter als links). Das Maximum liegt bei <span class="f">\(0{,}0322\,\alpha_0 + 1{,}772 = \pi/2\)</span> ⇒ <span class="f">\(\alpha_0 \approx -6^\circ\)</span>: die Skalen der beiden Filter waren um etwa 6° gegeneinander verdreht.</p>
+  <p>also eine Sinusfunktion mit <b>Offset = Amplitude = <span class="f">\(U_{\mathrm{max}}/2\)</span></b> und Periode <span class="f">\(180^\circ\)</span>. Genau das hat der TR gefunden: Amplitude 0,951 V, Offset 0,958 V (gleich groß ✓) ⇒ <span class="f">\(U_{\mathrm{max}} \approx 1{,}91\,\mathrm{V}\)</span>. Die Periode sollte <span class="f">\(180^\circ\)</span> sein, also <span class="f">\(b = 2\pi/180^\circ = 0{,}0349\)</span> pro Grad; gemessen 0,0322 (Periode 195°, 8 % Abweichung). Das Maximum liegt bei <span class="f">\(0{,}0322\,\alpha_0 + 1{,}772 = \pi/2\)</span> ⇒ <span class="f">\(\alpha_0 \approx -6^\circ\)</span>: die Skalen der beiden Filter waren um etwa 6° gegeneinander verdreht.</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -435,7 +495,15 @@
   <ul>
     <li><b>1.1 a (5 BE)</b> longitudinal/transversal/Polarisation: Musterantwort in Abschnitt 1.</li>
     <li><b>1.2 a (6 BE)</b> <span class="f">\(\alpha\)</span>-<span class="f">\(U\)</span>-Diagramm: Achsen mit Größe und Einheit, sinnvolle Skalierung (0 bis 3,5 V), Punkte eintragen, keine Verbindungslinien. Sechs Punkte nur fürs Zeichnen: sauber arbeiten.</li>
-    <li><b>1.2 b (6 BE)</b> Für <span class="f">\(10^\circ\)</span> bis <span class="f">\(40^\circ\)</span> Potenzregression (nur diese vier Werte in den TR): <span class="f">\(U = a\cdot\alpha^{b}\)</span> mit <span class="f">\(b \approx 2\)</span>; gefordert ist die Form <span class="f">\(U = k\cdot\alpha^2\)</span>, EWH: <span class="f">\(U(\alpha) \approx 0{,}00103\,\mathrm{V/(1^\circ)^2}\cdot\alpha^2\)</span>. Dokumentation nach Schema: Werte in den TR, Diagramm, „Punkte folgen einer Parabel durch den Ursprung ⇒ Potenz-/quadratische Regression", Formel mit Einheiten, Konstante benennen.</li>
+    <li><b>1.2 b (6 BE)</b> Für <span class="f">\(10^\circ\)</span> bis <span class="f">\(40^\circ\)</span> Potenzregression (nur diese vier Werte in den TR). EWH: <span class="f">\(U(\alpha) \approx 0{,}00103\,\mathrm{V/(1^\circ)^2}\cdot\alpha^2\)</span>. Die TR-Dokumentation in den fünf vereinbarten Schritten:
+      <ol>
+        <li><b>Werte:</b> <span class="f">\(\alpha\)</span> in ° in Liste 1: 10, 20, 30, 40; <span class="f">\(U\)</span> in V in Liste 2: 0,09; 0,41; 0,80; 1,38 (nur der verlangte Bereich).</li>
+        <li><b>Diagramm:</b> Streudiagramm <span class="f">\(U\)</span> über <span class="f">\(\alpha\)</span>, Achsen „<span class="f">\(\alpha\)</span> in °" und „<span class="f">\(U\)</span> in V".</li>
+        <li><b>Regressionstyp begründen:</b> Die Punkte beginnen im Ursprung (<span class="f">\(U(0^\circ) = 0\)</span>) und steigen immer steiler an, also kein linearer Zusammenhang; physikalisch erwartet man für kleine Winkel <span class="f">\(U \propto \alpha^2\)</span> (Malus mit <span class="f">\(\sin\alpha \approx \alpha\)</span>) ⇒ Potenzregression <span class="f">\(U = a\cdot\alpha^{b}\)</span>.</li>
+        <li><b>TR-Ergebnis:</b> ungerundet <span class="f">\(a = 0{,}0010344\)</span>, <span class="f">\(b = 1{,}9611\)</span> (<span class="f">\(r = 0{,}998\)</span>), also <span class="f">\(U(\alpha) = 1{,}03\cdot 10^{-3}\,\mathrm{V/(1^\circ)^{1{,}96}}\cdot\alpha^{1{,}96}\)</span>. Gefordert ist die Form <span class="f">\(U = k\cdot\alpha^2\)</span>: Exponent <span class="f">\(1{,}96 \approx 2\)</span> runden ⇒ <span class="f">\(U(\alpha) \approx 1{,}03\cdot 10^{-3}\,\mathrm{V/(1^\circ)^2}\cdot\alpha^2\)</span>. Achsenabschnitt: Eine Potenzfunktion hat keinen, sie läuft durch den Ursprung; das passt zum Messwert <span class="f">\(U(0^\circ) = 0{,}00\,\mathrm{V}\)</span>.</li>
+        <li><b>Konstante deuten:</b> <span class="f">\(k\)</span> ist der Vorfaktor der Kleinwinkelnäherung <span class="f">\(U \approx U_{\mathrm{max}}(\pi\alpha/180^\circ)^2\)</span>, also <span class="f">\(k = U_{\mathrm{max}}(\pi/180^\circ)^2\)</span>; mit <span class="f">\(U_{\mathrm{max}} = 3{,}23\,\mathrm{V}\)</span>: <span class="f">\(9{,}8\cdot 10^{-4}\,\mathrm{V/(1^\circ)^2}\)</span>, 5 % unter dem Fit-Wert.</li>
+      </ol>
+      Variante: Wer <span class="f">\(b = 2\)</span> fest vorgibt und nur <span class="f">\(k\)</span> anpasst (Ursprungsparabel), bekommt <span class="f">\(k = 8{,}76\cdot 10^{-4}\,\mathrm{V/(1^\circ)^2}\)</span>, und damit kippt in 1.2 c das Urteil bei <span class="f">\(45^\circ\)</span> (9 % statt 28 %). Der EWH-Weg ist die Potenzregression; die Variante nur erwähnen, wenn man sie sauber dokumentiert („je nach Verfahren andere Ergebnisse möglich").</li>
     <li><b>1.2 c (6 BE)</b> Beurteilen mit der 20-%-Grenze: <span class="f">\(U(40^\circ) = 0{,}00103\cdot 1600\,\mathrm{V} = 1{,}65\,\mathrm{V}\)</span>, gemessen 1,38 V, Verhältnis 1,19 ⇒ 19 % ⇒ Näherung bei <span class="f">\(40^\circ\)</span> noch brauchbar. <span class="f">\(U(45^\circ) = 2{,}09\,\mathrm{V}\)</span>, gemessen 1,63 V, Verhältnis 1,28 ⇒ 28 % ⇒ nicht mehr. EWH: „Je nach Verfahren sind auch andere Ergebnisse möglich", entscheidend ist die nachvollziehbare Rechnung mit Prozentangabe.</li>
     <li><b>1.3 a (5 BE)</b> Gekreuzte Filter sperren. Der dritte Filter im Winkel <span class="f">\(45^\circ\)</span> zum ersten lässt einen Anteil durch und polarisiert ihn in seine Richtung (<span class="f">\(45^\circ\)</span>); dieses Licht steht zum letzten Filter wieder im Winkel <span class="f">\(45^\circ\)</span> und kommt anteilig durch. Jeder Filter „vergisst" die vorherige Richtung.</li>
     <li><b>1.3 b (4 BE)</b> Aus M1-B: bei <span class="f">\(45^\circ\)</span> etwa 1,63 V, das ist die Hälfte des Maximalwerts 3,23 V. Ein Filter unter <span class="f">\(45^\circ\)</span> halbiert also; zwei solche Schritte: ein Viertel ⇒ <span class="f">\(U \approx 3{,}23\,\mathrm{V}/4 = 0{,}81\,\mathrm{V}\)</span> (EWH: 0,80 bis 0,85 V). Mit Malus: <span class="f">\(\cos^2 45^\circ\cdot\cos^2 45^\circ = \tfrac14\)</span>.</li>
@@ -447,15 +515,12 @@
 
 <!-- 11 -->
 <section class="card" id="s11">
-  <h2>11 · Analogie-Trainer</h2>
+  <h2>11 · Drei Analogien, die oben noch fehlen</h2>
+  <p class="small">La-Ola (Abschnitt 1), Steine ins Wasser (4), Zeigeraddition (6) und Gitarrensaite (8) stehen schon bei ihren Themen. Hier nur die drei Bilder, die dort nicht vorkommen.</p>
   <div class="cards">
-    <div class="acard"><h4>La-Ola ↔ Welle</h4><div class="l">Teilchen bleiben, Muster läuft</div><p>Jeder steht nur auf und setzt sich. Niemand wechselt den Platz, trotzdem läuft die Welle ums Stadion. Energie und Information wandern, Materie nicht.</p></div>
-    <div class="acard"><h4>Zeigerkette ↔ Phase entlang <span class="f">\(x\)</span></h4><div class="l"><span class="f">\(\alpha = \omega t - kx\)</span></div><p>Eine Reihe von Uhren, jede geht gegenüber der linken Nachbarin um <span class="f">\(k\,\Delta x\)</span> nach. Nach einer Wellenlänge ist die Verspätung ein voller Umlauf, die Uhr zeigt dasselbe.</p></div>
-    <div class="acard"><h4>Steine ins Wasser ↔ Huygens</h4><div class="l">Elementarwellen</div><p>Viele gleichzeitige Kreiswellen ergeben eine gerade Front. Nur eine (schmaler Spalt) ergibt eine Kreiswelle: Beugung.</p></div>
-    <div class="acard"><h4>Marschkolonne im Sand ↔ Brechung</h4><div class="l">Front knickt ab, wo sie langsamer wird</div><p>Die Reihe, die schräg vom Asphalt in den Sand marschiert, wird auf der Sandseite zuerst gebremst und schwenkt zum Lot hin. Schrittfrequenz gleich, Schrittlänge kleiner: <span class="f">\(f\)</span> bleibt, <span class="f">\(\lambda\)</span> schrumpft.</p></div>
-    <div class="acard"><h4>Zwei Pfeile ↔ Interferenz</h4><div class="l">Vektoraddition</div><p>Gleiche Richtung: Summe doppelt so lang. Entgegengesetzt: null. Dazwischen: Parallelogramm. Der Winkel zwischen den Pfeilen ist die Phasendifferenz <span class="f">\(2\pi\Delta s/\lambda\)</span>.</p></div>
-    <div class="acard"><h4>Gitarrensaite ↔ stehende Welle</h4><div class="l">Knoten an den festen Enden</div><p>Hin- und rücklaufende Welle überlagern sich; die Saite kann nur Wellenlängen tragen, bei denen beide Enden Knoten sind: <span class="f">\(\lambda = 2l, l, 2l/3, \dots\)</span></p></div>
-    <div class="acard"><h4>Lattenzaun ↔ Polfilter</h4><div class="l">nur die passende Richtung passiert</div><p>Ein Seil durch einen Lattenzaun: senkrechte Schwingungen kommen durch, waagerechte nicht. Schräg: nur der parallele Anteil <span class="f">\(\cos\alpha\)</span>, Energie <span class="f">\(\cos^2\alpha\)</span>. Zweiter Zaun quer: nichts mehr, es sei denn, dazwischen steht ein schräger.</p></div>
+    <div class="acard"><h4>Uhrenkette ↔ Phase entlang <span class="f">\(x\)</span></h4><div class="l"><span class="f">\(\alpha = \omega t - kx\)</span> (Abschnitt 3)</div><p>Eine Reihe von Uhren, jede geht gegenüber der linken Nachbarin um <span class="f">\(k\,\Delta x\)</span> nach. Nach einer Wellenlänge ist die Verspätung ein voller Umlauf, die Uhr zeigt dasselbe.</p></div>
+    <div class="acard"><h4>Marschkolonne im Sand ↔ Brechung</h4><div class="l">Front knickt ab, wo sie langsamer wird (Abschnitt 5)</div><p>Die Reihe, die schräg vom Asphalt in den Sand marschiert, wird auf der Sandseite zuerst gebremst und schwenkt zum Lot hin. Schrittfrequenz gleich, Schrittlänge kleiner: <span class="f">\(f\)</span> bleibt, <span class="f">\(\lambda\)</span> schrumpft.</p></div>
+    <div class="acard"><h4>Lattenzaun ↔ Polfilter</h4><div class="l">nur die passende Richtung passiert (Abschnitt 9)</div><p>Ein Seil durch einen Lattenzaun: senkrechte Schwingungen kommen durch, waagerechte nicht. Schräg: nur der parallele Anteil <span class="f">\(\cos\alpha\)</span>, Energie <span class="f">\(\cos^2\alpha\)</span>. Zweiter Zaun quer: nichts mehr, es sei denn, dazwischen steht ein schräger.</p></div>
   </div>
 </section>
 
@@ -480,7 +545,7 @@
     c) Überall dort, wo <span class="f">\(\Delta s = (n + \tfrac12)\lambda = 0{,}25; 0{,}75; 1{,}25\,\mathrm{m}\,\dots\)</span>: Hyperbeln um die beiden Quellen (Doppelspalt-Geometrie, Lektion 8).</p></details>
   <details><summary>A5: Ultraschall-Versuch, <span class="f">\(f = 24{,}0\,\mathrm{kHz}\)</span>. Gemessene Minima: <span class="f">\(u = 1\dots 5\)</span> bei <span class="f">\(s = 0{,}72;\ 1{,}43;\ 2{,}15;\ 2{,}87;\ 3{,}58\,\mathrm{cm}\)</span>. Werte aus wie im Heft und bestimme <span class="f">\(c\)</span>.</summary>
     <p>Gerade <span class="f">\(s(u)\)</span>: Steigung <span class="f">\(\Delta s = \frac{\sum(u - \bar u)(s - \bar s)}{\sum (u - \bar u)^2} = \frac{7{,}16}{10}\,\mathrm{cm} = 0{,}716\,\mathrm{cm}\)</span> (TR: lineare Regression, Steigung 0,716 cm, Achsenabschnitt 0,00 cm).<br>
-    <span class="f">\(\lambda = 2\Delta s = 1{,}43\,\mathrm{cm}\)</span> ⇒ <span class="f">\(c = \lambda f = 0{,}0143\,\mathrm{m}\cdot 24\,000\,\mathrm{s^{-1}} = 344\,\mathrm{m/s}\)</span>; Literatur 343 m/s, Abweichung 0,3 %.<br>
+    <span class="f">\(\lambda = 2\Delta s = 1{,}432\,\mathrm{cm}\)</span> ⇒ <span class="f">\(c = \lambda f = 0{,}01432\,\mathrm{m}\cdot 24\,000\,\mathrm{s^{-1}} = 343{,}7\,\mathrm{m/s} \approx 344\,\mathrm{m/s}\)</span>; Literatur 343 m/s, Abweichung 0,2 %.<br>
     Doku: Werte in den TR (u, s), Diagramm s über u, „Punkte liegen auf einer Ursprungsgeraden ⇒ lineare Regression", Formel <span class="f">\(s = 0{,}716\,\mathrm{cm}\cdot u\)</span>, Steigung = Knotenabstand = <span class="f">\(\lambda/2\)</span>.</p></details>
   <details><summary>A6: Unpolarisiertes Licht der Intensität <span class="f">\(I_0\)</span> fällt auf Filter 1 (<span class="f">\(0^\circ\)</span>), dann Filter 2 (<span class="f">\(30^\circ\)</span>), dann Filter 3 (<span class="f">\(90^\circ\)</span>). a) Intensität nach jedem Filter. b) Ohne Filter 2? c) Bei welchem Winkel halbiert ein Filter polarisiertes Licht?</summary>
     <p>a) Nach 1: <span class="f">\(I_0/2\)</span> (Mittelwert von <span class="f">\(\cos^2\)</span>), polarisiert in <span class="f">\(0^\circ\)</span>. Nach 2 (Winkel <span class="f">\(30^\circ\)</span>): <span class="f">\(\tfrac12 I_0\cos^2 30^\circ = 0{,}375\,I_0\)</span>, jetzt in <span class="f">\(30^\circ\)</span> polarisiert. Nach 3 (Winkel <span class="f">\(60^\circ\)</span> dazu): <span class="f">\(0{,}375\,I_0\cos^2 60^\circ = 0{,}094\,I_0\)</span>.<br>
@@ -490,13 +555,13 @@
 
 <!-- 13 -->
 <section class="card" id="s13">
-  <h2>13 · Was nicht in der Formelsammlung steht (auswendig, siehe Typst-Datei)</h2>
+  <h2>13 · Was nicht in der Formelsammlung steht (auswendig; gesammelt in „Vorabi 2026 Auswendig Physik.typ" im Schule-Ordner, Abschnitt Lektion 7)</h2>
   <ul>
     <li><b>Definitionen:</b> Welle = räumliche Ausbreitung einer Schwingung; Teilchen schwingen um die Ruhelage, Energie wandert, Materie nicht; Teilchengeschwindigkeit <span class="f">\(\hat y\omega\)</span> gegen Wellengeschwindigkeit <span class="f">\(c\)</span>; transversal (quer) / longitudinal (längs); nur transversale Wellen polarisierbar, <b>daher</b>-Argument.</li>
     <li><b>Wellenzahl</b> <span class="f">\(k = 2\pi/\lambda\)</span>, Phasenwinkel <span class="f">\(\alpha = \omega t - kx + \varphi_0\)</span> (Minus für Lauf nach rechts), Phasenunterschied <span class="f">\(k\,\Delta x\)</span>, modulo <span class="f">\(2\pi\)</span>, Zeigerkette entlang <span class="f">\(x\)</span> (Heft-Beispiel 3430 Hz: 216°, −36° pro cm). FS hat nur <span class="f">\(y = y_{\mathrm{max}}\sin(2\pi(t/T - x/\lambda))\)</span>.</li>
     <li><b>Huygens:</b> jeder Punkt Quelle einer Elementarwelle; ebene Welle als Überlagerung; Beugung an Kante und Spalt; Spaltbreite gegen <span class="f">\(\lambda\)</span>.</li>
     <li><b>Snellius-Herleitung:</b> <span class="f">\(d\sin\alpha_1 = v_1 t\)</span>, <span class="f">\(d\sin\alpha_2 = v_2 t\)</span> ⇒ <span class="f">\(\sin\alpha_1/\sin\alpha_2 = v_1/v_2 = n_2/n_1 = \lambda_1/\lambda_2\)</span>; <span class="f">\(f\)</span> konstant, <span class="f">\(\lambda\)</span> ändert sich; zum Lot hin ins dichtere Medium. FS: nur das Gesetz, <span class="f">\(n = c_0/c\)</span>, Totalreflexion.</li>
-    <li><b>Interferenz:</b> Superposition <span class="f">\(y = a + b\)</span>; <span class="f">\(\Delta\varphi = 2\pi\Delta s/\lambda\)</span>; konstruktiv <span class="f">\(\Delta s = n\lambda\)</span>, destruktiv <span class="f">\((n+\tfrac12)\lambda\)</span>; Zeigeraddition <span class="f">\(A_{\mathrm{res}} = \sqrt{A^2 + B^2 + 2AB\cos\Delta\varphi}\)</span>; Intensität <span class="f">\(\propto A^2\)</span> (konstruktiv vierfach).</li>
+    <li><b>Interferenz:</b> Superposition <span class="f">\(y = a + b\)</span>; <span class="f">\(\Delta\varphi = 2\pi\Delta s/\lambda\)</span>; konstruktiv <span class="f">\(\Delta s = n\lambda\)</span>, destruktiv <span class="f">\((n+\tfrac12)\lambda\)</span> (volle Auslöschung nur bei gleichen Amplituden); Zeigeraddition als Vektoraddition (Länge der Resultierenden aus dem Zeigerbild); Intensität <span class="f">\(\propto A^2\)</span> (konstruktiv vierfach).</li>
     <li><b>Reflexion:</b> Phasensprung <span class="f">\(\pi\)</span> (<span class="f">\(\lambda/2\)</span>) am festen Ende bzw. dichteren Medium, 0 am losen Ende; Knoten am festen, Bauch am losen Ende.</li>
     <li><b>Stehende Welle:</b> Herleitung <span class="f">\(2\hat y\cos(kx)\sin(\omega t)\)</span> (FS gibt nur das Ergebnis); Knotenabstand <span class="f">\(\lambda/2\)</span>, Knoten–Bauch <span class="f">\(\lambda/4\)</span>; Abschnitte zwischen Knoten in Phase; kein Energietransport. <b>Ultraschall-Versuch</b> komplett: Aufbau, Minima messen, <span class="f">\(s(u)\)</span>-Gerade, <span class="f">\(\lambda = 2\Delta s\)</span>, <span class="f">\(c = \lambda f\)</span>, Heft-Zahlen (0,787 cm ⇒ 377,6 m/s, 10 %), Fehlerbetrachtung.</li>
     <li><b>Polarisation:</b> Zerlegung <span class="f">\(y_\parallel = y\cos\alpha\)</span>, <span class="f">\(y_\perp = y\sin\alpha\)</span>; Intensität = Amplitudenquadrat ⇒ Malus; unpolarisiert durch einen Filter: Hälfte; Winkelzählung ab gekreuzt ⇒ <span class="f">\(\sin^2\)</span>; Sinusregression mit Offset = Amplitude = <span class="f">\(U_{\mathrm{max}}/2\)</span> ist Malus; drei Filter <span class="f">\(\cos^2\cdot\cos^2\)</span> (45°: ein Viertel); Kleinwinkel <span class="f">\(U \approx U_{\mathrm{max}}(\pi\alpha/180^\circ)^2\)</span>; LCD-Logik (ohne Spannung hell).</li>
@@ -513,18 +578,8 @@
 
 <!-- 15 -->
 <section class="card" id="s15">
-  <h2>15 · Merksätze und Fortschritt</h2>
-  <ol>
-    <li>Welle = Schwingung, die weiterwandert. Teilchen bleiben, Phase läuft mit <span class="f">\(c = \lambda f\)</span>.</li>
-    <li><span class="f">\(\lambda\)</span> liest man im Foto (<span class="f">\(y\)</span> über <span class="f">\(x\)</span>), <span class="f">\(T\)</span> im Film eines Punktes (<span class="f">\(y\)</span> über <span class="f">\(t\)</span>). <span class="f">\(k = 2\pi/\lambda\)</span>, <span class="f">\(\omega = 2\pi/T\)</span>.</li>
-    <li>Phase <span class="f">\(\omega t - kx\)</span>: weiter rechts = später. Zwei Punkte im Abstand <span class="f">\(\Delta x\)</span> haben die Phasendifferenz <span class="f">\(2\pi\Delta x/\lambda\)</span>.</li>
-    <li>Huygens: jeder Punkt eine neue Kreiswelle. Schmaler Spalt beugt stark, breiter kaum.</li>
-    <li>Brechung: <span class="f">\(\sin\alpha_1/\sin\alpha_2 = n_2/n_1 = v_1/v_2\)</span>. Ins dichtere Medium zum Lot, <span class="f">\(f\)</span> bleibt, <span class="f">\(\lambda\)</span> schrumpft.</li>
-    <li>Interferenz: <span class="f">\(\Delta s = n\lambda\)</span> Verstärkung, <span class="f">\((n+\tfrac12)\lambda\)</span> Auslöschung. Immer Weg und Phase nennen.</li>
-    <li>Stehende Welle: Knotenabstand <span class="f">\(\lambda/2\)</span>, also <span class="f">\(\lambda = 2\cdot\)</span>Knotenabstand. Festes Ende Knoten, loses Ende Bauch.</li>
-    <li>Polfilter: Amplitude <span class="f">\(\cos\alpha\)</span>, Intensität <span class="f">\(\cos^2\alpha\)</span>. Gekreuzt sperrt; ein Filter dazwischen öffnet wieder.</li>
-  </ol>
-  <h3>Typische Verwechslungen</h3>
+  <h2>15 · Typische Verwechslungen und Fortschritt</h2>
+  <p class="small">Die Zusammenfassung zum Auswendiglernen steht in Abschnitt 13; hier nur die Paare, die in Klausuren am häufigsten vertauscht werden.</p>
   <table>
     <tr><th>Das</th><th>ist nicht das</th></tr>
     <tr><td>Wellengeschwindigkeit <span class="f">\(c = \lambda f\)</span> (konstant, Medium)</td><td>Teilchengeschwindigkeit <span class="f">\(\dot y\)</span> (schwankt, max. <span class="f">\(\hat y\omega\)</span>)</td></tr>
@@ -549,7 +604,7 @@
   <p class="small">Haken werden lokal im Browser gespeichert.</p>
 </section>
 
-<footer>Lektion 7 · erstellt 29.10.2026 · Quellen: Hefteinträge (12.2) Schwingungen und Wellen (Typst-Heft: Wellen, Bestimmung der fehlenden Größen, Welleneigenschaften 1–6, Stehende Wellen mit Ultraschall; Abbildungen Huygens, Kante, Brechung, Polarisationsgraph mit TR-Sinusregression), Zentralabitur 2025 Aufgabe 1 mit Erwartungshorizont, Zentralabitur 2022 gA IIa 1.1 (Huygens-Kernpunkte), Pool-Formelsammlung (Stand 14.02.2024).</footer>
+<footer>Lektion 7 · erstellt 29.10.2026, nach Prüfbericht überarbeitet 31.10.2026 · Quellen: Hefteinträge (12.2) Schwingungen und Wellen (Typst-Heft: Wellen, Bestimmung der fehlenden Größen, Welleneigenschaften 1–6, Stehende Wellen mit Ultraschall; Abbildungen Huygens, Kante, Brechung, Polarisationsgraph mit TR-Sinusregression), Zentralabitur 2025 Aufgabe 1 mit Erwartungshorizont, Zentralabitur 2022 gA IIa 1.1 (Huygens-Kernpunkte), Pool-Formelsammlung (Stand 14.02.2024).</footer>
 </main>
 
 <script>
@@ -624,7 +679,7 @@
       const sy = 180, sh = 44; ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0p, sy); ctx.lineTo(W - 20, sy); ctx.stroke();
       ctx.strokeStyle = css('--pos'); ctx.lineWidth = 2; ctx.beginPath(); hist.forEach((v, i) => { const px = W - 20 - (hist.length - 1 - i) * 1.6, py = sy - v * (mode === 'T' ? sh / A : sh / AL); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }); ctx.stroke();
       ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText(mode === 'T' ? 'Auslenkung des roten Teilchens über der Zeit (quer)' : 'Auslenkung des roten Teilchens über der Zeit (längs, aus der Ruhelage)', x0p, H - 6);
-      texHTML($('wmOut'), (mode === 'T' ? '<b>Transversal:</b> Teilchen schwingen senkrecht zur Ausbreitung (Berge und Täler).' : '<b>Longitudinal:</b> Teilchen schwingen parallel zur Ausbreitung (Verdichtungen und Verdünnungen).') + '<br>\\(c = \\lambda/T = ' + lam + '\\,\\mathrm{cm}/' + deT(T, 1) + '\\,\\mathrm{s} = \\htmlClass{hl}{' + deT(c, 1) + '\\,\\mathrm{cm/s}}\\), \\(f = ' + deT(1 / T, 2) + '\\,\\mathrm{Hz}\\), \\(k = 2\\pi/\\lambda = ' + deT(k * 100, 2) + '\\,\\mathrm{m^{-1}}\\)<br>Rotes Teilchen: Ort fest bei \\(x = ' + deT((x0p + mark * dxp) / 10, 1) + '\\,\\mathrm{cm}\\), es schwingt nur mit \\(T = ' + deT(T, 1) + '\\,\\mathrm{s}\\). Phasenverzögerung zum Nachbarn (1,1 cm): \\(k\\,\\Delta x = ' + deT(k * dxp * 180 / Math.PI, 0) + '^\\circ\\).');
+      texHTML($('wmOut'), (mode === 'T' ? '<b>Transversal:</b> Teilchen schwingen senkrecht zur Ausbreitung (Berge und Täler).' : '<b>Longitudinal:</b> Teilchen schwingen parallel zur Ausbreitung (Verdichtungen und Verdünnungen).') + '<br>\\(c = \\lambda/T = ' + lam + '\\,\\mathrm{cm}/' + deT(T, 1) + '\\,\\mathrm{s} = \\htmlClass{hl}{' + deT(c, 1) + '\\,\\mathrm{cm/s}}\\), \\(f = ' + deT(1 / T, 2) + '\\,\\mathrm{Hz}\\), \\(k = 2\\pi/\\lambda = ' + deT(k * 1000, 2) + '\\,\\mathrm{m^{-1}}\\)<br>Rotes Teilchen: Ort fest bei \\(x = ' + deT((x0p + mark * dxp) / 10, 1) + '\\,\\mathrm{cm}\\), es schwingt nur mit \\(T = ' + deT(T, 1) + '\\,\\mathrm{s}\\). Phasenverzögerung zum Nachbarn (1,1 cm): \\(k\\,\\Delta x = ' + deT(k * dxp * 180 / Math.PI, 0) + '^\\circ\\).');
     }
     function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; t += dt; draw(); requestAnimationFrame(loop); }
     $('wmT').addEventListener('click', () => { mode = 'T'; hist.length = 0; $('wmT').classList.add('active'); $('wmL').classList.remove('active'); });
@@ -681,47 +736,67 @@
       const xs = [0, 0.02, 0.04, 0.06, 0.08, 0.10]; const angles = [];
       xs.forEach((x, i) => {
         const al = mod2pi(w * t - k * x); angles.push(al);
-        const cx = X(x), cy = 185, R = 30;
+        const cx = X(x), cy = 185, R = 25;
         dot(ctx, X(x), yc - amp * Math.sin(al), css('--pos'), 4);
         ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, R, 0, TAU); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx - R - 4, cy); ctx.lineTo(cx + R + 4, cy); ctx.moveTo(cx, cy - R - 4); ctx.lineTo(cx, cy + R + 4); ctx.stroke();
+        // Drehsinn (gegen den Uhrzeigersinn für wachsendes t) als Bogenpfeil außen, 0°-Marke an der positiven Achse
+        const th1 = -0.35, th2 = -1.2, Rr = R + 7; ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.arc(cx, cy, Rr, th1, th2, true); ctx.stroke(); arrowAt(ctx, cx + Rr * Math.cos(th2), cy + Rr * Math.sin(th2), Math.sin(th2), -Math.cos(th2), css('--muted'));
+        ctx.fillStyle = css('--muted'); ctx.font = '9px system-ui'; ctx.textAlign = 'left'; ctx.fillText('0°', cx + R + 5, cy + 3);
         arrowLine(ctx, cx, cy, cx + R * Math.cos(al), cy - R * Math.sin(al), css('--accent'), 2.5);
         ctx.setLineDash([2, 3]); ctx.strokeStyle = css('--muted'); ctx.beginPath(); ctx.moveTo(cx, cy - R * Math.sin(al)); ctx.lineTo(cx, yc - amp * Math.sin(al)); ctx.stroke(); ctx.setLineDash([]);
         ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('x = ' + Math.round(x * 100) + ' cm', cx, cy + R + 16); ctx.fillText(de(al * 180 / Math.PI, 0) + '°', cx, cy + R + 29);
       });
       ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('λ = ' + de(lam * 100, 1) + ' cm', pl + 4, 14);
+      ctx.textAlign = 'right'; ctx.fillText('Drehsinn: gegen den Uhrzeigersinn (t wächst)', W - pr, 14);
       const wt = w * t, n = Math.floor(wt / TAU), rest = wt - n * TAU;
       texHTML($('phOut'), '\\(\\lambda = c/f = ' + deT(lam * 100, 1) + '\\,\\mathrm{cm}\\), \\(k = 2\\pi/\\lambda = ' + deT(k, 1) + '\\,\\mathrm{m^{-1}}\\), \\(\\omega = 2\\pi f = ' + deT(w, 0) + '\\,\\mathrm{s^{-1}}\\)<br>Phase bei \\(x = 0\\): \\(\\omega t = ' + deT(wt, 1) + '\\) rad \\(= ' + deT(wt / Math.PI, 2) + '\\pi\\) = ' + n + ' volle Umläufe + \\(' + deT(rest / Math.PI, 2) + '\\pi = \\htmlClass{hl}{' + deT(rest * 180 / Math.PI, 0) + '^\\circ}\\)<br>Pro cm nimmt die Phase um \\(k\\cdot 0{,}01\\,\\mathrm{m} = ' + deT(k * 0.01 * 180 / Math.PI, 0) + '^\\circ\\) ab; pro 2 cm um \\(' + deT(k * 0.02 * 180 / Math.PI, 0) + '^\\circ\\).<br>Zeiger: ' + angles.map((a, i) => { const dgr = Math.round(a * 180 / Math.PI) % 360; return Math.round(xs[i] * 100) + ' cm: \\(' + dgr + '^\\circ' + (dgr > 180 ? ' = ' + (dgr - 360) + '^\\circ' : '') + '\\)'; }).join(', '));
     }
     ['phF', 'phT'].forEach((id) => $(id).addEventListener('input', draw)); $('phHeft').addEventListener('click', () => { $('phF').value = 3430; $('phT').value = 20; draw(); }); onTheme(draw); draw();
   })();
 
-  /* ---------- 4 Huygens: Beugung am Spalt ---------- */
+  /* ---------- 4 Huygens: Beugung an Spalt und Kante ---------- */
   (function huygens() {
     const cv = $('hyCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-    let t = 0, last = null; const lam = 26, k = TAU / lam, wallX = 160, cy = H / 2, cell = 4;
+    let t = 0, last = null, mode = 'spalt'; const lam = 26, k = TAU / lam, wallX = 160, cy = H / 2, cell = 4, w0 = 2.2;
     const img = ctx.createImageData(W, H);
     function draw() {
-      const b = parseFloat($('hyB').value), half = b * lam / 2, M = Math.max(3, Math.round(b * 5)); texHTML($('hyBv'), '\\(' + deT(b, 1) + '\\,\\lambda\\)');
-      const src = []; for (let i = 0; i < M; i++) src.push(cy - half + (i + 0.5) * (2 * half) / M);
+      const b = parseFloat($('hyB').value); texHTML($('hyBv'), '\\(' + deT(b, 1) + '\\,\\lambda\\)'); $('hyB').disabled = mode === 'kante';
+      // Öffnung: Spalt symmetrisch um die Mitte; Kante: Wand nur oben, untere Hälfte frei (Heft-Bild 2)
+      const aTop = mode === 'kante' ? cy : cy - b * lam / 2, aBot = mode === 'kante' ? H : cy + b * lam / 2;
+      const M = Math.max(3, Math.round((aBot - aTop) / lam * (mode === 'kante' ? 4 : 5))), ds = (aBot - aTop) / M;
+      const src = []; for (let i = 0; i < M; i++) src.push(aTop + (i + 0.5) * ds);
+      // Normierung: Summe der Elementarwellen mal ds/λ ergibt für die ungestörte ebene Welle Amplitude 1 (Fresnel, Phase −π/4); schmale Spalte werden zur Sichtbarkeit angehoben
+      const norm = ds / lam * (mode === 'kante' ? 1 : Math.max(1, 2.2 / b));
       const dark = document.documentElement.getAttribute('data-theme') === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const base = dark ? 24 : 250, span = dark ? 110 : -120;
+      const base = dark ? 24 : 130, span = dark ? 110 : 120; // in beiden Farbschemata: hell = Berg, dunkel = Tal
       const d = img.data; const ph = w0 * t;
       for (let yy = 0; yy < H; yy += cell) for (let xx = 0; xx < W; xx += cell) {
         let v;
         if (xx < wallX) v = Math.cos(k * xx - ph);
-        else { let s = 0; for (let i = 0; i < M; i++) { const dx = xx - wallX, dy = yy - src[i]; const r = Math.hypot(dx, dy) + 2; s += Math.cos(k * r - ph) / Math.sqrt(r / lam); } v = s / M * 2.2; v = Math.max(-1, Math.min(1, v)); }
+        else { let s = 0; for (let i = 0; i < M; i++) { const dx = xx - wallX, dy = yy - src[i]; const r = Math.hypot(dx, dy) + 2; s += Math.cos(k * (wallX + r) - ph - Math.PI / 4) / Math.sqrt(r / lam); } v = Math.max(-1, Math.min(1, s * norm)); }
         const g = base + span * (v + 1) / 2;
         for (let j = 0; j < cell; j++) for (let i2 = 0; i2 < cell; i2++) { const idx = ((yy + j) * W + (xx + i2)) * 4; d[idx] = g; d[idx + 1] = g + (dark ? 20 : 0); d[idx + 2] = g + (dark ? 50 : 10); d[idx + 3] = 255; }
       }
       ctx.putImageData(img, 0, 0);
-      ctx.fillStyle = css('--fg'); ctx.fillRect(wallX - 3, 0, 6, cy - half); ctx.fillRect(wallX - 3, cy + half, 6, H - cy - half);
-      if ($('hyShow').checked) { ctx.strokeStyle = css('--pos'); ctx.lineWidth = 1.2; src.forEach((sy) => { for (let r = lam; r < 3.2 * lam; r += lam) { ctx.beginPath(); ctx.arc(wallX, sy, r, -Math.PI / 2, Math.PI / 2); ctx.stroke(); } dot(ctx, wallX, sy, css('--pos'), 2.5); }); }
+      ctx.fillStyle = css('--fg'); ctx.fillRect(wallX - 3, 0, 6, aTop); if (mode === 'spalt') ctx.fillRect(wallX - 3, aBot, 6, H - aBot);
+      if ($('hyShow').checked) {
+        ctx.strokeStyle = css('--pos'); ctx.lineWidth = 1.2;
+        const ring = mode === 'kante' ? [src[0]] : src; // Kante: wie im Heft-Bild nur der Punkt an der Kante als Quelle gezeichnet
+        ring.forEach((sy) => { for (let r = lam; r < 3.2 * lam; r += lam) { ctx.beginPath(); ctx.arc(wallX, sy, r, -Math.PI / 2, Math.PI / 2); ctx.stroke(); } });
+        src.forEach((sy) => dot(ctx, wallX, sy, css('--pos'), 2.5));
+      }
       arrowLine(ctx, 20, 20, 80, 20, css('--fg'), 2); ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('ebene Welle', 20, 36);
-      texHTML($('hyOut'), 'Spaltbreite \\(b = ' + deT(b, 1) + '\\,\\lambda\\), ' + M + ' Elementarwellen überlagert.<br>' + (b <= 1 ? '<b>Schmaler Spalt</b> (\\(b \\le \\lambda\\)): Hinter dem Spalt entsteht praktisch eine Kreiswelle. Die Welle wird in alle Richtungen gebeugt, auch weit in den Schattenraum. So verhält sich jeder Spalt des Doppelspalts (Lektion 8).' : b < 3 ? '<b>Mittlerer Spalt:</b> Die Welle läuft vorwiegend geradeaus, daneben entstehen durch Interferenz der Elementarwellen Richtungen mit Auslöschung (dunkle Streifen) und Nebenmaxima. Erstes Minimum bei \\(\\sin\\vartheta = \\lambda/b = ' + deT(1 / b, 2) + '\\) ⇒ \\(\\vartheta = ' + deT(Math.asin(1 / b) * 180 / Math.PI, 0) + '^\\circ\\) (FS S. 35, Einzelspalt).' : '<b>Breiter Spalt</b> (\\(b \\gg \\lambda\\)): Die Welle läuft fast wie ein Strahl geradeaus weiter, Beugung nur an den Rändern. Erstes Minimum bei \\(\\sin\\vartheta = \\lambda/b\\) ⇒ \\(\\vartheta = ' + deT(Math.asin(1 / b) * 180 / Math.PI, 1) + '^\\circ\\): Geometrische Optik wird zur guten Näherung.'));
+      if (mode === 'kante') { ctx.fillText('Kante', wallX + 8, cy - 8); ctx.fillText('Schattenraum', wallX + 70, 40); } else ctx.fillText('Spalt', wallX + 8, Math.max(14, aTop - 6));
+      let txt;
+      if (mode === 'kante') txt = '<b>Kante</b> (Heft-Bild 2, Wand nur oben): Unterhalb der Kante läuft die ebene Welle ungestört geradeaus weiter. Der letzte freie Punkt an der Kante ist Quelle einer Kreiswelle (rote Halbkreise), die in den Schattenraum hinter der Wand hineinläuft: Die Fronten biegen um die Kante herum, die Amplitude nimmt dort mit dem Winkel ab. Heft: „Kante ist Quelle einer Kugelwelle." Deshalb hört man um Ecken.';
+      else txt = 'Spaltbreite \\(b = ' + deT(b, 1) + '\\,\\lambda\\), ' + M + ' Elementarwellen überlagert.<br>' + (b <= 1 ? '<b>Schmaler Spalt</b> (\\(b \\le \\lambda\\)): Hinter dem Spalt entsteht praktisch eine Kreiswelle. Die Welle wird in alle Richtungen gebeugt, auch weit in den Schattenraum. So verhält sich jeder Spalt des Doppelspalts (Lektion 8).' : b < 3 ? '<b>Mittlerer Spalt:</b> Die Welle läuft vorwiegend geradeaus; daneben löschen sich die Elementarwellen in bestimmten Richtungen aus (dunkle Streifen), dazwischen bleiben schwächere Nebenrichtungen. Quantitativ: Lektion 8 (Einzelspalt).' : '<b>Breiter Spalt</b> (\\(b \\gg \\lambda\\)): Die Welle läuft fast wie ein Strahl geradeaus weiter, Beugung nur an den Rändern. Geometrische Optik wird zur guten Näherung.');
+      texHTML($('hyOut'), txt);
     }
-    const w0 = 2.2;
     function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; t += dt; draw(); requestAnimationFrame(loop); }
-    $('hyB').addEventListener('input', draw); requestAnimationFrame(loop);
+    $('hyB').addEventListener('input', draw);
+    $('hyModeS').addEventListener('click', () => { mode = 'spalt'; $('hyModeS').classList.add('active'); $('hyModeK').classList.remove('active'); });
+    $('hyModeK').addEventListener('click', () => { mode = 'kante'; $('hyModeK').classList.add('active'); $('hyModeS').classList.remove('active'); });
+    requestAnimationFrame(loop);
   })();
 
   /* ---------- 5 Brechung ---------- */
@@ -753,7 +828,14 @@
       // Strahlen
       arrowLine(ctx, cx - 120 * u1[0], yb - 120 * u1[1], cx, yb, css('--pos'), 2.5);
       if (!total) arrowLine(ctx, cx, yb, cx + 120 * u2[0], yb + 120 * u2[1], css('--pos'), 2.5); else arrowLine(ctx, cx, yb, cx + 120 * ur[0], yb + 120 * ur[1], css('--pos'), 2.5);
-      ctx.fillStyle = css('--pos'); ctx.font = '12px system-ui'; ctx.textAlign = 'left'; ctx.fillText('α₁', cx - 50 * u1[0] + 8, yb - 50 * u1[1]); if (!total) ctx.fillText('α₂', cx + 50 * u2[0] + 8, yb + 50 * u2[1] + 4);
+      // Winkelbögen zwischen Strahl und Lot (α₁ oben, α₂ unten; bei Totalreflexion α₁′ für den reflektierten Strahl), dazu Beschriftung der Pfeile
+      ctx.strokeStyle = css('--pos'); ctx.fillStyle = css('--pos'); ctx.lineWidth = 1.5; ctx.font = '12px system-ui'; ctx.textAlign = 'center';
+      const Ra = 40, Rl = 56;
+      if (a1 > 0.02) { ctx.beginPath(); ctx.arc(cx, yb, Ra, -Math.PI / 2 - a1, -Math.PI / 2); ctx.stroke(); const m = -Math.PI / 2 - a1 / 2; ctx.fillText('α₁', cx + Rl * Math.cos(m), yb + Rl * Math.sin(m) + 4); }
+      if (!total && a2 > 0.02) { ctx.beginPath(); ctx.arc(cx, yb, Ra, Math.PI / 2 - a2, Math.PI / 2); ctx.stroke(); const m = Math.PI / 2 - a2 / 2; ctx.fillText('α₂', cx + Rl * Math.cos(m), yb + Rl * Math.sin(m) + 4); }
+      if (total) { ctx.beginPath(); ctx.arc(cx, yb, Ra, -Math.PI / 2, -Math.PI / 2 + a1); ctx.stroke(); const m = -Math.PI / 2 + a1 / 2; ctx.fillText('α₁′', cx + Rl * Math.cos(m), yb + Rl * Math.sin(m) + 4); }
+      ctx.textAlign = 'left'; ctx.fillText('v₁', cx - 100 * u1[0] + 12 * u1[1], yb - 100 * u1[1] - 12 * u1[0] + 4);
+      if (!total) ctx.fillText('v₂', cx + 100 * u2[0] + 12 * u2[1], yb + 100 * u2[1] - 12 * u2[0] + 4); else ctx.fillText('v₁ (reflektiert)', cx + 100 * ur[0] + 10, yb + 100 * ur[1] + 4);
       texHTML($('brOut'), '\\(\\sin\\alpha_2 = \\dfrac{n_1}{n_2}\\sin\\alpha_1 = \\dfrac{' + deT(n1, 2) + '}{' + deT(n2, 2) + '}\\cdot ' + deT(Math.sin(a1), 3) + ' = ' + deT(s2, 3) + '\\)' + (total ? ' \\(\\gt 1\\): <b>Totalreflexion</b>, Grenzwinkel \\(\\sin\\alpha_G = n_2/n_1\\) ⇒ \\(\\alpha_G = ' + deT(Math.asin(n2 / n1) * 180 / Math.PI, 1) + '^\\circ\\).' : ' ⇒ \\(\\alpha_2 = \\htmlClass{hl}{' + deT(a2 * 180 / Math.PI, 1) + '^\\circ}\\) (' + (n2 > n1 ? 'zum Lot hin' : n2 < n1 ? 'vom Lot weg' : 'ungebrochen') + ')') + '<br>\\(v_1 = c_0/n_1 = ' + deT(3e8 / n1 / 1e8, 2) + '\\cdot 10^8\\,\\mathrm{m/s}\\), \\(v_2 = ' + deT(3e8 / n2 / 1e8, 2) + '\\cdot 10^8\\,\\mathrm{m/s}\\); \\(\\lambda_2/\\lambda_1 = n_1/n_2 = ' + deT(n1 / n2, 2) + '\\), Frequenz gleich.<br>Probe: \\(\\sin\\alpha_1/\\sin\\alpha_2 = ' + (total ? '\\text{–}' : deT(Math.sin(a1) / Math.sin(a2), 3)) + '\\), \\(n_2/n_1 = ' + deT(n2 / n1, 3) + '\\) ✓');
     }
     function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; t += dt; draw(); requestAnimationFrame(loop); }
@@ -781,8 +863,8 @@
       arrowLine(ctx, cx + S * A, cy, cx + S * A + S * R * Math.cos(d), cy - S * R * Math.sin(d), css('--pos'), 2.5);
       arrowLine(ctx, cx, cy, cx + S * A + S * R * Math.cos(d), cy - S * R * Math.sin(d), css('--accent'), 3);
       ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('Zeigeraddition', cx, cy + 86);
-      const kind = Ares > 1.98 * Math.max(A, R) ? 'maximal konstruktiv' : Ares < 0.02 ? 'vollständige Auslöschung' : (Ares > Math.max(A, R) ? 'teilweise konstruktiv' : 'teilweise destruktiv');
-      texHTML($('ifOut'), 'Phasendifferenz \\(\\Delta\\varphi = ' + dphi + '^\\circ = ' + deT(d, 2) + '\\) rad ⇒ Gangunterschied \\(\\Delta s = \\dfrac{\\Delta\\varphi}{2\\pi}\\lambda = ' + deT(dphi / 360, 3) + '\\,\\lambda\\)<br>\\(A_{\\mathrm{res}} = \\sqrt{A^2 + B^2 + 2AB\\cos\\Delta\\varphi} = \\sqrt{1 + ' + deT(R * R, 2) + ' + ' + deT(2 * R * Math.cos(d), 3) + '}\\,A = \\htmlClass{hl}{' + deT(Ares, 2) + '\\,A}\\): ' + kind + '<br>Intensität \\(\\propto A_{\\mathrm{res}}^2 = ' + deT(Ares * Ares, 2) + '\\,A^2\\) (Einzelwelle: \\(1\\,A^2\\), zwei gleich starke in Phase: \\(4\\,A^2\\)).');
+      const kind = R === 0 ? 'nur Welle a (\\(B = 0\\)), nichts zu überlagern' : Ares > 1.98 * Math.max(A, R) ? 'maximal konstruktiv' : Ares < 0.02 ? 'vollständige Auslöschung' : Math.abs(Ares - Math.abs(A - R)) < 0.02 ? 'maximal destruktiv, Rest \\(|A - B|\\) wegen ungleicher Amplituden' : (Ares > Math.max(A, R) ? 'teilweise konstruktiv' : 'teilweise destruktiv');
+      texHTML($('ifOut'), 'Phasendifferenz \\(\\Delta\\varphi = ' + dphi + '^\\circ = ' + deT(d, 2) + '\\) rad ⇒ Gangunterschied \\(\\Delta s = \\dfrac{\\Delta\\varphi}{2\\pi}\\lambda = ' + deT(dphi / 360, 3) + '\\,\\lambda\\)<br>Resultierende (Länge des blauen Zeigers aus der Vektoraddition) mit \\(B = ' + deT(R, 1) + '\\,A\\): \\(A_{\\mathrm{res}} = \\htmlClass{hl}{' + deT(Ares, 2) + '\\,A}\\), ' + kind + '<br>Intensität \\(\\propto A_{\\mathrm{res}}^2 = ' + deT(Ares * Ares, 2) + '\\,A^2\\) (Einzelwelle: \\(1\\,A^2\\), zwei gleich starke in Phase: \\(4\\,A^2\\)).');
     }
     ['ifPhi', 'ifR'].forEach((id) => $(id).addEventListener('input', draw)); onTheme(draw); draw();
   })();
@@ -798,7 +880,10 @@
       ctx.strokeStyle = css('--accent'); ctx.lineWidth = 3; ctx.beginPath(); for (let i = 0; i <= 220; i++) { const x = 20 + (L - 20) * i / 220; const px = x, py = yc - y(x); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
       if (fixed) { ctx.fillStyle = css('--fg'); ctx.fillRect(L, 30, 10, 160); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('Wand (festes Ende)', L - 6, 40); }
       else { ctx.strokeStyle = css('--line'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(L + 6, 30); ctx.lineTo(L + 6, 190); ctx.stroke(); dot(ctx, L, yc - y(L), css('--pos'), 7); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('Ring auf Stange (loses Ende)', L - 6, 40); }
-      arrowLine(ctx, 30, 24, 90, 24, css('--fg'), 1.5); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('einlaufend', 96, 28);
+      // Laufrichtungspfeile: „einlaufend", solange der Puls hinläuft; „reflektiert", sobald er zurückläuft (in der Überlappung beide)
+      const pos = c * t; ctx.font = '11px system-ui';
+      if (pos < L - x0 + 2 * wdt) { arrowLine(ctx, 30, 24, 90, 24, css('--fg'), 1.5); ctx.fillStyle = css('--muted'); ctx.textAlign = 'left'; ctx.fillText('einlaufend', 96, 28); }
+      if (pos > L - x0 - 2 * wdt) { arrowLine(ctx, L - 130, 24, L - 190, 24, css('--fg'), 1.5); ctx.fillStyle = css('--muted'); ctx.textAlign = 'right'; ctx.fillText('reflektiert', L - 196, 28); }
       const phase = (c * t < L - x0 - 2 * wdt) ? 'Der Berg läuft auf das Ende zu.' : (c * t < L - x0 + 2 * wdt) ? (fixed ? 'Am festen Ende: Die Wand hält die Auslenkung bei null, einlaufender Berg und reflektiertes Tal überlagern sich zu null (Knoten).' : 'Am losen Ende: Das Ende schwingt frei aus, Berg und reflektierter Berg addieren sich zur doppelten Höhe (Bauch).') : (fixed ? 'Reflektierte Welle: ein <b>Tal</b>. Phasensprung \\(\\pi\\) (halbe Wellenlänge).' : 'Reflektierte Welle: ein <b>Berg</b>. Kein Phasensprung.');
       texHTML($('rfOut'), '<b>' + (fixed ? 'Festes Ende' : 'Loses Ende') + ':</b> ' + phase + '<br>Rechnerisch: reflektierte Welle = \\(' + (fixed ? '-' : '+') + '\\)einlaufende Welle, gespiegelt am Ende. Für stehende Wellen: am festen Ende Knoten, am losen Ende Bauch.');
     }
@@ -826,7 +911,7 @@
       const nodes = []; for (let n = 0; ; n++) { const x = (lam * 10) / 4 + n * (lam * 10) / 2; if (x > W - 20) break; nodes.push(x); dot(ctx, 10 + x, yc, css('--pos'), 5); }
       ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Knoten (rot) im Abstand λ/2 = ' + de(lam / 2, 1) + ' cm; gestrichelt: Einhüllende 2ŷ|cos(kx)|', 12, H - 8);
       if (show) { ctx.fillStyle = css('--pot'); ctx.fillText('→ nach rechts', 12, 16); ctx.fillStyle = css('--kin'); ctx.fillText('← nach links', 100, 16); } ctx.fillStyle = css('--efield'); ctx.fillText('Summe', 190, 16);
-      texHTML($('swOut'), '\\(y = 2\\hat y\\cos(kx)\\sin(\\omega t)\\), \\(\\lambda = ' + lam + '\\,\\mathrm{cm}\\), \\(k = ' + deT(k * 100, 2) + '\\,\\mathrm{m^{-1}}\\)<br>Knoten bei \\(\\cos(kx) = 0\\): \\(x = \\lambda/4 + n\\,\\lambda/2 = ' + nodes.slice(0, 4).map((x) => deT(x / 10, 1)).join(';\\ ') + '\\,\\dots\\,\\mathrm{cm}\\)<br>Knotenabstand \\(\\htmlClass{hl}{\\lambda/2 = ' + deT(lam / 2, 1) + '\\,\\mathrm{cm}}\\), Bäuche dazwischen mit Amplitude \\(2\\hat y\\), Knoten–Bauch \\(\\lambda/4 = ' + deT(lam / 4, 1) + '\\,\\mathrm{cm}\\).');
+      texHTML($('swOut'), '\\(y = 2\\hat y\\cos(kx)\\sin(\\omega t)\\), \\(\\lambda = ' + lam + '\\,\\mathrm{cm}\\), \\(k = ' + deT(k * 1000, 2) + '\\,\\mathrm{m^{-1}}\\)<br>Knoten bei \\(\\cos(kx) = 0\\): \\(x = \\lambda/4 + n\\,\\lambda/2 = ' + nodes.slice(0, 4).map((x) => deT(x / 10, 1)).join(';\\ ') + '\\,\\dots\\,\\mathrm{cm}\\)<br>Knotenabstand \\(\\htmlClass{hl}{\\lambda/2 = ' + deT(lam / 2, 1) + '\\,\\mathrm{cm}}\\), Bäuche dazwischen mit Amplitude \\(2\\hat y\\), Knoten–Bauch \\(\\lambda/4 = ' + deT(lam / 4, 1) + '\\,\\mathrm{cm}\\).');
     }
     function loop(ts) { if (last === null) last = ts; const dt = Math.min(0.05, (ts - last) / 1000); last = ts; if (running) t += dt; draw(); requestAnimationFrame(loop); }
     $('swLam').addEventListener('input', draw); $('swShow').addEventListener('change', draw);
@@ -837,32 +922,35 @@
   /* ---------- 8b Ultraschall-Versuch ---------- */
   (function ultraschall() {
     const cv = $('usCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height;
-    const f = 24000, cTrue = 343.4, lam = cTrue / f * 100, L = 10, k = TAU / lam; const notes = [];
+    const f = 24000, cTrue = 343.4, lam = cTrue / f * 100, L = 10, k = TAU / lam; const notes = []; let hint = '';
     const jitter = (n) => { const x = Math.sin(n * 12.9898 + 78.233) * 43758.5453; return ((x - Math.floor(x)) - 0.5) * 0.06; };
+    const ampAt = (x) => Math.abs(Math.cos(k * (L - x))); // Amplitude der stehenden Welle am Ort x (Knoten am Spiegel-Abstand λ/4, 3λ/4, …)
     function draw() {
       const s = parseFloat($('usS').value) / 10; texHTML($('usSv'), '\\(' + deT(s, 2) + '\\,\\mathrm{cm}\\)');
-      const ampAt = (x) => Math.abs(Math.cos(k * (L - x)));
       ctx.clearRect(0, 0, W, H);
       const pl = 50, pr = 20, X = (x) => pl + x / L * (W - pl - pr), yc = 90, A = 50;
       ctx.fillStyle = css('--fg'); ctx.fillRect(X(L) - 2, 30, 6, 120); ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'right'; ctx.fillText('Spiegel', X(L) - 6, 28);
       ctx.fillStyle = css('--accent'); ctx.fillRect(pl - 30, yc - 14, 24, 28); ctx.fillStyle = css('--muted'); ctx.textAlign = 'left'; ctx.fillText('Sender 24 kHz', pl - 30, 28);
       ctx.setLineDash([3, 4]); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 1; [1, -1].forEach((sg) => { ctx.beginPath(); for (let i = 0; i <= 400; i++) { const x = L * i / 400; const px = X(x), py = yc - sg * A * ampAt(x); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke(); }); ctx.setLineDash([]);
+      ctx.fillStyle = css('--muted'); ctx.textAlign = 'center'; ctx.fillText('gestrichelt: Einhüllende der Amplitude', (pl + X(L)) / 2, 28);
       ctx.strokeStyle = css('--line'); ctx.beginPath(); ctx.moveTo(pl, yc); ctx.lineTo(X(L), yc); ctx.stroke();
       for (let x = 0; x <= L; x += 1) { ctx.beginPath(); ctx.moveTo(X(x), yc + 58); ctx.lineTo(X(x), yc + 64); ctx.stroke(); ctx.fillStyle = css('--muted'); ctx.textAlign = 'center'; ctx.fillText(x, X(x), yc + 76); } ctx.fillText('s in cm', X(L / 2), yc + 90);
-      // Empfänger
-      ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(X(s), yc, 9, 0, TAU); ctx.fill(); arrowLine(ctx, X(s) - 24, yc + 40, X(s) - 6, yc + 12, css('--pos'), 1.5);
+      // Empfänger (roter Punkt) mit Beschriftung von oben
+      ctx.fillStyle = css('--pos'); ctx.beginPath(); ctx.arc(X(s), yc, 9, 0, TAU); ctx.fill(); arrowLine(ctx, X(s), yc - 40, X(s), yc - 13, css('--pos'), 1.5); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText('Empfänger', X(s), yc - 45);
       // Oszilloskop-Anzeige
       const a = ampAt(s); const ox = W - 150, oy = 190; ctx.fillStyle = css('--soft'); ctx.fillRect(ox, oy - 22, 130, 44); ctx.strokeStyle = css('--line'); ctx.strokeRect(ox, oy - 22, 130, 44);
       ctx.strokeStyle = css('--ok'); ctx.lineWidth = 2; ctx.beginPath(); for (let i = 0; i <= 120; i++) { const px = ox + 5 + i; const py = oy - 18 * a * Math.sin(i / 4); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.stroke();
       ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'left'; ctx.fillText('Oszilloskop: Amplitude ' + de(a * 100, 0) + ' %', ox, oy + 36);
-      notes.forEach((n, i) => { ctx.fillStyle = css('--ok'); ctx.beginPath(); ctx.moveTo(X(n), yc + 50); ctx.lineTo(X(n) - 5, yc + 42); ctx.lineTo(X(n) + 5, yc + 42); ctx.closePath(); ctx.fill(); ctx.fillText(String(i + 1), X(n) - 3, yc + 40); });
-      let txt = 'Notierte Minima: ' + (notes.length ? notes.map((n, i) => '\\(u = ' + (i + 1) + '\\): \\(' + deT(n, 2) + '\\,\\mathrm{cm}\\)').join(', ') : 'noch keine') + '.<br>';
-      if (notes.length >= 2) { const r = linreg(notes.map((_, i) => i + 1), notes); const lamM = 2 * r.m, cM = lamM / 100 * f; txt += 'Gerade \\(s(u) = ' + deT(r.m, 3) + '\\,\\mathrm{cm}\\cdot u + ' + deT(r.b, 2) + '\\,\\mathrm{cm}\\) ⇒ Knotenabstand \\(\\Delta s = ' + deT(r.m, 3) + '\\,\\mathrm{cm}\\) ⇒ \\(\\lambda = 2\\Delta s = \\htmlClass{hl}{' + deT(lamM, 2) + '\\,\\mathrm{cm}}\\) ⇒ \\(c = \\lambda f = \\htmlClass{hl}{' + deT(cM, 0) + '\\,\\mathrm{m/s}}\\) (Literatur 343 m/s, Abweichung \\(' + deT(Math.abs(cM - 343) / 343 * 100, 1) + '\\,\\%\\)).'; } else txt += 'Mindestens zwei Minima notieren, dann rechnet die Regression. Heft-Ergebnis zum Vergleich: \\(\\Delta s = 0{,}787\\,\\mathrm{cm}\\) ⇒ \\(c = 377{,}6\\,\\mathrm{m/s}\\).';
+      const sorted = [...notes].sort((a, b) => a - b); // Nummerierung u immer von links nach rechts, egal in welcher Reihenfolge notiert wurde
+      sorted.forEach((n, i) => { ctx.fillStyle = css('--ok'); ctx.beginPath(); ctx.moveTo(X(n), yc + 50); ctx.lineTo(X(n) - 5, yc + 42); ctx.lineTo(X(n) + 5, yc + 42); ctx.closePath(); ctx.fill(); ctx.fillText(String(i + 1), X(n) - 3, yc + 40); });
+      let txt = hint + 'Notierte Minima: ' + (sorted.length ? sorted.map((n, i) => '\\(u = ' + (i + 1) + '\\): \\(' + deT(n, 2) + '\\,\\mathrm{cm}\\)').join(', ') : 'noch keine') + '.<br>';
+      if (sorted.length >= 2) { const r = linreg(sorted.map((_, i) => i + 1), sorted); const lamM = 2 * r.m, cM = lamM / 100 * f; txt += 'Gerade \\(s(u) = ' + deT(r.m, 3) + '\\,\\mathrm{cm}\\cdot u + ' + deT(r.b, 2) + '\\,\\mathrm{cm}\\) ⇒ Knotenabstand \\(\\Delta s = ' + deT(r.m, 3) + '\\,\\mathrm{cm}\\) ⇒ \\(\\lambda = 2\\Delta s = \\htmlClass{hl}{' + deT(lamM, 2) + '\\,\\mathrm{cm}}\\) ⇒ \\(c = \\lambda f = \\htmlClass{hl}{' + deT(cM, 0) + '\\,\\mathrm{m/s}}\\) (Literatur 343 m/s, Abweichung \\(' + deT(Math.abs(cM - 343) / 343 * 100, 1) + '\\,\\%\\)).'; } else txt += 'Mindestens zwei Minima notieren, dann rechnet die Regression. Heft-Ergebnis zum Vergleich: \\(\\Delta s = 0{,}787\\,\\mathrm{cm}\\) ⇒ \\(c = 377{,}6\\,\\mathrm{m/s}\\).';
       texHTML($('usOut'), txt);
     }
-    $('usS').addEventListener('input', draw);
-    $('usNote').addEventListener('click', () => { const s = parseFloat($('usS').value) / 10; notes.push(s + jitter(notes.length + 1)); draw(); });
-    $('usReset').addEventListener('click', () => { notes.length = 0; draw(); });
+    $('usS').addEventListener('input', () => { hint = ''; draw(); });
+    // Ein Minimum wird nur angenommen, wenn die Amplitude am Empfänger unter 10 % des Maximums liegt
+    $('usNote').addEventListener('click', () => { const s = parseFloat($('usS').value) / 10; if (ampAt(s) < 0.10) { notes.push(s + jitter(notes.length + 1)); hint = ''; } else hint = '<b>Hier ist kein Minimum</b> (Amplitude ' + de(ampAt(s) * 100, 0) + ' % des Maximums). Verschiebe den Empfänger, bis das Oszilloskopsignal fast verschwindet, und notiere dann.<br>'; draw(); });
+    $('usReset').addEventListener('click', () => { notes.length = 0; hint = ''; draw(); });
     onTheme(draw); draw();
   })();
 
@@ -887,6 +975,8 @@
         cx = gap * (i + 1.7);
         ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(cx, cy, 34, 0, TAU); ctx.stroke();
         ctx.strokeStyle = css('--fg'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx - 34 * Math.cos(rad(d)), cy + 34 * Math.sin(rad(d))); ctx.lineTo(cx + 34 * Math.cos(rad(d)), cy - 34 * Math.sin(rad(d))); ctx.stroke();
+        // einlaufende Polarisation (vor dem Filter) gestrichelt, damit die Projektion y·cos α auf die Filterachse sichtbar wird
+        if (i > 0) { const dp = dirs[i - 1], Lp = 30 * amps[i - 1]; ctx.save(); ctx.setLineDash([4, 3]); ctx.strokeStyle = css('--muted'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(cx - Lp * Math.cos(rad(dp)), cy + Lp * Math.sin(rad(dp))); ctx.lineTo(cx + Lp * Math.cos(rad(dp)), cy - Lp * Math.sin(rad(dp))); ctx.stroke(); ctx.restore(); }
         const L = 30 * amps[i]; ctx.strokeStyle = css('--pos'); ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(cx - L * Math.cos(rad(d)), cy + L * Math.sin(rad(d))); ctx.lineTo(cx + L * Math.cos(rad(d)), cy - L * Math.sin(rad(d))); ctx.stroke(); arrowAt(ctx, cx + L * Math.cos(rad(d)), cy - L * Math.sin(rad(d)), Math.cos(rad(d)), -Math.sin(rad(d)), css('--pos')); arrowAt(ctx, cx - L * Math.cos(rad(d)), cy + L * Math.sin(rad(d)), -Math.cos(rad(d)), Math.sin(rad(d)), css('--pos'));
         ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.textAlign = 'center'; ctx.fillText(labels[i], cx, cy + 50);
         const I = amps[i] * amps[i]; ctx.fillStyle = css('--soft'); ctx.fillRect(cx - 20, cy + 58, 40, 10); ctx.fillStyle = css('--accent'); ctx.fillRect(cx - 20, cy + 58, 40 * I, 10); ctx.fillStyle = css('--fg'); ctx.fillText('I = ' + de(I * 100, 0) + ' %', cx, cy + 82);
@@ -919,15 +1009,16 @@
         curve(ctx, map, (a) => Umax * Math.sin(rad(a)) ** 2, 0, 50, css('--line'), 1.5);
         curve(ctx, map, (a) => pr.a * Math.pow(a, pr.b), 1, 50, css('--accent'), 2);
         curve(ctx, map, (a) => 0.00103 * a * a, 0, 50, css('--ok'), 1.5, [5, 4]);
+        curve(ctx, map, (a) => k2 * a * a, 0, 50, css('--muted'), 1.2, [2, 3]);
         AA.slice(0, 7).forEach((a, i) => dot(ctx, map.X(a), map.Y(AU[i]), sub.includes(i) ? css('--pos') : css('--muted'), sub.includes(i) ? 5 : 4));
         const u40 = 0.00103 * 1600, u45 = 0.00103 * 2025;
-        texHTML($('pdOut'), '<b>1.2 b, nur 10°–40° (rote Punkte):</b> Potenzregression \\(U = ' + sciT(pr.a, 3) + '\\cdot\\alpha^{' + deT(pr.b, 2) + '}\\) (\\(r = ' + deT(pr.r, 4) + '\\)), Exponent \\(\\approx 2\\) ⇒ Form \\(U = k\\alpha^2\\). Mit \\(b = 2\\) (Regression durch den Ursprung): \\(k = ' + sciT(k2, 3) + '\\,\\mathrm{V/(^\\circ)^2}\\); EWH: \\(k = 1{,}03\\cdot 10^{-3}\\,\\mathrm{V/(^\\circ)^2}\\) (grün gestrichelt). Theorie für kleine Winkel: \\(U_{\\mathrm{max}}(\\pi/180^\\circ)^2 = 9{,}8\\cdot 10^{-4}\\).<br><b>1.2 c mit dem EWH-Wert:</b> \\(U(40^\\circ) = ' + deT(u40, 2) + '\\,\\mathrm{V}\\), gemessen 1,38 ⇒ Faktor ' + de(u40 / 1.38, 2) + ' (19 %: gilt). \\(U(45^\\circ) = ' + deT(u45, 2) + '\\,\\mathrm{V}\\), gemessen 1,63 ⇒ Faktor ' + de(u45 / 1.63, 2) + ' (28 %: gilt nicht). Mit \\(k = ' + sciT(k2, 3) + '\\): \\(' + deT(k2 * 1600 / 1.38 * 100 - 100, 0) + '\\,\\%\\) bzw. \\(' + deT(k2 * 2025 / 1.63 * 100 - 100, 0) + '\\,\\%\\), beide unter 20 %. „Je nach Verfahren andere Ergebnisse möglich": Rechnung zeigen, Prozent nennen, Schluss ziehen.');
+        texHTML($('pdOut'), '<b>1.2 b, nur 10°–40° (rote Punkte):</b> TR-Potenzregression \\(U = ' + sciT(pr.a, 3) + '\\,\\mathrm{V/(1^\\circ)^{' + deT(pr.b, 2) + '}}\\cdot\\alpha^{' + deT(pr.b, 2) + '}\\) (\\(r = ' + deT(pr.r, 4) + '\\), blau). Gefordert ist die Form \\(U = k\\alpha^2\\): Exponent \\(' + deT(pr.b, 2) + ' \\approx 2\\) runden, der Vorfaktor bleibt ⇒ \\(k = ' + sciT(pr.a, 3) + '\\,\\mathrm{V/(1^\\circ)^2}\\), das ist der EWH-Wert \\(0{,}00103\\,\\mathrm{V/(1^\\circ)^2}\\) (grün gestrichelt). Variante: \\(b = 2\\) fest vorgeben und nur \\(k\\) anpassen (Ursprungsparabel, grau gepunktet) ⇒ \\(k = ' + sciT(k2, 3) + '\\,\\mathrm{V/(1^\\circ)^2}\\). Theorie für kleine Winkel: \\(U_{\\mathrm{max}}(\\pi/180^\\circ)^2 = 9{,}8\\cdot 10^{-4}\\,\\mathrm{V/(1^\\circ)^2}\\).<br><b>1.2 c mit dem EWH-Wert:</b> \\(U(40^\\circ) = ' + deT(u40, 2) + '\\,\\mathrm{V}\\), gemessen 1,38 ⇒ Faktor ' + de(u40 / 1.38, 2) + ' (19 %: gilt). \\(U(45^\\circ) = ' + deT(u45, 2) + '\\,\\mathrm{V}\\), gemessen 1,63 ⇒ Faktor ' + de(u45 / 1.63, 2) + ' (28 %: gilt nicht). Mit der Variante \\(k = ' + sciT(k2, 3) + '\\): \\(' + deT(k2 * 1600 / 1.38 * 100 - 100, 0) + '\\,\\%\\) bzw. \\(' + deT(k2 * 2025 / 1.63 * 100 - 100, 0) + '\\,\\%\\), beide unter 20 %: Das Urteil bei 45° hängt am Verfahren, deshalb „je nach Verfahren andere Ergebnisse möglich". Also: Rechnung zeigen, Prozent nennen, Schluss ziehen.');
       } else {
         const map = frame(ctx, W, H, pad, -110, 110, 0, 2.1, 'α in °', 'U in V', { xs: 20, ys: 0.5 });
         curve(ctx, map, (a) => 0.951073 * Math.sin(0.032186 * a + 1.77213) + 0.958168, -110, 110, css('--accent'), 2);
         curve(ctx, map, (a) => 1.91 * Math.cos(rad(a + 6.25)) ** 2, -110, 110, css('--ok'), 1.5, [5, 4]);
         HA.forEach((a, i) => dot(ctx, map.X(a), map.Y(HU[i]), css('--pos'), 4));
-        texHTML($('pdOut'), '<b>Heft-Messung</b> (Punkte) mit der TR-Sinusregression (blau): \\(y = 0{,}951\\sin(0{,}0322\\,x + 1{,}772) + 0{,}958\\). Amplitude \\(\\approx\\) Offset \\(\\approx 0{,}95\\,\\mathrm{V}\\) ⇒ \\(U_{\\mathrm{max}} = 1{,}91\\,\\mathrm{V}\\). Maximum bei \\(x_0 = (\\pi/2 - 1{,}772)/0{,}0322 = -6{,}3^\\circ\\): Skalen um 6° verdreht.<br>Grün gestrichelt: ideales Malus-Gesetz \\(U = 1{,}91\\,\\mathrm{V}\\cos^2(\\alpha + 6{,}3^\\circ)\\) mit Periode \\(180^\\circ\\). Die TR-Kurve hat Periode \\(360^\\circ/(0{,}0322\\cdot 57{,}3) = 195^\\circ\\): rechts liegen die Messpunkte höher als links (Streulicht, Sensor nicht linear). Physikalisch gleiche Aussage: \\(\\cos^2\\) = Sinus mit Offset.');
+        texHTML($('pdOut'), '<b>Heft-Messung</b> (Punkte) mit der TR-Sinusregression (blau): \\(y = 0{,}951\\sin(0{,}0322\\,x + 1{,}772) + 0{,}958\\). Amplitude \\(\\approx\\) Offset \\(\\approx 0{,}95\\,\\mathrm{V}\\) ⇒ \\(U_{\\mathrm{max}} = 1{,}91\\,\\mathrm{V}\\). Maximum bei \\(x_0 = (\\pi/2 - 1{,}772)/0{,}0322 = -6{,}3^\\circ\\): Skalen um 6° verdreht.<br>Grün gestrichelt: ideales Malus-Gesetz \\(U = 1{,}91\\,\\mathrm{V}\\cos^2(\\alpha + 6{,}3^\\circ)\\) mit Periode \\(180^\\circ\\). Die TR-Kurve hat Periode \\(360^\\circ/(0{,}0322\\cdot 57{,}3) = 195^\\circ\\) statt \\(180^\\circ\\); Offset und Amplitude sind beide \\(U_{\\mathrm{max}}/2\\), wie Malus es verlangt. Physikalisch gleiche Aussage: \\(\\cos^2\\) = Sinus mit Offset.');
       }
       ['pdBtn1', 'pdBtn2', 'pdBtn3'].forEach((id, i) => $(id).classList.toggle('active', mode === i + 1));
     }

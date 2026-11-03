@@ -8,19 +8,19 @@
   :root {
     --bg: #f6f7f9; --card: #ffffff; --fg: #1b1f24; --muted: #5b6470; --line: #d6dbe1;
     --accent: #1f6feb; --pos: #d93025; --neg: #1a73e8; --ok: #188038; --warn: #b26a00; --soft: #eef2f7;
-    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --pot: #2b8a3e; --efield: #7b2cbf;
+    --field: #2b8a3e; --arrow: #c62828; --kin: #e07b00; --efield: #7b2cbf;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
       --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
-      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+      --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --efield: #c69cff;
     }
   }
   :root[data-theme="dark"] {
     --bg: #0f1216; --card: #171b21; --fg: #e8ecf1; --muted: #9aa5b1; --line: #2a313a;
     --accent: #58a6ff; --pos: #ff6b61; --neg: #6cb0ff; --ok: #4cc06a; --warn: #e3a33a; --soft: #1e242c;
-    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --pot: #5fd27a; --efield: #c69cff;
+    --field: #5fd27a; --arrow: #ff7a70; --kin: #ffb24d; --efield: #c69cff;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -74,12 +74,22 @@
   .small { font-size: 13px; color: var(--muted); }
   .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
   .ex .t { font-weight: 600; }
+  /* Legenden neben Canvas/SVG (Formeln in KaTeX, Farben als Kästchen) */
+  .legend { display: flex; flex-wrap: wrap; gap: 4px 18px; align-items: center; font-size: 14px; margin: 6px 0 2px; }
+  .legend .sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; vertical-align: -2px; margin-right: 6px; }
+  .legend .sw.dash { height: 0; width: 22px; border-top: 3px dashed; border-radius: 0; vertical-align: 3px; }
+  /* Zeichnungen als Inline-SVG (Lenz-Szene, Schaltbilder) */
+  svg.scene { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .schem { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0; }
+  .schem figure { margin: 0; flex: 1 1 250px; min-width: 0; }
+  .schem svg { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  .schem figcaption { font-size: 13px; color: var(--muted); margin-top: 4px; }
   /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
   .grid2 > *, .cards > *, .hand > * { min-width: 0; }
-  .f.wide { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
-  .formula { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .f.wide { display: block; position: relative; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
+  .formula { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
   .out { max-width: 100%; }
-  @media (max-width: 760px) { .card table { display: block; max-width: 100%; overflow-x: auto; } }
+  @media (max-width: 760px) { .card table { display: block; position: relative; max-width: 100%; overflow-x: auto; } }
 </style>
   <link rel="stylesheet" href="katex/katex.min.css">
   <script defer src="katex/katex.min.js"></script>
@@ -95,7 +105,7 @@
 </head>
 <body>
 <nav class="top">
-  <a href="#s1">1 Fluss</a><a href="#s2">2 Induktionsgesetz</a><a href="#s3">3 Generator</a><a href="#s4">4 Lenz</a><a href="#s5">5 Fallender Magnet</a><a href="#s6">6 Selbstinduktion</a><a href="#s7">7 Schaltvorgänge</a><a href="#s8">8 Energie</a><a href="#s9">9 Klausur & Abitur</a><a href="#s10">10 Analogie</a><a href="#s11">11 Aufgaben</a><a href="#s12">12 Nicht in FS</a><a href="#s13">13 Merksätze</a>
+  <a href="#s1">1 Fluss</a><a href="#s2">2 Induktionsgesetz</a><a href="#s3">3 Generator</a><a href="#s4">4 Lenz</a><a href="#s5">5 Fallender Magnet</a><a href="#s6">6 Selbstinduktion</a><a href="#s7">7 Schaltvorgänge</a><a href="#s8">8 Energie</a><a href="#s9">9 Klausur & Abitur</a><a href="#s10">10 Analogien & Quiz</a><a href="#s11">11 Aufgaben</a><a href="#s13">12 Merksätze</a>
 </nav>
 <main>
 <header class="hero">
@@ -106,15 +116,12 @@
 <section class="card">
   <h2>Lernziele</h2>
   <ul>
-    <li>Magnetischen Fluss <span class="f">\(\Phi = B\cdot A\cdot \cos \varphi\)</span> berechnen und die wirksame Fläche erklären.</li>
-    <li>Induktionsgesetz <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi /\mathrm{d}t\)</span> in beiden Fällen (<span class="f">\(B\)</span> ändert sich, <span class="f">\(A\)</span> ändert sich) anwenden; Dreieck → Rechteck.</li>
-    <li>Generatorspannung herleiten: <span class="f">\(U(t) = -2\pi \cdot N\cdot A\cdot B\cdot f\cdot \cos (\omega t)\)</span>, Amplitude <span class="f">\(\propto f\)</span>, Phasenverschiebung <span class="f">\(90^\circ\)</span>.</li>
-    <li>Lenzsche Regel formulieren, begründen (Energieerhaltung) und auf Ringversuch, fallenden Magneten, Wirbelstrombremse anwenden.</li>
-    <li>Selbstinduktion <span class="f">\(U = -L\cdot \mathrm{d}I/\mathrm{d}t\)</span>, Ein-/Ausschaltvorgang mit <span class="f">\(\tau = L/R\)</span>, Regression → <span class="f">\(L\)</span>, Energie <span class="f">\(\tfrac{1}{2}\cdot L\cdot I^{2}\)</span>.</li>
-    <li>Oszilloskopbilder ablesen (V/Div, s/Div) und Halbwertszeiten bestimmen.</li>
+    <li>Fluss <span class="f">\(\Phi = B\cdot A\cdot \cos \varphi\)</span> und Induktionsgesetz <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi /\mathrm{d}t\)</span> in beiden Fällen (<span class="f">\(B\)</span> ändert sich, <span class="f">\(A\)</span> ändert sich) anwenden: Dreieck → Rechteck, Generator <span class="f">\(\hat{U} = 2\pi \cdot N\cdot A\cdot B\cdot f\)</span> herleiten.</li>
+    <li>Lenzsche Regel im Heft-Wortlaut formulieren, mit der Energieerhaltung begründen und auf Ringversuch, fallenden Magneten (Abitur 2023) und Wirbelstrombremse anwenden.</li>
+    <li>Selbstinduktion <span class="f">\(U_{L} = L\cdot \mathrm{d}I/\mathrm{d}t\)</span>, Ein-/Ausschaltvorgang mit <span class="f">\(\tau = L/R\)</span> (DGL, Regression → <span class="f">\(L\)</span>, Oszilloskop ablesen), Energie <span class="f">\(\tfrac{1}{2}\cdot L\cdot I^{2}\)</span>.</li>
   </ul>
   <div class="note warn"><b>Ein Satz, der die ganze Lektion trägt:</b> Induziert wird nur bei <b>Änderung</b> des magnetischen Flusses. Nicht der Fluss selbst, sondern seine <b>Änderungsrate</b> bestimmt die Spannung. Großer, aber konstanter Fluss ⇒ null Volt. Das Minuszeichen heißt: die Induktion wehrt sich gegen die Änderung (Lenz).</div>
-  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr. Simulationen rechnen mit den echten Formeln.</p>
+  <p class="small">Rote Kästen = so fragt die Klausur. Orange Kästen = Verwechslungsgefahr.</p>
 </section>
 
 <!-- 1 -->
@@ -136,10 +143,10 @@
         <label><span class="f">\(A\)</span> <input type="range" id="flA" min="5" max="100" value="25" step="5"> <span id="flAv"></span></label>
       </div>
       <canvas id="flCanvas" width="480" height="260"></canvas>
+      <div class="legend"><span><span class="sw" style="background:var(--field)"></span>Feldlinien, die die Fläche durchsetzen</span><span><span class="sw" style="background:var(--line)"></span>Feldlinien daneben</span><span><span class="sw dash" style="border-color:var(--kin)"></span>wirksame Breite <span class="f">\(a_{\mathrm{eff}} = a\cdot \cos \varphi\)</span> (Heft, Seitenansicht)</span></div>
     </div>
     <div>
       <div class="out" id="flOut"></div>
-      <div class="note"><b>Analogie:</b> Regen fällt senkrecht. Ein waagerecht gehaltener Eimer fängt am meisten (voller Fluss). Kippst du ihn, fängt er weniger; steht er senkrecht, gar nichts. Die Regenmenge pro Sekunde durch die Öffnung ist der Fluss.</div>
     </div>
   </div>
 </section>
@@ -161,8 +168,9 @@
     <li><span class="f">\(A\)</span> konstant, <span class="f">\(B\)</span> ändert sich: <span class="f">\(U_{\mathrm{ind}} = -N\cdot A\cdot \mathrm{d}B/\mathrm{d}t\)</span> (Transformator, Abitur 2023 Dreieckstrom, Klausur 3).</li>
     <li><span class="f">\(B\)</span> konstant, <span class="f">\(A\)</span> ändert sich: <span class="f">\(U_{\mathrm{ind}} = -N\cdot B\cdot \mathrm{d}A/\mathrm{d}t\)</span> (Generator, bewegter Leiter).</li>
   </ul>
-  <h3>Spezialfall bewegter Leiter: <span class="f">\(U = B\cdot l\cdot v\)</span> (FS S. 31), über die Lorentzkraft</h3>
-  <p>Ein Leiterstück der Länge <span class="f">\(l\)</span> bewegt sich mit <span class="f">\(v\)</span> senkrecht durch ein Feld <span class="f">\(B\)</span>. Die Elektronen im Leiter bewegen sich mit, auf sie wirkt die Lorentzkraft <span class="f">\(e\cdot v\cdot B\)</span> entlang des Leiters: Elektronen sammeln sich an einem Ende, das andere wird positiv. Das entstehende Feld <span class="f">\(E = U/l\)</span> bremst die Trennung, bis Gleichgewicht herrscht: <span class="f">\(e\cdot U/l = e\cdot v\cdot B\)</span> ⇒ <span class="f">\(U = B\cdot l\cdot v\)</span>. Gleiches Ergebnis über den Fluss: die vom Leiter überstrichene Fläche wächst mit <span class="f">\(\mathrm{d}A/\mathrm{d}t = l\cdot v\)</span>, also <span class="f">\(U = B\cdot l\cdot v\)</span>. Zwei Wege, ein Gesetz. (Genau das Argument wie beim Hall-Effekt, Lektion 4.)</p>
+  <h3>Spezialfall bewegter Leiter: <span class="f">\(|U_{\mathrm{ind}}| = B\cdot l\cdot v\)</span>, über die Lorentzkraft</h3>
+  <p>Ein Leiterstück der Länge <span class="f">\(l\)</span> bewegt sich mit <span class="f">\(v\)</span> senkrecht durch ein Feld <span class="f">\(B\)</span>. Die Elektronen im Leiter bewegen sich mit, auf sie wirkt die Lorentzkraft <span class="f">\(e\cdot v\cdot B\)</span> entlang des Leiters (Richtung mit der linken Hand: Daumen Elektronenbewegung, Zeigefinger <span class="f">\(B\)</span>, Mittelfinger Kraft): Elektronen sammeln sich an einem Ende, das andere wird positiv. Das entstehende Feld <span class="f">\(E = U/l\)</span> bremst die Trennung, bis Gleichgewicht herrscht: <span class="f">\(e\cdot U/l = e\cdot v\cdot B\)</span> ⇒ <span class="f">\(U = B\cdot l\cdot v\)</span>. Gleiches Ergebnis über den Fluss: die vom Leiter überstrichene Fläche wächst mit <span class="f">\(\mathrm{d}A/\mathrm{d}t = l\cdot v\)</span>, also <span class="f">\(U = B\cdot l\cdot v\)</span>. Zwei Wege, ein Gesetz. (Genau das Argument wie beim Hall-Effekt, Lektion 4.)</p>
+  <p class="small"><b>Vorzeichen:</b> Hier steht der <b>Betrag</b>. Die FS (S. 31) schreibt <span class="f">\(U_{\mathrm{ind}} = -B\cdot \ell \cdot v\)</span> für <span class="f">\(\vec v \perp \vec B\)</span>; das Minus ist wieder die Lenzsche Regel (der Induktionsstrom bremst die Bewegung). In der Klausur die Richtung über die Lorentzkraft angeben, den Betrag über <span class="f">\(B\cdot l\cdot v\)</span>.</p>
   <h3>Dreieckstrom → Rechteckspannung (Abitur 2023, 2.2; Heft „Hypothese")</h3>
   <p>Spule 1 bekommt einen dreieckförmigen Strom, also <span class="f">\(B \propto I\)</span> dreieckförmig. In Spule 2 ist <span class="f">\(A\)</span> konstant ⇒ <span class="f">\(U_{\mathrm{ind}} = -N\cdot A\cdot \mathrm{d}B/\mathrm{d}t\)</span>. Auf jedem geraden Stück des Dreiecks ist <span class="f">\(\mathrm{d}B/\mathrm{d}t\)</span> konstant ⇒ <span class="f">\(U_{\mathrm{ind}}\)</span> konstant. Steigender Abschnitt: negative Spannung, fallender: positive (Vorzeichen!). Ergebnis: <b>Rechteckspannung</b> mit derselben Frequenz. Frequenz verdoppeln bei gleicher Amplitude ⇒ Steigung von <span class="f">\(B(t)\)</span> doppelt so groß ⇒ <span class="f">\(U_{\mathrm{ind}}\)</span> doppelt so hoch, und doppelte Frequenz des Rechtecks.</p>
   <div class="controls">
@@ -172,8 +180,9 @@
     <label><span class="f">\(A\)</span> <input type="range" id="trA" min="1" max="20" value="4" step="1"> <span id="trAv"></span></label>
   </div>
   <canvas id="trCanvas" width="720" height="300"></canvas>
+  <div class="legend"><span><span class="sw" style="background:var(--field)"></span><span class="f">\(B(t)\)</span> in Spule 1, dreieckförmig (<span class="f">\(B \propto I\)</span>)</span><span><span class="sw" style="background:var(--arrow)"></span><span class="f">\(U_{\mathrm{ind}}(t) = -N\cdot A\cdot \mathrm{d}B/\mathrm{d}t\)</span> an Spule 2, rechteckförmig</span></div>
   <div class="out" id="trOut"></div>
-  <div class="note warn"><b>Verwechslungsgefahr:</b> Die Induktionsspannung folgt der <b>Steigung</b> von <span class="f">\(\Phi (t)\)</span>, nicht dem Wert. Beim Maximum von <span class="f">\(B\)</span> ist <span class="f">\(U_{\mathrm{ind}} = 0\)</span> (Steigung null). Dreieck wird zu Rechteck, Sinus zu Cosinus, Rechteck zu Nadelimpulsen an den Sprungstellen.</div>
+  <div class="note warn"><b>Verwechslungsgefahr:</b> Die Induktionsspannung folgt der <b>Steigung</b> von <span class="f">\(\Phi (t)\)</span>, nicht dem Wert. Beim glatten Maximum von <span class="f">\(B\)</span> (Sinus) ist <span class="f">\(U_{\mathrm{ind}} = 0\)</span> (Steigung null); an der Spitze des Dreiecks wechselt die Steigung das Vorzeichen, dort springt <span class="f">\(U_{\mathrm{ind}}\)</span> von <span class="f">\(-\)</span> nach <span class="f">\(+\)</span>. Dreieck wird zu Rechteck, Sinus zu Cosinus, Rechteck zu Nadelimpulsen an den Sprungstellen.</div>
   <div class="note exam"><b>So fragt die Klausur (Abitur 2023, 2.2, 10 BE):</b> Frequenz aus dem <span class="f">\(B\)</span>-Graphen ablesen (hier <span class="f">\(10\,\mathrm{Hz}\)</span>). Zusammenhang erklären: Induktionsgesetz, <span class="f">\(A\)</span> konstant ⇒ <span class="f">\(U_{\mathrm{ind}} \propto -\dot{B}\)</span>, lineare Abschnitte ⇒ konstante Spannung, Vorzeichen beachten. Frequenzverdopplung ⇒ doppelte Steigung ⇒ doppelte Spannung und doppelte Rechteckfrequenz.</div>
 </section>
 
@@ -181,23 +190,31 @@
 <section class="card" id="s3">
   <h2>3 · Rotierende Fläche: der Generator</h2>
   <h3>Herleitung (Heft)</h3>
-  <p>Eine Spule (Fläche <span class="f">\(A\)</span>, <span class="f">\(N\)</span> Windungen) dreht sich mit der Frequenz <span class="f">\(f\)</span> im konstanten Feld <span class="f">\(B\)</span>. In der Zeit <span class="f">\(t\)</span> ist der Drehwinkel <span class="f">\(\varphi = \omega \cdot t\)</span> mit <span class="f">\(\omega = 2\pi /T = 2\pi \cdot f\)</span> (Winkelgeschwindigkeit). Die wirksame Fläche ist <span class="f">\(A_{\mathrm{eff}} = A\cdot \sin (\omega t)\)</span> (Winkel zwischen Fläche und Feldlinien), also</p>
+  <p>Eine Spule (Fläche <span class="f">\(A\)</span>, <span class="f">\(N\)</span> Windungen) dreht sich mit der Frequenz <span class="f">\(f\)</span> im konstanten Feld <span class="f">\(B\)</span>; die Periodendauer ist <span class="f">\(T = 1/f\)</span>. Der in der Zeit <span class="f">\(t\)</span> zurückgelegte Drehwinkel <span class="f">\(\varphi\)</span> verhält sich zur vollen Umdrehung wie <span class="f">\(t\)</span> zu <span class="f">\(T\)</span> (Heft): <span class="f">\(\dfrac{t}{T} = \dfrac{\varphi}{2\pi}\)</span> ⇒ <span class="f">\(\varphi = \dfrac{2\pi}{T}\cdot t = \omega \cdot t\)</span> mit <span class="f">\(\omega = 2\pi /T = 2\pi \cdot f\)</span> (Winkelgeschwindigkeit). Die wirksame Fläche ist <span class="f">\(A_{\mathrm{eff}} = A\cdot \sin (\omega t)\)</span> (Winkel zwischen Fläche und Feldlinien), also</p>
   <div class="formula">\[\Phi(t) = B\,A\,\sin(\omega t)\quad\Rightarrow\quad U_{\mathrm{ind}}(t) = -N\,\frac{\mathrm{d}\Phi}{\mathrm{d}t} = -N\,A\,B\,\omega\,\cos(\omega t) = -2\pi\,N\,A\,B\,f\cdot\cos(\omega t)\]</div>
   <ul>
     <li><b>Amplitude</b> <span class="f">\(\hat{U} = 2\pi \cdot N\cdot A\cdot B\cdot f\)</span>: proportional zur Frequenz (schneller drehen ⇒ höhere Spannung), zu <span class="f">\(N\)</span>, <span class="f">\(A\)</span>, <span class="f">\(B\)</span>.</li>
     <li><b>Phase:</b> Fluss <span class="f">\(\propto \sin\)</span>, Spannung <span class="f">\(\propto -\cos\)</span>. Wenn der Fluss maximal ist (Spule senkrecht zum Feld), ist die Spannung null; beim Nulldurchgang des Flusses (Spule parallel zum Feld) ist die Spannung maximal, weil sich der Fluss dort am schnellsten ändert. Verschiebung um eine Viertelperiode (<span class="f">\(90^\circ\)</span>).</li>
-    <li>Das ist das Prinzip jedes Generators und der Grund für Wechselspannung im Netz (<span class="f">\(50\,\mathrm{Hz}\)</span>).</li>
   </ul>
   <div class="controls">
     <label><span class="f">\(f\)</span> <input type="range" id="gnF" min="1" max="60" value="25" step="1"> <span id="gnFv"></span></label>
-    <label><span class="f">\(B\)</span> <input type="range" id="gnB" min="0.05" max="1" value="0.16" step="0.01"> <span id="gnBv"></span></label>
+    <label><span class="f">\(B\)</span> <input type="range" id="gnB" min="0" max="13" value="1" step="1"> <span id="gnBv"></span></label>
     <label><span class="f">\(N\)</span> <input type="range" id="gnN" min="10" max="2000" value="1200" step="10"> <span id="gnNv"></span></label>
     <label><span class="f">\(A\)</span> <input type="range" id="gnA" min="1" max="50" value="7.6" step="0.1"> <span id="gnAv"></span></label>
   </div>
+  <p class="small">Voreinstellung = Heft-Versuch unten (<span class="f">\(N = 1200\)</span>, <span class="f">\(A = 7{,}6\,\mathrm{cm^2}\)</span>, <span class="f">\(B \approx 0{,}16\,\mathrm{mT}\)</span>, <span class="f">\(f = 25\,\mathrm{Hz}\)</span>): die Ausgabe liegt dann bei den gemessenen rund <span class="f">\(23\,\mathrm{mV}\)</span>. Der <span class="f">\(B\)</span>-Regler läuft in Stufen von <span class="f">\(0{,}1\,\mathrm{mT}\)</span> bis <span class="f">\(1\,\mathrm{T}\)</span>.</p>
   <canvas id="gnCanvas" width="720" height="320"></canvas>
+  <div class="legend"><span><span class="sw" style="background:var(--field)"></span>Fluss <span class="f">\(\Phi(t) = B\cdot A\cdot \sin (\omega t)\)</span></span><span><span class="sw" style="background:var(--arrow)"></span>Spannung <span class="f">\(U_{\mathrm{ind}}(t) = -\hat{U}\cdot \cos (\omega t)\)</span></span><span>Punkte: aktueller Drehwinkel <span class="f">\(\varphi = \omega t\)</span> der Spule links</span></div>
   <div class="out" id="gnOut"></div>
   <h3>Versuch im Heft: Magnet rotiert vor einer Spule</h3>
-  <p>Ein Stabmagnet wird mit einstellbarer Frequenz vor einer Spule (<span class="f">\(N = 1200\)</span>, <span class="f">\(A \approx 7{,}6\,\mathrm{cm^2}\)</span>) gedreht, das Oszilloskop zeigt die Amplitude. Messwerte: Amplitude <span class="f">\(22\,\mathrm{mV}\)</span> bei <span class="f">\(23\,\mathrm{Hz}\)</span> bis <span class="f">\(50\,\mathrm{mV}\)</span> bei <span class="f">\(51\,\mathrm{Hz}\)</span>. Auswertung: Punkte auf einer Geraden, lineare Regression <span class="f">\(\hat{U} = 0{,}916 \,\mathrm{mV/Hz} \cdot f + 3{,}76 \,\mathrm{mV}\)</span>; Achsenabschnitt müsste 0 sein (keine Drehung, keine Spannung), Messungenauigkeit. Also <span class="f">\(\hat{U} \propto f\)</span>, Annahme bestätigt. Vergleich mit der Theorie: <span class="f">\(0{,}916 \,\mathrm{mV/Hz} = 2\pi \cdot A\cdot B\cdot N\)</span> ⇒ <span class="f">\(B = k/(2\pi \cdot A\cdot N) = 0{,}916\cdot 10^{-3}/(2\pi \cdot 7{,}6\cdot 10^{-4}\cdot 1200) \,\mathrm{T} \approx 0{,}16 \,\mathrm{mT}\)</span>. Einheiten-Check: <span class="f">\(\mathrm{V\,s/m^2} = \mathrm{T}\)</span> ✓.</p>
+  <p>Ein Stabmagnet wird mit einstellbarer Frequenz vor einer Spule (<span class="f">\(N = 1200\)</span>, <span class="f">\(A \approx (2{,}75\,\mathrm{cm})^{2} \approx 7{,}6\,\mathrm{cm^2}\)</span>) gedreht; die Spule hängt am Oszilloskop, abgelesen wird die Amplitude. Messwerte von <span class="f">\(22\,\mathrm{mV}\)</span> bei <span class="f">\(23\,\mathrm{Hz}\)</span> bis <span class="f">\(50\,\mathrm{mV}\)</span> bei <span class="f">\(51\,\mathrm{Hz}\)</span>. Auswertung in den fünf Schritten, wie sie der Lehrer sehen will:</p>
+  <ol>
+    <li>Alle Messwerte (Frequenz, Amplitude) in den TR übernehmen.</li>
+    <li>Diagramm anlegen: x-Achse Frequenz <span class="f">\(f\)</span> in <span class="f">\(\mathrm{Hz}\)</span>, y-Achse <span class="f">\(U_{\mathrm{ind,max}}\)</span> in <span class="f">\(\mathrm{mV}\)</span>.</li>
+    <li>Die Punkte folgen augenscheinlich einer Geraden; die Theorie sagt <span class="f">\(\hat{U} = 2\pi \cdot N\cdot A\cdot B\cdot f \propto f\)</span> ⇒ lineare Regression.</li>
+    <li>TR-Ergebnis zuerst ungerundet: <span class="f">\(y = 0{,}916419\cdot x + 3{,}75859\)</span>; im Sachkontext <span class="f">\(U_{\mathrm{ind,max}} = 0{,}916 \,\mathrm{mV/Hz} \cdot f + 3{,}76 \,\mathrm{mV}\)</span>. Der Achsenabschnitt müsste 0 sein (ohne Drehung keine Amplitude), er geht auf Messungenauigkeiten zurück ⇒ <span class="f">\(U_{\mathrm{ind,max}}(f) = 0{,}916 \,\mathrm{mV/Hz} \cdot f\)</span>. Annahme <span class="f">\(U \propto f\)</span> bestätigt.</li>
+    <li>Konstante deuten: <span class="f">\(0{,}916 \,\mathrm{mV/Hz} = 2\pi \cdot A\cdot B\cdot N\)</span> ⇒ <span class="f">\(B = \dfrac{k}{2\pi \cdot A\cdot N} = \dfrac{0{,}916\cdot 10^{-3}\,\mathrm{V/Hz}}{2\pi \cdot 7{,}6\cdot 10^{-4}\,\mathrm{m^2}\cdot 1200} \approx 0{,}00016 \,\mathrm{Vs/m^2} = 0{,}16 \,\mathrm{mT}\)</span>. Einheiten-Check: <span class="f">\(\mathrm{V\,s/m^2} = \mathrm{T}\)</span> ✓ (Heft: <span class="f">\(\mathrm{Vs/m^2} = \mathrm{N\,m/(A\,m^2)} = \mathrm{kg/(A\,s^2)} = \mathrm{T}\)</span>).</li>
+  </ol>
   <div class="note exam"><b>So fragt die Klausur (Klausur 3, Aufgabe 2 c/d/e):</b> „Leiten Sie <span class="f">\(U_{2}(t)\)</span> her" für <span class="f">\(B(t) = B_{0}\cdot \sin (2\pi ft)\)</span>: <span class="f">\(U_{2} = -N_{2}\cdot A_{2}\cdot B_{0}\cdot 2\pi f\cdot \cos (2\pi ft)\)</span>. „Bestimmen Sie <span class="f">\(B_{0}\)</span> aus der Messreihe <span class="f">\(\hat{U}_{2}(f)\)</span>": lineare Regression, Steigung <span class="f">\(k = 2\pi \cdot N_{2}\cdot A_{2}\cdot B_{0}\)</span> ⇒ <span class="f">\(B_{0} = k/(2\pi \cdot N_{2}\cdot A_{2})\)</span> (dein Ergebnis: <span class="f">\(0{,}1768\,\mathrm{Vs}/(2\pi \cdot 1200\cdot 0{,}0004\,\mathrm{m^2}) = 58{,}6\,\mathrm{mT}\)</span>). „Phasenverschiebung": <span class="f">\(B \propto I\)</span> gleichphasig, <span class="f">\(\Phi \propto B\)</span>, Ableitung macht aus <span class="f">\(\sin\)</span> ein <span class="f">\(\cos\)</span> (Viertelperiode), das Minus dreht um eine halbe Periode; insgesamt läuft <span class="f">\(U_{\mathrm{ind}}\)</span> dem Strom um <span class="f">\(90^\circ\)</span> hinterher.</div>
   <h3>Transformator (zwei Spulen, FS S. 31)</h3>
   <p>Wechselstrom in Spule 1 ⇒ wechselndes <span class="f">\(B\)</span> ⇒ wechselnder Fluss in Spule 2 ⇒ Induktionsspannung. Ein Eisenkern führt praktisch den ganzen Fluss durch beide Spulen; dann gilt <span class="f">\(U_{1}/U_{2} = N_{1}/N_{2}\)</span> (unbelastet). Gleichstrom überträgt nichts: kein sich ändernder Fluss. Klausur 3, Aufgabe 2 b) war genau diese Erklärung.</p>
@@ -209,32 +226,43 @@
   <h3>Versuch (Heft): Metallring am Faden</h3>
   <p><b>Beobachtung:</b> Bewegt man einen Stabmagneten auf einen frei hängenden Metallring (Aluminium, nicht ferromagnetisch!) zu, wird der Ring in Bewegungsrichtung des Magneten weggestoßen. Zieht man den Magneten zurück, folgt der Ring. Ein aufgeschlitzter Ring reagiert nicht.</p>
   <p><b>Erklärung (Heft):</b> Die Annäherung ändert den Fluss durch den Ring ⇒ Induktionsspannung ⇒ im geschlossenen Ring fließt ein Induktionsstrom (im geschlitzten nicht). Dieser Kreisstrom erzeugt ein eigenes Magnetfeld. Es ist so gerichtet, dass es dem induzierenden Feld entgegenwirkt: dem Nordpol des Magneten wird ein Nordpol entgegengestellt ⇒ Abstoßung. Beim Entfernen entsteht ein Südpol ⇒ Anziehung.</p>
-  <div class="formula">Lenzsche Regel: Der Induktionsstrom ist so gerichtet, dass sein Magnetfeld der <b>Änderung</b> des äußeren Flusses entgegenwirkt.</div>
+  <div class="formula">Lenzsche Regel (Heft-Wortlaut): Der Induktionsstrom ist so gerichtet, dass sein induziertes Magnetfeld der <b>Änderung</b> des äußeren Magnetfeldes entgegenwirkt.</div>
   <ul>
     <li><b>Warum?</b> Energieerhaltung. Würde der Ring angezogen statt abgestoßen, bekäme der Magnet zusätzlich Schwung, der Strom würde sich selbst verstärken, aus nichts entstünde Energie. Tatsächlich muss man gegen die Lenz-Kraft Arbeit verrichten; diese Arbeit steckt im Induktionsstrom (und wird im Ring zu Wärme).</li>
     <li>Das ist das <b>Minuszeichen</b> im Induktionsgesetz: <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi /\mathrm{d}t\)</span>.</li>
     <li>Entgegenwirken heißt: gegen die <b>Änderung</b>, nicht gegen das Feld. Wächst der Fluss, ist das induzierte Feld entgegengesetzt; sinkt der Fluss, ist es gleichgerichtet (es „hält den Fluss fest").</li>
-    <li>Anwendungen: Wirbelstrombremse (ICE, Fitnessgeräte), fallender Magnet im Kupferrohr fällt wie in Honig, Induktionskochfeld, Metalldetektor.</li>
+    <li>Anwendungen: Wirbelstrombremse; fallender Magnet im Kupferrohr (fällt deutlich verlangsamt, weil die Wirbelströme ihn nach Lenz bremsen).</li>
   </ul>
+  <h3>Richtung des Induktionsstroms im Ring (Elektronenfluss, linke Hand)</h3>
   <div class="grid2">
     <div>
       <div class="controls">
         <label>Situation <select id="lzCase"><option value="Nin">Nordpol nähert sich</option><option value="Nout">Nordpol entfernt sich</option><option value="Sin">Südpol nähert sich</option><option value="Sout">Südpol entfernt sich</option></select></label>
       </div>
-      <canvas id="lzCanvas" width="480" height="260"></canvas>
+      <svg class="scene" id="lzSvg" viewBox="0 0 600 300" role="img" aria-label="Ringversuch: Seitenansicht mit Feld- und Kraftpfeilen, Frontansicht mit Elektronenfluss">
+        <defs>
+          <marker id="lzArrFg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--fg)"/></marker>
+          <marker id="lzArrField" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--field)"/></marker>
+          <marker id="lzArrInd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--kin)"/></marker>
+          <marker id="lzArrForce" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--arrow)"/></marker>
+          <marker id="lzArrE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--efield)"/></marker>
+        </defs>
+        <g id="lzScene" font-family="system-ui, sans-serif" font-size="12"></g>
+      </svg>
+      <div class="legend"><span><span class="sw" style="background:var(--field)"></span>Feld des Magneten am Ring <span class="f">\(\vec B_{\mathrm{Magnet}}\)</span></span><span><span class="sw" style="background:var(--kin)"></span>induziertes Feld des Rings <span class="f">\(\vec B_{\mathrm{Ring}}\)</span></span><span><span class="sw" style="background:var(--arrow)"></span>Kraft auf den Ring <span class="f">\(\vec F\)</span></span><span><span class="sw" style="background:var(--efield)"></span>Elektronenfluss <span class="f">\(e^{-}\)</span> (physikalische Stromrichtung)</span><span><span class="sw" style="background:var(--fg)"></span>Bewegung des Magneten <span class="f">\(\vec v\)</span></span></div>
     </div>
     <div>
       <div class="out" id="lzOut"></div>
-      <div class="note"><b>Analogie:</b> Trägheit. Eine Masse widersetzt sich jeder Änderung ihrer Geschwindigkeit, nicht der Geschwindigkeit selbst. Ein Stromkreis widersetzt sich jeder Änderung seines Flusses. Deshalb heißt die Induktivität auch „elektrische Trägheit" (Abschnitt 6).</div>
+      <p class="small"><b>Rezept für die Klausur:</b> (1) Fluss durch den Ring: wächst oder sinkt? (2) Lenz: induziertes Feld gegen die Änderung ⇒ welcher Pol des Rings zeigt zum Magneten? (3) Richtung der Elektronen mit der <b>linken Hand</b>: Finger in Richtung des Elektronenflusses um den Ring gekrümmt, der Daumen zeigt zum Nordpol des Ringfelds. (4) Kraft: gleiche Pole stoßen ab, ungleiche ziehen an.</p>
     </div>
   </div>
-  <div class="note exam"><b>So fragt die Klausur:</b> „Erklären Sie den Ringversuch" (Flussänderung → Induktionsstrom → Magnetfeld → Lenz → Abstoßung; geschlitzter Ring: kein Stromkreis). „Begründen Sie das Vorzeichen" (Energieerhaltung). „Erklären Sie, warum der Magnet im Kupferrohr langsamer fällt" (Wirbelströme, Lenz-Kraft nach oben, Bewegungsenergie wird Wärme).</div>
+  <div class="note exam"><b>So fragt die Klausur (im Heft belegt):</b> „Erklären Sie den Ringversuch" (Flussänderung → Induktionsstrom → Magnetfeld → Lenz → Abstoßung; geschlitzter Ring: kein Stromkreis). <b>Denkbare weitere Fragen</b> (nicht aus Klausur 3, Heft oder Abitur 2023, aber mit demselben Argument): „Begründen Sie das Vorzeichen im Induktionsgesetz" (Energieerhaltung); „Erklären Sie, warum der Magnet im Kupferrohr langsamer fällt" (Wirbelströme, Lenz-Kraft nach oben, Bewegungsenergie wird Wärme).</div>
 </section>
 
 <!-- 5 -->
 <section class="card" id="s5">
   <h2>5 · Fallender Magnet durch Spulen (Abitur 2023 I, 2.3)</h2>
-  <p>Zwei identische Spulen untereinander, in Reihe ans Oszilloskop; ein Stabmagnet fällt durch ein Rohr hindurch. Das Oszilloskop zeigt vier Peaks. Die Simulation rechnet den Fluss eines Stabmagneten durch die Spulen und daraus <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi /\mathrm{d}t\)</span>.</p>
+  <p>Aufbau (M2e): Zwei identische Spulen untereinander an einem Stativ, <b>in Reihe geschaltet</b> und mit einem Oszilloskop verbunden; ein Stabmagnet fällt durch ein Plexiglasrohr durch beide Spulen. Das Oszilloskop zeigt vier Peaks (M2f). Die Simulation ist ein <b>qualitatives Modell</b>: sie rechnet den Fluss eines Stabmagneten in einer einfachen Näherung (Dipol) in relativen Einheiten und bildet daraus <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi /\mathrm{d}t\)</span>; Form, Vorzeichenfolge und Tendenz (untere Peaks höher und schmaler) stimmen mit M2f überein; die Zahlenwerte und genauen Höhenverhältnisse sind nicht die des Abiturs.</p>
   <div class="controls">
     <label>Abstand der Spulen <input type="range" id="fmD" min="10" max="40" value="20" step="1"> <span id="fmDv"></span></label>
     <label>Windungen untere Spule <select id="fmN2"><option value="1">gleich (N)</option><option value="0.5">halb (N/2)</option><option value="2">doppelt (2N)</option></select></label>
@@ -242,9 +270,10 @@
     <button id="fmStart">Fallen lassen</button>
   </div>
   <div class="grid2">
-    <div><canvas id="fmCanvas" width="300" height="360"></canvas></div>
+    <div><canvas id="fmCanvas" width="360" height="360"></canvas></div>
     <div><canvas id="fmPlot" width="480" height="360"></canvas></div>
   </div>
+  <div class="legend"><span><span class="sw" style="background:var(--arrow)"></span><span class="f">\(U_{\mathrm{ind}}(t)\)</span> am Oszilloskop, relativ zum größten Peak</span><span><b>1. Peak negativ</b> = Eintritt in die Spule (<span class="f">\(\Phi\)</span> wächst)</span><span><b>2. Peak positiv</b> = Austritt (<span class="f">\(\Phi\)</span> sinkt)</span><span>3./4. Peak: untere Spule, höher und schmaler</span><span class="small">Welches Vorzeichen „Eintritt" bekommt, legt die Polung am Oszilloskop fest; hier wie in M2f.</span></div>
   <div class="out" id="fmOut"></div>
   <h3>Was man sehen und erklären muss (Erwartungshorizont)</h3>
   <ul>
@@ -265,25 +294,132 @@
     <li><span class="f">\(L = N\cdot A\cdot k\)</span> heißt <b>Induktivität</b>, Einheit <span class="f">\(1\,\mathrm{V\,s/A} = 1\,\mathrm{H}\)</span> (Henry). Für die lange Spule <span class="f">\(k = \mu _{0}\mu _{r}N/l\)</span>, also <span class="f">\(L = \mu _{0}\mu _{r}N^{2}A/l\)</span> (FS S. 31). Doppelte Windungszahl ⇒ vierfache Induktivität (einmal mehr Feld, einmal mehr Windungen, die es durchsetzt).</li>
     <li>Die Selbstinduktionsspannung <span class="f">\(U_{L} = -U_{\mathrm{ind}} = L\cdot \mathrm{d}I/\mathrm{d}t\)</span> ist die Spannung, die man an der Spule abgreift; sie fällt an der Spule ab wie <span class="f">\(R\cdot I\)</span> am Widerstand.</li>
     <li>Nur bei <b>Änderung</b> von <span class="f">\(I\)</span>. Gleichstrom: ideale Spule ist ein Kurzschluss (reale Spule hat den ohmschen Drahtwiderstand).</li>
-    <li>Klassischer Versuch: Lampe parallel zu Spule mit Eisenkern. Einschalten: die Lampe an der Spule leuchtet verzögert auf (Selbstinduktion bremst den Stromanstieg). Ausschalten: Lampe blitzt kurz hell auf, weil die Spule den Strom aufrechterhalten will und dabei eine hohe Spannung erzeugt (Funken an Schaltern, Zündspule).</li>
+    <li>Heft-Schaltung dazu: Widerstand <span class="f">\(R\)</span> und Spule <span class="f">\(L\)</span> in Reihe an der Quelle, Spannungspfeile <span class="f">\(U_{R}\)</span> und <span class="f">\(U_{L}\)</span> jeweils von + nach − (Schaltbild in Abschnitt 7). Beim Einschalten bremst die Selbstinduktion den Stromanstieg, beim Ausschalten treibt die Spule den Strom weiter und erzeugt dabei eine hohe Spannung (Funken an Schaltern).</li>
   </ul>
-  <div class="note"><b>Analogie:</b> Induktivität = Trägheit des Stroms. Masse <span class="f">\(m\)</span> ↔ <span class="f">\(L\)</span>, Geschwindigkeit <span class="f">\(v\)</span> ↔ <span class="f">\(I\)</span>, Kraft <span class="f">\(F = m\cdot a\)</span> ↔ Spannung <span class="f">\(U = L\cdot \mathrm{d}I/\mathrm{d}t\)</span>, Bewegungsenergie <span class="f">\(\tfrac{1}{2}m v^{2}\)</span> ↔ Feldenergie <span class="f">\(\tfrac{1}{2}L I^{2}\)</span>. Ein schwerer Wagen kommt langsam in Fahrt und ist schwer zu stoppen.</div>
+  <p><b>Analogie (nur als Merkhilfe):</b> Die Induktivität wirkt wie eine Trägheit des Stroms: so wie eine Masse jeder Änderung ihrer Geschwindigkeit widersteht (<span class="f">\(m\)</span> ↔ <span class="f">\(L\)</span>, <span class="f">\(v\)</span> ↔ <span class="f">\(I\)</span>, <span class="f">\(\tfrac{1}{2}m v^{2}\)</span> ↔ <span class="f">\(\tfrac{1}{2}L I^{2}\)</span>), widersetzt sich die Spule jeder Änderung des Stroms, nicht dem Strom selbst.</p>
 </section>
 
 <!-- 7 -->
 <section class="card" id="s7">
   <h2>7 · Ein- und Ausschaltvorgang an der Spule</h2>
+  <h3>Schaltbilder (Heft)</h3>
+  <div class="schem">
+    <figure>
+      <svg viewBox="0 0 320 200" role="img" aria-label="Schaltplan Einschalten: Quelle U0, Schalter S, Widerstand R und Spule L in Reihe, Spannungspfeile UR und UL">
+        <defs><marker id="scArrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+        <g fill="none" stroke="var(--fg)" stroke-width="2">
+          <path d="M30,60 H80 M130,60 H170 M240,60 H290 V150 H160 M144,150 H30 V125 M30,95 V60"/>
+          <rect x="80" y="51" width="50" height="18"/>
+          <path d="M170,60 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0"/>
+          <path d="M144,136 V164"/>
+          <path d="M160,142 V158" stroke-width="5"/>
+          <path d="M30,125 L46,100"/>
+        </g>
+        <g fill="var(--fg)"><circle cx="30" cy="125" r="2.5"/><circle cx="30" cy="95" r="2.5"/></g>
+        <g stroke="var(--accent)" stroke-width="2">
+          <line x1="80" y1="84" x2="130" y2="84" marker-end="url(#scArrA)"/>
+          <line x1="170" y1="84" x2="240" y2="84" marker-end="url(#scArrA)"/>
+          <line x1="134" y1="182" x2="170" y2="182" marker-end="url(#scArrA)"/>
+        </g>
+        <g fill="var(--fg)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="105" y="42">R</text><text x="205" y="42">L</text><text x="14" y="114">S</text>
+          <text x="134" y="130">+</text><text x="170" y="130">−</text>
+        </g>
+        <g fill="var(--accent)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="105" y="104">U<tspan dy="4" font-size="10">R</tspan></text>
+          <text x="205" y="104">U<tspan dy="4" font-size="10">L</tspan></text>
+          <text x="188" y="186">U<tspan dy="4" font-size="10">0</tspan></text>
+        </g>
+      </svg>
+      <figcaption>Heft „Schaltplan Selbstinduktion": <span class="f">\(R\)</span> und <span class="f">\(L\)</span> in Reihe an der Quelle <span class="f">\(U_{0}\)</span>; Spannungspfeile von + nach −. Schalter <span class="f">\(S\)</span> schließen = Einschalten. Masche: <span class="f">\(U_{R} + U_{L} = U_{0}\)</span>.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 320 220" role="img" aria-label="Schaltplan Messung: Rechteckgenerator, R und L in Reihe, Oszilloskop parallel zur Spule">
+        <defs><marker id="scArrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+        <g fill="none" stroke="var(--fg)" stroke-width="2">
+          <path d="M30,100 H60 M110,100 H150 M220,100 H290 V180 H174 M146,180 H30 V100"/>
+          <rect x="60" y="91" width="50" height="18"/>
+          <path d="M150,100 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0"/>
+          <path d="M150,100 V40 H160 M220,100 V60"/>
+          <rect x="160" y="20" width="110" height="40"/>
+          <circle cx="160" cy="180" r="14"/>
+          <path d="M150,184 h4 v-8 h5 v8 h5 v-8 h4" stroke-width="1.5"/>
+        </g>
+        <g fill="var(--fg)"><circle cx="150" cy="100" r="2.5"/><circle cx="220" cy="100" r="2.5"/></g>
+        <g stroke="var(--accent)" stroke-width="2">
+          <line x1="60" y1="124" x2="110" y2="124" marker-end="url(#scArrB)"/>
+          <line x1="150" y1="124" x2="220" y2="124" marker-end="url(#scArrB)"/>
+        </g>
+        <g fill="var(--fg)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="85" y="82">R</text><text x="185" y="82">L</text>
+          <text x="215" y="45">Oszilloskop</text>
+          <text x="138" y="170">+</text><text x="182" y="170">−</text>
+          <text x="160" y="212" font-size="12">Rechteckgenerator</text>
+        </g>
+        <g fill="var(--accent)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="85" y="144">U<tspan dy="4" font-size="10">R</tspan></text>
+          <text x="185" y="144">U<tspan dy="4" font-size="10">L</tspan></text>
+        </g>
+      </svg>
+      <figcaption>Heft „Ladekurve einer Induktivität": Rechteckgenerator (Spannung springt zwischen <span class="f">\(0\)</span> und <span class="f">\(U_{0}\)</span>, also abwechselnd Ein- und Ausschalten), Oszilloskop <b>parallel zur Spule</b> misst <span class="f">\(U_{L}(t)\)</span>.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 320 200" role="img" aria-label="Schaltplan Ausschaltspannung: R und L bilden einen geschlossenen Kreis ohne Quelle, Voltmeter parallel zur Spule">
+        <defs><marker id="scArrC" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker></defs>
+        <g fill="none" stroke="var(--fg)" stroke-width="2">
+          <path d="M30,100 H60 M110,100 H150 M220,100 H290 V170 H30 V100"/>
+          <rect x="60" y="91" width="50" height="18"/>
+          <path d="M150,100 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0 a7,7 0 0 1 14,0"/>
+          <path d="M150,100 V45 H171 M199,45 H220 V100"/>
+          <circle cx="185" cy="45" r="14"/>
+        </g>
+        <g fill="var(--fg)"><circle cx="150" cy="100" r="2.5"/><circle cx="220" cy="100" r="2.5"/></g>
+        <g stroke="var(--accent)" stroke-width="2">
+          <line x1="60" y1="124" x2="110" y2="124" marker-end="url(#scArrC)"/>
+          <line x1="150" y1="124" x2="220" y2="124" marker-end="url(#scArrC)"/>
+        </g>
+        <g fill="var(--fg)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="85" y="82">R</text><text x="185" y="82">L</text>
+          <text x="185" y="50" font-size="14" font-weight="600">V</text>
+          <text x="160" y="190" font-size="12">keine Quelle: R und L bilden einen geschlossenen Kreis</text>
+        </g>
+        <g fill="var(--accent)" font-family="system-ui, sans-serif" font-size="13" text-anchor="middle">
+          <text x="85" y="144">U<tspan dy="4" font-size="10">R</tspan></text>
+          <text x="185" y="144">U<tspan dy="4" font-size="10">L</tspan><tspan dy="-4" dx="3">= −R·I</tspan></text>
+        </g>
+      </svg>
+      <figcaption>Heft-Beispielaufgabe 1 „Zeichne den Schaltplan zur Bestimmung der Ausschaltspannung an einer Spule": Quelle abgetrennt, Voltmeter (oder Oszilloskop) parallel zu <span class="f">\(L\)</span>. Masche <span class="f">\(U_{R} + U_{L} = 0\)</span> ⇒ <span class="f">\(U_{L} = -R\cdot I\)</span>. Beide Pfeile zeigen wie beim Einschalten in die technische Stromrichtung (<span class="f">\(+\)</span> nach <span class="f">\(-\)</span>); der negative Wert von <span class="f">\(U_{L}\)</span> heißt: die Spule ist umgepolt (rechtes Ende <span class="f">\(+\)</span>) und wirkt jetzt als Quelle.</figcaption>
+    </figure>
+  </div>
   <h3>Einschalten (Heft, DGL und Lösung)</h3>
   <p>Maschenregel: <span class="f">\(U_{L} + U_{R} = U_{0}\)</span> ⇒ <span class="f">\(L\cdot \dot{I} + R\cdot I = U_{0}\)</span> (FS S. 32). Lösung durch Substitution und Trennung der Variablen (Heft) mit <span class="f">\(I(0) = 0\)</span>:</p>
   <div class="formula">\[I(t) = \frac{U_0}{R}\left(1 - e^{-t/\tau}\right),\qquad \tau = \frac{L}{R},\qquad U_L(t) = U_0\,e^{-t/\tau}\]</div>
+  <details><summary>Herleitung aufklappen (Heft: Substitution <span class="f">\(K\)</span>, Trennung der Variablen, Rücksubstitution)</summary>
+    <div class="formula">\[\begin{aligned}
+      \dot I &= \frac{U_0}{L} - \frac{R}{L}\,I =: K \qquad\text{(Substitution; } K \text{ fasst die rechte Seite zusammen)}\\
+      \frac{\mathrm{d}K}{\mathrm{d}I} = -\frac{R}{L}\ \Rightarrow\ \dot I &= \frac{\mathrm{d}I}{\mathrm{d}t} = -\frac{L}{R}\,\frac{\mathrm{d}K}{\mathrm{d}t} = K
+      \ \Rightarrow\ \frac{1}{K}\,\mathrm{d}K = -\frac{R}{L}\,\mathrm{d}t\\
+      \int_{K_0}^{K} \frac{1}{\tilde K}\,\mathrm{d}\tilde K &= -\frac{R}{L}\int_{0}^{t}\mathrm{d}\tilde t
+      \ \Rightarrow\ \ln\frac{K}{K_0} = -\frac{R}{L}\,t\ \Rightarrow\ \frac{K}{K_0} = e^{-\frac{R}{L}t}\\
+      \text{Rücksubstitution } (I_0 = I(0) = 0):\quad \frac{K}{K_0} &= \frac{\frac{U_0}{L} - \frac{R}{L}\,I}{\frac{U_0}{L}} = 1 - \frac{R\,I}{U_0} = e^{-\frac{R}{L}t}
+      \ \Rightarrow\ I(t) = \frac{U_0}{R}\left(1 - e^{-\frac{R}{L}t}\right)
+    \end{aligned}\]</div>
+  </details>
   <p>Der Strom steigt langsam auf <span class="f">\(I_{\mathrm{max}} = U_{0}/R\)</span>; im ersten Moment fließt gar nichts, die ganze Spannung liegt an der Spule. Nach <span class="f">\(\tau\)</span> sind <span class="f">\(63\,\%\)</span> erreicht, nach <span class="f">\(5\tau\)</span> praktisch alles.</p>
   <h3>Ausschalten</h3>
-  <p>Quelle weg, Spule und Widerstand bilden einen Kreis: <span class="f">\(L\cdot \dot{I} + R\cdot I = 0\)</span> ⇒ <span class="f">\(\dot{I} = -(R/L)\cdot I\)</span>: Abnahme proportional zum Bestand ⇒</p>
-  <div class="formula">\[I(t) = I_{\mathrm{max}}\,e^{-t/\tau},\qquad \tau = \frac{L}{R},\qquad t_{1/2} = \ln 2\cdot\tau\]</div>
+  <p>Quelle weg, Spule und Widerstand bilden einen Kreis: <span class="f">\(L\cdot \dot{I} + R\cdot I = 0\)</span> ⇒ <span class="f">\(\dot{I} = -(R/L)\cdot I\)</span>: Abnahme proportional zum Bestand. Lösung durch Trennung der Variablen (Heft):</p>
+  <div class="formula">\[\begin{aligned}
+    \frac{\mathrm{d}I}{\mathrm{d}t} &= -\frac{R}{L}\,I \qquad|\ \cdot\,\mathrm{d}t\quad |\ :I\\
+    \int_{I_{\mathrm{max}}}^{I} \frac{1}{\tilde I}\,\mathrm{d}\tilde I &= -\frac{R}{L}\int_{0}^{t}\mathrm{d}\tilde t\\
+    \Big[\ln \tilde I\Big]_{I_{\mathrm{max}}}^{I} = \ln\frac{I}{I_{\mathrm{max}}} &= -\frac{R}{L}\,t\\
+    I(t) &= I_{\mathrm{max}}\,e^{-\frac{R}{L}t} = I_{\mathrm{max}}\,e^{-t/\tau},\qquad \tau = \frac{L}{R}
+  \end{aligned}\]</div>
+  <p><span class="f">\(\tau = L/R\)</span> heißt im Heft <b>Lebensdauer</b>, sonst meist <b>Zeitkonstante</b>; gemeint ist dasselbe. Halbwertszeit (Heft): aus <span class="f">\(e^{-t/\tau} = 2^{-t/t_{1/2}}\)</span> folgt durch Logarithmieren</p>
+  <div class="formula">\[e^{-t/\tau} = 2^{-t/t_{1/2}} = e^{-t\cdot \ln 2/t_{1/2}}\quad\Rightarrow\quad -\frac{1}{\tau} = -\frac{\ln 2}{t_{1/2}}\quad\Rightarrow\quad t_{1/2} = \ln 2\cdot\tau\]</div>
   <ul>
-    <li>Einheiten-Check: <span class="f">\(\left[\frac{L}{R}\right] = \frac{\mathrm{Vs/A}}{\mathrm{V/A}} = \mathrm{s}\)</span> ✓. Großes <span class="f">\(L\)</span> ⇒ träge, großes <span class="f">\(R\)</span> ⇒ schnell (Energie wird schneller verheizt). Gegensatz Kondensator: <span class="f">\(\tau = R\cdot C\)</span>, dort macht großes <span class="f">\(R\)</span> langsam.</li>
-    <li><b>DGL-Nachweis</b> (Heft, Klausurfrage): <span class="f">\(I = I_{\mathrm{max}}e^{-Rt/L}\)</span> ableiten: <span class="f">\(\dot{I} = -(R/L)\cdot I_{\mathrm{max}}e^{-Rt/L}\)</span>. Einsetzen in <span class="f">\(RI + L\dot{I}\)</span>: <span class="f">\(R\cdot I_{\mathrm{max}}e^{…} - L\cdot (R/L)\cdot I_{\mathrm{max}}e^{…} = 0\)</span> ✓.</li>
-    <li>Regression wie beim Kondensator: TR liefert <span class="f">\(I = a\cdot b^{t}\)</span> ⇒ <span class="f">\(\tau = -1/\ln b\)</span>, dann <span class="f">\(L = \tau \cdot R\)</span>. Heft-Aufgabe: <span class="f">\(R = 100\,\Omega\)</span>, Werte <span class="f">\(68\,\mathrm{mA}\)</span> (<span class="f">\(20\,\mathrm{ms}\)</span>) … <span class="f">\(13\,\mathrm{mA}\)</span> (<span class="f">\(100\,\mathrm{ms}\)</span>) ⇒ <span class="f">\(I = 0{,}106 \,\mathrm{A}\cdot 0{,}979^{t/\mathrm{ms}}\)</span> ⇒ <span class="f">\(\tau = -1 \,\mathrm{ms}/\ln 0{,}979 = 48 \,\mathrm{ms}\)</span> ⇒ <span class="f">\(L = 4{,}8 \,\mathrm{H}\)</span>, <span class="f">\(E = \tfrac{1}{2}L I_{\mathrm{max}}^{2} = 0{,}027 \,\mathrm{J}\)</span>. (Lehrer-Hinweis: in der Arbeit statt „<span class="f">\(0{,}979\)</span>" den TR-Wert „Stat.b" einsetzen.)</li>
+    <li>Einheiten-Check (Heft „Test"): <span class="f">\(\left[\frac{L}{R}\right] = \frac{\mathrm{Vs/A}}{\mathrm{V/A}} = \frac{\mathrm{Vs}}{\mathrm{A}}\cdot \frac{\mathrm{A}}{\mathrm{V}} = \mathrm{s}\)</span> ✓. Großes <span class="f">\(L\)</span> ⇒ träge, großes <span class="f">\(R\)</span> ⇒ schnell (Energie wird schneller verheizt). Gegensatz Kondensator: <span class="f">\(\tau = R\cdot C\)</span>, dort macht großes <span class="f">\(R\)</span> langsam.</li>
+    <li><b>DGL-Nachweis</b> (Heft, Beispielaufgabe 3): <span class="f">\(I = I_{\mathrm{max}}e^{-Rt/L}\)</span> ableiten: <span class="f">\(\dot{I} = -(R/L)\cdot I_{\mathrm{max}}e^{-Rt/L}\)</span>. Einsetzen in <span class="f">\(RI + L\dot{I}\)</span>: <span class="f">\(R\cdot I_{\mathrm{max}}e^{-Rt/L} - L\cdot (R/L)\cdot I_{\mathrm{max}}e^{-Rt/L} = 0\)</span> ✓.</li>
+    <li>Regression wie beim Kondensator: TR liefert <span class="f">\(I = a\cdot b^{t}\)</span> ⇒ <span class="f">\(\tau = -1/\ln b\)</span>, dann <span class="f">\(L = \tau \cdot R\)</span>. Heft-Aufgabe: <span class="f">\(R = 100\,\Omega\)</span>, Werte <span class="f">\(68\,\mathrm{mA}\)</span> (<span class="f">\(20\,\mathrm{ms}\)</span>) … <span class="f">\(13\,\mathrm{mA}\)</span> (<span class="f">\(100\,\mathrm{ms}\)</span>) ⇒ <span class="f">\(I = 0{,}106 \,\mathrm{A}\cdot 0{,}979^{t/\mathrm{ms}}\)</span> ⇒ <span class="f">\(\tau = -1 \,\mathrm{ms}/\ln (\mathrm{Stat.b}) = 48{,}0 \,\mathrm{ms}\)</span> (mit dem ungerundeten TR-Wert <span class="f">\(\mathrm{Stat.b} = 0{,}97940\)</span>; mit dem gerundeten <span class="f">\(0{,}979\)</span> kämen nur <span class="f">\(47 \,\mathrm{ms}\)</span> heraus) ⇒ <span class="f">\(L = 4{,}8 \,\mathrm{H}\)</span>, <span class="f">\(E = \tfrac{1}{2}L I_{\mathrm{max}}^{2} = 0{,}027 \,\mathrm{J}\)</span>. (Lehrer-Hinweis: in der Arbeit statt „<span class="f">\(0{,}979\)</span>" den TR-Wert „Stat.b" einsetzen.)</li>
   </ul>
   <div class="controls">
     <label>Vorgang <select id="rlMode"><option value="on">Einschalten</option><option value="off">Ausschalten</option></select></label>
@@ -292,21 +428,38 @@
     <label><span class="f">\(U_0\)</span> <input type="range" id="rlU" min="1" max="24" value="10.6" step="0.1"> <span id="rlUv"></span></label>
   </div>
   <canvas id="rlCanvas" width="720" height="320"></canvas>
+  <div class="legend" id="rlLegend"></div>
   <div class="out" id="rlOut"></div>
   <h3>Oszilloskopbild ablesen (Heft „Übung für die Arbeit")</h3>
-  <p>Die Angaben <b>V/Div</b> und <b>s/Div</b> gelten pro Kästchen. Foto im Heft: <span class="f">\(50\,\mathrm{\mu s/Div}\)</span>, <span class="f">\(200\,\mathrm{mV/Div}\)</span>. Grüne Kurve (Einschalten, steigend): Spannung am Widerstand <span class="f">\(\propto I\)</span>, halber Endwert nach <span class="f">\(t_{1/2} \approx 55\,\mathrm{\mu s}\)</span> (1,1 Kästchen). Orange Kurve (Ausschalten, fallend): <span class="f">\(t_{1/2} \approx 85\,\mathrm{\mu s}\)</span>. Mit bekanntem <span class="f">\(R\)</span> folgt <span class="f">\(L = R\cdot t_{1/2}/\ln 2\)</span>. Immer angeben: Startwert, Endwert, bei welcher Spannung die Hälfte liegt, wie viele Kästchen, Umrechnung.</p>
+  <p>Die Angaben <b>V/Div</b> und <b>s/Div</b> gelten pro Kästchen. Foto im Heft: <span class="f">\(50\,\mathrm{\mu s/Div}\)</span>, <span class="f">\(200\,\mathrm{mV/Div}\)</span>, eine grüne steigende und eine orange fallende Kurve. Das Heft sagt <b>nicht</b>, welche Spannung gemessen wurde; die Zuordnung muss man aus den Schaltbildern oben selbst treffen:</p>
+  <ul>
+    <li>Oszilloskop <b>parallel zu <span class="f">\(R\)</span></b>: <span class="f">\(U_{R} = R\cdot I\)</span>, beim Einschalten steigend von 0 auf <span class="f">\(U_{0}\)</span> (Form der grünen Kurve, <span class="f">\(\propto I\)</span>).</li>
+    <li>Oszilloskop <b>parallel zu <span class="f">\(L\)</span></b> (Heft-Schaltplan): <span class="f">\(U_{L} = U_{0}\cdot e^{-t/\tau}\)</span>, beim Einschalten springt die Spannung auf <span class="f">\(U_{0}\)</span> und fällt (Form der orangen Kurve). Beim Ausschalten fällt auch <span class="f">\(U_{R} \propto I\)</span>.</li>
+  </ul>
+  <p><b>Ablese-Übung:</b> Grün: Endwert ablesen, halber Endwert markieren, Kästchen bis zum Schnittpunkt zählen: 1,1 Kästchen ⇒ <span class="f">\(t_{1/2} \approx 1{,}1\cdot 50\,\mathrm{\mu s} = 55\,\mathrm{\mu s}\)</span>. Orange: Startwert, halber Startwert, 1,7 Kästchen ⇒ <span class="f">\(t_{1/2} \approx 85\,\mathrm{\mu s}\)</span>. Beide Kurven haben die Form <span class="f">\(e^{-t/\tau}\)</span> bzw. <span class="f">\(1 - e^{-t/\tau}\)</span>, also gilt in beiden Fällen <span class="f">\(\tau = t_{1/2}/\ln 2\)</span> und mit bekanntem <span class="f">\(R\)</span>: <span class="f">\(L = R\cdot \tau = R\cdot t_{1/2}/\ln 2\)</span>. Immer angeben: Startwert, Endwert, bei welcher Spannung die Hälfte liegt, wie viele Kästchen, Umrechnung mit s/Div.</p>
   <div class="note warn"><b>Verwechslungsgefahr Spule ↔ Kondensator:</b> Kondensator: Strom springt beim Einschalten sofort auf <span class="f">\(U_{0}/R\)</span> und fällt; Spannung am Kondensator steigt langsam. Spule: Strom steigt langsam; Spannung an der Spule springt auf <span class="f">\(U_{0}\)</span> und fällt. Beide mit <span class="f">\(e^{-t/\tau}\)</span>, aber <span class="f">\(\tau = R C\)</span> bzw. <span class="f">\(\tau = L/R\)</span>.</div>
 </section>
 
 <!-- 8 -->
 <section class="card" id="s8">
   <h2>8 · Energie im Magnetfeld der Spule</h2>
-  <p>Beim Einschalten muss die Quelle gegen die Selbstinduktionsspannung arbeiten. Diese Arbeit steckt danach im Magnetfeld. Heft-Herleitung über die Leistung: <span class="f">\(E = \int P \mathrm{d}t = \int U_{L}\cdot I \mathrm{d}t\)</span> mit <span class="f">\(U_{L} = I_{\mathrm{max}}R\cdot e^{-Rt/L}\)</span> und <span class="f">\(I = I_{\mathrm{max}}(1 - e^{-Rt/L})\)</span>; das Integral von <span class="f">\(0\)</span> bis <span class="f">\(\infty\)</span> ergibt</p>
+  <p>Beim Einschalten muss die Quelle gegen die Selbstinduktionsspannung arbeiten. Diese Arbeit steckt danach im Magnetfeld. Heft-Herleitung über die Leistung: <span class="f">\(E = \int_{0}^{\infty} P(t)\, \mathrm{d}t = \int_{0}^{\infty} I(t)\cdot U_{L}(t)\, \mathrm{d}t\)</span> mit <span class="f">\(I = I_{\mathrm{max}}(1 - e^{-Rt/L})\)</span> und <span class="f">\(U_{L} = U_{0} - R\,I = I_{\mathrm{max}}R - I_{\mathrm{max}}R\,(1 - e^{-Rt/L}) = I_{\mathrm{max}}R\cdot e^{-Rt/L}\)</span>; das Integral ergibt</p>
   <div class="formula">\[E = \tfrac12\,L\,I^2\qquad(\text{FS S. 31})\qquad\text{Vergleich Kondensator: } E = \tfrac12\,C\,U^2\]</div>
+  <details><summary>Herleitung aufklappen (Heft: Integration Schritt für Schritt)</summary>
+    <div class="formula">\[\begin{aligned}
+      E &= \int_{0}^{\infty} I_{\mathrm{max}}\,(1 - e^{-\frac{R}{L}t})\cdot I_{\mathrm{max}}R\,e^{-\frac{R}{L}t}\,\mathrm{d}t
+         = I_{\mathrm{max}}^{2}R \int_{0}^{\infty}\Big(e^{-\frac{R}{L}t} - e^{-2\frac{R}{L}t}\Big)\mathrm{d}t\\
+        &= I_{\mathrm{max}}^{2}R\,\Big[-\frac{L}{R}\,e^{-\frac{R}{L}t} + \frac{L}{2R}\,e^{-2\frac{R}{L}t}\Big]_{0}^{\infty}
+         = I_{\mathrm{max}}^{2}R\,\Big(\frac{L}{R} - \frac{1}{2}\,\frac{L}{R}\Big)\\
+        &= I_{\mathrm{max}}^{2}R\cdot \frac{1}{2}\,\frac{L}{R} = \frac{1}{2}\,L\,I_{\mathrm{max}}^{2}
+         \overset{I_{\mathrm{max}} = U_0/R}{=} \frac{1}{2}\cdot \frac{L}{R^{2}}\,U_{0}^{2}
+    \end{aligned}\]</div>
+    <p class="small">Die Klammer bei <span class="f">\(t \to \infty\)</span> wird null, bei <span class="f">\(t = 0\)</span> steht <span class="f">\(-\frac{L}{R} + \frac{L}{2R}\)</span>; obere minus untere Grenze gibt <span class="f">\(\frac{L}{R} - \frac{L}{2R}\)</span>. Die Schlussform <span class="f">\(E = \tfrac{1}{2}\cdot \tfrac{L}{R^{2}}\cdot U_{0}^{2}\)</span> steht so im Heft.</p>
+  </details>
   <ul>
     <li>Beim Ausschalten wird diese Energie im Widerstand zu Wärme (oder im Funken).</li>
-    <li>Heft-Zahlen: <span class="f">\(L = 4{,}8\,\mathrm{H}\)</span>, <span class="f">\(I_{\mathrm{max}} = 0{,}106\,\mathrm{A}\)</span> ⇒ <span class="f">\(E = \tfrac{1}{2}\cdot 4{,}8\cdot 0{,}106^{2} J = 0{,}027 \,\mathrm{J}\)</span>.</li>
-    <li>Merkhilfe: alle vier Energieformeln haben die Form <span class="f">\(\tfrac12\cdot (\text{Trägheitsgröße})\cdot (\text{Zustandsgröße})^{2}\)</span>: <span class="f">\(\tfrac{1}{2}m v^{2}\)</span>, <span class="f">\(\tfrac{1}{2}Dx^{2}\)</span>, <span class="f">\(\tfrac{1}{2}C U^{2}\)</span>, <span class="f">\(\tfrac{1}{2}L I^{2}\)</span>.</li>
+    <li>Heft-Zahlen: <span class="f">\(L = 4{,}8\,\mathrm{H}\)</span>, <span class="f">\(I_{\mathrm{max}} = 0{,}106\,\mathrm{A}\)</span> ⇒ <span class="f">\(E = \tfrac{1}{2}\cdot 4{,}8\,\mathrm{H}\cdot (0{,}106\,\mathrm{A})^{2} = 0{,}027 \,\mathrm{J}\)</span>.</li>
+    <li>Merkhilfe: alle vier Energieformeln haben die Form <span class="f">\(\tfrac12\cdot (\text{Systemkonstante})\cdot (\text{Zustandsgröße})^{2}\)</span>: <span class="f">\(\tfrac{1}{2}m v^{2}\)</span>, <span class="f">\(\tfrac{1}{2}Dx^{2}\)</span>, <span class="f">\(\tfrac{1}{2}C U^{2}\)</span>, <span class="f">\(\tfrac{1}{2}L I^{2}\)</span>.</li>
   </ul>
 </section>
 
@@ -325,20 +478,19 @@
     <p><b>2.3 [11]:</b> Beschreibung: Peaks abwechselnd nach unten und oben; die zweiten Peaks (untere Spule) jeweils höher und schmaler. M und N: <span class="f">\(U_{\mathrm{ind}} = 0\)</span> ⇒ Fluss ändert sich nicht ⇒ Magnetmitte im Zentrum der jeweiligen Spule. Erklärung Höhe/Breite: Magnet wird durch die Gravitation beschleunigt, ist an der unteren Spule schneller ⇒ größeres <span class="f">\(\dot{B}\)</span> ⇒ größeres <span class="f">\(U_{\mathrm{ind}}\)</span>; kürzere Durchfallzeit ⇒ schmaler. Hypothese zur neuen unteren Spule (kleinere, umgekehrte Peaks): weniger Windungen ⇒ kleineres <span class="f">\(U_{\mathrm{ind}}\)</span>; umgekehrtes Vorzeichen durch vertauschte Anschlusskabel oder umgekehrten Wicklungssinn.</p></details>
   <details><summary>Heft-Aufgabe: Ausschaltvorgang, <span class="f">\(R = 100\,\Omega\)</span>, Messreihe → <span class="f">\(I(t)\)</span>, <span class="f">\(L\)</span>, <span class="f">\(E\)</span></summary>
     <table><tr><th><span class="f">\(t\)</span> in <span class="f">\(\mathrm{ms}\)</span></th><td><span class="f">\(20\)</span></td><td><span class="f">\(40\)</span></td><td><span class="f">\(60\)</span></td><td><span class="f">\(80\)</span></td><td><span class="f">\(100\)</span></td></tr><tr><th><span class="f">\(I\)</span> in <span class="f">\(\mathrm{A}\)</span></th><td><span class="f">\(0{,}068\)</span></td><td><span class="f">\(0{,}047\)</span></td><td><span class="f">\(0{,}031\)</span></td><td><span class="f">\(0{,}020\)</span></td><td><span class="f">\(0{,}013\)</span></td></tr></table>
-    <p>Diagramm <span class="f">\(t\)</span> in <span class="f">\(\mathrm{ms}\)</span> gegen <span class="f">\(I\)</span> in <span class="f">\(\mathrm{A}\)</span>; Abnahme proportional zum Bestand (DGL <span class="f">\(\dot{I} = -(R/L)I\)</span>) ⇒ Exponentialregression <span class="f">\(I = 0{,}106\cdot 0{,}979^{x}\)</span> ⇒ <span class="f">\(I(t) = 0{,}106 \,\mathrm{A} \cdot e^{-t/\tau}\)</span> mit <span class="f">\(\tau = -1 \,\mathrm{ms}/\ln 0{,}979 = 48 \,\mathrm{ms}\)</span>. <span class="f">\(L = \tau \cdot R = 0{,}048 \,\mathrm{s} \cdot 100 \,\mathrm{\Omega } = 4{,}8 \,\mathrm{H}\)</span>. <span class="f">\(E = \tfrac{1}{2}\cdot L\cdot I_{\mathrm{max}}^{2} = \tfrac{1}{2}\cdot 4{,}8\cdot 0{,}106^{2} J = 0{,}027 \,\mathrm{J}\)</span>. Beispielaufgaben dazu: Schaltplan zur Messung der Ausschaltspannung (<span class="f">\(R\)</span> und <span class="f">\(L\)</span> in Reihe, Voltmeter parallel zu <span class="f">\(L\)</span>), DGL aufstellen (<span class="f">\(RI + L\dot{I} = 0\)</span>), Lösung prüfen.</p></details>
+    <p>1. Werte in den TR. 2. Diagramm <span class="f">\(t\)</span> in <span class="f">\(\mathrm{ms}\)</span> gegen <span class="f">\(I\)</span> in <span class="f">\(\mathrm{A}\)</span>. 3. Die Punkte verlaufen augenscheinlich entlang einer Exponentialfunktion; physikalisch: Abnahme proportional zum Bestand (DGL <span class="f">\(\dot{I} = -(R/L)I\)</span>) ⇒ Exponentialregression. 4. TR: <span class="f">\(I = 0{,}106\cdot 0{,}979^{x}\)</span> (ungerundet <span class="f">\(\mathrm{Stat.b} = 0{,}97940\)</span>) <span class="f">\(\overset{!}{=} 0{,}106\cdot e^{-x/\tau}\)</span> ⇒ <span class="f">\(x\cdot \ln b = -x/\tau\)</span> ⇒ <span class="f">\(\tau = -1 \,\mathrm{ms}/\ln (\mathrm{Stat.b}) = 48{,}0 \,\mathrm{ms}\)</span> (Heft: <span class="f">\(48{,}036\)</span>; mit dem gerundeten <span class="f">\(0{,}979\)</span> nur <span class="f">\(47 \,\mathrm{ms}\)</span>). Die Lebensdauer beträgt <span class="f">\(\tau = 48 \,\mathrm{ms}\)</span>; <span class="f">\(I(t) = 0{,}106 \,\mathrm{A} \cdot e^{-t/48\,\mathrm{ms}}\)</span>. 5. Deutung: <span class="f">\(\tau = L/R\)</span> ⇒ <span class="f">\(L = \tau \cdot R = 48\cdot 10^{-3} \,\mathrm{s} \cdot 1\cdot 10^{2} \,\mathrm{\Omega } = 4{,}8 \,\mathrm{H}\)</span>. <span class="f">\(E = \tfrac{1}{2}\cdot L\cdot I_{\mathrm{max}}^{2} = \tfrac{1}{2}\cdot 4{,}8\,\mathrm{H}\cdot (0{,}106\,\mathrm{A})^{2} = 0{,}027 \,\mathrm{J}\)</span>. Beispielaufgaben dazu (Heft): Schaltplan zur Bestimmung der Ausschaltspannung (<span class="f">\(R\)</span> und <span class="f">\(L\)</span> in Reihe, Voltmeter parallel zu <span class="f">\(L\)</span>, Schaltbild in Abschnitt 7), DGL aufstellen (<span class="f">\(U_{R} + U_{L} = 0\)</span> ⇒ <span class="f">\(RI + L\dot{I} = 0\)</span>), Lösung <span class="f">\(I = I_{\mathrm{max}}e^{-Rt/L}\)</span> durch Einsetzen prüfen.</p></details>
 </section>
 
 <!-- 10 -->
 <section class="card" id="s10">
-  <h2>10 · Analogie-Trainer</h2>
+  <h2>10 · Analogien und Quiz</h2>
+  <p class="small">Drei Merkbilder, die fachlich tragen. Sie ersetzen keine Begründung in der Klausur; dort zählt immer das Induktionsgesetz.</p>
   <div class="cards">
-    <div class="acard"><h4>Fluss ↔ Regen im Eimer</h4><div class="l">Fläche senkrecht zum Regen fängt alles, gekippt weniger. <span class="f">\(\Phi = B\cdot A\cdot \cos \varphi\)</span>.</div></div>
-    <div class="acard"><h4>Induktion ↔ Tacho der Flussänderung</h4><div class="l"><span class="f">\(U_{\mathrm{ind}}\)</span> misst nicht, wie viel Fluss da ist, sondern wie schnell er sich ändert. Ableitung!</div></div>
-    <div class="acard"><h4>Lenz ↔ Trägheit</h4><div class="l">Masse wehrt sich gegen Geschwindigkeitsänderung, Stromkreis gegen Flussänderung. Energieerhaltung dahinter.</div></div>
-    <div class="acard"><h4>Induktivität ↔ Masse</h4><div class="l"><span class="f">\(L\)</span> ↔ <span class="f">\(m\)</span>, <span class="f">\(I\)</span> ↔ <span class="f">\(v\)</span>, <span class="f">\(U = L\cdot \mathrm{d}I/\mathrm{d}t\)</span> ↔ <span class="f">\(F = m\cdot a\)</span>, <span class="f">\(\tfrac12 L I^{2}\)</span> ↔ <span class="f">\(\tfrac12 m v^{2}\)</span>. Schwerer Wagen: langsam anfahren, schwer bremsen.</div></div>
-    <div class="acard"><h4>Generator ↔ Schaukel im Sonnenlicht</h4><div class="l">Der Schatten (Fluss) schwankt sinusförmig; am Umkehrpunkt ändert er sich am schnellsten.</div></div>
-    <div class="acard"><h4>Wo die Analogien brechen</h4><div class="l">Der Regen fließt wirklich; beim magnetischen „Fluss" fließt nichts. Und die Trägheit der Spule kennt Vorzeichen: beim Abschalten erzeugt sie hohe Spannung, eine Masse keine „Gegenkraft aus dem Nichts".</div></div>
+    <div class="acard"><h4>Induktion ↔ Tacho der Flussänderung</h4><div class="l"><span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi/\mathrm{d}t\)</span> misst nicht, wie viel Fluss da ist, sondern wie schnell er sich ändert: Ableitung. Maximum des Flusses ⇒ Spannung null; steilste Stelle ⇒ größte Spannung.</div></div>
+    <div class="acard"><h4>Lenz und Induktivität ↔ Trägheit</h4><div class="l">Eine Masse wehrt sich gegen jede Änderung ihrer Geschwindigkeit, ein Stromkreis gegen jede Änderung seines Flusses, eine Spule gegen jede Änderung ihres Stroms: <span class="f">\(L\)</span> ↔ <span class="f">\(m\)</span>, <span class="f">\(I\)</span> ↔ <span class="f">\(v\)</span>, <span class="f">\(U_{L} = L\cdot \mathrm{d}I/\mathrm{d}t\)</span> ↔ <span class="f">\(F = m\cdot a\)</span>, <span class="f">\(\tfrac12 L I^{2}\)</span> ↔ <span class="f">\(\tfrac12 m v^{2}\)</span>. Physikalischer Grund: Energieerhaltung.</div></div>
+    <div class="acard"><h4>Wo die Analogie endet</h4><div class="l">Beim magnetischen „Fluss" fließt nichts; <span class="f">\(\Phi\)</span> zählt Feldlinien durch die Fläche (Einheit <span class="f">\(\mathrm{Vs}\)</span>). Und die Trägheit gilt nur für Änderungen: einen konstanten Strom bremst die ideale Spule nicht (Kurzschluss), so wie eine Masse ohne Reibung eine konstante Geschwindigkeit nicht bremst.</div></div>
   </div>
+  <h3>Quiz</h3>
   <div class="quiz" id="quiz"></div>
   <div class="out" id="quizScore"></div>
 </section>
@@ -349,41 +501,24 @@
   <details><summary>Checkfrage 1: Eine Spule wird in einem homogenen Feld parallel zu den Feldlinien verschoben. Induktionsspannung?</summary><p>Null. Weder <span class="f">\(B\)</span> noch die durchsetzte Fläche ändern sich, also ändert sich der Fluss nicht. Bewegung allein reicht nicht; es braucht eine Flussänderung.</p></details>
   <details><summary>Checkfrage 2: Warum steht im Induktionsgesetz ein Minus?</summary><p>Lenzsche Regel: Der Induktionsstrom wirkt der Flussänderung entgegen. Ohne das Minus würde er sie verstärken, der Vorgang würde sich selbst aufschaukeln und Energie aus dem Nichts erzeugen. Das Minus ist die Energieerhaltung in Formelform.</p></details>
   <details><summary>Checkfrage 3: Warum ist beim fallenden Magneten die Spannung null, wenn er genau in der Spulenmitte ist?</summary><p>Dort ist der Fluss maximal. Ein Maximum hat Steigung null, und <span class="f">\(U_{\mathrm{ind}}\)</span> ist proportional zur Steigung des Flusses. Davor wächst der Fluss (Peak mit einem Vorzeichen), danach sinkt er (Gegenpeak).</p></details>
-  <details><summary>Checkfrage 4: Warum leuchtet die Lampe an der Spule beim Einschalten verzögert?</summary><p>Der steigende Strom baut das Spulenfeld auf; das sich ändernde Feld induziert in der Spule eine Gegenspannung (Selbstinduktion), die den Stromanstieg bremst: <span class="f">\(I = I_{\mathrm{max}}(1 - e^{-t/\tau})\)</span>, <span class="f">\(\tau = L/R\)</span>. Beim Ausschalten will die Spule den Strom aufrechterhalten und erzeugt eine hohe Spannung: Aufblitzen.</p></details>
+  <details><summary>Checkfrage 4: Warum steigt der Strom nach dem Einschalten einer Spule nur langsam an?</summary><p>Der steigende Strom baut das Spulenfeld auf; das sich ändernde Feld induziert in der Spule selbst eine Spannung, die der Stromänderung entgegenwirkt (Selbstinduktion, Lenz): <span class="f">\(U_{L} = L\cdot \dot{I}\)</span>. Aus der Masche <span class="f">\(U_{R} + U_{L} = U_{0}\)</span> folgt die DGL <span class="f">\(L\dot{I} + RI = U_{0}\)</span> mit der Lösung <span class="f">\(I = I_{\mathrm{max}}(1 - e^{-t/\tau})\)</span>, <span class="f">\(\tau = L/R\)</span>: im ersten Moment liegt die ganze Spannung an der Spule, der Strom startet bei null und nähert sich erst nach einigen <span class="f">\(\tau\)</span> dem Endwert <span class="f">\(U_{0}/R\)</span>. Je größer <span class="f">\(L\)</span>, desto träger.</p></details>
   <details><summary>A1: Spule <span class="f">\(N = 500\)</span>, <span class="f">\(A = 20\,\mathrm{cm^2}\)</span>. <span class="f">\(B\)</span> steigt in <span class="f">\(0{,}20\,\mathrm{s}\)</span> gleichmäßig von <span class="f">\(0\)</span> auf <span class="f">\(50\,\mathrm{mT}\)</span>, bleibt <span class="f">\(0{,}10\,\mathrm{s}\)</span> konstant, fällt dann in <span class="f">\(0{,}10\,\mathrm{s}\)</span> auf <span class="f">\(0\)</span>. <span class="f">\(U_{\mathrm{ind}}\)</span> in den drei Phasen?</summary><p>Phase 1: <span class="f">\(U = -N\cdot A\cdot \Delta B/\Delta t = -500\cdot 0{,}0020 \,\mathrm{m^2}\cdot 0{,}050 \,\mathrm{T}/0{,}20 \,\mathrm{s} = -0{,}25 \,\mathrm{V}\)</span>. Phase 2: <span class="f">\(\Delta B = 0\)</span> ⇒ <span class="f">\(0\,\mathrm{V}\)</span>. Phase 3: <span class="f">\(-500\cdot 0{,}0020\cdot (-0{,}050)/0{,}10 \,\mathrm{V} = +0{,}50 \,\mathrm{V}\)</span> (doppelt so schnell, umgekehrtes Vorzeichen). Skizze: Rechteck <span class="f">\(-0{,}25\,\mathrm{V}\)</span>, Null, Rechteck <span class="f">\(+0{,}50\,\mathrm{V}\)</span>.</p></details>
-  <details><summary>A2: Generator <span class="f">\(N = 200\)</span>, <span class="f">\(A = 50\,\mathrm{cm^2}\)</span>, <span class="f">\(B = 0{,}30\,\mathrm{T}\)</span>, <span class="f">\(f = 50\,\mathrm{Hz}\)</span>. Scheitelwert, Effektivwert, und bei welcher Frequenz wären es <span class="f">\(230\,\mathrm{V}\)</span> Scheitel?</summary><p><span class="f">\(\hat{U} = 2\pi \cdot N\cdot A\cdot B\cdot f = 2\pi \cdot 200\cdot 0{,}0050\cdot 0{,}30\cdot 50 \,\mathrm{V} = 94 \,\mathrm{V}\)</span>; <span class="f">\(U_{\mathrm{eff}} = \hat{U}/\sqrt{2} = 67 \,\mathrm{V}\)</span> (FS S. 26). <span class="f">\(\hat{U} \propto f\)</span> ⇒ <span class="f">\(f = 50 \,\mathrm{Hz} \cdot 230/94 = 122 \,\mathrm{Hz}\)</span>.</p></details>
-  <details><summary>A3: Leiterstück <span class="f">\(l = 0{,}30\,\mathrm{m}\)</span> bewegt sich mit <span class="f">\(v = 2{,}0\,\mathrm{m/s}\)</span> senkrecht durch <span class="f">\(B = 0{,}40\,\mathrm{T}\)</span>. Induktionsspannung, mit Begründung über die Lorentzkraft.</summary><p>Elektronen im Leiter bewegen sich mit <span class="f">\(v\)</span> ⇒ Lorentzkraft <span class="f">\(e v B\)</span> entlang des Leiters ⇒ Ladungstrennung bis <span class="f">\(eU/l = e v B\)</span> ⇒ <span class="f">\(U = B\cdot l\cdot v = 0{,}40\cdot 0{,}30\cdot 2{,}0 \,\mathrm{V} = 0{,}24 \,\mathrm{V}\)</span>. Kontrolle über den Fluss: <span class="f">\(\mathrm{d}A/\mathrm{d}t = l\cdot v = 0{,}6 \,\mathrm{m^2/s}\)</span>, <span class="f">\(U = B\cdot \mathrm{d}A/\mathrm{d}t = 0{,}24 \,\mathrm{V}\)</span> ✓.</p></details>
-  <details><summary>A4: Spule <span class="f">\(L = 2{,}0\,\mathrm{H}\)</span>, <span class="f">\(R = 50\,\Omega\)</span>, <span class="f">\(U_0 = 10\,\mathrm{V}\)</span>. <span class="f">\(I_{\mathrm{max}}\)</span>, <span class="f">\(\tau\)</span>, <span class="f">\(t_{1/2}\)</span>, Strom nach <span class="f">\(100\,\mathrm{ms}\)</span>, gespeicherte Energie?</summary><p><span class="f">\(I_{\mathrm{max}} = U_{0}/R = 0{,}20 \,\mathrm{A}\)</span>; <span class="f">\(\tau = L/R = 0{,}040 \,\mathrm{s}\)</span>; <span class="f">\(t_{1/2} = \ln 2\cdot \tau = 0{,}028 \,\mathrm{s}\)</span>; <span class="f">\(I(0{,}1 \,\mathrm{s}) = 0{,}20\cdot (1 - e^{-2{,}5}) \,\mathrm{A} = 0{,}18 \,\mathrm{A}\)</span>; <span class="f">\(E = \tfrac{1}{2}\cdot 2{,}0\cdot 0{,}20^{2} J = 0{,}040 \,\mathrm{J}\)</span>. Ausschalten: Strom fällt mit <span class="f">\(\tau = 40\,\mathrm{ms}\)</span>; die Spulenspannung kann beim abrupten Öffnen weit über <span class="f">\(10\,\mathrm{V}\)</span> steigen (Funken).</p></details>
+  <details><summary>A2: Generator <span class="f">\(N = 200\)</span>, <span class="f">\(A = 50\,\mathrm{cm^2}\)</span>, <span class="f">\(B = 0{,}30\,\mathrm{T}\)</span>, <span class="f">\(f = 50\,\mathrm{Hz}\)</span>. Scheitelwert, und bei welcher Frequenz wären es <span class="f">\(230\,\mathrm{V}\)</span> Scheitel?</summary><p><span class="f">\(\hat{U} = 2\pi \cdot N\cdot A\cdot B\cdot f = 2\pi \cdot 200\cdot 0{,}0050\,\mathrm{m^2}\cdot 0{,}30\,\mathrm{T}\cdot 50 \,\mathrm{Hz} = 94 \,\mathrm{V}\)</span>. <span class="f">\(\hat{U} \propto f\)</span> ⇒ <span class="f">\(f = 50 \,\mathrm{Hz} \cdot 230/94 = 122 \,\mathrm{Hz}\)</span>.</p></details>
+  <details><summary>A3: Leiterstück <span class="f">\(l = 0{,}30\,\mathrm{m}\)</span> bewegt sich mit <span class="f">\(v = 2{,}0\,\mathrm{m/s}\)</span> senkrecht durch <span class="f">\(B = 0{,}40\,\mathrm{T}\)</span>. Induktionsspannung, mit Begründung über die Lorentzkraft.</summary><p>Elektronen im Leiter bewegen sich mit <span class="f">\(v\)</span> ⇒ Lorentzkraft <span class="f">\(e v B\)</span> entlang des Leiters (Richtung: linke Hand) ⇒ Ladungstrennung bis <span class="f">\(eU/l = e v B\)</span> ⇒ Betrag <span class="f">\(U = B\cdot l\cdot v = 0{,}40\,\mathrm{T}\cdot 0{,}30\,\mathrm{m}\cdot 2{,}0 \,\mathrm{m/s} = 0{,}24 \,\mathrm{V}\)</span> (FS S. 31 mit Minuszeichen: <span class="f">\(U_{\mathrm{ind}} = -B\cdot \ell \cdot v\)</span>, Lenz). Kontrolle über den Fluss: <span class="f">\(\mathrm{d}A/\mathrm{d}t = l\cdot v = 0{,}6 \,\mathrm{m^2/s}\)</span>, <span class="f">\(|U| = B\cdot \mathrm{d}A/\mathrm{d}t = 0{,}24 \,\mathrm{V}\)</span> ✓.</p></details>
+  <details><summary>A4: Spule <span class="f">\(L = 2{,}0\,\mathrm{H}\)</span>, <span class="f">\(R = 50\,\Omega\)</span>, <span class="f">\(U_0 = 10\,\mathrm{V}\)</span>. <span class="f">\(I_{\mathrm{max}}\)</span>, <span class="f">\(\tau\)</span>, <span class="f">\(t_{1/2}\)</span>, Strom nach <span class="f">\(100\,\mathrm{ms}\)</span>, gespeicherte Energie?</summary><p><span class="f">\(I_{\mathrm{max}} = U_{0}/R = 0{,}20 \,\mathrm{A}\)</span>; <span class="f">\(\tau = L/R = 0{,}040 \,\mathrm{s}\)</span>; <span class="f">\(t_{1/2} = \ln 2\cdot \tau = 0{,}028 \,\mathrm{s}\)</span>; <span class="f">\(I(0{,}1 \,\mathrm{s}) = 0{,}20\cdot (1 - e^{-2{,}5}) \,\mathrm{A} = 0{,}18 \,\mathrm{A}\)</span>; <span class="f">\(E = \tfrac{1}{2}\cdot 2{,}0\,\mathrm{H}\cdot (0{,}20\,\mathrm{A})^{2} = 0{,}040 \,\mathrm{J}\)</span>. Ausschalten: Strom fällt mit <span class="f">\(\tau = 40\,\mathrm{ms}\)</span>; die Spulenspannung kann beim abrupten Öffnen weit über <span class="f">\(10\,\mathrm{V}\)</span> steigen (Funken).</p></details>
 </section>
 
-<!-- 12 -->
-<section class="card" id="s12">
-  <h2>12 · Nicht in der Formelsammlung (auswendig)</h2>
-  <ul>
-    <li>Fluss anschaulich (Feldlinien durch die Fläche), wirksame Fläche, Winkeldefinition (<span class="f">\(\cos\)</span> vs. <span class="f">\(\sin\)</span>), <span class="f">\(1\,\mathrm{Wb} = 1\,\mathrm{Vs}\)</span>.</li>
-    <li>Kernsatz: nur Flussänderung induziert; Spannung <span class="f">\(\propto\)</span> Steigung von <span class="f">\(\Phi(t)\)</span>. Dreieck → Rechteck, Sinus → Cosinus.</li>
-    <li>Drei Versuche (<span class="f">\(B\)</span>, <span class="f">\(A\)</span>, Rotation), Produktregel <span class="f">\(\dot{A}\cdot B + A\cdot \dot{B}\)</span>.</li>
-    <li>Bewegter Leiter über Lorentzkraft hergeleitet (FS hat nur <span class="f">\(U = Blv\)</span>).</li>
-    <li>Generator-Herleitung, Amplitude <span class="f">\(2\pi NABf \propto f\)</span>, <span class="f">\(90^\circ\)</span> Phase, Auswertung <span class="f">\(\hat{U}(f)\)</span> → <span class="f">\(B\)</span>.</li>
-    <li>Lenzsche Regel im Wortlaut, Energieerhaltung als Grund, Ringversuch, Wirbelstrombremse, Kupferrohr.</li>
-    <li>Fallender Magnet: vier Peaks erklären (Vorzeichen, Nulldurchgang, höher/schmaler, Hypothesen).</li>
-    <li>Selbstinduktion: Herleitung <span class="f">\(L = NAk\)</span>, Trägheits-Analogie, Lampenversuch.</li>
-    <li>Schaltvorgänge: Maschenregel → DGL → Lösung, <span class="f">\(\tau = L/R\)</span> mit Einheiten-Check, DGL-Nachweis, Regression → <span class="f">\(L\)</span>, Vergleich mit Kondensator.</li>
-    <li>Energie <span class="f">\(\tfrac12 L I^{2}\)</span> (Herleitung über Leistung), Muster der vier Energieformeln.</li>
-    <li>Oszilloskop: V/Div, s/Div, Halbwertszeit → <span class="f">\(L\)</span> oder <span class="f">\(C\)</span>.</li>
-  </ul>
-  <p class="small">In der FS: Fluss, Induktionsgesetz in allen Formen, <span class="f">\(U = Blv\)</span> (S. 30/31); Trafo (S. 31); <span class="f">\(L\)</span>, Selbstinduktion, <span class="f">\(\tfrac12 L I^{2}\)</span>, Ein-/Ausschaltkurven, DGLs (S. 31/32); <span class="f">\(U_{\mathrm{eff}} = \hat{U}/\sqrt{2}\)</span> (S. 26).</p>
-</section>
-
-<!-- 13 -->
+<!-- 13 (sichtbar als 12, Abschnitt „Nicht in der FS" ist hier eingearbeitet) -->
 <section class="card" id="s13">
-  <h2>13 · Merksätze, Verwechslungen, Fortschritt</h2>
+  <h2>12 · Merksätze, Verwechslungen, Fortschritt</h2>
+  <p class="small">Jeder Merksatz nennt, was in der Formelsammlung steht (FS, Seite) und was man <b>auswendig</b> können muss, weil es dort nicht steht.</p>
   <ol>
-    <li><span class="f">\(\Phi = B\cdot A\cdot \cos \varphi\)</span>: Feldlinien durch die Fläche. Ändert er sich, gibt es Spannung: <span class="f">\(U = -N\cdot \mathrm{d}\Phi/\mathrm{d}t\)</span>.</li>
-    <li>Spannung folgt der Steigung von <span class="f">\(\Phi\)</span>, nicht dem Wert. Maximum ⇒ null.</li>
-    <li>Generator: <span class="f">\(\hat{U} = 2\pi NABf\)</span>, Spannung läuft dem Fluss <span class="f">\(90^\circ\)</span> hinterher.</li>
-    <li>Lenz: gegen die Änderung. Deshalb das Minus, deshalb Bremsen und Abstoßen.</li>
-    <li>Spule: <span class="f">\(U = L\cdot \mathrm{d}I/\mathrm{d}t\)</span>, <span class="f">\(\tau = L/R\)</span>, <span class="f">\(\tfrac12 L I^{2}\)</span>. Strom ist träge, Spannung springt.</li>
+    <li><span class="f">\(\Phi = B\cdot A\cdot \cos \varphi\)</span> (FS S. 30): Feldlinien durch die Fläche, <span class="f">\(1\,\mathrm{Wb} = 1\,\mathrm{Vs}\)</span>. Auswendig: wirksame Fläche und Winkeldefinition (<span class="f">\(\cos\)</span> zur wirksamen Lage, <span class="f">\(\sin\)</span> zur Fläche wie im Heft beim Generator). Ändert sich <span class="f">\(\Phi\)</span>, gibt es Spannung: <span class="f">\(U_{\mathrm{ind}} = -N\cdot \mathrm{d}\Phi/\mathrm{d}t\)</span> (FS S. 30, beide Spezialfälle).</li>
+    <li>Spannung folgt der <b>Steigung</b> von <span class="f">\(\Phi\)</span>, nicht dem Wert. Maximum ⇒ null. Auswendig: Produktregel <span class="f">\(\dot{A}\cdot B + A\cdot \dot{B}\)</span>, Dreieck → Rechteck (Abitur 2023, 2.2), Sinus → Cosinus; bewegter Leiter über die Lorentzkraft herleiten (FS S. 31 hat nur <span class="f">\(U_{\mathrm{ind}} = -B\cdot \ell \cdot v\)</span>).</li>
+    <li>Generator: Herleitung mit <span class="f">\(A_{\mathrm{eff}} = A\cdot \sin (\omega t)\)</span>, <span class="f">\(\hat{U} = 2\pi NABf \propto f\)</span>, Spannung läuft dem Fluss <span class="f">\(90^\circ\)</span> hinterher (nicht in der FS). Auswertung <span class="f">\(\hat{U}(f)\)</span> → <span class="f">\(B\)</span> in den fünf TR-Schritten (Klausur 3, Heft-Versuch).</li>
+    <li>Lenz im Heft-Wortlaut (nicht in der FS): gegen die <b>Änderung</b>. Deshalb das Minus, deshalb Bremsen und Abstoßen; Grund: Energieerhaltung. Anwenden auf Ringversuch, Wirbelstrombremse, Kupferrohr und den fallenden Magneten (vier Peaks: Vorzeichen, M/N, höher und schmaler, Hypothese).</li>
+    <li>Spule: <span class="f">\(U_{L} = L\cdot \mathrm{d}I/\mathrm{d}t\)</span>, <span class="f">\(L = \mu_0\mu_r N^{2}A/\ell\)</span>, <span class="f">\(\tfrac12 L I^{2}\)</span> und die DGLs stehen in der FS (S. 31/32). Auswendig: Herleitung <span class="f">\(L = N\cdot A\cdot k\)</span>, Maschenregel → DGL → Lösung durch Trennung der Variablen, <span class="f">\(\tau = L/R\)</span> (Lebensdauer) mit Einheiten-Check, <span class="f">\(t_{1/2} = \ln 2\cdot \tau\)</span>, DGL-Nachweis, Regression → <span class="f">\(L\)</span>, Energie über <span class="f">\(P = U_{L}\cdot I\)</span>. Strom ist träge, Spannung springt.</li>
+    <li>Oszilloskop: V/Div und s/Div gelten pro Kästchen; Halbwertszeit ablesen → <span class="f">\(\tau = t_{1/2}/\ln 2\)</span> → <span class="f">\(L = R\cdot \tau\)</span> (Spule) bzw. <span class="f">\(C = \tau /R\)</span> (Kondensator). Vergleich: <span class="f">\(\tau = L/R\)</span> gegen <span class="f">\(\tau = R\cdot C\)</span>.</li>
   </ol>
   <h3>Typische Verwechslungen</h3>
   <table>
@@ -408,7 +543,7 @@
   <p class="small">Haken werden lokal im Browser gespeichert.</p>
 </section>
 
-<footer>Lektion 5 · erstellt 27.10.2026 · Quellen: Hefteinträge Elektromagnetismus (Kurs PH1, 12.2: Fluss, Induktion, Lenz, Selbstinduktion, Ladekurve, Energie, Übung für die Arbeit), Klausur 3 Aufgabe 2 (eigene Lösung), Zentralabitur 2023 Aufgabe I Nr. 2 mit Erwartungshorizont, Pool-Formelsammlung (Stand 14.02.2024).</footer>
+<footer>Lektion 5 · erstellt 27.10.2026, überarbeitet nach Prüfbericht 31.10.2026 · Quellen: Hefteinträge Elektromagnetismus (Kurs PH1, 12.2: Fluss, Induktion, Lenz, Selbstinduktion, Ladekurve, Energie, Übung für die Arbeit), Klausur 3 Aufgabe 2 (eigene Lösung), Zentralabitur 2023 Aufgabe I Nr. 2 mit Erwartungshorizont, Pool-Formelsammlung (Stand 14.02.2024).</footer>
 </main>
 
 <script>
@@ -416,14 +551,6 @@
   'use strict';
   const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const de = (x, d) => (Math.round(x * Math.pow(10, d)) / Math.pow(10, d)).toFixed(d).replace('.', ',');
-  const sci = (x, sig) => {
-    if (x === 0) return '0';
-    const exp = Math.floor(Math.log10(Math.abs(x)));
-    let mant = x / Math.pow(10, exp);
-    let m = de(mant, sig - 1);
-    if (m === '10' || m === '-10' || m.indexOf('10,') === 0 || m.indexOf('-10,') === 0) { m = de(mant / 10, sig - 1); return m + '·10<sup>' + (exp + 1) + '</sup>'; }
-    return m + '·10<sup>' + exp + '</sup>';
-  };
   const unit = (x, u) => {
     const ax = Math.abs(x); if (ax === 0) return '0 ' + u;
     const pre = [[1e-12, 'p'], [1e-9, 'n'], [1e-6, 'µ'], [1e-3, 'm'], [1, ''], [1e3, 'k'], [1e6, 'M']];
@@ -460,7 +587,7 @@
     function update() {
       const phi = parseFloat(sP.value), B = parseFloat(sB.value) * 1e-3, A = parseFloat(sA.value) * 1e-4;
       texHTML($('flPhiv'), '\\(' + phi + '^\\circ\\)'); texHTML($('flBv'), '\\(' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}\\)'); texHTML($('flAv'), '\\(' + deT(A * 1e4, 0) + '\\,\\mathrm{cm^2}\\)');
-      const rad = phi * Math.PI / 180, Aeff = A * Math.cos(rad), Phi = B * Aeff;
+      const rad = phi * Math.PI / 180; let Aeff = A * Math.cos(rad); if (Math.abs(Aeff) < 1e-12) Aeff = 0; const Phi = B * Aeff;   // cos 90° ist in JS nicht exakt 0
       ctx.clearRect(0, 0, W, H);
       const cx = W / 2, cy = H / 2 + 10, len = 220, half = len / 2;
       const dx = Math.cos(rad) * half, dy = Math.sin(rad) * half;
@@ -469,7 +596,7 @@
       for (let x = 20; x < W - 10; x += 22) { const through = x >= Math.min(x1, x2) && x <= Math.max(x1, x2); if (through) n++; ctx.strokeStyle = through ? css('--field') : css('--line'); ctx.lineWidth = through ? 2 : 1; ctx.beginPath(); ctx.moveTo(x, H - 20); ctx.lineTo(x, 30); ctx.stroke(); arrowAt(ctx, x, 30, 0, -1, through ? css('--field') : css('--line')); }
       ctx.strokeStyle = css('--fg'); ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(x1, cy + dy); ctx.lineTo(x2, cy - dy); ctx.stroke();
       ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.beginPath(); ctx.moveTo(Math.min(x1, x2), cy + 70); ctx.lineTo(Math.max(x1, x2), cy + 70); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = css('--kin'); ctx.font = '13px system-ui'; ctx.fillText('a_eff = a·cos φ', cx - 40, cy + 88);
+      ctx.fillStyle = css('--kin'); ctx.font = '13px system-ui'; ctx.fillText('wirksame Breite (Formel in der Legende)', cx - 110, cy + 88);
       ctx.fillStyle = css('--fg'); ctx.fillText('B (homogen, nach oben)', 12, 20); ctx.fillText('Fläche (Seitenansicht), φ = ' + phi + '°', cx - 80, 48);
       texHTML($('flOut'), '\\(A_{\\mathrm{eff}} = A\\cdot\\cos\\varphi = ' + deT(A * 1e4, 0) + '\\,\\mathrm{cm^2}\\cdot\\cos ' + phi + '^\\circ = \\htmlClass{hl}{' + deT(Aeff * 1e4, 1) + '\\,\\mathrm{cm^2}}\\)<br>\\(\\Phi = B\\cdot A_{\\mathrm{eff}} = ' + deT(B * 1e3, 0) + '\\,\\mathrm{mT}\\cdot ' + sciT(Aeff, 2) + '\\,\\mathrm{m^2} = \\htmlClass{hl}{' + unitT(Phi, 'Wb') + '}\\) (\\(= ' + unitT(Phi, 'Vs') + '\\))<br>Feldlinien durch die Fläche im Bild: <b>' + n + '</b> von ' + Math.floor((W - 30) / 22) + (phi === 90 ? ' → Fläche parallel zum Feld, \\(\\Phi = 0\\)' : ''));
     }
@@ -493,7 +620,7 @@
       for (let i = 0; i <= 500; i++) { const t = tmax * i / 500, y = ymid - amp * 0.9 * tri(t); if (i === 0) ctx.moveTo(xs(t), y); else ctx.lineTo(xs(t), y); } ctx.stroke();
       ctx.strokeStyle = css('--arrow'); ctx.lineWidth = 2.5; ctx.beginPath();
       for (let i = 0; i <= 500; i++) { const t = tmax * i / 500, ph = ((t / T) % 1 + 1) % 1, u = ph < 0.5 ? -1 : 1; const y = ymid - amp * 0.6 * u; if (i === 0) ctx.moveTo(xs(t), y); else ctx.lineTo(xs(t), y); } ctx.stroke();
-      ctx.fillStyle = css('--field'); ctx.fillText('B(t), ±' + de(B0 * 1e3, 0) + ' mT', pad.l + 6, pad.t + 12); ctx.fillStyle = css('--arrow'); ctx.fillText('U_ind(t), ±' + unit(U, 'V'), pad.l + 6, pad.t + 28);
+      ctx.fillStyle = css('--field'); ctx.fillText('B(t), ±' + de(B0 * 1e3, 0) + ' mT', pad.l + 6, pad.t + 12); ctx.fillStyle = css('--arrow'); ctx.fillText('Induktionsspannung, ±' + unit(U, 'V'), pad.l + 6, pad.t + 28);
       texHTML($('trOut'), 'Periode \\(T = 1/f = ' + deT(T * 1000, 1) + '\\,\\mathrm{ms}\\). Auf jedem geraden Stück: \\(|\\mathrm{d}B/\\mathrm{d}t| = 2B_0/(T/2) = 4\\cdot B_0\\cdot f = ' + deT(slope, 3) + '\\,\\mathrm{T/s}\\)<br>\\(U_{\\mathrm{ind}} = -N\\cdot A\\cdot\\mathrm{d}B/\\mathrm{d}t = \\mp ' + N + '\\cdot ' + sciT(A, 2) + '\\,\\mathrm{m^2}\\cdot ' + deT(slope, 3) + '\\,\\mathrm{T/s} = \\htmlClass{hl}{\\mp ' + unitT(U, 'V') + '}\\) (Rechteck, Frequenz \\(' + f + '\\,\\mathrm{Hz}\\))<br><span class="small">Steigender \\(B\\)-Abschnitt → negative Spannung, fallender → positive. \\(f\\) verdoppeln → Steigung und Spannung verdoppeln.</span>');
     }
     [sF, sB, sN, sA].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
@@ -502,19 +629,29 @@
   /* ---------- 3 Generator ---------- */
   (function generator() {
     const cv = $('gnCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sF = $('gnF'), sB = $('gnB'), sN = $('gnN'), sA = $('gnA');
-    let t0 = performance.now();
-    function params() { return { f: parseFloat(sF.value), B: parseFloat(sB.value), N: parseFloat(sN.value), A: parseFloat(sA.value) * 1e-4 }; }
-    function labels() { const p = params(); texHTML($('gnFv'), '\\(' + p.f + '\\,\\mathrm{Hz}\\)'); texHTML($('gnBv'), '\\(' + deT(p.B * 1e3, 0) + '\\,\\mathrm{mT}\\)'); $('gnNv').textContent = p.N; texHTML($('gnAv'), '\\(' + deT(p.A * 1e4, 1) + '\\,\\mathrm{cm^2}\\)'); const U = 2 * Math.PI * p.N * p.A * p.B * p.f; texHTML($('gnOut'), '\\(\\hat{U} = 2\\pi\\cdot N\\cdot A\\cdot B\\cdot f = 2\\pi\\cdot ' + p.N + '\\cdot ' + sciT(p.A, 2) + '\\,\\mathrm{m^2}\\cdot ' + deT(p.B, 2) + '\\,\\mathrm{T}\\cdot ' + p.f + '\\,\\mathrm{Hz} = \\htmlClass{hl}{' + unitT(U, 'V') + '}\\) &nbsp; \\(U_{\\mathrm{eff}} = \\hat{U}/\\sqrt{2} = ' + unitT(U / Math.SQRT2, 'V') + '\\) &nbsp; \\(T = 1/f = ' + deT(1000 / p.f, 1) + '\\,\\mathrm{ms}\\)<br><span class="small">Links: Spule (Seitenansicht) dreht sich im horizontalen Feld. Rechts: Fluss \\(\\propto \\sin(\\omega t)\\), Spannung \\(\\propto -\\cos(\\omega t)\\). Spule senkrecht zum Feld → Fluss maximal, Spannung null.</span>'); }
+    const B_STEPS = [0.1, 0.16, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000]; // Reglerstufen in mT, Heft-Wert 0,16 mT ist Stufe 1
+    const F_ANIM_MAX = 2; // Umdrehungen pro Sekunde, die die Animation höchstens zeigt
+    let phase = 0, last = performance.now();
+    function params() { return { f: parseFloat(sF.value), BmT: B_STEPS[parseInt(sB.value, 10)] || 0.16, N: parseFloat(sN.value), A: parseFloat(sA.value) * 1e-4 }; }
+    const fmtB = (mT) => mT >= 1000 ? deT(mT / 1000, 0) + '\\,\\mathrm{T}' : (mT >= 10 ? deT(mT, 0) : deT(mT, 2)) + '\\,\\mathrm{mT}';
+    function labels() {
+      const p = params(), B = p.BmT * 1e-3;
+      texHTML($('gnFv'), '\\(' + p.f + '\\,\\mathrm{Hz}\\)'); texHTML($('gnBv'), '\\(' + fmtB(p.BmT) + '\\)'); $('gnNv').textContent = p.N; texHTML($('gnAv'), '\\(' + deT(p.A * 1e4, 1) + '\\,\\mathrm{cm^2}\\)');
+      const U = 2 * Math.PI * p.N * p.A * B * p.f;
+      texHTML($('gnOut'), '\\(\\hat{U} = 2\\pi\\cdot N\\cdot A\\cdot B\\cdot f = 2\\pi\\cdot ' + p.N + '\\cdot ' + sciT(p.A, 2) + '\\,\\mathrm{m^2}\\cdot ' + sciT(B, 2) + '\\,\\mathrm{T}\\cdot ' + p.f + '\\,\\mathrm{Hz} = \\htmlClass{hl}{' + unitT(U, 'V') + '}\\) &nbsp; \\(T = 1/f = ' + deT(1000 / p.f, 1) + '\\,\\mathrm{ms}\\)<br><span class="small">Links: Spule (Seitenansicht) dreht sich im horizontalen Feld. Rechts: Fluss \\(\\propto \\sin(\\omega t)\\), Spannung \\(\\propto -\\cos(\\omega t)\\). Spule senkrecht zum Feld → Fluss maximal, Spannung null.</span>');
+    }
     function draw(now) {
-      const p = params(); const phase = ((now - t0) / 1000) * 0.5 * 2 * Math.PI; // 0,5 Umdrehungen pro Sekunde (Anzeige)
+      const p = params(), fAnim = Math.min(p.f, F_ANIM_MAX);
+      phase += ((now - last) / 1000) * fAnim * 2 * Math.PI; last = now; // Drehwinkel wächst mit der eingestellten Frequenz, oberhalb von 2 Hz gebremst
       ctx.clearRect(0, 0, W, H);
       const cx = 120, cy = H / 2;
       for (let y = cy - 90; y <= cy + 90; y += 30) arrowLine(ctx, 20, y, 220, y, css('--field'), 1.2);
-      ctx.fillStyle = css('--field'); ctx.font = '12px system-ui'; ctx.fillText('B', 206, cy - 100);
+      ctx.fillStyle = css('--field'); ctx.font = '12px system-ui'; ctx.fillText('B (homogen)', 180, cy - 100);
       const ang = phase, L = 70;
       ctx.strokeStyle = css('--fg'); ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(cx - L * Math.cos(ang), cy - L * Math.sin(ang)); ctx.lineTo(cx + L * Math.cos(ang), cy + L * Math.sin(ang)); ctx.stroke();
       ctx.fillStyle = css('--fg'); ctx.beginPath(); ctx.arc(cx, cy, 4, 0, 2 * Math.PI); ctx.fill();
-      ctx.font = '12px system-ui'; ctx.fillText('Spule, φ = ' + de(((ang * 180 / Math.PI) % 360 + 360) % 360, 0) + '°', cx - 50, cy + 110);
+      ctx.font = '12px system-ui'; ctx.fillText('Spule (Seitenansicht), φ = ' + de(((ang * 180 / Math.PI) % 360 + 360) % 360, 0) + '°', cx - 90, cy + 110);
+      if (p.f > F_ANIM_MAX) { ctx.fillStyle = css('--warn'); ctx.font = '11px system-ui'; ctx.fillText('Animation nicht maßstäblich: gezeigt ' + F_ANIM_MAX + ' Umdrehungen/s statt ' + p.f + ' Hz', 12, H - 8); ctx.font = '12px system-ui'; }
       const pad = { l: 290, r: 16, t: 16, b: 36 }, w = W - pad.l - pad.r, ymid = (pad.t + H - pad.b) / 2, amp = (H - pad.t - pad.b) / 2 - 12;
       ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad.l, ymid); ctx.lineTo(W - pad.r, ymid); ctx.stroke();
       ctx.strokeStyle = css('--field'); ctx.lineWidth = 2.5; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const th = 2 * Math.PI * i / 200, y = ymid - amp * 0.9 * Math.sin(th); if (i === 0) ctx.moveTo(pad.l + w * i / 200, y); else ctx.lineTo(pad.l + w * i / 200, y); } ctx.stroke();
@@ -522,38 +659,79 @@
       const ph = ((ang % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI), mx = pad.l + w * ph / (2 * Math.PI);
       ctx.fillStyle = css('--field'); ctx.beginPath(); ctx.arc(mx, ymid - amp * 0.9 * Math.sin(ph), 5, 0, 2 * Math.PI); ctx.fill();
       ctx.fillStyle = css('--arrow'); ctx.beginPath(); ctx.arc(mx, ymid - amp * 0.9 * (-Math.cos(ph)), 5, 0, 2 * Math.PI); ctx.fill();
-      ctx.fillStyle = css('--field'); ctx.fillText('Φ(t) ∝ sin(ωt)', pad.l + 6, pad.t + 12); ctx.fillStyle = css('--arrow'); ctx.fillText('U_ind(t) ∝ −cos(ωt)', pad.l + 6, pad.t + 28);
+      ctx.fillStyle = css('--field'); ctx.fillText('Fluss Φ(t)', pad.l + 6, pad.t + 12); ctx.fillStyle = css('--arrow'); ctx.fillText('Spannung U(t)', pad.l + 6, pad.t + 28);
       ctx.fillStyle = css('--muted'); ctx.fillText('0', pad.l - 4, H - pad.b + 14); ctx.fillText('T/2', pad.l + w / 2 - 8, H - pad.b + 14); ctx.fillText('T', W - pad.r - 6, H - pad.b + 14);
       requestAnimationFrame(draw);
     }
     [sF, sB, sN, sA].forEach((s) => s.addEventListener('input', labels)); labels(); requestAnimationFrame(draw);
   })();
 
-  /* ---------- 4 Lenz ---------- */
+  /* ---------- 4 Lenz (SVG-Szene: Seitenansicht + Blick vom Magneten auf den Ring) ---------- */
   (function lenz() {
-    const cv = $('lzCanvas'), ctx = cv.getContext('2d'), W = cv.width, H = cv.height, sel = $('lzCase');
+    const scene = $('lzScene'), sel = $('lzCase');
+    const pt = (cx, cy, r, aDeg) => [cx + r * Math.cos(aDeg * Math.PI / 180), cy + r * Math.sin(aDeg * Math.PI / 180)];
+    // Kreisbogen von Winkel a0 nach a1 (Grad, Bildschirmkoordinaten); sweep 1 = im Uhrzeigersinn auf dem Bildschirm
+    const arc = (cx, cy, r, a0, a1, sweep) => { const [x0, y0] = pt(cx, cy, r, a0), [x1, y1] = pt(cx, cy, r, a1); return 'M' + x0.toFixed(1) + ',' + y0.toFixed(1) + ' A' + r + ',' + r + ' 0 1,' + sweep + ' ' + x1.toFixed(1) + ',' + y1.toFixed(1); };
+    const arrow = (x1, y1, x2, y2, color, marker, w) => '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '" stroke="var(' + color + ')" stroke-width="' + w + '" marker-end="url(#' + marker + ')"/>';
+    const text = (x, y, s, color, extra) => '<text x="' + x + '" y="' + y + '" fill="var(' + color + ')"' + (extra || '') + '>' + s + '</text>';
+    const dotCross = (x, y, r, toViewer, color, w) => '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="none" stroke="var(' + color + ')" stroke-width="' + w + '"/>' + (toViewer ? '<circle cx="' + x + '" cy="' + y + '" r="' + (r * 0.3) + '" fill="var(' + color + ')"/>' : '<path d="M' + (x - r * 0.6) + ',' + (y - r * 0.6) + ' L' + (x + r * 0.6) + ',' + (y + r * 0.6) + ' M' + (x + r * 0.6) + ',' + (y - r * 0.6) + ' L' + (x - r * 0.6) + ',' + (y + r * 0.6) + '" stroke="var(' + color + ')" stroke-width="' + w + '"/>');
     function update() {
       const c = sel.value, pole = c[0], approaching = c.endsWith('in');
-      const facing = (pole === 'N') === approaching ? 'N' : 'S';           // Lenz: Annäherung → gleicher Pol, Entfernen → Gegenpol
+      const facing = (pole === 'N') === approaching ? 'N' : 'S';   // Lenz: Annäherung → gleicher Pol zugewandt, Entfernen → Gegenpol
       const repel = approaching;
-      ctx.clearRect(0, 0, W, H);
-      const cy = H / 2, rx = 120, mx = 340;
-      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(rx, 20); ctx.lineTo(rx, cy - 40); ctx.stroke();
-      ctx.lineWidth = 5; ctx.beginPath(); ctx.ellipse(rx, cy, 14, 40, 0, 0, 2 * Math.PI); ctx.stroke();
-      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Metallring', rx - 32, cy + 62);
-      ctx.fillStyle = facing === 'N' ? css('--pos') : css('--neg'); ctx.font = 'bold 16px system-ui'; ctx.fillText(facing, rx + 22, cy - 46); ctx.fillStyle = facing === 'N' ? css('--neg') : css('--pos'); ctx.fillText(facing === 'N' ? 'S' : 'N', rx - 36, cy - 46);
-      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.fillText('induzierte Pole', rx - 36, cy - 66);
-      const nLeft = pole === 'N';
-      ctx.fillStyle = nLeft ? css('--pos') : css('--neg'); ctx.fillRect(mx - 60, cy - 16, 60, 32); ctx.fillStyle = nLeft ? css('--neg') : css('--pos'); ctx.fillRect(mx, cy - 16, 60, 32);
-      ctx.fillStyle = '#fff'; ctx.font = 'bold 15px system-ui'; ctx.fillText(nLeft ? 'N' : 'S', mx - 36, cy + 6); ctx.fillText(nLeft ? 'S' : 'N', mx + 24, cy + 6);
-      if (approaching) arrowLine(ctx, mx - 70, cy + 40, mx - 130, cy + 40, css('--fg'), 2.5); else arrowLine(ctx, mx - 130, cy + 40, mx - 70, cy + 40, css('--fg'), 2.5);
-      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText(approaching ? 'Magnet nähert sich' : 'Magnet entfernt sich', mx - 150, cy + 60);
-      if (repel) arrowLine(ctx, rx - 20, cy + 95, rx - 80, cy + 95, css('--arrow'), 3); else arrowLine(ctx, rx + 20, cy + 95, rx + 80, cy + 95, css('--arrow'), 3);
-      ctx.fillStyle = css('--arrow'); ctx.fillText(repel ? 'Ring wird abgestoßen' : 'Ring wird angezogen', rx - 60, cy + 115);
-      const ccw = facing === 'N';
-      texHTML($('lzOut'), (approaching ? 'Fluss \\(\\Phi\\) durch den Ring <b>wächst</b>' : 'Fluss \\(\\Phi\\) durch den Ring <b>sinkt</b>') + ' (Feld des \\(\\mathrm{' + pole + '}\\)-Pols wird ' + (approaching ? 'stärker' : 'schwächer') + ').<br>Lenz: induziertes Feld wirkt der Änderung entgegen → ' + (approaching ? 'entgegengesetzt zum Magnetfeld' : 'gleichgerichtet, es „hält den Fluss fest"') + '.<br>Dem Magneten zugewandt entsteht ein <b>\\(\\mathrm{' + facing + '}\\)-Pol</b> → ' + (repel ? '<b>Abstoßung</b>' : '<b>Anziehung</b>') + ', der Ring folgt der Bewegung des Magneten.<br>Induktionsstrom (technische Richtung, vom Magneten aus gesehen): <b>' + (ccw ? 'gegen den Uhrzeigersinn' : 'im Uhrzeigersinn') + '</b> (Faust-Regel: Daumen zum Nordpol).');
+      // Achse waagerecht, Ring links (x = 110), Magnet rechts. Feld des Magneten am Ring: N zugewandt → vom Magneten weg (nach links), S zugewandt → zum Magneten (nach rechts)
+      const bMagLeft = pole === 'N';
+      // Ringfeld im Ring zeigt von seinem S- zu seinem N-Pol: N dem Magneten zugewandt → nach rechts (zum Magneten)
+      const bIndLeft = facing === 'S';
+      // Elektronenfluss, vom Magneten aus gesehen: Ringfeld zum Betrachter (N zugewandt) → linke Hand: Finger im Uhrzeigersinn, Daumen zum Betrachter
+      const cw = facing === 'N';
+      const rx = 110, ry = 150, mx = 206, nLeft = pole === 'N';
+      let s = '';
+      /* Seitenansicht */
+      s += text(12, 20, 'Seitenansicht', '--muted', ' font-size="11"');
+      s += '<line x1="' + rx + '" y1="28" x2="' + rx + '" y2="' + (ry - 56) + '" stroke="var(--fg)" stroke-width="1.5"/>';
+      s += '<ellipse cx="' + rx + '" cy="' + ry + '" rx="16" ry="56" fill="none" stroke="var(--fg)" stroke-width="5"/>';
+      s += text(rx - 50, ry + 76, 'Metallring (Alu, nicht ferromagnetisch)', '--fg', ' font-size="11"');
+      s += text(rx + 22, ry - 82, 'induzierte Pole des Rings', '--muted', ' font-size="11"');
+      s += text(rx + 24, ry - 62, facing, facing === 'N' ? '--pos' : '--neg', ' font-size="16" font-weight="700"');
+      s += text(rx - 38, ry - 62, facing === 'N' ? 'S' : 'N', facing === 'N' ? '--neg' : '--pos', ' font-size="16" font-weight="700"');
+      s += '<rect x="' + mx + '" y="' + (ry - 16) + '" width="60" height="32" fill="var(' + (nLeft ? '--pos' : '--neg') + ')"/>';
+      s += '<rect x="' + (mx + 60) + '" y="' + (ry - 16) + '" width="60" height="32" fill="var(' + (nLeft ? '--neg' : '--pos') + ')"/>';
+      s += '<text x="' + (mx + 30) + '" y="' + (ry + 6) + '" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">' + (nLeft ? 'N' : 'S') + '</text>';
+      s += '<text x="' + (mx + 90) + '" y="' + (ry + 6) + '" fill="#fff" font-size="15" font-weight="700" text-anchor="middle">' + (nLeft ? 'S' : 'N') + '</text>';
+      const vy = ry - 34;
+      s += approaching ? arrow(mx + 60, vy, mx + 4, vy, '--fg', 'lzArrFg', 2.5) : arrow(mx + 4, vy, mx + 60, vy, '--fg', 'lzArrFg', 2.5);
+      s += text(mx + 2, vy - 10, 'v: Magnet ' + (approaching ? 'nähert sich' : 'entfernt sich'), '--fg', ' font-size="11"');
+      const fy1 = ry - 20, fy2 = ry + 20;
+      s += bMagLeft ? arrow(rx + 72, fy1, rx - 72, fy1, '--field', 'lzArrField', 3) : arrow(rx - 72, fy1, rx + 72, fy1, '--field', 'lzArrField', 3);
+      s += text(rx - 72, fy1 - 9, 'B des Magneten', '--field', ' font-size="11"');
+      s += bIndLeft ? arrow(rx + 52, fy2, rx - 52, fy2, '--kin', 'lzArrInd', 3) : arrow(rx - 52, fy2, rx + 52, fy2, '--kin', 'lzArrInd', 3);
+      s += text(rx - 72, fy2 + 19, 'B des Rings (induziert): ' + (bIndLeft === bMagLeft ? 'gleichgerichtet' : 'entgegengesetzt'), '--kin', ' font-size="11"');
+      const ky = ry + 100;
+      s += repel ? arrow(rx, ky, rx - 70, ky, '--arrow', 'lzArrForce', 3.5) : arrow(rx, ky, rx + 70, ky, '--arrow', 'lzArrForce', 3.5);
+      s += text(rx - 72, ky + 22, 'F auf den Ring: ' + (repel ? 'Abstoßung (gleiche Pole)' : 'Anziehung (ungleiche Pole)'), '--arrow', ' font-size="11"');
+      /* Frontansicht: Blick vom Magneten auf den Ring */
+      const cx = 470, cy = 150, r = 62, rE = r + 14;
+      s += '<line x1="334" y1="12" x2="334" y2="288" stroke="var(--line)" stroke-width="1"/>';
+      s += text(345, 20, 'Blick vom Magneten auf den Ring', '--muted', ' font-size="11"');
+      s += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="none" stroke="var(--fg)" stroke-width="6"/>';
+      [[-30, -30], [30, -30], [-30, 30], [30, 30]].forEach(([dx, dy]) => { s += dotCross(cx + dx, cy + dy, 6, !bMagLeft, '--field', 1.5); });
+      s += dotCross(cx, cy, 11, facing === 'N', '--kin', 2.5);
+      s += '<path d="' + (cw ? arc(cx, cy, rE, -80, 220, 1) : arc(cx, cy, rE, -100, -400, 0)) + '" fill="none" stroke="var(--efield)" stroke-width="3" marker-end="url(#lzArrE)"/>';
+      const [tx, ty] = pt(cx, cy, rE + 12, cw ? 220 : -40);
+      s += text(tx + (cw ? -22 : 4), ty, 'e⁻', '--efield', ' font-size="14" font-weight="700"');
+      s += text(345, cy + r + 24, 'Elektronenfluss ' + (cw ? 'im Uhrzeigersinn' : 'gegen den Uhrzeigersinn'), '--efield', ' font-size="12" font-weight="600"');
+      s += text(345, cy + r + 42, 'B des Rings: ' + (facing === 'N' ? '⊙ zum Magneten (N zugewandt)' : '⊗ vom Magneten weg (S zugewandt)'), '--kin', ' font-size="11"');
+      s += text(345, cy + r + 58, 'B des Magneten im Ring: ' + (bMagLeft ? '⊗ vom Magneten weg' : '⊙ zum Magneten hin'), '--field', ' font-size="11"');
+      s += text(345, cy + r + 74, '⊙ = zum Betrachter, ⊗ = vom Betrachter weg', '--muted', ' font-size="11"');
+      scene.innerHTML = s;
+      texHTML($('lzOut'),
+        '<b>1. Fluss:</b> Der Fluss \\(\\Phi\\) durch den Ring <b>' + (approaching ? 'wächst' : 'sinkt') + '</b> (das Feld des \\(\\mathrm{' + pole + '}\\)-Pols am Ring wird ' + (approaching ? 'stärker' : 'schwächer') + ').<br>' +
+        '<b>2. Lenz:</b> Das induzierte Feld des Rings wirkt der Änderung entgegen, es ist zum Magnetfeld ' + (approaching ? '<b>entgegengesetzt</b>' : '<b>gleichgerichtet</b> (es „hält den Fluss fest")') + '. Dem Magneten zugewandt entsteht ein <b>\\(\\mathrm{' + facing + '}\\)-Pol</b>.<br>' +
+        '<b>3. Elektronenfluss</b> (physikalische Stromrichtung), vom Magneten aus gesehen: <b>' + (cw ? 'im Uhrzeigersinn' : 'gegen den Uhrzeigersinn') + '</b>. Linke Hand: Finger in Richtung der Elektronen um den Ring gekrümmt, der Daumen zeigt zum Nordpol des Ringfelds, also ' + (facing === 'N' ? 'zum Magneten' : 'vom Magneten weg') + '. (Die technische Stromrichtung wäre genau umgekehrt.)<br>' +
+        '<b>4. Kraft:</b> ' + (repel ? '<b>Abstoßung</b>, gleiche Pole stehen sich gegenüber; der Ring weicht in Bewegungsrichtung des Magneten aus' : '<b>Anziehung</b>, ungleiche Pole; der Ring folgt dem Magneten') + '. In beiden Fällen bewegt sich der Ring in Bewegungsrichtung des Magneten (Heft-Beobachtung).');
     }
-    sel.addEventListener('input', update); update(); onTheme(update);
+    sel.addEventListener('input', update); update();
   })();
 
   /* ---------- 5 Fallender Magnet ---------- */
@@ -573,13 +751,35 @@
       for (let i = 0; i <= 600; i++) { const t = tEnd * i / 600, u = U(t, D, k, s); trace.push([t, u]); Umax = Math.max(Umax, Math.abs(u)); }
       const tM = Math.sqrt(2 * z1 / g), tN = Math.sqrt(2 * (z1 + D) / g), vM = g * tM, vN = g * tN;
       let p1 = 0, p2 = 0; trace.forEach(([t, u]) => { if (t < (tM + tN) / 2) p1 = Math.max(p1, Math.abs(u)); else p2 = Math.max(p2, Math.abs(u)); });
-      texHTML($('fmOut'), 'Nulldurchgänge: M bei \\(t = ' + deT(tM * 1000, 0) + '\\,\\mathrm{ms}\\) (Magnetmitte im Zentrum der oberen Spule, \\(v = ' + deT(vM, 2) + '\\,\\mathrm{m/s}\\)), N bei \\(t = ' + deT(tN * 1000, 0) + '\\,\\mathrm{ms}\\) (untere Spule, \\(v = ' + deT(vN, 2) + '\\,\\mathrm{m/s}\\))<br>Peakhöhe untere / obere Spule: \\(\\htmlClass{hl}{' + deT(p2 / p1, 2) + '}' + (k === 1 && s === 1 ? ' \\approx v_N/v_M = ' + deT(vN / vM, 2) + '\\) (schneller ⇒ größere Flussänderungsrate), Peaks entsprechend schmaler' : '\\)' + (k !== 1 ? ' (Windungszahl ' + k + '×' : '') + (s === -1 ? ' umgepolt ⇒ Vorzeichen vertauscht' : '') + ')') + '<br><span class="small">Fläche unter jedem Peak \\(= N\\cdot\\Delta\\Phi\\): bei gleicher Spule gleich groß, nur anders verteilt.</span>');
+      const normal = k === 1 && s === 1;
+      const ratioTex = '\\(\\htmlClass{hl}{' + deT(p2 / p1, 2) + '}' + (normal ? ' \\approx v_N/v_M = ' + deT(vN / vM, 2) : '') + '\\)';
+      const parts = []; if (k !== 1) parts.push('Windungszahl der unteren Spule ×' + deT(k, 1)); if (s === -1) parts.push('untere Spule umgepolt ⇒ Vorzeichen ihrer Peaks vertauscht');
+      const ratioNote = normal ? ' (schneller ⇒ größere Flussänderungsrate), Peaks entsprechend schmaler' : ' (' + parts.join('; ') + ')';
+      texHTML($('fmOut'), 'Nulldurchgänge: M bei \\(t = ' + deT(tM * 1000, 0) + '\\,\\mathrm{ms}\\) (Magnetmitte im Zentrum der oberen Spule, \\(v = ' + deT(vM, 2) + '\\,\\mathrm{m/s}\\)), N bei \\(t = ' + deT(tN * 1000, 0) + '\\,\\mathrm{ms}\\) (untere Spule, \\(v = ' + deT(vN, 2) + '\\,\\mathrm{m/s}\\))<br>Peakhöhe untere / obere Spule: ' + ratioTex + ratioNote + '<br><span class="small">Fläche unter jedem Peak \\(= N\\cdot\\Delta\\Phi\\): bei gleicher Spule gleich groß, nur anders verteilt. Modellrechnung in relativen Einheiten.</span>');
     }
     function drawApparatus(t) {
-      const D = parseFloat(sD.value) * 1e-2, scale = (H - 60) / (z1 + D + 0.12), x = W / 2;
+      const D = parseFloat(sD.value) * 1e-2, scale = (H - 60) / (z1 + D + 0.12), x = 110;
       ctx.clearRect(0, 0, W, H);
       ctx.strokeStyle = css('--line'); ctx.lineWidth = 2; ctx.strokeRect(x - 14, 20, 28, H - 40);
-      [z1, z1 + D].forEach((zc, i) => { const y = 20 + zc * scale; ctx.fillStyle = css('--kin'); ctx.globalAlpha = 0.35; ctx.fillRect(x - 34, y - 14, 68, 28); ctx.globalAlpha = 1; ctx.strokeStyle = css('--kin'); ctx.strokeRect(x - 34, y - 14, 68, 28); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Spule ' + (i + 1), x + 40, y + 4); });
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.fillText('Plexiglasrohr', x - 36, H - 6);
+      const ys = [z1, z1 + D].map((zc) => 20 + zc * scale);
+      ys.forEach((y, i) => { ctx.fillStyle = css('--kin'); ctx.globalAlpha = 0.35; ctx.fillRect(x - 34, y - 14, 68, 28); ctx.globalAlpha = 1; ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2; ctx.strokeRect(x - 34, y - 14, 68, 28); ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Spule ' + (i + 1), x - 96, y + 4); });
+      // Verschaltung wie in M2e: beide Spulen in Reihe, dann ans Oszilloskop
+      const [y1, y2] = ys, yO = (y1 + y2) / 2, bx = 250, bw = 100, bh = 60;
+      ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1.5; ctx.beginPath();
+      ctx.moveTo(x + 34, y1 + 8); ctx.lineTo(175, y1 + 8); ctx.lineTo(175, y2 - 8); ctx.lineTo(x + 34, y2 - 8);
+      ctx.moveTo(x + 34, y1 - 8); ctx.lineTo(205, y1 - 8); ctx.lineTo(205, yO - 12); ctx.lineTo(bx, yO - 12);
+      ctx.moveTo(x + 34, y2 + 8); ctx.lineTo(205, y2 + 8); ctx.lineTo(205, yO + 12); ctx.lineTo(bx, yO + 12);
+      ctx.stroke();
+      ctx.strokeRect(bx, yO - bh / 2, bw, bh);
+      ctx.fillStyle = css('--fg'); ctx.font = '12px system-ui'; ctx.fillText('Oszilloskop', bx + 14, yO - bh / 2 + 15);
+      ctx.strokeStyle = css('--arrow'); ctx.lineWidth = 1.5; ctx.beginPath();
+      for (let i = 0; i <= 40; i++) { const u = i / 40, px = bx + 10 + u * (bw - 20), py = yO + 14 - 16 * Math.sin(u * 4 * Math.PI) * Math.exp(-((u - 0.5) ** 2) * 6); if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+      ctx.stroke();
+      ctx.fillStyle = css('--muted'); ctx.font = '11px system-ui'; ctx.fillText('Spulen in Reihe', 178, y2 + 24); ctx.fillText('→ Oszilloskop', 178, y2 + 38);
+      // Fallrichtung (fest, oben neben dem Rohr)
+      arrowLine(ctx, x + 32, 30, x + 32, 72, css('--fg'), 2);
+      ctx.fillStyle = css('--fg'); ctx.font = '11px system-ui'; ctx.fillText('Fallrichtung', x + 40, 46); ctx.fillText('(beschleunigt, g)', x + 40, 60);
       const z = Math.min(0.5 * g * t * t, z1 + D + 0.12), y = 20 + z * scale;
       ctx.fillStyle = css('--pos'); ctx.fillRect(x - 8, y - 22, 16, 22); ctx.fillStyle = css('--neg'); ctx.fillRect(x - 8, y, 16, 22);
       ctx.fillStyle = '#fff'; ctx.font = 'bold 10px system-ui'; ctx.fillText('N', x - 4, y - 7); ctx.fillText('S', x - 3, y + 15);
@@ -587,13 +787,19 @@
     }
     function drawPlot(tNow) {
       pctx.clearRect(0, 0, PW, PH); const pad = { l: 50, r: 10, t: 16, b: 34 }, ymid = (pad.t + PH - pad.b) / 2, amp = (PH - pad.t - pad.b) / 2 - 8;
-      axes(pctx, PW, PH, pad, 't', 'U_ind (relativ)'); pctx.strokeStyle = css('--line'); pctx.beginPath(); pctx.moveTo(pad.l, ymid); pctx.lineTo(PW - pad.r, ymid); pctx.stroke();
+      axes(pctx, PW, PH, pad, 't in ms', 'Spannung U (relativ)'); pctx.strokeStyle = css('--line'); pctx.beginPath(); pctx.moveTo(pad.l, ymid); pctx.lineTo(PW - pad.r, ymid); pctx.stroke();
+      pctx.fillStyle = css('--muted'); pctx.font = '11px system-ui';
+      [[1, '+1'], [0.5, '+0,5'], [0, '0'], [-0.5, '−0,5'], [-1, '−1']].forEach(([v, lab]) => { const yy = ymid - amp * v; pctx.beginPath(); pctx.moveTo(pad.l - 4, yy); pctx.lineTo(pad.l, yy); pctx.stroke(); pctx.fillText(lab, pad.l - 34, yy + 4); });
       const xs = (t) => pad.l + (t / tEnd) * (PW - pad.l - pad.r);
       pctx.strokeStyle = css('--arrow'); pctx.lineWidth = 2.5; pctx.beginPath(); let first = true;
       trace.forEach(([t, u]) => { if (t > tNow) return; const px = xs(t), py = ymid - amp * u / Umax; if (first) { pctx.moveTo(px, py); first = false; } else pctx.lineTo(px, py); }); pctx.stroke();
-      const D = parseFloat(sD.value) * 1e-2, tM = Math.sqrt(2 * z1 / g), tN = Math.sqrt(2 * (z1 + D) / g);
+      const D = parseFloat(sD.value) * 1e-2, tM = Math.sqrt(2 * z1 / g), tN = Math.sqrt(2 * (z1 + D) / g), mid = (tM + tN) / 2;
       pctx.fillStyle = css('--fg'); pctx.font = '12px system-ui'; if (tNow >= tM) pctx.fillText('M', xs(tM) - 4, ymid - 8); if (tNow >= tN) pctx.fillText('N', xs(tN) - 4, ymid - 8);
-      pctx.fillStyle = css('--muted'); for (let t = 0; t <= tEnd; t += 0.1) pctx.fillText(de(t * 1000, 0) + ' ms', xs(t) - 14, PH - pad.b + 14);
+      // Peaks beschriften: Eintritt (vor M bzw. N), Austritt (danach)
+      const peakIn = (ta, tb) => { let best = -1; trace.forEach(([t, u], i) => { if (t >= ta && t <= tb && (best < 0 || Math.abs(u) > Math.abs(trace[best][1]))) best = i; }); return best; };
+      pctx.font = '11px system-ui';
+      [[peakIn(0, tM), 'Eintritt 1'], [peakIn(tM, mid), 'Austritt 1'], [peakIn(mid, tN), 'Eintritt 2'], [peakIn(tN, tEnd), 'Austritt 2']].forEach(([idx, lab]) => { if (idx < 0) return; const [t, u] = trace[idx]; if (t > tNow) return; pctx.fillText(lab, xs(t) - 24, ymid - amp * u / Umax + (u < 0 ? 14 : -6)); });
+      pctx.fillStyle = css('--muted'); for (let t = 0; t <= tEnd; t += 0.1) pctx.fillText(de(t * 1000, 0), xs(t) - 8, PH - pad.b + 14);
     }
     function start() { compute(); t0 = performance.now(); running = true; if (anim) cancelAnimationFrame(anim); step(); }
     function step() { const tNow = Math.min(tEnd, (performance.now() - t0) / 1000 / 4); drawApparatus(tNow); drawPlot(tNow); if (tNow < tEnd) anim = requestAnimationFrame(step); else running = false; }
@@ -613,17 +819,21 @@
       texHTML($('rlRv'), '\\(' + R + '\\,\\Omega\\)'); texHTML($('rlLv'), '\\(' + deT(L, 1) + '\\,\\mathrm{H}\\)'); texHTML($('rlUv'), '\\(' + deT(U0, 1) + '\\,\\mathrm{V}\\)');
       const tau = L / R, th = Math.LN2 * tau, Imax = U0 / R, E = 0.5 * L * Imax * Imax, tmax = 5 * tau;
       ctx.clearRect(0, 0, W, H); const pad = { l: 60, r: 60, t: 20, b: 40 };
-      const xs = (t) => pad.l + (t / tmax) * (W - pad.l - pad.r), ys = (f) => H - pad.b - f * (H - pad.t - pad.b);
+      const fmin = on ? 0 : -1;   // Ausschalten: U_L = −R·I liegt unter der Achse (Umpolung)
+      const xs = (t) => pad.l + (t / tmax) * (W - pad.l - pad.r), ys = (f) => H - pad.b - (f - fmin) / (1 - fmin) * (H - pad.t - pad.b);
       ctx.strokeStyle = css('--line'); ctx.lineWidth = 1; ctx.fillStyle = css('--muted'); ctx.font = '12px system-ui';
       for (let k = 0; k <= 5; k++) { ctx.beginPath(); ctx.moveTo(xs(k * tau), pad.t); ctx.lineTo(xs(k * tau), H - pad.b); ctx.stroke(); ctx.fillText(k + 'τ = ' + unit(k * tau, 's'), xs(k * tau) - 24, H - pad.b + 16); }
-      for (let f = 0; f <= 1; f += 0.25) { ctx.beginPath(); ctx.moveTo(pad.l, ys(f)); ctx.lineTo(W - pad.r, ys(f)); ctx.stroke(); ctx.fillText(unit(f * Imax, 'A'), 4, ys(f) + 4); ctx.fillText(de(f * U0, 1) + ' V', W - pad.r + 4, ys(f) + 4); }
-      const I = (t) => on ? 1 - Math.exp(-t / tau) : Math.exp(-t / tau), UL = (t) => Math.exp(-t / tau);
+      for (let f = fmin; f <= 1 + 1e-9; f += 0.25) { ctx.beginPath(); ctx.moveTo(pad.l, ys(f)); ctx.lineTo(W - pad.r, ys(f)); ctx.stroke(); if (f >= 0) ctx.fillText(unit(f * Imax, 'A'), 4, ys(f) + 4); ctx.fillText(de(f * U0, 1).replace('-', '−') + ' V', W - pad.r + 4, ys(f) + 4); }
+      if (!on) { ctx.strokeStyle = css('--fg'); ctx.beginPath(); ctx.moveTo(pad.l, ys(0)); ctx.lineTo(W - pad.r, ys(0)); ctx.stroke(); }
+      const I = (t) => on ? 1 - Math.exp(-t / tau) : Math.exp(-t / tau), UL = (t) => on ? Math.exp(-t / tau) : -Math.exp(-t / tau);
       ctx.strokeStyle = css('--kin'); ctx.lineWidth = 2.5; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const t = tmax * i / 200; if (i === 0) ctx.moveTo(xs(t), ys(I(t))); else ctx.lineTo(xs(t), ys(I(t))); } ctx.stroke();
       ctx.strokeStyle = css('--accent'); ctx.lineWidth = 2.5; ctx.beginPath(); for (let i = 0; i <= 200; i++) { const t = tmax * i / 200; if (i === 0) ctx.moveTo(xs(t), ys(UL(t))); else ctx.lineTo(xs(t), ys(UL(t))); } ctx.stroke();
       ctx.setLineDash([5, 4]); ctx.strokeStyle = css('--fg'); ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(xs(tau), ys(0)); ctx.lineTo(xs(tau), ys(I(tau))); ctx.stroke(); ctx.beginPath(); ctx.moveTo(xs(th), ys(0)); ctx.lineTo(xs(th), ys(0.5)); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = css('--fg'); ctx.fillText('τ: ' + (on ? '63 %' : '37 %'), xs(tau) + 4, ys(I(tau)) - 6); ctx.fillText('t½: 50 %', xs(th) + 4, ys(0.5) + 14);
-      ctx.fillStyle = css('--kin'); ctx.fillText('I(t)', pad.l + 6, on ? ys(0.1) : ys(0.95)); ctx.fillStyle = css('--accent'); ctx.fillText(on ? 'U_L(t) (an der Spule)' : 'U_L(t) ∝ I (Betrag)', xs(1.5 * tau), ys(Math.exp(-1.5)) - 8);
-      texHTML($('rlOut'), '\\(\\tau = L/R = ' + deT(L, 1) + '\\,\\mathrm{H} / ' + R + '\\,\\Omega = \\htmlClass{hl}{' + unitT(tau, 's') + '}\\) &nbsp; \\(t_{1/2} = \\ln 2\\cdot\\tau = \\htmlClass{hl}{' + unitT(th, 's') + '}\\) &nbsp; \\(I_{\\mathrm{max}} = U_0/R = ' + unitT(Imax, 'A') + '\\) &nbsp; \\(E = \\tfrac12 L I_{\\mathrm{max}}^2 = \\htmlClass{hl}{' + unitT(E, 'J') + '}\\)<br>' + (on ? 'Einschalten: \\(I(t) = I_{\\mathrm{max}}\\,(1 - e^{-t/\\tau})\\), \\(U_L(t) = U_0\\cdot e^{-t/\\tau}\\): Spannung springt auf \\(U_0\\) und fällt, Strom steigt träge.' : 'Ausschalten: \\(I(t) = I_{\\mathrm{max}}\\cdot e^{-t/\\tau}\\); die Spule treibt den Strom weiter, ihre Energie wird im Widerstand zu Wärme.') + '<br><span class="small">Heft-Messreihe (\\(R = 100\\,\\Omega\\)): Exponentialregression \\(I = ' + deT(aH, 3) + '\\,\\mathrm{A}\\cdot ' + deT(bH, 3) + '^{t/\\mathrm{ms}}\\) → \\(\\tau = -1/\\ln(' + deT(bH, 3) + ')\\,\\mathrm{ms} = ' + deT(tauH, 1) + '\\,\\mathrm{ms}\\) → \\(L = \\tau\\cdot R = ' + deT(tauH * 0.1, 2) + '\\,\\mathrm{H}\\), \\(E = \\tfrac12\\cdot L\\cdot I_{\\mathrm{max}}^2 = ' + deT(0.5 * tauH * 0.1 * aH * aH, 3) + '\\,\\mathrm{J}\\).</span>');
+      ctx.fillStyle = css('--kin'); ctx.fillText('Strom I(t)', pad.l + 6, on ? ys(0.1) : ys(0.95)); ctx.fillStyle = css('--accent'); ctx.fillText(on ? 'Spulenspannung (an der Spule)' : 'Spulenspannung, umgepolt (negativ)', xs(1.5 * tau), on ? ys(Math.exp(-1.5)) - 8 : ys(-Math.exp(-1.5)) + 16);
+      ctx.fillStyle = css('--muted'); ctx.fillText('Strom', 4, pad.t - 6); ctx.fillText('Spannung', W - pad.r + 4, pad.t - 6);
+      texHTML($('rlLegend'), '<span><span class="sw" style="background:var(--kin)"></span>' + (on ? '\\(I(t) = I_{\\mathrm{max}}\\,(1 - e^{-t/\\tau})\\)' : '\\(I(t) = I_{\\mathrm{max}}\\,e^{-t/\\tau}\\)') + ', linke Achse</span><span><span class="sw" style="background:var(--accent)"></span>' + (on ? '\\(U_L(t) = U_0\\,e^{-t/\\tau}\\), rechte Achse (springt auf \\(U_0\\), fällt)' : '\\(U_L(t) = -R\\cdot I(t) = -U_0\\,e^{-t/\\tau}\\), rechte Achse (negativ: Polung kehrt sich um, die Spule treibt den Strom weiter)') + '</span>');
+      texHTML($('rlOut'), '\\(\\tau = L/R = ' + deT(L, 1) + '\\,\\mathrm{H} / ' + R + '\\,\\Omega = \\htmlClass{hl}{' + unitT(tau, 's') + '}\\) &nbsp; \\(t_{1/2} = \\ln 2\\cdot\\tau = \\htmlClass{hl}{' + unitT(th, 's') + '}\\) &nbsp; \\(I_{\\mathrm{max}} = U_0/R = ' + unitT(Imax, 'A') + '\\) &nbsp; \\(E = \\tfrac12 L I_{\\mathrm{max}}^2 = \\htmlClass{hl}{' + unitT(E, 'J') + '}\\)<br>' + (on ? 'Einschalten: \\(I(t) = I_{\\mathrm{max}}\\,(1 - e^{-t/\\tau})\\), \\(U_L(t) = U_0\\cdot e^{-t/\\tau}\\): Spannung springt auf \\(U_0\\) und fällt, Strom steigt träge.' : 'Ausschalten: \\(I(t) = I_{\\mathrm{max}}\\cdot e^{-t/\\tau}\\), \\(U_L(t) = -R\\cdot I(t)\\): die Spule treibt den Strom weiter (Masche \\(U_R + U_L = 0\\)), ihre Energie wird im Widerstand zu Wärme.') + '<br><span class="small">Heft-Messreihe (\\(R = 100\\,\\Omega\\)): Exponentialregression \\(I = ' + deT(aH, 3) + '\\,\\mathrm{A}\\cdot b^{t/\\mathrm{ms}}\\) mit ungerundetem \\(\\mathrm{Stat.b} = ' + deT(bH, 5) + '\\) → \\(\\tau = -1\\,\\mathrm{ms}/\\ln(\\mathrm{Stat.b}) = ' + deT(tauH, 1) + '\\,\\mathrm{ms}\\) (gerundet \\(48\\,\\mathrm{ms}\\); mit dem gerundeten \\(b = 0{,}979\\) kämen nur \\(' + deT(-1 / Math.log(0.979), 0) + '\\,\\mathrm{ms}\\) heraus) → \\(L = \\tau\\cdot R = ' + deT(tauH * 0.1, 1) + '\\,\\mathrm{H}\\), \\(E = \\tfrac12\\cdot L\\cdot I_{\\mathrm{max}}^2 = ' + deT(0.5 * tauH * 0.1 * aH * aH, 3) + '\\,\\mathrm{J}\\).</span>');
     }
     [sM, sR, sL, sU].forEach((s) => s.addEventListener('input', update)); update(); onTheme(update);
   })();
@@ -659,7 +869,7 @@
     $('quizScore').textContent = 'Stand: 0 von 0';
   })();
 
-  /* ---------- 13 Fortschritt ---------- */
+  /* ---------- 12 Fortschritt (Abschnitt s13) ---------- */
   (function progress() {
     const key = 'physik-l5-progress'; let state = {};
     try { state = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) { state = {}; }
