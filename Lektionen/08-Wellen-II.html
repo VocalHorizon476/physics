@@ -127,6 +127,65 @@
     <li><b>Hell und dunkel:</b> Gangunterschied <span class="f">\(n\lambda\)</span> ⇒ konstruktiv (hell), <span class="f">\((n+\tfrac12)\lambda\)</span> ⇒ destruktiv (dunkel). Heft-Beispiel: Spiegel 2 um <span class="f">\(\lambda/8\)</span> verschoben ⇒ Gangunterschied <span class="f">\(\lambda/4\)</span> ⇒ Phasenverschiebung <span class="f">\(90^\circ\)</span> (Sinus wird zu Kosinus).</li>
     <li><b>Zählen statt messen:</b> Verschiebt man den Spiegel um <span class="f">\(\lambda/2\)</span>, wandert der Gangunterschied um <span class="f">\(\lambda\)</span>: genau ein Hell-Dunkel-Hell-Zyklus. Zählt man beim Verschieben die Maxima (oder die Minima), gilt (Heft):</li>
   </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 200" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Arm zu Spiegel 2: Verschiebt man den Spiegel um Delta x, wird der Weg hin und zurück je um Delta x länger, zusammen um 2 Delta x">
+        <defs>
+          <marker id="w8mf-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <marker id="w8mf-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <pattern id="w8mf-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="1.6"/></pattern>
+        </defs>
+        <text x="240" y="14" font-size="10" fill="var(--muted)" text-anchor="middle">Spiegel 2 wird verschoben</text>
+        <line x1="213.6" y1="38" x2="266.4" y2="38" stroke="var(--fg)" stroke-width="1.4" marker-end="url(#w8mf-fg)" marker-start="url(#w8mf-fg)"/>
+        <text x="240" y="31" font-size="11" fill="var(--fg)" text-anchor="middle">Δ<tspan font-style="italic">x</tspan></text>
+        <line x1="30" y1="118" x2="54" y2="70" stroke="var(--fg)" stroke-width="2.6"/>
+        <line x1="210" y1="50" x2="210" y2="136" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 4"/>
+        <rect x="271.5" y="50" width="8" height="86" fill="url(#w8mf-hatch)"/>
+        <line x1="270" y1="50" x2="270" y2="136" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="50" y1="82" x2="210" y2="82" stroke="var(--arrow)" stroke-width="1.8"/>
+        <line x1="210" y1="82" x2="270" y2="82" stroke="var(--kin)" stroke-width="4.5"/>
+        <line x1="210" y1="104" x2="50" y2="104" stroke="var(--arrow)" stroke-width="1.8"/>
+        <line x1="270" y1="104" x2="210" y2="104" stroke="var(--kin)" stroke-width="4.5"/>
+        <line x1="123" y1="82" x2="133.4" y2="82" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8mf-arrow)"/>
+        <line x1="137" y1="104" x2="126.6" y2="104" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8mf-arrow)"/>
+        <text x="130" y="73" font-size="10" fill="var(--muted)" text-anchor="middle">hin</text>
+        <text x="130" y="121" font-size="10" fill="var(--muted)" text-anchor="middle">zurück</text>
+        <text x="240" y="73" font-size="11" fill="var(--kin)" text-anchor="middle" font-weight="bold">Δ<tspan font-style="italic">x</tspan></text>
+        <text x="240" y="121" font-size="11" fill="var(--kin)" text-anchor="middle" font-weight="bold">Δ<tspan font-style="italic">x</tspan></text>
+        <text x="286" y="89" font-size="10" fill="var(--muted)">Mehrweg:</text>
+        <text x="286" y="106" font-size="13" fill="var(--kin)" font-weight="bold">2·Δ<tspan font-style="italic">x</tspan></text>
+        <text x="42" y="152" font-size="10" fill="var(--muted)" text-anchor="middle">Strahlteiler</text>
+        <text x="210" y="152" font-size="10" fill="var(--muted)" text-anchor="middle">vorher</text>
+        <text x="270" y="152" font-size="10" fill="var(--muted)" text-anchor="middle">nachher</text>
+        <text x="180" y="176" font-size="10.5" fill="var(--fg)" text-anchor="middle">Hell–dunkel–hell braucht +<tspan font-style="italic">λ</tspan> Gangunterschied</text>
+        <text x="180" y="193" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">⇒ Spiegel nur um Δ<tspan font-style="italic">x</tspan> = <tspan font-style="italic">λ</tspan>/2 verschieben</text>
+      </svg>
+      <p class="small">Warum Faktor 2: Der Strahl läuft den Arm zu Spiegel 2 hin <b>und</b> zurück (hier versetzt gezeichnet). Verschiebt man Spiegel 2 um <span class="f">\(\Delta x\)</span>, wird der Weg um <span class="f">\(2\Delta x\)</span> länger. Ein Zyklus hell–dunkel–hell braucht <span class="f">\(\lambda\)</span> mehr Gangunterschied, also nur <span class="f">\(\Delta x = \lambda/2\)</span> Verschiebung.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 204" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Heft-Beispiel: Teilwellen 4.3 und 4.2 am Detektor, einmal gegenphasig, einmal um 90 Grad verschoben, jeweils mit ihrer Summe">
+        <text x="22" y="18" font-size="10.5" fill="var(--fg)" font-weight="bold">Bsp. 1: gegenphasig (180°)</text>
+        <line x1="22" y1="58" x2="246" y2="58" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M22,58 L24,55.9 L26,53.9 L28,51.9 L30,50 L32,48.2 L34,46.5 L36,44.9 L38,43.5 L40,42.3 L42,41.2 L44,40.3 L46,39.7 L48,39.3 L50,39 L52,39 L54,39.3 L56,39.7 L58,40.3 L60,41.2 L62,42.3 L64,43.5 L66,44.9 L68,46.5 L70,48.2 L72,50 L74,51.9 L76,53.9 L78,55.9 L80,58 L82,60.1 L84,62.1 L86,64.1 L88,66 L90,67.8 L92,69.5 L94,71.1 L96,72.5 L98,73.7 L100,74.8 L102,75.7 L104,76.3 L106,76.7 L108,77 L110,77 L112,76.7 L114,76.3 L116,75.7 L118,74.8 L120,73.7 L122,72.5 L124,71.1 L126,69.5 L128,67.8 L130,66 L132,64.1 L134,62.1 L136,60.1 L138,58 L140,55.9 L142,53.9 L144,51.9 L146,50 L148,48.2 L150,46.5 L152,44.9 L154,43.5 L156,42.3 L158,41.2 L160,40.3 L162,39.7 L164,39.3 L166,39 L168,39 L170,39.3 L172,39.7 L174,40.3 L176,41.2 L178,42.3 L180,43.5 L182,44.9 L184,46.5 L186,48.2 L188,50 L190,51.9 L192,53.9 L194,55.9 L196,58 L198,60.1 L200,62.1 L202,64.1 L204,66 L206,67.8 L208,69.5 L210,71.1 L212,72.5 L214,73.7 L216,74.8 L218,75.7 L220,76.3 L222,76.7 L224,77 L226,77 L228,76.7 L230,76.3 L232,75.7 L234,74.8 L236,73.7 L238,72.5 L240,71.1 L242,69.5 L244,67.8 L246,66" fill="none" stroke="var(--kin)" stroke-width="1.8"/>
+        <path d="M22,58 L24,60.1 L26,62.1 L28,64.1 L30,66 L32,67.8 L34,69.5 L36,71.1 L38,72.5 L40,73.7 L42,74.8 L44,75.7 L46,76.3 L48,76.7 L50,77 L52,77 L54,76.7 L56,76.3 L58,75.7 L60,74.8 L62,73.7 L64,72.5 L66,71.1 L68,69.5 L70,67.8 L72,66 L74,64.1 L76,62.1 L78,60.1 L80,58 L82,55.9 L84,53.9 L86,51.9 L88,50 L90,48.2 L92,46.5 L94,44.9 L96,43.5 L98,42.3 L100,41.2 L102,40.3 L104,39.7 L106,39.3 L108,39 L110,39 L112,39.3 L114,39.7 L116,40.3 L118,41.2 L120,42.3 L122,43.5 L124,44.9 L126,46.5 L128,48.2 L130,50 L132,51.9 L134,53.9 L136,55.9 L138,58 L140,60.1 L142,62.1 L144,64.1 L146,66 L148,67.8 L150,69.5 L152,71.1 L154,72.5 L156,73.7 L158,74.8 L160,75.7 L162,76.3 L164,76.7 L166,77 L168,77 L170,76.7 L172,76.3 L174,75.7 L176,74.8 L178,73.7 L180,72.5 L182,71.1 L184,69.5 L186,67.8 L188,66 L190,64.1 L192,62.1 L194,60.1 L196,58 L198,55.9 L200,53.9 L202,51.9 L204,50 L206,48.2 L208,46.5 L210,44.9 L212,43.5 L214,42.3 L216,41.2 L218,40.3 L220,39.7 L222,39.3 L224,39 L226,39 L228,39.3 L230,39.7 L232,40.3 L234,41.2 L236,42.3 L238,43.5 L240,44.9 L242,46.5 L244,48.2 L246,50" fill="none" stroke="var(--muted)" stroke-width="1.8"/>
+        <path d="M22,58 L24,58 L26,58 L28,58 L30,58 L32,58 L34,58 L36,58 L38,58 L40,58 L42,58 L44,58 L46,58 L48,58 L50,58 L52,58 L54,58 L56,58 L58,58 L60,58 L62,58 L64,58 L66,58 L68,58 L70,58 L72,58 L74,58 L76,58 L78,58 L80,58 L82,58 L84,58 L86,58 L88,58 L90,58 L92,58 L94,58 L96,58 L98,58 L100,58 L102,58 L104,58 L106,58 L108,58 L110,58 L112,58 L114,58 L116,58 L118,58 L120,58 L122,58 L124,58 L126,58 L128,58 L130,58 L132,58 L134,58 L136,58 L138,58 L140,58 L142,58 L144,58 L146,58 L148,58 L150,58 L152,58 L154,58 L156,58 L158,58 L160,58 L162,58 L164,58 L166,58 L168,58 L170,58 L172,58 L174,58 L176,58 L178,58 L180,58 L182,58 L184,58 L186,58 L188,58 L190,58 L192,58 L194,58 L196,58 L198,58 L200,58 L202,58 L204,58 L206,58 L208,58 L210,58 L212,58 L214,58 L216,58 L218,58 L220,58 L222,58 L224,58 L226,58 L228,58 L230,58 L232,58 L234,58 L236,58 L238,58 L240,58 L242,58 L244,58 L246,58" fill="none" stroke="var(--fg)" stroke-width="2.4"/>
+        <text x="255" y="41" font-size="10.5" fill="var(--kin)">4.3</text>
+        <text x="255" y="54.5" font-size="10.5" fill="var(--muted)">4.2 (Bsp. 1)</text>
+        <text x="255" y="68" font-size="10.5" fill="var(--fg)" font-weight="bold">Summe 0</text>
+        <text x="255" y="81.5" font-size="10.5" fill="var(--fg)">⇒ dunkel</text>
+        <text x="22" y="120" font-size="10.5" fill="var(--fg)" font-weight="bold">Bsp. 2: Spiegel 2 um <tspan font-style="italic">λ</tspan>/8 weiter ⇒ 90°</text>
+        <line x1="22" y1="160" x2="246" y2="160" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M22,160 L24,157.9 L26,155.9 L28,153.9 L30,152 L32,150.2 L34,148.5 L36,146.9 L38,145.5 L40,144.3 L42,143.2 L44,142.3 L46,141.7 L48,141.3 L50,141 L52,141 L54,141.3 L56,141.7 L58,142.3 L60,143.2 L62,144.3 L64,145.5 L66,146.9 L68,148.5 L70,150.2 L72,152 L74,153.9 L76,155.9 L78,157.9 L80,160 L82,162.1 L84,164.1 L86,166.1 L88,168 L90,169.8 L92,171.5 L94,173.1 L96,174.5 L98,175.7 L100,176.8 L102,177.7 L104,178.3 L106,178.7 L108,179 L110,179 L112,178.7 L114,178.3 L116,177.7 L118,176.8 L120,175.7 L122,174.5 L124,173.1 L126,171.5 L128,169.8 L130,168 L132,166.1 L134,164.1 L136,162.1 L138,160 L140,157.9 L142,155.9 L144,153.9 L146,152 L148,150.2 L150,148.5 L152,146.9 L154,145.5 L156,144.3 L158,143.2 L160,142.3 L162,141.7 L164,141.3 L166,141 L168,141 L170,141.3 L172,141.7 L174,142.3 L176,143.2 L178,144.3 L180,145.5 L182,146.9 L184,148.5 L186,150.2 L188,152 L190,153.9 L192,155.9 L194,157.9 L196,160 L198,162.1 L200,164.1 L202,166.1 L204,168 L206,169.8 L208,171.5 L210,173.1 L212,174.5 L214,175.7 L216,176.8 L218,177.7 L220,178.3 L222,178.7 L224,179 L226,179 L228,178.7 L230,178.3 L232,177.7 L234,176.8 L236,175.7 L238,174.5 L240,173.1 L242,171.5 L244,169.8 L246,168" fill="none" stroke="var(--kin)" stroke-width="1.8"/>
+        <path d="M22,141 L24,141.1 L26,141.4 L28,142 L30,142.8 L32,143.7 L34,144.9 L36,146.2 L38,147.7 L40,149.3 L42,151.1 L44,153 L46,154.9 L48,156.9 L50,159 L52,161 L54,163.1 L56,165.1 L58,167 L60,168.9 L62,170.7 L64,172.3 L66,173.8 L68,175.1 L70,176.3 L72,177.2 L74,178 L76,178.6 L78,178.9 L80,179 L82,178.9 L84,178.6 L86,178 L88,177.2 L90,176.3 L92,175.1 L94,173.8 L96,172.3 L98,170.7 L100,168.9 L102,167 L104,165.1 L106,163.1 L108,161 L110,159 L112,156.9 L114,154.9 L116,153 L118,151.1 L120,149.3 L122,147.7 L124,146.2 L126,144.9 L128,143.7 L130,142.8 L132,142 L134,141.4 L136,141.1 L138,141 L140,141.1 L142,141.4 L144,142 L146,142.8 L148,143.7 L150,144.9 L152,146.2 L154,147.7 L156,149.3 L158,151.1 L160,153 L162,154.9 L164,156.9 L166,159 L168,161 L170,163.1 L172,165.1 L174,167 L176,168.9 L178,170.7 L180,172.3 L182,173.8 L184,175.1 L186,176.3 L188,177.2 L190,178 L192,178.6 L194,178.9 L196,179 L198,178.9 L200,178.6 L202,178 L204,177.2 L206,176.3 L208,175.1 L210,173.8 L212,172.3 L214,170.7 L216,168.9 L218,167 L220,165.1 L222,163.1 L224,161 L226,159 L228,156.9 L230,154.9 L232,153 L234,151.1 L236,149.3 L238,147.7 L240,146.2 L242,144.9 L244,143.7 L246,142.8" fill="none" stroke="var(--efield)" stroke-width="1.8"/>
+        <path d="M22,141 L24,139.1 L26,137.4 L28,135.9 L30,134.8 L32,133.9 L34,133.4 L36,133.1 L38,133.2 L40,133.6 L42,134.3 L44,135.3 L46,136.6 L48,138.2 L50,140 L52,142.1 L54,144.3 L56,146.8 L58,149.4 L60,152.1 L62,154.9 L64,157.8 L66,160.7 L68,163.6 L70,166.5 L72,169.3 L74,171.9 L76,174.5 L78,176.8 L80,179 L82,180.9 L84,182.6 L86,184.1 L88,185.2 L90,186.1 L92,186.6 L94,186.9 L96,186.8 L98,186.4 L100,185.7 L102,184.7 L104,183.4 L106,181.8 L108,180 L110,177.9 L112,175.7 L114,173.2 L116,170.6 L118,167.9 L120,165.1 L122,162.2 L124,159.3 L126,156.4 L128,153.5 L130,150.7 L132,148.1 L134,145.5 L136,143.2 L138,141 L140,139.1 L142,137.4 L144,135.9 L146,134.8 L148,133.9 L150,133.4 L152,133.1 L154,133.2 L156,133.6 L158,134.3 L160,135.3 L162,136.6 L164,138.2 L166,140 L168,142.1 L170,144.3 L172,146.8 L174,149.4 L176,152.1 L178,154.9 L180,157.8 L182,160.7 L184,163.6 L186,166.5 L188,169.3 L190,171.9 L192,174.5 L194,176.8 L196,179 L198,180.9 L200,182.6 L202,184.1 L204,185.2 L206,186.1 L208,186.6 L210,186.9 L212,186.8 L214,186.4 L216,185.7 L218,184.7 L220,183.4 L222,181.8 L224,180 L226,177.9 L228,175.7 L230,173.2 L232,170.6 L234,167.9 L236,165.1 L238,162.2 L240,159.3 L242,156.4 L244,153.5 L246,150.7" fill="none" stroke="var(--fg)" stroke-width="2.4"/>
+        <text x="255" y="143" font-size="10.5" fill="var(--kin)">4.3</text>
+        <text x="255" y="156.5" font-size="10.5" fill="var(--efield)">4.2 (Bsp. 2)</text>
+        <text x="255" y="170" font-size="10.5" fill="var(--fg)" font-weight="bold">Summe √2·<tspan font-style="italic">A</tspan></text>
+        <text x="255" y="183.5" font-size="10.5" fill="var(--fg)">⇒ halb so hell</text>
+      </svg>
+      <p class="small">Heft-Bild nachgezeichnet: Teilwellen 4.3 und 4.2 am Detektor. Bsp. 1: gegenphasig, Summe null, dunkel. Bsp. 2: Spiegel 2 um <span class="f">\(\lambda/8\)</span> weiter ⇒ Gangunterschied <span class="f">\(\lambda/4\)</span> ⇒ Phasenverschiebung <span class="f">\(90^\circ\)</span>. Die Summe hat die Amplitude <span class="f">\(\sqrt2\,A\)</span>, also die halbe Intensität des Maximums <span class="f">\((2A)^2\)</span>.</p>
+    </div>
+  </div>
   <div class="formula">\[\Delta l = n\cdot\frac{\lambda}{2}\qquad n\text{: Anzahl der Maxima ODER Minima, } \Delta l\text{: Verschiebung von Spiegel 2}\]</div>
   <p>Damit misst man Längenänderungen im Bereich der Lichtwellenlänge (Heft: „So können Längenänderungen durch Zählung von Maxima und Minima gemessen werden"), oder umgekehrt die Wellenlänge, wenn die Verschiebung bekannt ist (Abitur 2021: <span class="f">\(\lambda = 2\Delta s \approx 630\,\mathrm{nm}\)</span>, <span class="f">\(\Delta s\)</span> = Abstand zweier Maxima in der Spiegelverschiebung).</p>
   <div class="grid2">
@@ -151,6 +210,116 @@
 <section class="card" id="s2">
   <h2>2 · Der Doppelspalt, exakt gerechnet (Heft)</h2>
   <p><b>Einzelspalt als Quelle:</b> Trifft eine ebene Welle auf einen schmalen Spalt, entsteht dahinter nach Huygens eine Kreiswelle (Heft-Bild „Kreiswellen nach dem Huygensschen Prinzip"). <b>Doppelspalt:</b> zwei Spalte im Abstand <span class="f">\(d\)</span> (Spaltmittenabstand; Abitur schreibt oft <span class="f">\(g\)</span>) senden zwei Kreiswellen gleicher Phase aus. Auf dem Schirm im Abstand <span class="f">\(e\)</span> überlagern sie sich: dort, wo Berg auf Berg trifft, Maxima (0., 1., 2. Ordnung von der Mitte aus), dazwischen Minima. Heft: „Liegt an einem Punkt P ein Gangunterschied von <span class="f">\(n\cdot\lambda\)</span> vor, so ergibt sich in P konstruktive Interferenz. Der Gangunterschied ist die Wegstreckendifferenz zweier Wellen", hier zwischen der Welle des oberen und der des unteren Spaltes.</p>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 200" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Ebene Welle trifft auf einen schmalen Spalt; dahinter breitet sich nach Huygens eine Kreiswelle aus">
+        <defs>
+          <marker id="w8eh-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <clipPath id="w8eh-clip"><rect x="131.5" y="0" width="230" height="200"/></clipPath>
+        </defs>
+        <g clip-path="url(#w8eh-clip)">
+        <path d="M130,86 A20,20 0 0 1 130,126" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.93"/>
+        <path d="M130,66 A40,40 0 0 1 130,146" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.86"/>
+        <path d="M130,46 A60,60 0 0 1 130,166" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.79"/>
+        <path d="M130,26 A80,80 0 0 1 130,186" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.71"/>
+        <path d="M130,6 A100,100 0 0 1 130,206" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.64"/>
+        <path d="M130,-14 A120,120 0 0 1 130,226" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.57"/>
+        <path d="M130,-34 A140,140 0 0 1 130,246" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.5"/>
+        <path d="M130,-54 A160,160 0 0 1 130,266" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.43"/>
+        <path d="M130,-74 A180,180 0 0 1 130,286" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.36"/>
+        <path d="M130,-94 A200,200 0 0 1 130,306" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.3"/>
+        <path d="M130,-114 A220,220 0 0 1 130,326" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.3"/>
+        <path d="M130,-134 A240,240 0 0 1 130,346" fill="none" stroke="var(--kin)" stroke-width="1.6" stroke-opacity="0.3"/>
+        </g>
+        <line x1="30" y1="40" x2="30" y2="172" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="50" y1="40" x2="50" y2="172" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="70" y1="40" x2="70" y2="172" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="90" y1="40" x2="90" y2="172" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="110" y1="40" x2="110" y2="172" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="130" y1="40" x2="130" y2="100" stroke="var(--fg)" stroke-width="4"/>
+        <line x1="130" y1="112" x2="130" y2="172" stroke="var(--fg)" stroke-width="4"/>
+        <line x1="24" y1="27" x2="80.4" y2="27" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8eh-arrow)"/>
+        <text x="24" y="17" font-size="10" fill="var(--arrow)">Ausbreitung</text>
+        <line x1="242.6" y1="41" x2="269.8" y2="25.3" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8eh-arrow)"/>
+        <line x1="236" y1="106" x2="270.4" y2="106" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8eh-arrow)"/>
+        <line x1="242.6" y1="171" x2="269.8" y2="186.7" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8eh-arrow)"/>
+        <text x="280" y="110" font-size="10" fill="var(--arrow)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Ausbreitung</text>
+        <text x="352" y="15" font-size="10.5" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Kreiswelle (Huygens)</text>
+        <text x="124" y="96" font-size="10.5" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Spalt</text>
+        <text x="75" y="190" font-size="10" fill="var(--muted)" text-anchor="middle">ebene Welle (Fronten)</text>
+      </svg>
+      <p class="small">Heft-Bild „Kreiswellen nach dem Huygensschen Prinzip": Hinter einem schmalen Spalt (Breite etwa <span class="f">\(\lambda\)</span>) läuft die ebene Welle als Kreiswelle weiter.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 222" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Doppelspalt: zwei Kreiswellen überlagern sich; Maxima 0. und 1. Ordnung und Minima auf dem Schirm">
+        <defs>
+          <marker id="w8dh-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <marker id="w8dh-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <clipPath id="w8dh-clip"><rect x="101.5" y="26" width="237" height="182"/></clipPath>
+        </defs>
+        <g clip-path="url(#w8dh-clip)">
+        <path d="M100,82 A12,12 0 0 1 100,106" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,122 A12,12 0 0 1 100,146" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,70 A24,24 0 0 1 100,118" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,110 A24,24 0 0 1 100,158" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,58 A36,36 0 0 1 100,130" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,98 A36,36 0 0 1 100,170" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,46 A48,48 0 0 1 100,142" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,86 A48,48 0 0 1 100,182" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,34 A60,60 0 0 1 100,154" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,74 A60,60 0 0 1 100,194" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,22 A72,72 0 0 1 100,166" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,62 A72,72 0 0 1 100,206" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,10 A84,84 0 0 1 100,178" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,50 A84,84 0 0 1 100,218" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-2 A96,96 0 0 1 100,190" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,38 A96,96 0 0 1 100,230" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-14 A108,108 0 0 1 100,202" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,26 A108,108 0 0 1 100,242" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-26 A120,120 0 0 1 100,214" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,14 A120,120 0 0 1 100,254" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-38 A132,132 0 0 1 100,226" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,2 A132,132 0 0 1 100,266" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-50 A144,144 0 0 1 100,238" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-10 A144,144 0 0 1 100,278" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-62 A156,156 0 0 1 100,250" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-22 A156,156 0 0 1 100,290" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-74 A168,168 0 0 1 100,262" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        <path d="M100,-34 A168,168 0 0 1 100,302" fill="none" stroke="var(--accent)" stroke-width="1.1" stroke-opacity="0.45"/>
+        </g>
+        <line x1="100" y1="114" x2="340" y2="150.4" stroke="var(--pos)" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <line x1="100" y1="114" x2="340" y2="77.6" stroke="var(--pos)" stroke-width="1.5" stroke-dasharray="6 4"/>
+        <line x1="100" y1="114" x2="340" y2="189.5" stroke="var(--ok)" stroke-width="1.8"/>
+        <line x1="100" y1="114" x2="340" y2="114" stroke="var(--ok)" stroke-width="1.8"/>
+        <line x1="100" y1="114" x2="340" y2="38.5" stroke="var(--ok)" stroke-width="1.8"/>
+        <line x1="16" y1="44" x2="16" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="28" y1="44" x2="28" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="40" y1="44" x2="40" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="52" y1="44" x2="52" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="64" y1="44" x2="64" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="76" y1="44" x2="76" y2="184" stroke="var(--kin)" stroke-width="1.4"/>
+        <line x1="100" y1="40" x2="100" y2="91" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="100" y1="97" x2="100" y2="131" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="100" y1="137" x2="100" y2="192" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="340" y1="26" x2="340" y2="206" stroke="var(--fg)" stroke-width="3"/>
+        <ellipse cx="340" cy="189.5" rx="4" ry="9" fill="var(--ok)" fill-opacity="0.6"/>
+        <ellipse cx="340" cy="114" rx="4" ry="9" fill="var(--ok)" fill-opacity="0.6"/>
+        <ellipse cx="340" cy="38.5" rx="4" ry="9" fill="var(--ok)" fill-opacity="0.6"/>
+        <line x1="88" y1="97.6" x2="88" y2="130.4" stroke="var(--fg)" stroke-width="1.1" marker-end="url(#w8dh-fg)" marker-start="url(#w8dh-fg)"/>
+        <text x="82" y="118" font-size="11" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">d</tspan></text>
+        <line x1="14" y1="26" x2="58.4" y2="26" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w8dh-arrow)"/>
+        <text x="14" y="16" font-size="10" fill="var(--arrow)">Ausbreitung</text>
+        <text x="100" y="33" font-size="10.5" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Doppelspalt</text>
+        <text x="340" y="16" font-size="10.5" fill="var(--fg)" text-anchor="middle">Schirm</text>
+        <text x="332" y="108" font-size="10" fill="var(--ok)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">0. Ordnung</text>
+        <text x="332" y="33" font-size="10" fill="var(--ok)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Ordnung</text>
+        <text x="332" y="203" font-size="10" fill="var(--ok)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Ordnung</text>
+        <text x="332" y="72" font-size="10" fill="var(--pos)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Minimum</text>
+        <text x="46" y="204" font-size="10" fill="var(--muted)" text-anchor="middle">ebene Welle</text>
+      </svg>
+      <p class="small">Doppelspalt (nicht maßstäblich). Blau: Wellenberge der beiden Kreiswellen. Wo Berg auf Berg trifft, liegen die Maxima (grün: 0. und 1. Ordnung), dazwischen die Minima (rot gestrichelt) mit Gangunterschied <span class="f">\((n+\tfrac12)\lambda\)</span>.</p>
+    </div>
+  </div>
   <h3>Exakte Berechnung (Heft-Skizze mit <span class="f">\(l_1\)</span>, <span class="f">\(l_2\)</span>)</h3>
   <p>Punkt P auf dem Schirm in der Höhe <span class="f">\(a\)</span> über der Mitte. Die Spalte liegen bei <span class="f">\(+d/2\)</span> und <span class="f">\(-d/2\)</span>. Die Wege sind Hypotenusen rechtwinkliger Dreiecke mit der Kathete <span class="f">\(e\)</span> und den Katheten <span class="f">\(a - d/2\)</span> bzw. <span class="f">\(a + d/2\)</span>:</p>
   <div class="formula">\[l_1 = \sqrt{e^2 + (a - d/2)^2},\qquad l_2 = \sqrt{e^2 + (a + d/2)^2},\qquad \Delta l = l_2 - l_1 \overset{!}{=} n\lambda\]</div>
@@ -180,6 +349,75 @@
   <h2>3 · Die Näherung für <span class="f">\(e \gg d\)</span>: die Abiturformel herleiten (Heft, parallel.png)</h2>
   <p>Ist der Spaltabstand <span class="f">\(d\)</span> sehr viel kleiner als der Schirmabstand <span class="f">\(e\)</span> (Heft: „Spaltabstand <span class="f">\(\ll\)</span> Abstand Spalt–Schirm ⇒ ‚Lichtstrahlen' am Schirm sind ungefähr parallel"), laufen die beiden Wege zum Punkt P praktisch <b>parallel</b> unter demselben Winkel <span class="f">\(\alpha\)</span> zur Achse. Dann sieht man den Gangunterschied direkt am Doppelspalt: Fällt man vom oberen Spalt das Lot auf den unteren Weg, ist das abgeschnittene Stück <span class="f">\(\Delta l\)</span>, und im kleinen rechtwinkligen Dreieck mit Hypotenuse <span class="f">\(d\)</span> gilt <span class="f">\(\sin\alpha = \Delta l/d\)</span>. Der Winkel <span class="f">\(\alpha\)</span> ist derselbe wie im großen Dreieck Spalt–Schirmmitte–P: <span class="f">\(\tan\alpha = a/e\)</span>.</p>
   <div class="formula">\[\tan\alpha = \frac{a}{e}\ \Rightarrow\ \alpha = \arctan\frac{a}{e},\qquad \sin\alpha = \frac{\Delta l}{d},\qquad \Delta l = n\lambda\quad\Rightarrow\quad n\cdot\lambda = d\cdot\sin\!\Big(\arctan\frac{a_n}{e}\Big)\]</div>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 220" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Gesamtbild der Näherung: Doppelspalt, Schirm im Abstand e, Punkt P im Abstand a von der Schirmmitte, Winkel alpha">
+        <defs>
+          <marker id="w8ng-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+          <marker id="w8ng-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <line x1="40" y1="22" x2="40" y2="157.5" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="40" y1="162.5" x2="40" y2="177.5" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="40" y1="182.5" x2="40" y2="210" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="320" y1="22" x2="320" y2="210" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="40" y1="170" x2="320" y2="170" stroke="var(--muted)" stroke-width="1" stroke-dasharray="5 4"/>
+        <line x1="40" y1="170" x2="320" y2="68.1" stroke="var(--fg)" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="40" y1="160" x2="320" y2="68.1" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="40" y1="180" x2="320" y2="68.1" stroke="var(--kin)" stroke-width="1.6"/>
+        <line x1="207.9" y1="104.9" x2="215.9" y2="102.3" stroke="var(--kin)" stroke-width="1.6" marker-end="url(#w8ng-kin)"/>
+        <line x1="208" y1="112.8" x2="215.8" y2="109.7" stroke="var(--kin)" stroke-width="1.6" marker-end="url(#w8ng-kin)"/>
+        <path d="M105.8,146.1 A70,70 0 0 1 110,170" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+        <text x="120.8" y="159.6" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan></text>
+        <path d="M312,170 L312,162 L320,162" fill="none" stroke="var(--fg)" stroke-width="1"/>
+        <circle cx="320" cy="68.1" r="3.2" fill="var(--fg)"/>
+        <text x="312" y="62.1" font-size="12" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">P</tspan></text>
+        <line x1="332" y1="166.4" x2="332" y2="71.7" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8ng-fg)" marker-start="url(#w8ng-fg)"/>
+        <text x="338" y="123" font-size="12" fill="var(--fg)"><tspan font-style="italic">a</tspan></text>
+        <line x1="43.6" y1="200" x2="316.4" y2="200" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8ng-fg)" marker-start="url(#w8ng-fg)"/>
+        <text x="180" y="195" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">e</tspan></text>
+        <line x1="30" y1="163.6" x2="30" y2="176.4" stroke="var(--fg)" stroke-width="1" marker-end="url(#w8ng-fg)" marker-start="url(#w8ng-fg)"/>
+        <text x="24" y="174" font-size="11" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">d</tspan></text>
+        <text x="140" y="112" font-size="10.5" fill="var(--kin)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Wege zu <tspan font-style="italic">P</tspan></text>
+        <text x="238" y="152" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">tan <tspan font-style="italic">α</tspan> = <tspan font-style="italic">a</tspan>/<tspan font-style="italic">e</tspan></text>
+        <text x="44" y="14" font-size="10.5" fill="var(--fg)" text-anchor="middle">Doppelspalt</text>
+        <text x="320" y="14" font-size="10.5" fill="var(--fg)" text-anchor="middle">Schirm</text>
+        <text x="56" y="46" font-size="10" fill="var(--muted)">nicht maßstäblich (<tspan font-style="italic">e</tspan> ≫ <tspan font-style="italic">d</tspan>)</text>
+      </svg>
+      <p class="small">Großes Dreieck aus Spaltmitte, Schirmmitte und <span class="f">\(P\)</span> (nicht maßstäblich, in Wirklichkeit <span class="f">\(e \gg d\)</span>): <span class="f">\(\tan\alpha = a/e\)</span>.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 370 240" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Ausschnitt am Doppelspalt: parallele Wege unter alpha, Lot vom oberen Spalt auf den unteren Weg, Gangunterschied Delta l, kleines rechtwinkliges Dreieck mit Hypotenuse d">
+        <defs>
+          <marker id="w8nk-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+          <marker id="w8nk-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <line x1="90" y1="20" x2="90" y2="117" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="90" y1="123" x2="90" y2="197" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="90" y1="203" x2="90" y2="232" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="90" y1="120" x2="346.6" y2="26.6" stroke="var(--kin)" stroke-width="1.8" marker-end="url(#w8nk-kin)"/>
+        <line x1="90" y1="200" x2="346.6" y2="106.6" stroke="var(--kin)" stroke-width="1.8" marker-end="url(#w8nk-kin)"/>
+        <line x1="90" y1="120" x2="115.7" y2="190.6" stroke="var(--fg)" stroke-width="1.3"/>
+        <line x1="90" y1="200" x2="115.7" y2="190.6" stroke="var(--arrow)" stroke-width="3.6" stroke-linecap="round"/>
+        <path d="M109.1,193 L106.7,186.5 L113.3,184.1" fill="none" stroke="var(--fg)" stroke-width="1"/>
+        <path d="M98.2,142.6 A24,24 0 0 1 90,144" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+        <text x="96.1" y="158.3" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan></text>
+        <text x="109.3" y="212.5" font-size="12" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Δ<tspan font-style="italic">l</tspan></text>
+        <line x1="200" y1="80" x2="262" y2="80" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M241.3,64.9 A44,44 0 0 1 244,80" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+        <text x="253.2" y="74.4" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan></text>
+        <line x1="74" y1="123.6" x2="74" y2="196.4" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8nk-fg)" marker-start="url(#w8nk-fg)"/>
+        <text x="66" y="164" font-size="12" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">d</tspan></text>
+        <text x="60" y="124" font-size="10" fill="var(--muted)" text-anchor="end">Spalt 1</text>
+        <text x="60" y="204" font-size="10" fill="var(--muted)" text-anchor="end">Spalt 2</text>
+        <text x="110" y="141" font-size="10.5" fill="var(--fg)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Lot</text>
+        <text x="296" y="77" font-size="10" fill="var(--kin)">parallel,</text>
+        <text x="296" y="90.5" font-size="10" fill="var(--kin)">beide zu <tspan font-style="italic">P</tspan></text>
+        <text x="232" y="190" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">sin <tspan font-style="italic">α</tspan> = Δ<tspan font-style="italic">l</tspan>/<tspan font-style="italic">d</tspan></text>
+        <text x="232" y="206" font-size="10" fill="var(--muted)" text-anchor="middle">(kleines Dreieck)</text>
+      </svg>
+      <p class="small">Ausschnitt am Doppelspalt: Beide Wege laufen praktisch parallel unter <span class="f">\(\alpha\)</span> zur Achse. Das Lot vom oberen Spalt auf den unteren Weg schneidet den Gangunterschied <span class="f">\(\Delta l\)</span> ab. Im kleinen rechtwinkligen Dreieck mit Hypotenuse <span class="f">\(d\)</span> liegt am Spalt derselbe Winkel <span class="f">\(\alpha\)</span> (seine Schenkel stehen senkrecht auf Achse und Weg): <span class="f">\(\sin\alpha = \Delta l/d\)</span>. Genau diese Linien verlangt „Skizze vervollständigen".</p>
+    </div>
+  </div>
   <ul>
     <li><b>Warum zwei Winkelfunktionen?</b> <span class="f">\(\tan\)</span> kommt aus dem großen Dreieck (Schirmgeometrie), <span class="f">\(\sin\)</span> aus dem kleinen (Gangunterschied). Für kleine Winkel sind <span class="f">\(\sin\alpha \approx \tan\alpha \approx \alpha\)</span>, dann <span class="f">\(n\lambda \approx d\cdot a_n/e\)</span>; die Abiturformel ist aber die mit <span class="f">\(\sin(\arctan(\dots))\)</span>, und so wird sie auch angegeben.</li>
     <li><b>FS S. 35:</b> <span class="f">\(k\lambda/g = \sin\alpha_k\)</span> für Maxima, <span class="f">\((2k-1)\lambda/(2g) = \sin\alpha_k\)</span> für Minima. Das ist dieselbe Formel ohne die Schirmgeometrie; <span class="f">\(g\)</span> ist der Spaltmittenabstand.</li>
@@ -212,6 +450,40 @@
     <li><b>Kleine Wellenlänge, großer Spaltabstand ⇒ enge Streifen.</b> Streifenabstand (für kleine Winkel) <span class="f">\(\Delta a \approx \lambda e/d\)</span>. Größeres <span class="f">\(e\)</span> streckt das Muster und senkt die Intensität (Abitur 2022 I, 1.3: „Amplitude nimmt ab, Streckung in <span class="f">\(x\)</span>-Richtung").</li>
     <li><b>Ultraschall statt Licht (Abitur 2022 I):</b> <span class="f">\(\lambda \approx 8{,}7\,\mathrm{mm}\)</span>, Spaltabstand <span class="f">\(g = 25\,\mathrm{mm}\)</span>, Beobachtungslinie bei <span class="f">\(e = 71\,\mathrm{mm}\)</span>. Hier ist <span class="f">\(e\)</span> <b>nicht</b> <span class="f">\(\gg g\)</span> (<span class="f">\(e/g = 71/25 = 2{,}8\)</span>), die Voraussetzung der Näherung ist also nicht erfüllt; die Aufgabe gibt deshalb die exakten Wege vor: <span class="f">\(d_1 = \sqrt{(x + 12{,}5\,\mathrm{mm})^2 + (71\,\mathrm{mm})^2}\)</span>, <span class="f">\(d_2 = \sqrt{(x - 12{,}5\,\mathrm{mm})^2 + (71\,\mathrm{mm})^2}\)</span> (Pythagoras, Kathete <span class="f">\(e\)</span> und <span class="f">\(x \pm g/2\)</span>). Maxima bei <span class="f">\(x \approx 27\,\mathrm{mm}\)</span> und <span class="f">\(69\,\mathrm{mm}\)</span> ⇒ <span class="f">\(d_1 - d_2 = 8{,}78\,\mathrm{mm}\)</span> bzw. <span class="f">\(17{,}35\,\mathrm{mm} = 2\lambda\)</span> ⇒ <span class="f">\(\lambda \approx 8{,}7\,\mathrm{mm}\)</span> ⇒ <span class="f">\(f_S = c/\lambda = 340/0{,}0087\,\mathrm{Hz} \approx 39\,\mathrm{kHz}\)</span>. Rechnerisch wäre die Näherung hier nur etwa 1 % daneben (1,2 % bei 27 mm, 0,4 % bei 69 mm); verlangt ist trotzdem die Herleitung der exakten Wege mit Pythagoras.</li>
   </ul>
+  <svg viewBox="0 0 370 152" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Zeigerbilder für zwei Wellen: Maximum mit gleich gerichteten Zeigern, Zwischenfall mit 90 Grad, Minimum mit entgegengesetzten Zeigern">
+    <defs>
+      <marker id="w8zp-accent" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--accent)"/></marker>
+      <marker id="w8zp-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+      <marker id="w8zp-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+    </defs>
+    <text x="62" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">Maximum</text>
+    <text x="62" y="31" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">l</tspan> = <tspan font-style="italic">n</tspan>·<tspan font-style="italic">λ</tspan></text>
+    <text x="62" y="44" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">φ</tspan> = 0°</text>
+    <line x1="18" y1="78" x2="58.4" y2="78" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8zp-accent)"/>
+    <line x1="62" y1="78" x2="102.4" y2="78" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8zp-kin)"/>
+    <line x1="18" y1="96" x2="102.4" y2="96" stroke="var(--fg)" stroke-width="2.8" marker-end="url(#w8zp-fg)"/>
+    <text x="62" y="124" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">Summe 2<tspan font-style="italic">A</tspan></text>
+    <text x="62" y="142" font-size="10.5" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">I</tspan> ∝ (2<tspan font-style="italic">A</tspan>)² = 4<tspan font-style="italic">A</tspan>²</text>
+    <text x="185" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">dazwischen</text>
+    <text x="185" y="31" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">l</tspan> = <tspan font-style="italic">λ</tspan>/4</text>
+    <text x="185" y="44" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">φ</tspan> = 90°</text>
+    <line x1="207" y1="104" x2="229" y2="104" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>
+    <line x1="163" y1="104" x2="203.4" y2="104" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8zp-accent)"/>
+    <line x1="207" y1="104" x2="207" y2="63.6" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8zp-kin)"/>
+    <line x1="163" y1="104" x2="204.5" y2="62.5" stroke="var(--fg)" stroke-width="2.8" marker-end="url(#w8zp-fg)"/>
+    <path d="M207,92 A12,12 0 0 1 219,104" fill="none" stroke="var(--efield)" stroke-width="1.1"/>
+    <text x="224" y="90.4" font-size="9.5" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">90°</text>
+    <text x="185" y="124" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">Summe √2·<tspan font-style="italic">A</tspan></text>
+    <text x="185" y="142" font-size="10.5" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">I</tspan> ∝ 2<tspan font-style="italic">A</tspan>²</text>
+    <text x="308" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">Minimum</text>
+    <text x="308" y="31" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">l</tspan> = (<tspan font-style="italic">n</tspan> + ½)·<tspan font-style="italic">λ</tspan></text>
+    <text x="308" y="44" font-size="10" fill="var(--muted)" text-anchor="middle">Δ<tspan font-style="italic">φ</tspan> = 180°</text>
+    <line x1="286" y1="80" x2="326.4" y2="80" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8zp-accent)"/>
+    <line x1="330" y1="89" x2="289.6" y2="89" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8zp-kin)"/>
+    <text x="308" y="124" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">Summe 0</text>
+    <text x="308" y="142" font-size="10.5" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">I</tspan> = 0</text>
+  </svg>
+  <p class="small">Zeigerbilder für die beiden Wellen in <span class="f">\(P\)</span> (blau: Spalt 1, orange: Spalt 2, dick: Summe). Zeigerlänge = Amplitude, Winkel zwischen den Zeigern = Phasendifferenz <span class="f">\(\Delta\varphi = 2\pi\,\Delta l/\lambda\)</span>. Die Intensität ist proportional zum Quadrat der Summenlänge. Das ist die „grafische Darstellung" für Abitur 2022 I, 1.1.</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -239,6 +511,77 @@
     <li><b>Allgemein <span class="f">\(N\)</span> Spalte:</b> Zwischen zwei Hauptmaxima liegen <span class="f">\(N - 1\)</span> Minima und <span class="f">\(N - 2\)</span> Nebenmaxima. Minima dort, wo die <span class="f">\(N\)</span> Zeiger ein geschlossenes Polygon bilden: Nachbarphase <span class="f">\(\Delta\varphi = 2\pi k/N\)</span> (<span class="f">\(k = 1, \dots, N-1\)</span>). Die Hauptmaxima werden mit wachsendem <span class="f">\(N\)</span> <b>schmaler und heller</b>; beim Gitter mit Hunderten Spalten pro Millimeter sind sie scharfe Linien, die Nebenmaxima verschwinden praktisch. Deshalb misst man Wellenlängen mit dem Gitter, nicht mit dem Doppelspalt.</li>
     <li><b>Vierfachspalt (Abitur 2021, 1.3):</b> Minimum (A) liegt dort, wo auch der Doppelspalt ein Minimum hat: Nachbarphase <span class="f">\(180^\circ\)</span>, paarweise Auslöschung Spalt 1 mit 2 und 3 mit 4. Minimum (B) nur beim Vierfachspalt: Nachbarphase <span class="f">\(90^\circ\)</span> (oder <span class="f">\(270^\circ\)</span>), die vier Zeiger bilden ein Quadrat, paarweise Auslöschung 1 mit 3 und 2 mit 4 (je <span class="f">\(180^\circ\)</span>). <b>Dreifachspalt (Abitur 2023, 1.2):</b> zwei Minima zwischen den Hauptmaxima bei Nachbarphase <span class="f">\(120^\circ\)</span> und <span class="f">\(240^\circ\)</span>, dazwischen ein Nebenmaximum. <b>Fünffachspalt mit halbem <span class="f">\(d\)</span> (2023, 1.3):</b> Hauptmaxima doppelt so weit auseinander (<span class="f">\(a_n \propto 1/d\)</span>), dazwischen drei Nebenmaxima.</li>
   </ul>
+  <svg viewBox="0 0 380 336" width="100%" style="max-width:437px;display:block;margin:4px auto" role="img" aria-label="Heft-Bild Strahlengitter: Gangunterschiede benachbarter Spalte und Zeigerbilder für Minimum, Nebenmaximum-Prinzip und Hauptmaximum">
+    <defs>
+      <marker id="w8gt-accent" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--accent)"/></marker>
+      <marker id="w8gt-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+      <marker id="w8gt-ok" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--ok)"/></marker>
+      <marker id="w8gt-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+    </defs>
+    <line x1="8" y1="94" x2="37" y2="94" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="43" y1="94" x2="85" y2="94" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="91" y1="94" x2="196" y2="94" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="40" y1="94" x2="68" y2="14.8" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="88" y1="94" x2="116" y2="14.8" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="88" y1="94" x2="35.9" y2="75.6" stroke="var(--muted)" stroke-width="1.4"/>
+    <line x1="40" y1="94" x2="45.3" y2="78.9" stroke="var(--arrow)" stroke-width="3.2" stroke-linecap="round"/>
+    <text x="36.1" y="83.1" font-size="11" fill="var(--arrow)" text-anchor="end" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/2</text>
+    <text x="40" y="107" font-size="9.5" fill="var(--muted)" text-anchor="middle">1</text>
+    <text x="88" y="107" font-size="9.5" fill="var(--muted)" text-anchor="middle">2</text>
+    <text x="214" y="18" font-size="11" fill="var(--fg)" font-weight="bold">2 Spalte: Minimum</text>
+    <line x1="214" y1="50" x2="236.4" y2="50" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8gt-accent)"/>
+    <line x1="240" y1="59" x2="217.6" y2="59" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8gt-kin)"/>
+    <text x="288" y="41" font-size="10.5" fill="var(--fg)">Zeiger 1 und 2</text>
+    <text x="288" y="55" font-size="10.5" fill="var(--fg)">entgegengesetzt:</text>
+    <text x="288" y="69" font-size="10.5" fill="var(--fg)" font-weight="bold">Summe 0</text>
+    <line x1="8" y1="206" x2="37" y2="206" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="43" y1="206" x2="85" y2="206" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="91" y1="206" x2="133" y2="206" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="139" y1="206" x2="196" y2="206" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="40" y1="206" x2="54" y2="123.2" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="88" y1="206" x2="102" y2="123.2" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="136" y1="206" x2="150" y2="123.2" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="136" y1="206" x2="32.8" y2="188.6" stroke="var(--muted)" stroke-width="1.4"/>
+    <line x1="40" y1="206" x2="42.7" y2="190.2" stroke="var(--arrow)" stroke-width="3.2" stroke-linecap="round"/>
+    <text x="34.4" y="195.9" font-size="11" fill="var(--arrow)" text-anchor="end" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/2</text>
+    <line x1="88" y1="206" x2="89.3" y2="198.1" stroke="var(--arrow)" stroke-width="3.2" stroke-linecap="round"/>
+    <text x="78.8" y="189.9" font-size="11" fill="var(--arrow)" text-anchor="end" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/4</text>
+    <text x="40" y="219" font-size="9.5" fill="var(--muted)" text-anchor="middle">1</text>
+    <text x="88" y="219" font-size="9.5" fill="var(--muted)" text-anchor="middle">2</text>
+    <text x="136" y="219" font-size="9.5" fill="var(--muted)" text-anchor="middle">3</text>
+    <text x="214" y="130" font-size="11" fill="var(--fg)" font-weight="bold">3 Spalte: Nebenmaximum</text>
+    <line x1="220" y1="179" x2="242.4" y2="179" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8gt-accent)"/>
+    <line x1="246" y1="179" x2="246" y2="156.6" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8gt-kin)"/>
+    <line x1="246" y1="153" x2="223.6" y2="153" stroke="var(--ok)" stroke-width="2.2" marker-end="url(#w8gt-ok)"/>
+    <line x1="214" y1="179" x2="214" y2="156.6" stroke="var(--fg)" stroke-width="2.4" marker-end="url(#w8gt-fg)"/>
+    <text x="288" y="153" font-size="10.5" fill="var(--fg)">1 und 3: Summe 0,</text>
+    <text x="288" y="167" font-size="10.5" fill="var(--fg)">2 bleibt übrig:</text>
+    <text x="288" y="181" font-size="10.5" fill="var(--fg)" font-weight="bold"><tspan font-style="italic">I</tspan> = 1/9 von <tspan font-style="italic">I</tspan><tspan dy="3.1" font-size="7.6">H</tspan></text>
+    <line x1="8" y1="318" x2="37" y2="318" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="43" y1="318" x2="85" y2="318" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="91" y1="318" x2="133" y2="318" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="139" y1="318" x2="196" y2="318" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="40" y1="318" x2="96" y2="255.4" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="88" y1="318" x2="144" y2="255.4" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="136" y1="318" x2="192" y2="255.4" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="136" y1="318" x2="75.2" y2="263.6" stroke="var(--muted)" stroke-width="1.4"/>
+    <line x1="40" y1="318" x2="82.7" y2="270.3" stroke="var(--arrow)" stroke-width="3.2" stroke-linecap="round"/>
+    <text x="56.1" y="288.5" font-size="11" fill="var(--arrow)" text-anchor="end" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">2<tspan font-style="italic">λ</tspan></text>
+    <line x1="88" y1="318" x2="109.3" y2="294.1" stroke="var(--arrow)" stroke-width="3.2" stroke-linecap="round"/>
+    <text x="93.4" y="300.4" font-size="11" fill="var(--arrow)" text-anchor="end" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan></text>
+    <text x="40" y="331" font-size="9.5" fill="var(--muted)" text-anchor="middle">1</text>
+    <text x="88" y="331" font-size="9.5" fill="var(--muted)" text-anchor="middle">2</text>
+    <text x="136" y="331" font-size="9.5" fill="var(--muted)" text-anchor="middle">3</text>
+    <text x="214" y="242" font-size="11" fill="var(--fg)" font-weight="bold">3 Spalte: Hauptmaximum</text>
+    <line x1="214" y1="273" x2="230.4" y2="273" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8gt-accent)"/>
+    <line x1="234" y1="273" x2="250.4" y2="273" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8gt-kin)"/>
+    <line x1="254" y1="273" x2="270.4" y2="273" stroke="var(--ok)" stroke-width="2.2" marker-end="url(#w8gt-ok)"/>
+    <line x1="214" y1="285" x2="270.4" y2="285" stroke="var(--fg)" stroke-width="2.6" marker-end="url(#w8gt-fg)"/>
+    <text x="288" y="265" font-size="10.5" fill="var(--fg)">alle in Phase:</text>
+    <text x="288" y="279" font-size="10.5" fill="var(--fg)">Summe 3<tspan font-style="italic">A</tspan>,</text>
+    <text x="288" y="293" font-size="10.5" fill="var(--fg)" font-weight="bold"><tspan font-style="italic">I</tspan> = 9·<tspan font-style="italic">I</tspan><tspan dy="3.1" font-size="7.6">1</tspan></text>
+  </svg>
+  <p class="small">Heft-Bild „Strahlengitter" nachgezeichnet. Links: parallele Strahlen aus benachbarten Spalten, das graue Lot schneidet die Gangunterschiede ab (rot). Rechts: Zeigerbild in <span class="f">\(P\)</span> (blau Spalt 1, orange Spalt 2, grün Spalt 3, dick: Summe). Oben: 2 Spalte, <span class="f">\(\Delta l = \lambda/2\)</span> ⇒ Auslöschung. Mitte: 3 Spalte, Nachbarn je <span class="f">\(\lambda/4\)</span>: Spalt 1 und 3 haben <span class="f">\(\lambda/2\)</span> Gangunterschied und löschen sich aus, Spalt 2 bleibt übrig (Prinzip des Nebenmaximums; das Extremum selbst liegt bei Nachbarphase <span class="f">\(180^\circ\)</span>). Unten: <span class="f">\(\Delta l = \lambda\)</span> zwischen Nachbarn ⇒ alle Zeiger gleich gerichtet ⇒ Hauptmaximum mit <span class="f">\(3^2 = 9\)</span>-facher Intensität eines Spalts. Die Winkel sind so gezeichnet, dass die roten Längen zueinander passen.</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -259,6 +602,60 @@
 <section class="card" id="s6">
   <h2>6 · Wellenlängenbereiche von LEDs, objektive Methode (Heft)</h2>
   <p><b>Aufbau (Heft-Bild):</b> LED → Spalt → Gitter (<span class="f">\(g = \frac{0{,}001\,\mathrm{m}}{500} = 2\cdot 10^{-6}\,\mathrm{m}\)</span>, also 500 Striche pro Millimeter) → Schirm im Abstand <span class="f">\(e\)</span>. Eine LED sendet kein monochromatisches Licht, sondern einen <b>Wellenlängenbereich</b>. Da der Ort des Maximums 1. Ordnung von <span class="f">\(\lambda\)</span> abhängt, wird aus dem Maximum ein <b>Farbband</b>: innen (kleines <span class="f">\(a\)</span>) die kurzwellige Grenze, außen die langwellige. Man misst Anfang <span class="f">\(a_1\)</span> und Ende <span class="f">\(a_2\)</span> des Bandes und rechnet beide in Wellenlängen um.</p>
+  <svg viewBox="0 0 390 266" width="100%" style="max-width:448px;display:block;margin:4px auto" role="img" aria-label="Aufbau der objektiven Methode: LED, Spalt, Gitter, Schirm im Abstand e; auf dem Schirm 0. Ordnung und zwei Farbbänder 1. Ordnung mit a1 und a2">
+    <defs>
+      <marker id="w8ob-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+    </defs>
+    <circle cx="22" cy="132" r="8.5" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="16.1" y1="126" x2="27.9" y2="137.9" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="16.1" y1="137.9" x2="27.9" y2="126" stroke="var(--fg)" stroke-width="1.2"/>
+    <text x="22" y="158" font-size="10.5" fill="var(--fg)" text-anchor="middle">LED</text>
+    <path d="M31,128 L60,130 L60,134 L31,136 Z" fill="var(--warn)" fill-opacity="0.35"/>
+    <line x1="60" y1="70" x2="60" y2="129" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="60" y1="135" x2="60" y2="194" stroke="var(--fg)" stroke-width="3"/>
+    <text x="60" y="62" font-size="10.5" fill="var(--fg)" text-anchor="middle">Spalt</text>
+    <path d="M60,130 L100,120 L100,144 L60,134 Z" fill="var(--warn)" fill-opacity="0.3"/>
+    <line x1="330" y1="24" x2="330" y2="240" stroke="var(--fg)" stroke-width="2.5"/>
+    <line x1="100" y1="132" x2="330" y2="132" stroke="var(--fg)" stroke-width="1.5"/>
+    <line x1="100" y1="132" x2="330" y2="75.1" stroke="#8b3ff0" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="188.9" stroke="#8b3ff0" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="65.4" stroke="#2f6fe8" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="198.6" stroke="#2f6fe8" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="55.7" stroke="#16a34a" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="208.3" stroke="#16a34a" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="46.1" stroke="#d9a400" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="217.9" stroke="#d9a400" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="36.4" stroke="#e0402f" stroke-width="1.3"/>
+    <line x1="100" y1="132" x2="330" y2="227.6" stroke="#e0402f" stroke-width="1.3"/>
+    <rect x="326.5" y="67.4" width="7" height="7.7" fill="#8b3ff0"/>
+    <rect x="326.5" y="188.9" width="7" height="7.7" fill="#8b3ff0"/>
+    <rect x="326.5" y="59.6" width="7" height="7.7" fill="#2f6fe8"/>
+    <rect x="326.5" y="196.6" width="7" height="7.7" fill="#2f6fe8"/>
+    <rect x="326.5" y="51.9" width="7" height="7.7" fill="#16a34a"/>
+    <rect x="326.5" y="204.4" width="7" height="7.7" fill="#16a34a"/>
+    <rect x="326.5" y="44.1" width="7" height="7.7" fill="#d9a400"/>
+    <rect x="326.5" y="212.1" width="7" height="7.7" fill="#d9a400"/>
+    <rect x="326.5" y="36.4" width="7" height="7.7" fill="#e0402f"/>
+    <rect x="326.5" y="219.9" width="7" height="7.7" fill="#e0402f"/>
+    <rect x="326.5" y="126" width="7" height="12" fill="var(--card)" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="100" y1="78" x2="100" y2="186" stroke="var(--fg)" stroke-width="2.2" stroke-dasharray="1.5 3"/>
+    <text x="100" y="70" font-size="10.5" fill="var(--fg)" text-anchor="middle">Gitter</text>
+    <text x="100" y="204" font-size="10" fill="var(--muted)" text-anchor="middle"><tspan font-style="italic">g</tspan> = 2 µm</text>
+    <line x1="335" y1="132" x2="370" y2="132" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="335" y1="75.1" x2="350" y2="75.1" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="335" y1="36.4" x2="370" y2="36.4" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="346" y1="128.4" x2="346" y2="78.7" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8ob-fg)" marker-start="url(#w8ob-fg)"/>
+    <text x="350" y="107.6" font-size="11" fill="var(--fg)"><tspan font-style="italic">a</tspan><tspan dy="3.3" font-size="7.9">1</tspan></text>
+    <line x1="366" y1="128.4" x2="366" y2="40" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8ob-fg)" marker-start="url(#w8ob-fg)"/>
+    <text x="370" y="76.2" font-size="11" fill="var(--fg)"><tspan font-style="italic">a</tspan><tspan dy="3.3" font-size="7.9">2</tspan></text>
+    <line x1="103.6" y1="256" x2="326.4" y2="256" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8ob-fg)" marker-start="url(#w8ob-fg)"/>
+    <text x="215" y="251" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">e</tspan></text>
+    <text x="330" y="16" font-size="10.5" fill="var(--fg)" text-anchor="middle">Schirm</text>
+    <text x="322" y="125" font-size="10" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">0. Ordnung</text>
+    <text x="322" y="30" font-size="10" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Ordnung</text>
+    <text x="322" y="244" font-size="10" fill="var(--fg)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Ordnung</text>
+  </svg>
+  <p class="small">Aufbau der objektiven Methode nach dem Heft (Abstände nicht maßstäblich, Winkel wie bei der weißen LED: <span class="f">\(a_1 = 4{,}7\,\mathrm{cm}\)</span>, <span class="f">\(a_2 = 7{,}9\,\mathrm{cm}\)</span> bei <span class="f">\(e = 19\,\mathrm{cm}\)</span>). Jede Wellenlänge hat ihr eigenes Maximum 1. Ordnung, zusammen ein Farbband: innen (kleines <span class="f">\(a\)</span>) die kurzwellige Grenze (violett/blau), außen die langwellige (rot). Gemessen wird von der 0. Ordnung bis zu den Bandgrenzen.</p>
   <div class="formula">\[\lambda = g\cdot\sin\!\Big(\arctan\frac{a}{e}\Big)\qquad\text{für jede Bandgrenze einzeln}\]</div>
   <p><b>Heft-Messwerte</b> (<span class="f">\(e = 19\,\mathrm{cm}\)</span>): blau <span class="f">\(a_1 = 4{,}7\,\mathrm{cm}\)</span>, <span class="f">\(a_2 = 5{,}5\,\mathrm{cm}\)</span>; weiß <span class="f">\(a_1 = 4{,}7\,\mathrm{cm}\)</span>, <span class="f">\(a_2 = 7{,}9\,\mathrm{cm}\)</span>. Auswertung: <span class="f">\(\lambda_{1,\mathrm{blau}} = 2\cdot 10^{-6}\,\mathrm{m}\cdot\sin(\arctan\frac{0{,}047}{0{,}19}) = 480\,\mathrm{nm}\)</span>, <span class="f">\(\lambda_{2,\mathrm{blau}} = 556\,\mathrm{nm}\)</span>; weiß <span class="f">\(480\)</span> bis <span class="f">\(768\,\mathrm{nm}\)</span>. Ergebnistabelle der Mittelwerte im Heft (Spalten „1 links", „1 rechts", „2 links", „2 rechts"; was die Ziffern und „links/rechts" genau bedeuten, erklärt das Heft nicht): weiß 443,67 | 496 | 528 | 660,1 nm; rot 606 | 676, grün 481,0 | 582, blau 445,0 | 518, UV 392 | 431 nm (hier nur die ersten beiden Spalten belegt; die Seite liest sie als Bandanfang und Bandende, also rot 606–676 nm usw.). Weißes LED-Licht ist eine Mischung über das ganze sichtbare Spektrum, deshalb das breiteste Band (Abitur 2022 gA, 1.3).</p>
   <div class="grid2">
@@ -289,6 +686,62 @@
     <li><b>Heft-Messung (subjektiv, <span class="f">\(e = 32\,\mathrm{cm}\)</span>):</b> rot <span class="f">\(a_1 = 9{,}7\,\mathrm{cm}\)</span> ⇒ <span class="f">\(580\,\mathrm{nm}\)</span>, <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span> ⇒ <span class="f">\(629\,\mathrm{nm}\)</span>; weiß <span class="f">\(a_1 = 6{,}8\,\mathrm{cm}\)</span> ⇒ <span class="f">\(416\,\mathrm{nm}\)</span>, <span class="f">\(a_2 = 10{,}6\,\mathrm{cm}\)</span> ⇒ <span class="f">\(629\,\mathrm{nm}\)</span>. Alle vier Werte stehen so in der Heft-Tabelle zur Fehlerbetrachtung (Abschnitt 8).</li>
     <li><b>Warum zwei Methoden:</b> Objektiv braucht helles Licht (Laser, starke LED) und einen dunklen Raum; subjektiv funktioniert mit schwachen Lichtquellen, weil das Auge empfindlich ist, dafür misst nur einer. Im Abitur mit Experimentieren (2023) wird subjektiv gearbeitet.</li>
   </ul>
+  <svg viewBox="0 0 390 266" width="100%" style="max-width:448px;display:block;margin:4px auto" role="img" aria-label="Aufbau der subjektiven Methode: Auge hinter dem Gitter schaut auf den beleuchteten Spalt und sieht das Bild 1. Ordnung scheinbar in der Ebene der Spaltblende im Abstand a">
+    <defs>
+      <marker id="w8sb-ok" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--ok)"/></marker>
+      <marker id="w8sb-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+    </defs>
+    <circle cx="16" cy="132" r="8" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.4"/>
+    <line x1="10.4" y1="126.4" x2="21.6" y2="137.6" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="10.4" y1="137.6" x2="21.6" y2="126.4" stroke="var(--fg)" stroke-width="1.2"/>
+    <text x="16" y="156" font-size="10.5" fill="var(--fg)" text-anchor="middle">LED</text>
+    <text x="47" y="248" font-size="10.5" fill="var(--fg)">Spaltblende</text>
+    <line x1="42" y1="132" x2="290" y2="114.1" stroke="var(--fg)" stroke-width="1.1" stroke-opacity="0.75"/>
+    <line x1="42" y1="132" x2="290" y2="149.9" stroke="var(--fg)" stroke-width="1.1" stroke-opacity="0.75"/>
+    <line x1="42" y1="132" x2="342" y2="132" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="290" y1="74" x2="290" y2="190" stroke="var(--fg)" stroke-width="2.2" stroke-dasharray="1.5 3"/>
+    <text x="290" y="66" font-size="10.5" fill="var(--fg)" text-anchor="middle">Gitter</text>
+    <line x1="290" y1="114.1" x2="339.6" y2="130.8" stroke="var(--ok)" stroke-width="1.8" marker-end="url(#w8sb-ok)"/>
+    <line x1="290" y1="114.1" x2="43" y2="33.9" stroke="var(--ok)" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <line x1="290" y1="149.9" x2="339.6" y2="133.2" stroke="var(--ok)" stroke-width="1.8" marker-end="url(#w8sb-ok)"/>
+    <line x1="290" y1="149.9" x2="43" y2="230.1" stroke="var(--ok)" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <rect x="36" y="42.3" width="8" height="5.6" fill="#8b3ff0"/>
+    <rect x="36" y="36.7" width="8" height="5.6" fill="#2f6fe8"/>
+    <rect x="36" y="31.1" width="8" height="5.6" fill="#16a34a"/>
+    <rect x="36" y="25.5" width="8" height="5.6" fill="#d9a400"/>
+    <rect x="36" y="19.9" width="8" height="5.6" fill="#e0402f"/>
+    <rect x="36" y="216.1" width="8" height="5.6" fill="#8b3ff0"/>
+    <rect x="36" y="221.7" width="8" height="5.6" fill="#2f6fe8"/>
+    <rect x="36" y="227.3" width="8" height="5.6" fill="#16a34a"/>
+    <rect x="36" y="232.9" width="8" height="5.6" fill="#d9a400"/>
+    <rect x="36" y="238.5" width="8" height="5.6" fill="#e0402f"/>
+    <line x1="40" y1="10" x2="40" y2="129" stroke="var(--fg)" stroke-width="3"/>
+    <line x1="40" y1="135" x2="40" y2="254" stroke="var(--fg)" stroke-width="3"/>
+    <rect x="38.5" y="129" width="3" height="6" fill="var(--warn)"/>
+    <rect x="36" y="42.3" width="8" height="5.6" fill="#8b3ff0"/>
+    <rect x="36" y="36.7" width="8" height="5.6" fill="#2f6fe8"/>
+    <rect x="36" y="31.1" width="8" height="5.6" fill="#16a34a"/>
+    <rect x="36" y="25.5" width="8" height="5.6" fill="#d9a400"/>
+    <rect x="36" y="19.9" width="8" height="5.6" fill="#e0402f"/>
+    <rect x="36" y="216.1" width="8" height="5.6" fill="#8b3ff0"/>
+    <rect x="36" y="221.7" width="8" height="5.6" fill="#2f6fe8"/>
+    <rect x="36" y="227.3" width="8" height="5.6" fill="#16a34a"/>
+    <rect x="36" y="232.9" width="8" height="5.6" fill="#d9a400"/>
+    <rect x="36" y="238.5" width="8" height="5.6" fill="#e0402f"/>
+    <path d="M345,132 Q358,120 371,132 Q358,144 345,132 Z" fill="var(--card)" stroke="var(--fg)" stroke-width="1.3"/>
+    <circle cx="353" cy="132" r="4.4" fill="var(--fg)"/>
+    <text x="358" y="158" font-size="10.5" fill="var(--fg)" text-anchor="middle">Auge</text>
+    <path d="M311,132 A34,34 0 0 1 312.7,121.5" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+    <text x="300.6" y="128.8" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan></text>
+    <line x1="52" y1="128.4" x2="52" y2="37.5" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8sb-fg)" marker-start="url(#w8sb-fg)"/>
+    <text x="57" y="86.9" font-size="12" fill="var(--fg)"><tspan font-style="italic">a</tspan></text>
+    <line x1="43.6" y1="258" x2="286.4" y2="258" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8sb-fg)" marker-start="url(#w8sb-fg)"/>
+    <text x="165" y="253" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">e</tspan></text>
+    <text x="52" y="22" font-size="10" fill="var(--fg)">scheinbares Bild (1. Ordnung)</text>
+    <text x="64" y="37" font-size="10" fill="var(--ok)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">rückwärts verlängert</text>
+    <text x="318" y="104" font-size="10" fill="var(--ok)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">ins Auge</text>
+  </svg>
+  <p class="small">Aufbau der subjektiven Methode (im Heft ist das Aufbau-Feld leer): Das Auge schaut durch das Gitter auf den beleuchteten Spalt. Bündel, die das Gitter unter <span class="f">\(\alpha\)</span> verlassen, fallen ins Auge. Das Auge verlängert sie geradlinig rückwärts (gestrichelt) und sieht das Bild 1. Ordnung scheinbar in der Ebene der Spaltblende, im Abstand <span class="f">\(a\)</span> neben dem Spalt. Darum gilt dieselbe Formel mit <span class="f">\(e\)</span> = Abstand Gitter–Spaltblende. Der Abstand Auge–Gitter ist übertrieben gezeichnet.</p>
   <div class="note exam"><b>So fragt die Klausur (Abitur 2021 IIa, 1.1, 10 BE):</b> „Erklären Sie das Zustandekommen der seitlich von der Blendenöffnung wahrnehmbaren Maxima bei der subjektiven Methode." EWH-Kernpunkte: Elementarwellenprinzip, unterschiedliche Weglängen bzw. Phasenunterschiede, Bedingung für konstruktive Interferenz, <b>und</b> der Satz „die subjektive Methode ergibt das wahrgenommene Bild": Das Auge verlängert die unter <span class="f">\(\alpha_n\)</span> einfallenden Bündel rückwärts und sieht das Maximum neben dem Spalt. Dann die Herleitung (5 BE) wie in Abschnitt 3, „auf zwei benachbarte Spalte beschränkt".</div>
 </section>
 
@@ -296,6 +749,52 @@
 <section class="card" id="s8">
   <h2>8 · Fehlerbetrachtung („kommt sicher im Abi dran", Heft)</h2>
   <p>Jede Messung von <span class="f">\(a\)</span> und <span class="f">\(e\)</span> hat Ablesefehler. Das Heft-Bild zeigt die <b>Fehlerbereiche</b> an den Bandgrenzen: Die Grenze eines Farbbandes ist unscharf, man kann sie nur auf etwa <span class="f">\(\pm 2\,\mathrm{mm}\)</span> festlegen (Fehler bei <span class="f">\(a\)</span>), und die Entfernung Gitter–Blende auf etwa <span class="f">\(\pm 4\,\mathrm{mm}\)</span> (Fehler bei <span class="f">\(e\)</span>). Zwei Verfahren, beide klausurtauglich:</p>
+  <svg viewBox="0 0 370 150" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Heft-Bild Fehlerbereiche: unscharfe Ränder eines roten Farbbandes, je plus minus 2 mm Unsicherheit an a1 und a2, darunter ein Lineal">
+    <defs>
+      <marker id="w8fb-efield" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--efield)"/></marker>
+      <linearGradient id="w8fb-band" x1="105" x2="313" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e0402f" stop-opacity="0"/><stop offset="0.3077" stop-color="#e0402f" stop-opacity="0.9"/><stop offset="0.6923" stop-color="#e0402f" stop-opacity="0.9"/><stop offset="1" stop-color="#e0402f" stop-opacity="0"/></linearGradient>
+    </defs>
+    <text x="185" y="13" font-size="10.5" fill="var(--fg)" text-anchor="middle">Fehlerbereiche an den Bandgrenzen (Heft)</text>
+    <rect x="105" y="46" width="208" height="28" fill="url(#w8fb-band)"/>
+    <line x1="105" y1="34" x2="105" y2="80" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="169" y1="34" x2="169" y2="80" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="249" y1="34" x2="249" y2="80" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="313" y1="34" x2="313" y2="80" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+    <line x1="108.6" y1="36" x2="165.4" y2="36" stroke="var(--efield)" stroke-width="1.3" marker-end="url(#w8fb-efield)" marker-start="url(#w8fb-efield)"/>
+    <text x="137" y="29" font-size="10.5" fill="var(--efield)" text-anchor="middle" font-weight="bold">±2 mm</text>
+    <line x1="252.6" y1="36" x2="309.4" y2="36" stroke="var(--efield)" stroke-width="1.3" marker-end="url(#w8fb-efield)" marker-start="url(#w8fb-efield)"/>
+    <text x="281" y="29" font-size="10.5" fill="var(--efield)" text-anchor="middle" font-weight="bold">±2 mm</text>
+    <line x1="137" y1="44" x2="137" y2="90" stroke="var(--fg)" stroke-width="1.3"/>
+    <line x1="281" y1="44" x2="281" y2="90" stroke="var(--fg)" stroke-width="1.3"/>
+    <rect x="19" y="90" width="332" height="16" fill="var(--soft)" stroke="var(--muted)" stroke-width="1"/>
+    <line x1="25" y1="90" x2="25" y2="101" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="41" y1="90" x2="41" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="57" y1="90" x2="57" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="73" y1="90" x2="73" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="89" y1="90" x2="89" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="105" y1="90" x2="105" y2="97.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="121" y1="90" x2="121" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="137" y1="90" x2="137" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="153" y1="90" x2="153" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="169" y1="90" x2="169" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="185" y1="90" x2="185" y2="101" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="201" y1="90" x2="201" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="217" y1="90" x2="217" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="233" y1="90" x2="233" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="249" y1="90" x2="249" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="265" y1="90" x2="265" y2="97.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="281" y1="90" x2="281" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="297" y1="90" x2="297" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="313" y1="90" x2="313" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="329" y1="90" x2="329" y2="94.5" stroke="var(--fg)" stroke-width="1"/>
+    <line x1="345" y1="90" x2="345" y2="101" stroke="var(--fg)" stroke-width="1"/>
+    <text x="25" y="119" font-size="10" fill="var(--muted)" text-anchor="middle">9 cm</text>
+    <text x="185" y="119" font-size="10" fill="var(--muted)" text-anchor="middle">10 cm</text>
+    <text x="345" y="119" font-size="10" fill="var(--muted)" text-anchor="middle">11 cm</text>
+    <text x="137" y="138" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold"><tspan font-style="italic">a</tspan><tspan dy="3.1" font-size="7.6">1</tspan><tspan dy="-3.1"> ≈ 9,7 cm</tspan></text>
+    <text x="281" y="138" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold"><tspan font-style="italic">a</tspan><tspan dy="3.1" font-size="7.6">2</tspan><tspan dy="-3.1"> ≈ 10,6 cm</tspan></text>
+  </svg>
+  <p class="small">Heft-Bild „Fehlerbereiche" mit den Heft-Werten (rote LED, subjektiv, <span class="f">\(e = 32\,\mathrm{cm}\)</span>): Der Rand eines Farbbandes läuft weich aus; wo genau er liegt, lässt sich nur auf etwa <span class="f">\(\pm 2\,\mathrm{mm}\)</span> sagen. Also <span class="f">\(a_1 = (9{,}7 \pm 0{,}2)\,\mathrm{cm}\)</span> und <span class="f">\(a_2 = (10{,}6 \pm 0{,}2)\,\mathrm{cm}\)</span>; für <span class="f">\(e\)</span> setzt das Heft <span class="f">\(\pm 4\,\mathrm{mm}\)</span> an.</p>
   <h3>Verfahren 1 (Heft): Minimal- und Maximalwert ausrechnen</h3>
   <p><span class="f">\(\lambda\)</span> wächst mit <span class="f">\(a\)</span> und fällt mit <span class="f">\(e\)</span>. Der kleinstmögliche Wert entsteht also aus <span class="f">\(a - \Delta a\)</span> und <span class="f">\(e + \Delta e\)</span>, der größte aus <span class="f">\(a + \Delta a\)</span> und <span class="f">\(e - \Delta e\)</span>:</p>
   <div class="formula">\[\lambda_{\mathrm{min}} = g\sin\!\Big(\arctan\frac{a - \Delta a}{e + \Delta e}\Big),\qquad \lambda_{\mathrm{max}} = g\sin\!\Big(\arctan\frac{a + \Delta a}{e - \Delta e}\Big)\]</div>
@@ -342,6 +841,88 @@
     <li><b>Maxima höherer Ordnung (Näherung):</b> Spalt in <span class="f">\(2n+1\)</span> Abschnitte teilen; <span class="f">\(2n\)</span> davon löschen sich paarweise aus, <b>ein</b> Teilbündel bleibt übrig und liefert Helligkeit ⇒ <span class="f">\(\sin\alpha_n \approx \frac{2n+1}{2}\cdot\frac{\lambda}{b}\)</span>. Weil nur ein Bruchteil der Spaltbreite beiträgt, nimmt die Intensität mit der Ordnung schnell ab.</li>
     <li><b>Zeiger (Blatt, rechts):</b> Die Elementarwellen haben gleichmäßig wachsende Phase; ihre Zeiger bilden einen Bogen. Beim ersten Minimum schließt sich der Bogen zu einem vollen Kreis (Polygon), die Summe ist null. Beim ersten Nebenmaximum ist der Bogen anderthalb Mal durchlaufen, die Resultierende klein.</li>
   </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 370 268" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Einzelspalt, erstes Minimum: Spalt halbiert, jeder Strahl der oberen Hälfte hat einen Partner im Abstand b halbe mit Gangunterschied lambda halbe">
+        <defs>
+          <marker id="w8e1-accent" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--accent)"/></marker>
+          <marker id="w8e1-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+          <marker id="w8e1-muted" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--muted)"/></marker>
+          <marker id="w8e1-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <line x1="80" y1="30" x2="80" y2="130" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="80" y1="250" x2="80" y2="262" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="80" y1="130" x2="126" y2="228.6" stroke="var(--muted)" stroke-width="1.3"/>
+        <line x1="80" y1="130" x2="249.3" y2="51" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#w8e1-accent)"/>
+        <line x1="80" y1="160" x2="249.3" y2="81" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#w8e1-accent)"/>
+        <line x1="80" y1="190" x2="249.3" y2="111" stroke="var(--kin)" stroke-width="1.5" marker-end="url(#w8e1-kin)"/>
+        <line x1="80" y1="220" x2="249.3" y2="141" stroke="var(--kin)" stroke-width="1.5" marker-end="url(#w8e1-kin)"/>
+        <line x1="80" y1="250" x2="249.3" y2="171" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#w8e1-muted)"/>
+        <line x1="80" y1="160" x2="91.5" y2="154.6" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="91.7" y="174" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/4</text>
+        <line x1="80" y1="190" x2="103" y2="179.3" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="97.4" y="201.3" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/2</text>
+        <line x1="80" y1="220" x2="114.5" y2="203.9" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="103.2" y="228.7" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">3<tspan font-style="italic">λ</tspan>/4</text>
+        <line x1="80" y1="250" x2="126" y2="228.6" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="108.9" y="256" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan></text>
+        <line x1="24" y1="133.2" x2="24" y2="246.8" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8e1-fg)" marker-start="url(#w8e1-fg)"/>
+        <text x="18" y="194" font-size="12" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">b</tspan></text>
+        <path d="M72,130 C54,146.2 54,173.8 72,190" fill="none" stroke="var(--efield)" stroke-width="1.4"/>
+        <text x="51" y="164" font-size="11" fill="var(--efield)" text-anchor="end"><tspan font-style="italic">b</tspan>/2</text>
+        <line x1="200" y1="74" x2="248" y2="74" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M230.8,59.7 A34,34 0 0 1 234,74" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+        <text x="244.9" y="67.9" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan><tspan dy="3.3" font-size="7.9">1</tspan></text>
+        <text x="90" y="20" font-size="10" fill="var(--muted)">obere Hälfte blau, untere orange</text>
+        <text x="260" y="136" font-size="10.5" fill="var(--efield)">Partner im</text>
+        <text x="260" y="150" font-size="10.5" fill="var(--efield)">Abstand <tspan font-style="italic">b</tspan>/2:</text>
+        <text x="260" y="164" font-size="10.5" fill="var(--efield)" font-weight="bold">Δ<tspan font-style="italic">l</tspan> = <tspan font-style="italic">λ</tspan>/2</text>
+        <text x="260" y="178" font-size="10.5" fill="var(--fg)">⇒ Auslöschung</text>
+        <text x="260" y="206" font-size="10.5" fill="var(--fg)" font-weight="bold">1. Minimum:</text>
+        <text x="260" y="220" font-size="10.5" fill="var(--fg)" font-weight="bold"><tspan font-style="italic">b</tspan>·sin <tspan font-style="italic">α</tspan><tspan dy="3.1" font-size="7.6">1</tspan><tspan dy="-3.1"> = </tspan><tspan font-style="italic">λ</tspan></text>
+      </svg>
+      <p class="small">Erstes Minimum: Spalt gedanklich halbieren. Das graue Lot vom oberen Rand schneidet die Gangunterschiede ab (rot). Jeder Strahl der oberen Hälfte hat in der unteren Hälfte einen Partner im Abstand <span class="f">\(b/2\)</span> mit <span class="f">\(\Delta l = \lambda/2\)</span> (hier 0 und <span class="f">\(\lambda/2\)</span>, <span class="f">\(\lambda/4\)</span> und <span class="f">\(3\lambda/4\)</span>): Alle Paare löschen sich aus, <span class="f">\(b\sin\alpha_1 = \lambda\)</span>.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 370 268" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Einzelspalt, erstes Nebenmaximum: Spalt in drei Drittel, Drittel 1 und 2 löschen sich aus, Drittel 3 bleibt übrig">
+        <defs>
+          <marker id="w8e3-accent" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--accent)"/></marker>
+          <marker id="w8e3-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+          <marker id="w8e3-ok" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--ok)"/></marker>
+          <marker id="w8e3-muted" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--muted)"/></marker>
+          <marker id="w8e3-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <line x1="80" y1="30" x2="80" y2="130" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="80" y1="250" x2="80" y2="262" stroke="var(--fg)" stroke-width="3"/>
+        <line x1="80" y1="130" x2="138.8" y2="201.8" stroke="var(--muted)" stroke-width="1.3"/>
+        <line x1="80" y1="130" x2="193.6" y2="36.9" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#w8e3-accent)"/>
+        <line x1="80" y1="170" x2="193.6" y2="76.9" stroke="var(--kin)" stroke-width="1.5" marker-end="url(#w8e3-kin)"/>
+        <line x1="80" y1="210" x2="193.6" y2="116.9" stroke="var(--ok)" stroke-width="1.5" marker-end="url(#w8e3-ok)"/>
+        <line x1="80" y1="250" x2="193.6" y2="156.9" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#w8e3-muted)"/>
+        <line x1="80" y1="170" x2="99.6" y2="153.9" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="98.7" y="176.8" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan>/2</text>
+        <line x1="80" y1="210" x2="119.2" y2="177.9" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="108.5" y="208.8" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">λ</tspan></text>
+        <line x1="80" y1="250" x2="138.8" y2="201.8" stroke="var(--arrow)" stroke-width="3" stroke-linecap="round"/>
+        <text x="118.3" y="240.7" font-size="10.5" fill="var(--arrow)" text-anchor="middle" font-weight="bold" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">3<tspan font-style="italic">λ</tspan>/2</text>
+        <line x1="24" y1="133.2" x2="24" y2="246.8" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w8e3-fg)" marker-start="url(#w8e3-fg)"/>
+        <text x="18" y="194" font-size="12" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">b</tspan></text>
+        <path d="M72,130 C54,140.8 54,159.2 72,170" fill="none" stroke="var(--efield)" stroke-width="1.4"/>
+        <text x="51" y="154" font-size="11" fill="var(--efield)" text-anchor="end"><tspan font-style="italic">b</tspan>/3</text>
+        <line x1="150" y1="72.6" x2="192" y2="72.6" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M173.2,53.6 A30,30 0 0 1 180,72.6" fill="none" stroke="var(--efield)" stroke-width="1.3"/>
+        <text x="189.5" y="62.3" font-size="11" fill="var(--efield)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">α</tspan></text>
+        <text x="90" y="20" font-size="10" fill="var(--muted)">Drittel 1 blau, 2 orange, 3 grün</text>
+        <text x="214" y="136" font-size="10.5" fill="var(--fg)">Drittel 1 und 2: Partner</text>
+        <text x="214" y="150" font-size="10.5" fill="var(--fg)">im Abstand <tspan font-style="italic">b</tspan>/3 mit</text>
+        <text x="214" y="164" font-size="10.5" fill="var(--efield)" font-weight="bold">Δ<tspan font-style="italic">l</tspan> = <tspan font-style="italic">λ</tspan>/2 ⇒ Summe 0</text>
+        <text x="214" y="178" font-size="10.5" fill="var(--ok)" font-weight="bold">Drittel 3 bleibt übrig</text>
+        <text x="214" y="192" font-size="10.5" fill="var(--fg)">⇒ schwaches Nebenmax.</text>
+        <text x="214" y="220" font-size="10.5" fill="var(--fg)" font-weight="bold"><tspan font-style="italic">b</tspan>·sin <tspan font-style="italic">α</tspan> ≈ 3<tspan font-style="italic">λ</tspan>/2</text>
+      </svg>
+      <p class="small">Erstes Nebenmaximum (Näherung): Spalt in drei Drittel teilen. Drittel 1 und 2 löschen sich paarweise aus (<span class="f">\(\Delta l = \lambda/2\)</span>), Drittel 3 bleibt übrig und liefert schwache Helligkeit: <span class="f">\(b\sin\alpha \approx \tfrac32\lambda\)</span>.</p>
+    </div>
+  </div>
   <div class="formula">\[\text{Minima: } \sin\alpha_n = n\frac{\lambda}{b},\qquad \text{Maxima (Näherung): } \sin\alpha_n = \Big(n + \tfrac12\Big)\frac{\lambda}{b}\qquad (n = 1, 2, \dots;\ \text{FS S. 35})\]</div>
   <ul>
     <li><b>Breite des Hauptmaximums:</b> von <span class="f">\(-\alpha_1\)</span> bis <span class="f">\(+\alpha_1\)</span>, Winkelbreite <span class="f">\(2\lambda/b\)</span>; alle anderen Maxima haben die Winkelbreite <span class="f">\(\lambda/b\)</span>: deshalb „doppelt so breit".</li>
@@ -374,6 +955,49 @@
     <li><b>1.2 (7 BE)</b> <span class="f">\(a_1 = 10{,}0\,\mathrm{cm}/2 = 5{,}0\,\mathrm{cm}\)</span>; grün (<span class="f">\(e = 16{,}5\,\mathrm{cm}\)</span>) <span class="f">\(\lambda \approx 580\,\mathrm{nm}\)</span>, blau (<span class="f">\(e = 20{,}1\,\mathrm{cm}\)</span>) <span class="f">\(\lambda \approx 483\,\mathrm{nm}\)</span> (4). Unsicherheit (3): <span class="f">\(\Delta e/e = 1{,}49\,\%\)</span>, <span class="f">\(\Delta a/a = 2\,\%\)</span> ⇒ <span class="f">\(\Delta\lambda \approx 9{,}7\,\mathrm{nm}\)</span>.</li>
     <li><b>1.3 (7 BE)</b> Minima vergleichen (2): gemeinsames Minimum bei 22,0 cm, Vierfachspalt zusätzlich bei 20,5 und 23,3 cm. Erklärung mit Zeigern (5): (A) Paare 1–2 und 3–4 mit <span class="f">\(180^\circ\)</span>; (B) Paare 1–3 und 2–4 mit <span class="f">\(180^\circ\)</span>.</li>
   </ul>
+  <svg viewBox="0 0 370 160" width="100%" style="max-width:425px;display:block;margin:4px auto" role="img" aria-label="Zeigerbilder: Vierfachspalt mit Nachbarphase 180 Grad und 90 Grad, Dreifachspalt mit 120 Grad; jeweils geschlossener Zeigerzug, Summe null">
+    <defs>
+      <marker id="w8vz-accent" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--accent)"/></marker>
+      <marker id="w8vz-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+      <marker id="w8vz-ok" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--ok)"/></marker>
+      <marker id="w8vz-efield" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--efield)"/></marker>
+    </defs>
+    <text x="62" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">Vierfachspalt (A)</text>
+    <text x="62" y="30" font-size="10" fill="var(--muted)" text-anchor="middle">Nachbarphase 180°</text>
+    <line x1="44" y1="64" x2="76.4" y2="64" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8vz-accent)"/>
+    <text x="86" y="68" font-size="10" fill="var(--accent)">1</text>
+    <line x1="80" y1="74" x2="47.6" y2="74" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8vz-kin)"/>
+    <text x="38" y="78" font-size="10" fill="var(--kin)" text-anchor="end">2</text>
+    <line x1="44" y1="84" x2="76.4" y2="84" stroke="var(--ok)" stroke-width="2.2" marker-end="url(#w8vz-ok)"/>
+    <text x="86" y="88" font-size="10" fill="var(--ok)">3</text>
+    <line x1="80" y1="94" x2="47.6" y2="94" stroke="var(--efield)" stroke-width="2.2" marker-end="url(#w8vz-efield)"/>
+    <text x="38" y="98" font-size="10" fill="var(--efield)" text-anchor="end">4</text>
+    <text x="62" y="138" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">1+2 = 0 und 3+4 = 0</text>
+    <text x="62" y="153" font-size="10" fill="var(--muted)" text-anchor="middle">wie beim Doppelspalt</text>
+    <text x="185" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">Vierfachspalt (B)</text>
+    <text x="185" y="30" font-size="10" fill="var(--muted)" text-anchor="middle">Nachbarphase 90°</text>
+    <line x1="167" y1="104" x2="199.4" y2="104" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8vz-accent)"/>
+    <line x1="203" y1="104" x2="203" y2="71.6" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8vz-kin)"/>
+    <line x1="203" y1="68" x2="170.6" y2="68" stroke="var(--ok)" stroke-width="2.2" marker-end="url(#w8vz-ok)"/>
+    <line x1="167" y1="68" x2="167" y2="100.4" stroke="var(--efield)" stroke-width="2.2" marker-end="url(#w8vz-efield)"/>
+    <text x="185" y="118" font-size="10" fill="var(--accent)" text-anchor="middle">1</text>
+    <text x="210" y="90" font-size="10" fill="var(--kin)">2</text>
+    <text x="185" y="62" font-size="10" fill="var(--ok)" text-anchor="middle">3</text>
+    <text x="160" y="90" font-size="10" fill="var(--efield)" text-anchor="end">4</text>
+    <text x="185" y="138" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">1+3 = 0 und 2+4 = 0</text>
+    <text x="185" y="153" font-size="10" fill="var(--muted)" text-anchor="middle">nur beim Vierfachspalt</text>
+    <text x="308" y="16" font-size="11" fill="var(--fg)" text-anchor="middle" font-weight="bold">Dreifachspalt</text>
+    <text x="308" y="30" font-size="10" fill="var(--muted)" text-anchor="middle">Nachbarphase 120°</text>
+    <line x1="290" y1="104" x2="322.4" y2="104" stroke="var(--accent)" stroke-width="2.2" marker-end="url(#w8vz-accent)"/>
+    <line x1="326" y1="104" x2="309.8" y2="75.9" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w8vz-kin)"/>
+    <line x1="308" y1="72.8" x2="291.8" y2="100.9" stroke="var(--ok)" stroke-width="2.2" marker-end="url(#w8vz-ok)"/>
+    <text x="308" y="118" font-size="10" fill="var(--accent)" text-anchor="middle">1</text>
+    <text x="323" y="86" font-size="10" fill="var(--kin)">2</text>
+    <text x="293" y="86" font-size="10" fill="var(--ok)" text-anchor="end">3</text>
+    <text x="308" y="138" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="bold">Zeigerzug geschlossen</text>
+    <text x="308" y="153" font-size="10" fill="var(--muted)" text-anchor="middle">Abitur 2023 IIa, 1.2</text>
+  </svg>
+  <p class="small">Zeigerbilder zu Abitur 2021 IIa, 1.3 und 2023 IIa, 1.2. Die Zeiger der Spalte (1 blau, 2 orange, 3 grün, 4 lila) werden aneinandergehängt, jeder um die Nachbarphase weitergedreht. Schließt sich der Zeigerzug, ist die Summe null: Minimum. (A) gibt es auch beim Doppelspalt, (B) nur beim Vierfachspalt. Im 180°-Bild sind die Zeiger zur Deutlichkeit versetzt gezeichnet.</p>
   <h3>Abitur 2021 IIa, Aufgabe 2: Michelson und CD (22 BE)</h3>
   <ul>
     <li><b>2.1 (11 BE)</b> Lichtwege mit Pfeilen inkl. Rückweg zum Laser (3); Erläutern: doppelte Längendifferenz, Bedingungen, Bezug zum Diagramm, <span class="f">\(\lambda = 2\Delta s \approx 630\,\mathrm{nm}\)</span> (6); Skizze mit doppelter Periode (2).</li>

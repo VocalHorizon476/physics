@@ -738,3 +738,8 @@ $
 - $l = 1 angstrom$ (Ångström)
 - $1 <= n <= 5$
 - h-Serien: Energie der Elektronen auf der y-Achse, auf der x-Achse schwarze Linien nach $n$
+
+
+
+#pagebreak()
+

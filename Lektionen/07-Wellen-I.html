@@ -42,6 +42,8 @@
   .formula { font-size: 1.25em; text-align: center; margin: 10px 0; padding: 10px; background: var(--soft); border-radius: 10px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 720px) { .grid2 { grid-template-columns: 1fr; } }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  @media (max-width: 720px) { .grid3 { grid-template-columns: 1fr; } }
   .controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; margin: 8px 0; font-size: 15px; }
   .controls label { display: flex; align-items: center; gap: 8px; }
   input[type=range] { width: 150px; }
@@ -75,7 +77,7 @@
   .ex { background: var(--soft); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
   .ex .t { font-weight: 600; }
   /* Schmale Fenster (Review 30.10.26): Spalten, Formeln und Tabellen dürfen die Seite nicht verbreitern */
-  .grid2 > *, .cards > *, .hand > * { min-width: 0; }
+  .grid2 > *, .grid3 > *, .cards > *, .hand > * { min-width: 0; }
   .f.wide { display: block; position: relative; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 2px 0 4px; }
   .formula { position: relative; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
   .out { max-width: 100%; }
@@ -127,6 +129,70 @@
     <li><b>Die Welle</b> (das Muster, die Störung, die Phase) wandert mit der Ausbreitungsgeschwindigkeit <span class="f">\(c\)</span>. Sie transportiert <b>Energie</b>, aber keine Materie.</li>
     <li><b>Zwei Geschwindigkeiten:</b> Die Teilchengeschwindigkeit <span class="f">\(\dot y\)</span> (schwankt, maximal <span class="f">\(\hat y\omega\)</span>) und die Wellengeschwindigkeit <span class="f">\(c\)</span> (konstant, vom Medium bestimmt). In der Klausur nie verwechseln.</li>
   </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 206" width="100%" style="max-width:430px;display:block;margin:4px auto" role="img" aria-label="Momentaufnahme einer nach rechts laufenden Welle mit den Geschwindigkeitspfeilen der Teilchen">
+        <defs>
+          <marker id="w7tv-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <marker id="w7tv-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+        </defs>
+        <line x1="12" y1="104" x2="348" y2="104" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <path d="M34,104 L36,100.5 L38,97.1 L40,93.7 L42,90.4 L44,87.2 L46,84 L48,81 L50,78.1 L52,75.4 L54,72.9 L56,70.5 L58,68.4 L60,66.5 L62,64.8 L64,63.3 L66,62.2 L68,61.2 L70,60.5 L72,60.1 L74,60 L76,60.1 L78,60.5 L80,61.2 L82,62.2 L84,63.3 L86,64.8 L88,66.5 L90,68.4 L92,70.5 L94,72.9 L96,75.4 L98,78.1 L100,81 L102,84 L104,87.2 L106,90.4 L108,93.7 L110,97.1 L112,100.5 L114,104 L116,107.5 L118,110.9 L120,114.3 L122,117.6 L124,120.8 L126,124 L128,127 L130,129.9 L132,132.6 L134,135.1 L136,137.5 L138,139.6 L140,141.5 L142,143.2 L144,144.7 L146,145.8 L148,146.8 L150,147.5 L152,147.9 L154,148 L156,147.9 L158,147.5 L160,146.8 L162,145.8 L164,144.7 L166,143.2 L168,141.5 L170,139.6 L172,137.5 L174,135.1 L176,132.6 L178,129.9 L180,127 L182,124 L184,120.8 L186,117.6 L188,114.3 L190,110.9 L192,107.5 L194,104 L196,100.5 L198,97.1 L200,93.7 L202,90.4 L204,87.2 L206,84 L208,81 L210,78.1 L212,75.4 L214,72.9 L216,70.5 L218,68.4 L220,66.5 L222,64.8 L224,63.3 L226,62.2 L228,61.2 L230,60.5 L232,60.1 L234,60 L236,60.1 L238,60.5 L240,61.2 L242,62.2 L244,63.3 L246,64.8 L248,66.5 L250,68.4 L252,70.5 L254,72.9 L256,75.4 L258,78.1 L260,81 L262,84 L264,87.2 L266,90.4 L268,93.7 L270,97.1 L272,100.5 L274,104 L276,107.5 L278,110.9 L280,114.3 L282,117.6 L284,120.8 L286,124 L288,127 L290,129.9 L292,132.6 L294,135.1 L296,137.5 L298,139.6 L300,141.5 L302,143.2 L304,144.7 L306,145.8 L308,146.8 L310,147.5 L312,147.9 L314,148 L316,147.9 L318,147.5 L320,146.8 L322,145.8 L324,144.7 L326,143.2 L328,141.5 L330,139.6 L332,137.5 L334,135.1 L336,132.6 L338,129.9 L340,127 L342,124 L344,120.8 L346,117.6 L348,114.3" fill="none" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 4"/>
+        <path d="M14,114.3 L16,110.9 L18,107.5 L20,104 L22,100.5 L24,97.1 L26,93.7 L28,90.4 L30,87.2 L32,84 L34,81 L36,78.1 L38,75.4 L40,72.9 L42,70.5 L44,68.4 L46,66.5 L48,64.8 L50,63.3 L52,62.2 L54,61.2 L56,60.5 L58,60.1 L60,60 L62,60.1 L64,60.5 L66,61.2 L68,62.2 L70,63.3 L72,64.8 L74,66.5 L76,68.4 L78,70.5 L80,72.9 L82,75.4 L84,78.1 L86,81 L88,84 L90,87.2 L92,90.4 L94,93.7 L96,97.1 L98,100.5 L100,104 L102,107.5 L104,110.9 L106,114.3 L108,117.6 L110,120.8 L112,124 L114,127 L116,129.9 L118,132.6 L120,135.1 L122,137.5 L124,139.6 L126,141.5 L128,143.2 L130,144.7 L132,145.8 L134,146.8 L136,147.5 L138,147.9 L140,148 L142,147.9 L144,147.5 L146,146.8 L148,145.8 L150,144.7 L152,143.2 L154,141.5 L156,139.6 L158,137.5 L160,135.1 L162,132.6 L164,129.9 L166,127 L168,124 L170,120.8 L172,117.6 L174,114.3 L176,110.9 L178,107.5 L180,104 L182,100.5 L184,97.1 L186,93.7 L188,90.4 L190,87.2 L192,84 L194,81 L196,78.1 L198,75.4 L200,72.9 L202,70.5 L204,68.4 L206,66.5 L208,64.8 L210,63.3 L212,62.2 L214,61.2 L216,60.5 L218,60.1 L220,60 L222,60.1 L224,60.5 L226,61.2 L228,62.2 L230,63.3 L232,64.8 L234,66.5 L236,68.4 L238,70.5 L240,72.9 L242,75.4 L244,78.1 L246,81 L248,84 L250,87.2 L252,90.4 L254,93.7 L256,97.1 L258,100.5 L260,104 L262,107.5 L264,110.9 L266,114.3 L268,117.6 L270,120.8 L272,124 L274,127 L276,129.9 L278,132.6 L280,135.1 L282,137.5 L284,139.6 L286,141.5 L288,143.2 L290,144.7 L292,145.8 L294,146.8 L296,147.5 L298,147.9 L300,148 L302,147.9 L304,147.5 L306,146.8 L308,145.8 L310,144.7 L312,143.2 L314,141.5 L316,139.6 L318,137.5 L320,135.1 L322,132.6 L324,129.9 L326,127 L328,124 L330,120.8 L332,117.6 L334,114.3 L336,110.9 L338,107.5 L340,104" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <line x1="240" y1="22" x2="344.4" y2="22" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7tv-arrow)"/>
+        <text x="234" y="26" font-size="11" fill="var(--arrow)" text-anchor="end">Ausbreitung, <tspan font-style="italic">c</tspan></text>
+        <line x1="20" y1="104" x2="20" y2="130.4" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="20" cy="104" r="3.2" fill="var(--accent)"/>
+        <line x1="40" y1="72.9" x2="40" y2="90.5" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="40" cy="72.9" r="3.2" fill="var(--accent)"/>
+        <circle cx="60" cy="60" r="3.2" fill="var(--accent)"/>
+        <line x1="80" y1="72.9" x2="80" y2="55.3" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="80" cy="72.9" r="3.2" fill="var(--accent)"/>
+        <line x1="100" y1="104" x2="100" y2="77.6" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="100" cy="104" r="3.2" fill="var(--accent)"/>
+        <line x1="120" y1="135.1" x2="120" y2="117.5" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="120" cy="135.1" r="3.2" fill="var(--accent)"/>
+        <circle cx="140" cy="148" r="3.2" fill="var(--accent)"/>
+        <line x1="160" y1="135.1" x2="160" y2="152.7" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="160" cy="135.1" r="3.2" fill="var(--accent)"/>
+        <line x1="180" y1="104" x2="180" y2="130.4" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="180" cy="104" r="3.2" fill="var(--accent)"/>
+        <line x1="200" y1="72.9" x2="200" y2="90.5" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="200" cy="72.9" r="3.2" fill="var(--accent)"/>
+        <circle cx="220" cy="60" r="3.2" fill="var(--accent)"/>
+        <line x1="240" y1="72.9" x2="240" y2="55.3" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="240" cy="72.9" r="3.2" fill="var(--accent)"/>
+        <line x1="260" y1="104" x2="260" y2="77.6" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="260" cy="104" r="3.2" fill="var(--accent)"/>
+        <line x1="280" y1="135.1" x2="280" y2="117.5" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="280" cy="135.1" r="3.2" fill="var(--accent)"/>
+        <circle cx="300" cy="148" r="3.2" fill="var(--accent)"/>
+        <line x1="320" y1="135.1" x2="320" y2="152.7" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="320" cy="135.1" r="3.2" fill="var(--accent)"/>
+        <line x1="340" y1="104" x2="340" y2="130.4" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <circle cx="340" cy="104" r="3.2" fill="var(--accent)"/>
+        <text x="220" y="48" font-size="10.5" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">v</tspan> = 0</text>
+        <text x="300" y="166" font-size="10.5" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">v</tspan> = 0</text>
+        <text x="266" y="80" font-size="10.5" fill="var(--fg)">|<tspan font-style="italic">v</tspan>| maximal</text>
+        <line x1="14" y1="192" x2="34" y2="192" stroke="var(--accent)" stroke-width="2"/>
+        <text x="38" y="196" font-size="10.5" fill="var(--muted)">Zeitpunkt <tspan font-style="italic">t</tspan></text>
+        <line x1="116" y1="192" x2="136" y2="192" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="5 4"/>
+        <text x="140" y="196" font-size="10.5" fill="var(--muted)">kurz danach</text>
+        <line x1="222" y1="199" x2="222" y2="186.6" stroke="var(--kin)" stroke-width="2" marker-end="url(#w7tv-kin)"/>
+        <text x="230" y="196" font-size="10.5" fill="var(--muted)"><tspan font-style="italic">v</tspan> der Teilchen</text>
+      </svg>
+      <p class="small">Momentaufnahme einer nach rechts laufenden Welle (durchgezogen) und dieselbe Welle kurz danach (gestrichelt). Orange Pfeile: Geschwindigkeit der Teilchen in diesem Moment. Die Welle läuft mit \(c\) nach rechts, die Teilchen bewegen sich nur auf und ab.</p>
+    </div>
+    <div>
+    <div class="note"><b>Bewegungsrichtung eines Teilchens ablesen (Verschiebe-Methode):</b>
+      <ol>
+        <li>Das Wellenbild gedanklich ein kleines Stück in Ausbreitungsrichtung verschieben (gestrichelt).</li>
+        <li>Jedes Teilchen muss senkrecht auf die verschobene Kurve: In diese Richtung bewegt es sich gerade.</li>
+        <li>Ergebnis: <b>Vor</b> einem Berg (in Laufrichtung gesehen) geht es nach oben, <b>hinter</b> einem Berg nach unten.</li>
+      </ol>
+      Berg und Tal sind Umkehrpunkte: \(\dot y = 0\). Im Nulldurchgang ist die Teilchengeschwindigkeit am größten, \(\hat v = \hat y\,\omega\). Als Formel: \(\dot y = \hat y\,\omega\cos(\omega t - kx + \varphi_0)\).</div>
+    </div>
+  </div>
   <h3>Transversal und longitudinal (Heft S. 23–24, Abitur 2025, 1.1)</h3>
   <table>
     <tr><th></th><th>Transversalwelle (Querwelle)</th><th>Longitudinalwelle (Längswelle)</th></tr>
@@ -134,6 +200,218 @@
     <tr><td>Bild</td><td>Berge und Täler (Seil, Wasseroberfläche, Licht)</td><td>Verdichtungen und Verdünnungen (Schall in Luft, Feder längs angestoßen)</td></tr>
     <tr><td>Polarisierbar?</td><td>ja: es gibt eine Schwingungs<b>ebene</b>, die man auswählen kann</td><td>nein: die Schwingung hat nur eine mögliche Richtung, die der Ausbreitung</td></tr>
   </table>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 176" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Transversalwelle: Die Teilchen schwingen senkrecht zur Ausbreitungsrichtung">
+        <defs>
+          <marker id="w7tq-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <marker id="w7tq-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <marker id="w7tq-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+        </defs>
+        <text x="10" y="18" font-size="13" fill="var(--fg)" font-weight="600">Transversalwelle (Querwelle)</text>
+        <line x1="240" y1="38" x2="344.4" y2="38" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7tq-arrow)"/>
+        <text x="348" y="30" font-size="11" fill="var(--arrow)" text-anchor="end">Ausbreitungsrichtung, <tspan font-style="italic">c</tspan></text>
+        <line x1="12" y1="118" x2="348" y2="118" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="348" y="112" font-size="10" fill="var(--muted)" text-anchor="end">Ruhelage</text>
+        <path d="M14,127.3 L16,124.3 L18,121.1 L20,118 L22,114.9 L24,111.7 L26,108.7 L28,105.6 L30,102.7 L32,99.8 L34,97.1 L36,94.5 L38,92 L40,89.7 L42,87.6 L44,85.6 L46,83.9 L48,82.4 L50,81 L52,80 L54,79.1 L56,78.5 L58,78.1 L60,78 L62,78.1 L64,78.5 L66,79.1 L68,80 L70,81 L72,82.4 L74,83.9 L76,85.6 L78,87.6 L80,89.7 L82,92 L84,94.5 L86,97.1 L88,99.8 L90,102.7 L92,105.6 L94,108.7 L96,111.7 L98,114.9 L100,118 L102,121.1 L104,124.3 L106,127.3 L108,130.4 L110,133.3 L112,136.2 L114,138.9 L116,141.5 L118,144 L120,146.3 L122,148.4 L124,150.4 L126,152.1 L128,153.6 L130,155 L132,156 L134,156.9 L136,157.5 L138,157.9 L140,158 L142,157.9 L144,157.5 L146,156.9 L148,156 L150,155 L152,153.6 L154,152.1 L156,150.4 L158,148.4 L160,146.3 L162,144 L164,141.5 L166,138.9 L168,136.2 L170,133.3 L172,130.4 L174,127.3 L176,124.3 L178,121.1 L180,118 L182,114.9 L184,111.7 L186,108.7 L188,105.6 L190,102.7 L192,99.8 L194,97.1 L196,94.5 L198,92 L200,89.7 L202,87.6 L204,85.6 L206,83.9 L208,82.4 L210,81 L212,80 L214,79.1 L216,78.5 L218,78.1 L220,78 L222,78.1 L224,78.5 L226,79.1 L228,80 L230,81 L232,82.4 L234,83.9 L236,85.6 L238,87.6 L240,89.7 L242,92 L244,94.5 L246,97.1 L248,99.8 L250,102.7 L252,105.6 L254,108.7 L256,111.7 L258,114.9 L260,118 L262,121.1 L264,124.3 L266,127.3 L268,130.4 L270,133.3 L272,136.2 L274,138.9 L276,141.5 L278,144 L280,146.3 L282,148.4 L284,150.4 L286,152.1 L288,153.6 L290,155 L292,156 L294,156.9 L296,157.5 L298,157.9 L300,158 L302,157.9 L304,157.5 L306,156.9 L308,156 L310,155 L312,153.6 L314,152.1 L316,150.4 L318,148.4 L320,146.3 L322,144 L324,141.5 L326,138.9 L328,136.2 L330,133.3 L332,130.4 L334,127.3 L336,124.3 L338,121.1 L340,118 L342,114.9 L344,111.7 L346,108.7" fill="none" stroke="var(--accent)" stroke-width="1.2" stroke-opacity="0.35"/>
+        <line x1="63.6" y1="64" x2="216.4" y2="64" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7tq-fg)" marker-start="url(#w7tq-fg)"/>
+        <text x="140" y="58" font-size="13" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">λ</tspan></text>
+        <text x="60" y="100" font-size="10.5" fill="var(--muted)" text-anchor="middle">Berg</text>
+        <text x="140" y="144" font-size="10.5" fill="var(--muted)" text-anchor="middle">Tal</text>
+        <line x1="260" y1="73.6" x2="260" y2="162.4" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w7tq-kin)" marker-start="url(#w7tq-kin)"/>
+        <text x="267" y="72" font-size="10.5" fill="var(--kin)">Schwingungs-</text>
+        <text x="267" y="85" font-size="10.5" fill="var(--kin)">richtung</text>
+        <circle cx="20" cy="118" r="3" fill="var(--accent)"/>
+        <circle cx="30" cy="102.7" r="3" fill="var(--accent)"/>
+        <circle cx="40" cy="89.7" r="3" fill="var(--accent)"/>
+        <circle cx="50" cy="81" r="3" fill="var(--accent)"/>
+        <circle cx="60" cy="78" r="3" fill="var(--accent)"/>
+        <circle cx="70" cy="81" r="3" fill="var(--accent)"/>
+        <circle cx="80" cy="89.7" r="3" fill="var(--accent)"/>
+        <circle cx="90" cy="102.7" r="3" fill="var(--accent)"/>
+        <circle cx="100" cy="118" r="3" fill="var(--accent)"/>
+        <circle cx="110" cy="133.3" r="3" fill="var(--accent)"/>
+        <circle cx="120" cy="146.3" r="3" fill="var(--accent)"/>
+        <circle cx="130" cy="155" r="3" fill="var(--accent)"/>
+        <circle cx="140" cy="158" r="3" fill="var(--accent)"/>
+        <circle cx="150" cy="155" r="3" fill="var(--accent)"/>
+        <circle cx="160" cy="146.3" r="3" fill="var(--accent)"/>
+        <circle cx="170" cy="133.3" r="3" fill="var(--accent)"/>
+        <circle cx="180" cy="118" r="3" fill="var(--accent)"/>
+        <circle cx="190" cy="102.7" r="3" fill="var(--accent)"/>
+        <circle cx="200" cy="89.7" r="3" fill="var(--accent)"/>
+        <circle cx="210" cy="81" r="3" fill="var(--accent)"/>
+        <circle cx="220" cy="78" r="3" fill="var(--accent)"/>
+        <circle cx="230" cy="81" r="3" fill="var(--accent)"/>
+        <circle cx="240" cy="89.7" r="3" fill="var(--accent)"/>
+        <circle cx="250" cy="102.7" r="3" fill="var(--accent)"/>
+        <circle cx="260" cy="118" r="4.2" fill="var(--pos)"/>
+        <circle cx="270" cy="133.3" r="3" fill="var(--accent)"/>
+        <circle cx="280" cy="146.3" r="3" fill="var(--accent)"/>
+        <circle cx="290" cy="155" r="3" fill="var(--accent)"/>
+        <circle cx="300" cy="158" r="3" fill="var(--accent)"/>
+        <circle cx="310" cy="155" r="3" fill="var(--accent)"/>
+        <circle cx="320" cy="146.3" r="3" fill="var(--accent)"/>
+        <circle cx="330" cy="133.3" r="3" fill="var(--accent)"/>
+        <circle cx="340" cy="118" r="3" fill="var(--accent)"/>
+      </svg>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 184" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Longitudinalwelle: Die Teilchen schwingen parallel zur Ausbreitungsrichtung, es entstehen Verdichtungen und Verdünnungen">
+        <defs>
+          <marker id="w7tl-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <marker id="w7tl-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <marker id="w7tl-kin" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--kin)"/></marker>
+        </defs>
+        <text x="10" y="18" font-size="13" fill="var(--fg)" font-weight="600">Longitudinalwelle (Längswelle)</text>
+        <line x1="240" y1="38" x2="344.4" y2="38" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7tl-arrow)"/>
+        <text x="348" y="30" font-size="11" fill="var(--arrow)" text-anchor="end">Ausbreitungsrichtung, <tspan font-style="italic">c</tspan></text>
+        <rect x="84" y="72" width="32" height="66" rx="6" fill="var(--soft)"/>
+        <rect x="244" y="72" width="32" height="66" rx="6" fill="var(--soft)"/>
+        <line x1="103.6" y1="62" x2="256.4" y2="62" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7tl-fg)" marker-start="url(#w7tl-fg)"/>
+        <text x="180" y="56" font-size="13" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">λ</tspan></text>
+        <circle cx="20" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="34" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="47.4" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="59.7" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="70.5" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="79.7" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="87.4" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="94" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="100" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="106" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="112.6" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="120.3" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="129.5" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="140.3" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="152.6" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="166" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="180" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="194" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="207.4" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="219.7" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="230.5" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="239.7" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="247.4" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="254" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="260" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="266" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="272.6" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="280.3" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="289.5" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="300.3" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="312.6" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="326" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="340" cy="82" r="2.6" fill="var(--accent)"/>
+        <circle cx="20" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="34" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="47.4" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="59.7" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="70.5" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="79.7" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="87.4" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="94" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="100" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="106" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="112.6" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="120.3" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="129.5" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="140.3" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="152.6" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="166" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="180" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="194" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="207.4" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="219.7" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="230.5" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="239.7" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="247.4" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="254" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="260" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="266" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="272.6" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="280.3" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="289.5" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="300.3" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="312.6" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="326" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="340" cy="98" r="2.6" fill="var(--accent)"/>
+        <circle cx="20" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="34" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="47.4" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="59.7" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="70.5" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="79.7" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="87.4" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="94" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="100" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="106" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="112.6" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="120.3" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="129.5" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="140.3" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="152.6" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="166" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="180" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="194" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="207.4" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="219.7" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="230.5" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="239.7" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="247.4" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="254" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="260" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="266" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="272.6" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="280.3" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="289.5" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="300.3" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="312.6" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="326" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="340" cy="114" r="2.6" fill="var(--accent)"/>
+        <circle cx="20" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="34" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="47.4" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="59.7" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="70.5" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="79.7" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="87.4" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="94" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="100" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="106" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="112.6" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="120.3" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="129.5" cy="130" r="3.6" fill="var(--pos)"/>
+        <circle cx="140.3" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="152.6" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="166" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="180" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="194" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="207.4" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="219.7" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="230.5" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="239.7" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="247.4" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="254" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="260" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="266" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="272.6" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="280.3" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="289.5" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="300.3" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="312.6" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="326" cy="130" r="2.6" fill="var(--accent)"/>
+        <circle cx="340" cy="130" r="2.6" fill="var(--accent)"/>
+        <line x1="140" y1="137" x2="140" y2="142" stroke="var(--muted)" stroke-width="1"/>
+        <line x1="126.1" y1="146" x2="153.9" y2="146" stroke="var(--kin)" stroke-width="2.2" marker-end="url(#w7tl-kin)" marker-start="url(#w7tl-kin)"/>
+        <text x="140" y="162" font-size="10.5" fill="var(--kin)" text-anchor="middle">Schwingungsrichtung</text>
+        <text x="100" y="178" font-size="10.5" fill="var(--muted)" text-anchor="middle">Verdichtung</text>
+        <text x="260" y="178" font-size="10.5" fill="var(--muted)" text-anchor="middle">Verdichtung</text>
+        <text x="180" y="178" font-size="10.5" fill="var(--muted)" text-anchor="middle">Verdünnung</text>
+      </svg>
+    </div>
+  </div>
+  <p class="small">Heft S. 23–24 nachgezeichnet. Links: Die Teilchen (blau) schwingen <b>quer</b> zur Ausbreitungsrichtung; das rote Teilchen pendelt nur entlang des orangen Doppelpfeils auf und ab. Rechts: Die Teilchen schwingen <b>längs</b>; wo sie zusammenrücken, entsteht eine Verdichtung (grau hinterlegt), wo sie auseinanderrücken, eine Verdünnung. In beiden Fällen ist \(\lambda\) der Abstand zweier gleicher Zustände: Berg zu Berg bzw. Verdichtung zu Verdichtung.</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -162,6 +440,33 @@
   </ul>
   <p>In der Zeit <span class="f">\(T\)</span> rückt das Muster genau um eine Wellenlänge <span class="f">\(\lambda\)</span> weiter. Daraus folgt die wichtigste Gleichung der Wellenlehre (FS S. 22):</p>
   <div class="formula">\[c = \frac{\lambda}{T} = \lambda\cdot f\qquad\text{(Ausbreitungsgeschwindigkeit; Heft: } v\text{)}\]</div>
+  <svg viewBox="0 0 380 198" width="100%" style="max-width:470px;display:block;margin:4px auto" role="img" aria-label="Zwei Momentaufnahmen einer Welle im Abstand einer Viertelperiode: Der Berg ist um eine Viertelwellenlänge weitergewandert">
+    <defs>
+      <marker id="w7ts-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+      <marker id="w7ts-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+    </defs>
+    <line x1="30" y1="100" x2="368.4" y2="100" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7ts-fg)"/>
+    <text x="368" y="116" font-size="12" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">x</tspan></text>
+    <line x1="30" y1="188" x2="30" y2="13.6" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7ts-fg)"/>
+    <text x="38" y="18" font-size="12" fill="var(--fg)"><tspan font-style="italic">y</tspan></text>
+    <path d="M30,150 L32,149.8 L34,149.4 L36,148.6 L38,147.6 L40,146.2 L42,144.6 L44,142.6 L46,140.5 L48,138 L50,135.4 L52,132.5 L54,129.4 L56,126.1 L58,122.7 L60,119.1 L62,115.5 L64,111.7 L66,107.8 L68,103.9 L70,100 L72,96.1 L74,92.2 L76,88.3 L78,84.5 L80,80.9 L82,77.3 L84,73.9 L86,70.6 L88,67.5 L90,64.6 L92,62 L94,59.5 L96,57.4 L98,55.4 L100,53.8 L102,52.4 L104,51.4 L106,50.6 L108,50.2 L110,50 L112,50.2 L114,50.6 L116,51.4 L118,52.4 L120,53.8 L122,55.4 L124,57.4 L126,59.5 L128,62 L130,64.6 L132,67.5 L134,70.6 L136,73.9 L138,77.3 L140,80.9 L142,84.5 L144,88.3 L146,92.2 L148,96.1 L150,100 L152,103.9 L154,107.8 L156,111.7 L158,115.5 L160,119.1 L162,122.7 L164,126.1 L166,129.4 L168,132.5 L170,135.4 L172,138 L174,140.5 L176,142.6 L178,144.6 L180,146.2 L182,147.6 L184,148.6 L186,149.4 L188,149.8 L190,150 L192,149.8 L194,149.4 L196,148.6 L198,147.6 L200,146.2 L202,144.6 L204,142.6 L206,140.5 L208,138 L210,135.4 L212,132.5 L214,129.4 L216,126.1 L218,122.7 L220,119.1 L222,115.5 L224,111.7 L226,107.8 L228,103.9 L230,100 L232,96.1 L234,92.2 L236,88.3 L238,84.5 L240,80.9 L242,77.3 L244,73.9 L246,70.6 L248,67.5 L250,64.6 L252,62 L254,59.5 L256,57.4 L258,55.4 L260,53.8 L262,52.4 L264,51.4 L266,50.6 L268,50.2 L270,50 L272,50.2 L274,50.6 L276,51.4 L278,52.4 L280,53.8 L282,55.4 L284,57.4 L286,59.5 L288,62 L290,64.6 L292,67.5 L294,70.6 L296,73.9 L298,77.3 L300,80.9 L302,84.5 L304,88.3 L306,92.2 L308,96.1 L310,100 L312,103.9 L314,107.8 L316,111.7 L318,115.5 L320,119.1 L322,122.7 L324,126.1 L326,129.4 L328,132.5 L330,135.4 L332,138 L334,140.5 L336,142.6 L338,144.6 L340,146.2 L342,147.6 L344,148.6 L346,149.4 L348,149.8 L350,150 L352,149.8 L354,149.4 L356,148.6 L358,147.6 L360,146.2 L362,144.6" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 4" stroke-opacity="0.75"/>
+    <path d="M30,100 L32,96.1 L34,92.2 L36,88.3 L38,84.5 L40,80.9 L42,77.3 L44,73.9 L46,70.6 L48,67.5 L50,64.6 L52,62 L54,59.5 L56,57.4 L58,55.4 L60,53.8 L62,52.4 L64,51.4 L66,50.6 L68,50.2 L70,50 L72,50.2 L74,50.6 L76,51.4 L78,52.4 L80,53.8 L82,55.4 L84,57.4 L86,59.5 L88,62 L90,64.6 L92,67.5 L94,70.6 L96,73.9 L98,77.3 L100,80.9 L102,84.5 L104,88.3 L106,92.2 L108,96.1 L110,100 L112,103.9 L114,107.8 L116,111.7 L118,115.5 L120,119.1 L122,122.7 L124,126.1 L126,129.4 L128,132.5 L130,135.4 L132,138 L134,140.5 L136,142.6 L138,144.6 L140,146.2 L142,147.6 L144,148.6 L146,149.4 L148,149.8 L150,150 L152,149.8 L154,149.4 L156,148.6 L158,147.6 L160,146.2 L162,144.6 L164,142.6 L166,140.5 L168,138 L170,135.4 L172,132.5 L174,129.4 L176,126.1 L178,122.7 L180,119.1 L182,115.5 L184,111.7 L186,107.8 L188,103.9 L190,100 L192,96.1 L194,92.2 L196,88.3 L198,84.5 L200,80.9 L202,77.3 L204,73.9 L206,70.6 L208,67.5 L210,64.6 L212,62 L214,59.5 L216,57.4 L218,55.4 L220,53.8 L222,52.4 L224,51.4 L226,50.6 L228,50.2 L230,50 L232,50.2 L234,50.6 L236,51.4 L238,52.4 L240,53.8 L242,55.4 L244,57.4 L246,59.5 L248,62 L250,64.6 L252,67.5 L254,70.6 L256,73.9 L258,77.3 L260,80.9 L262,84.5 L264,88.3 L266,92.2 L268,96.1 L270,100 L272,103.9 L274,107.8 L276,111.7 L278,115.5 L280,119.1 L282,122.7 L284,126.1 L286,129.4 L288,132.5 L290,135.4 L292,138 L294,140.5 L296,142.6 L298,144.6 L300,146.2 L302,147.6 L304,148.6 L306,149.4 L308,149.8 L310,150 L312,149.8 L314,149.4 L316,148.6 L318,147.6 L320,146.2 L322,144.6 L324,142.6 L326,140.5 L328,138 L330,135.4 L332,132.5 L334,129.4 L336,126.1 L338,122.7 L340,119.1 L342,115.5 L344,111.7 L346,107.8 L348,103.9 L350,100 L352,96.1 L354,92.2 L356,88.3 L358,84.5 L360,80.9 L362,77.3" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+    <line x1="70" y1="100" x2="70" y2="53.6" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7ts-fg)"/>
+    <text x="64" y="82" font-size="13" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">ŷ</tspan></text>
+    <line x1="230" y1="50" x2="230" y2="32" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="270" y1="50" x2="270" y2="32" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="230" y1="38" x2="266.4" y2="38" stroke="var(--arrow)" stroke-width="1.8" marker-end="url(#w7ts-arrow)"/>
+    <text x="250" y="27" font-size="11" fill="var(--arrow)" text-anchor="middle">Δ<tspan font-style="italic">x</tspan> = <tspan font-style="italic">c</tspan>·<tspan font-style="italic">T</tspan>/4 = <tspan font-style="italic">λ</tspan>/4</text>
+    <line x1="150" y1="152" x2="150" y2="172" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="310" y1="152" x2="310" y2="172" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 2"/>
+    <line x1="153.6" y1="166" x2="306.4" y2="166" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7ts-fg)" marker-start="url(#w7ts-fg)"/>
+    <text x="230" y="182" font-size="13" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">λ</tspan></text>
+    <line x1="44" y1="191" x2="64" y2="191" stroke="var(--accent)" stroke-width="2.2"/>
+    <text x="68" y="195" font-size="10.5" fill="var(--muted)">Zeitpunkt <tspan font-style="italic">t</tspan></text>
+    <line x1="134" y1="191" x2="154" y2="191" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="6 4" stroke-opacity="0.75"/>
+    <text x="158" y="195" font-size="10.5" fill="var(--muted)"><tspan font-style="italic">t</tspan> + <tspan font-style="italic">T</tspan>/4</text>
+  </svg>
+  <p class="small">Zwei Momentaufnahmen derselben Welle: Zeitpunkt \(t\) (durchgezogen) und eine Viertelperiode später (gestrichelt). Der Berg ist um \(\lambda/4\) weitergewandert, nach einer ganzen Periode \(T\) um \(\lambda\). Daher \(c = \lambda/T\). Die Amplitude \(\hat y\) (Heft: \(y_0\)) ist der größte Ausschlag aus der Ruhelage.</p>
   <p>Beide Sichtweisen zusammen ergeben die <b>Wellenfunktion</b>. Ein Punkt weiter rechts (größeres <span class="f">\(x\)</span>) wird von der Welle <b>später</b> erreicht, er hinkt in der Phase hinterher. Deshalb steht vor <span class="f">\(kx\)</span> ein Minus, wenn die Welle nach rechts läuft:</p>
   <div class="formula">\[y(x,t) = \hat y\,\sin(\omega t - k x + \varphi_0),\qquad k = \frac{2\pi}{\lambda},\quad \omega = \frac{2\pi}{T},\quad \frac{\omega}{k} = c\qquad\text{(FS S. 22: } y = y_{\mathrm{max}}\sin\!\big(2\pi(\tfrac tT - \tfrac x\lambda)\big)\text{)}\]</div>
   <ul>
@@ -225,6 +530,66 @@
   </ul>
   <div class="grid2">
     <div>
+      <svg viewBox="0 0 360 232" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Ein punktförmiger Erreger sendet eine Kreiswelle aus">
+        <defs>
+          <marker id="w7hk-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+        </defs>
+        <text x="10" y="18" font-size="13" fill="var(--fg)" font-weight="600">Ein Erreger → Kreiswelle</text>
+        <circle cx="200" cy="124" r="20" fill="none" stroke="var(--kin)" stroke-width="2"/>
+        <circle cx="200" cy="124" r="42" fill="none" stroke="var(--kin)" stroke-width="2"/>
+        <circle cx="200" cy="124" r="64" fill="none" stroke="var(--kin)" stroke-width="2"/>
+        <circle cx="200" cy="124" r="86" fill="none" stroke="var(--kin)" stroke-width="2"/>
+        <line x1="268.9" y1="66.1" x2="280" y2="56.9" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7hk-arrow)"/>
+        <line x1="268.9" y1="181.9" x2="280" y2="191.1" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7hk-arrow)"/>
+        <line x1="131.1" y1="181.9" x2="120" y2="191.1" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7hk-arrow)"/>
+        <line x1="131.1" y1="66.1" x2="120" y2="56.9" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7hk-arrow)"/>
+        <text x="289.8" y="52" font-size="12" fill="var(--arrow)"><tspan font-style="italic">c</tspan></text>
+        <line x1="64" y1="202" x2="197" y2="127" stroke="var(--muted)" stroke-width="1"/>
+        <circle cx="200" cy="124" r="3.6" fill="var(--fg)"/>
+        <text x="14" y="214" font-size="10.5" fill="var(--muted)">Erreger (schwingt senkrecht</text>
+        <text x="14" y="227" font-size="10.5" fill="var(--muted)">zur Zeichenebene)</text>
+      </svg>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 244" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Viele Erreger auf einer Wellenfront: Die Einhüllende der Elementarwellen ist die neue ebene Wellenfront">
+        <defs>
+          <marker id="w7he-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <marker id="w7he-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+        </defs>
+        <text x="10" y="18" font-size="13" fill="var(--fg)" font-weight="600">Viele Erreger → ebene Welle</text>
+        <path d="M80,28 A50,50 0 0 1 80,128" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <path d="M80,50 A50,50 0 0 1 80,150" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <path d="M80,72 A50,50 0 0 1 80,172" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <path d="M80,94 A50,50 0 0 1 80,194" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <path d="M80,116 A50,50 0 0 1 80,216" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <path d="M80,138 A50,50 0 0 1 80,238" fill="none" stroke="var(--kin)" stroke-width="1.1" stroke-opacity="0.6"/>
+        <line x1="80" y1="66" x2="80" y2="200" stroke="var(--kin)" stroke-width="2.4"/>
+        <circle cx="80" cy="78" r="3.2" fill="var(--fg)"/>
+        <circle cx="80" cy="100" r="3.2" fill="var(--fg)"/>
+        <circle cx="80" cy="122" r="3.2" fill="var(--fg)"/>
+        <circle cx="80" cy="144" r="3.2" fill="var(--fg)"/>
+        <circle cx="80" cy="166" r="3.2" fill="var(--fg)"/>
+        <circle cx="80" cy="188" r="3.2" fill="var(--fg)"/>
+        <line x1="130" y1="78" x2="130" y2="188" stroke="var(--kin)" stroke-width="3"/>
+        <path d="M130,78 A50,50 0 0 0 105,34.7" fill="none" stroke="var(--kin)" stroke-width="2.2" stroke-dasharray="2 3"/>
+        <path d="M130,188 A50,50 0 0 1 105,231.3" fill="none" stroke="var(--kin)" stroke-width="2.2" stroke-dasharray="2 3"/>
+        <text x="112" y="32" font-size="10" fill="var(--muted)">am Rand: Beugung</text>
+        <line x1="80" y1="144" x2="126.4" y2="144" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7he-fg)"/>
+        <text x="138" y="148" font-size="11" fill="var(--fg)"><tspan font-style="italic">r</tspan> = <tspan font-style="italic">c</tspan>·Δ<tspan font-style="italic">t</tspan></text>
+        <text x="138" y="96" font-size="11" fill="var(--kin)">Einhüllende = neue</text>
+        <text x="138" y="109" font-size="11" fill="var(--kin)">Wellenfront (Zeit <tspan font-style="italic">t</tspan> + Δ<tspan font-style="italic">t</tspan>)</text>
+        <text x="10" y="60" font-size="10.5" fill="var(--kin)">Front (Zeit <tspan font-style="italic">t</tspan>)</text>
+        <text x="10" y="118" font-size="10.5" fill="var(--muted)">jeder Punkt</text>
+        <text x="10" y="131" font-size="10.5" fill="var(--muted)">der Front</text>
+        <text x="10" y="144" font-size="10.5" fill="var(--muted)">= Erreger</text>
+        <line x1="150" y1="188" x2="232.4" y2="188" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7he-arrow)"/>
+        <text x="150" y="204" font-size="10.5" fill="var(--arrow)">Ausbreitungsrichtung</text>
+      </svg>
+    </div>
+  </div>
+  <p class="small">Heft S. 19 nachgezeichnet. Links: Ein punktförmiger Erreger sendet eine Kreiswelle aus, die in alle Richtungen mit \(c\) läuft. Rechts: Jeder Punkt einer Wellenfront ist Erreger einer Elementarwelle. Nach der Zeit \(\Delta t\) haben alle Elementarwellen den Radius \(r = c\,\Delta t\); ihre gemeinsame Tangente (Einhüllende) ist die neue Wellenfront. An den Enden der Front fehlen die Nachbarn: Dort biegt die Welle um (Beugung, punktiert).</p>
+  <div class="grid2">
+    <div>
       <div class="controls">
         <button id="hyModeS" class="active">Spalt</button><button id="hyModeK">Kante</button>
         <label>Spaltbreite <input type="range" id="hyB" min="0.3" max="6" value="0.8" step="0.1"> <span id="hyBv"></span></label>
@@ -248,6 +613,69 @@
   <h3>Herleitung (Heft-Bild: schräge Wellenfronten an der Grenze)</h3>
   <p>Eine Wellenfront trifft schräg auf die Grenzfläche. Der Winkel zwischen Front und Grenze ist gleich dem Winkel zwischen Ausbreitungsrichtung und Lot: <span class="f">\(\alpha_1\)</span> im Medium 1, <span class="f">\(\alpha_2\)</span> im Medium 2. Betrachte das Stück Front, das die Grenze auf der Länge <span class="f">\(d\)</span> überstreicht. In der Zeit <span class="f">\(t\)</span>, in der das eine Ende der Front die Strecke <span class="f">\(d\)</span> entlang der Grenze zurücklegt, läuft die Welle im Medium 1 senkrecht zur Front die Strecke <span class="f">\(s_1 = v_1 t\)</span>, im Medium 2 die Strecke <span class="f">\(s_2 = v_2 t\)</span>. Aus den rechtwinkligen Dreiecken mit der gemeinsamen Hypotenuse <span class="f">\(d\)</span>:</p>
   <div class="formula">\[s_1 = d\sin\alpha_1 = v_1 t,\qquad s_2 = d\sin\alpha_2 = v_2 t\qquad\Rightarrow\qquad \frac{\sin\alpha_1}{\sin\alpha_2} = \frac{v_1}{v_2}\]</div>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 380 262" width="100%" style="max-width:470px;display:block;margin:4px auto" role="img" aria-label="Herleitung des Brechungsgesetzes mit Huygens: Wellenfront AB, neue Front A-Strich B-Strich, Wege s1 und s2, gemeinsame Hypotenuse d">
+        <defs>
+          <marker id="w7br-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <marker id="w7br-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <rect x="0" y="130" width="380" height="132" fill="var(--soft)"/>
+        <line x1="8" y1="130" x2="372" y2="130" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="372" y="124" font-size="10.5" fill="var(--muted)" text-anchor="end">Grenzfläche</text>
+        <line x1="100" y1="54" x2="100" y2="240" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="100" y="48" font-size="10" fill="var(--muted)" text-anchor="middle">Lot</text>
+        <line x1="260" y1="54" x2="260" y2="240" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="260" y="48" font-size="10" fill="var(--muted)" text-anchor="middle">Lot</text>
+        <path d="M181.7,130 A81.7,81.7 0 0 1 18.3,130" fill="none" stroke="var(--kin)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <line x1="100" y1="130" x2="166.1" y2="51.2" stroke="var(--kin)" stroke-width="2.8"/>
+        <line x1="141.7" y1="200.3" x2="260" y2="130" stroke="var(--kin)" stroke-width="2.8"/>
+        <line x1="166.1" y1="51.2" x2="210.3" y2="88.3" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7br-arrow)"/>
+        <line x1="213.1" y1="90.6" x2="260" y2="130" stroke="var(--arrow)" stroke-width="2"/>
+        <line x1="100" y1="130" x2="119" y2="162" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7br-arrow)"/>
+        <line x1="120.9" y1="165.1" x2="141.7" y2="200.3" stroke="var(--arrow)" stroke-width="2"/>
+        <line x1="63.2" y1="99.1" x2="97.2" y2="127.7" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7br-arrow)"/>
+        <line x1="260" y1="130" x2="279.6" y2="163" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7br-arrow)"/>
+        <path d="M161.6,56.6 L167,61.1 L171.5,55.7" fill="none" stroke="var(--fg)" stroke-width="1"/>
+        <path d="M138.2,194.2 L144.2,190.7 L147.7,196.7" fill="none" stroke="var(--fg)" stroke-width="1"/>
+        <path d="M126,130 A26,26 0 0 0 116.7,110.1" fill="none" stroke="var(--efield)" stroke-width="1.6"/>
+        <text x="134.4" y="117.9" font-size="12" fill="var(--efield)" text-anchor="middle"><tspan font-style="italic">α</tspan><tspan dy="3.6" font-size="8.6">1</tspan></text>
+        <path d="M260,108 A22,22 0 0 0 243.1,115.9" fill="none" stroke="var(--efield)" stroke-width="1.6"/>
+        <text x="246.5" y="105" font-size="12" fill="var(--efield)" text-anchor="middle"><tspan font-style="italic">α</tspan><tspan dy="3.6" font-size="8.6">1</tspan></text>
+        <path d="M230,130 A30,30 0 0 0 234.2,145.3" fill="none" stroke="var(--ok)" stroke-width="1.6"/>
+        <text x="218.5" y="145.4" font-size="12" fill="var(--ok)" text-anchor="middle"><tspan font-style="italic">α</tspan><tspan dy="3.6" font-size="8.6">2</tspan></text>
+        <path d="M100,154 A24,24 0 0 0 112.3,150.6" fill="none" stroke="var(--ok)" stroke-width="1.6"/>
+        <text x="110.6" y="172.6" font-size="12" fill="var(--ok)" text-anchor="middle"><tspan font-style="italic">α</tspan><tspan dy="3.6" font-size="8.6">2</tspan></text>
+        <circle cx="100" cy="130" r="2.6" fill="var(--fg)"/>
+        <circle cx="166.1" cy="51.2" r="2.6" fill="var(--fg)"/>
+        <circle cx="260" cy="130" r="2.6" fill="var(--fg)"/>
+        <circle cx="141.7" cy="200.3" r="2.6" fill="var(--fg)"/>
+        <text x="94" y="147" font-size="12" fill="var(--fg)" text-anchor="end" font-weight="600">A</text>
+        <text x="160" y="47" font-size="12" fill="var(--fg)" text-anchor="end" font-weight="600">B</text>
+        <text x="266" y="124" font-size="12" fill="var(--fg)" font-weight="600">B′</text>
+        <text x="148" y="215" font-size="12" fill="var(--fg)" font-weight="600">A′</text>
+        <text x="207" y="106" font-size="11" fill="var(--arrow)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">s</tspan><tspan dy="3.3" font-size="7.9">1</tspan><tspan dy="-3.3"> = </tspan><tspan font-style="italic">v</tspan><tspan dy="3.3" font-size="7.9">1</tspan><tspan dy="-3.3">·</tspan><tspan font-style="italic">t</tspan></text>
+        <text x="124" y="152" font-size="11" fill="var(--arrow)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">s</tspan><tspan dy="3.3" font-size="7.9">2</tspan><tspan dy="-3.3"> = </tspan><tspan font-style="italic">v</tspan><tspan dy="3.3" font-size="7.9">2</tspan><tspan dy="-3.3">·</tspan><tspan font-style="italic">t</tspan></text>
+        <text x="172" y="44" font-size="10.5" fill="var(--kin)">Front (Zeit 0)</text>
+        <text x="176" y="200" font-size="10.5" fill="var(--kin)">Front (Zeit <tspan font-style="italic">t</tspan>)</text>
+        <line x1="103.6" y1="232" x2="256.4" y2="232" stroke="var(--fg)" stroke-width="1.1" marker-end="url(#w7br-fg)" marker-start="url(#w7br-fg)"/>
+        <text x="180" y="227" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">d</tspan></text>
+        <text x="12" y="22" font-size="11" fill="var(--fg)">Medium 1: <tspan font-style="italic">n</tspan><tspan dy="3.3" font-size="7.9">1</tspan><tspan dy="-3.3">, </tspan><tspan font-style="italic">v</tspan><tspan dy="3.3" font-size="7.9">1</tspan></text>
+        <text x="12" y="255" font-size="11" fill="var(--fg)">Medium 2: <tspan font-style="italic">n</tspan><tspan dy="3.3" font-size="7.9">2</tspan><tspan dy="-3.3"> &gt; </tspan><tspan font-style="italic">n</tspan><tspan dy="3.3" font-size="7.9">1</tspan><tspan dy="-3.3">, also </tspan><tspan font-style="italic">v</tspan><tspan dy="3.3" font-size="7.9">2</tspan><tspan dy="-3.3"> &lt; </tspan><tspan font-style="italic">v</tspan><tspan dy="3.3" font-size="7.9">1</tspan></text>
+      </svg>
+      <p class="small">Herleitungsbild (Heft S. 20, ergänzt): Während die Front bei \(B\) im schnellen Medium 1 den Weg \(s_1\) bis \(B'\) zurücklegt, läuft die Elementarwelle aus \(A\) im langsamen Medium 2 nur bis zum Radius \(s_2\) (gestrichelter Kreis). Die neue Front ist die Tangente von \(B'\) an diesen Kreis. Gezeichnet für \(n_2/n_1 = 1{,}5\): \(\alpha_1 = 50^\circ\), \(\alpha_2 = 30{,}7^\circ\).</p>
+    </div>
+    <div>
+    <div class="note"><b>So liest du das Bild:</b>
+      <ol>
+        <li>Dreieck \(ABB'\) hat bei \(B\) einen rechten Winkel (Strahl senkrecht zur Front), Hypotenuse \(d\): \(\sin\alpha_1 = s_1/d\).</li>
+        <li>Dreieck \(AA'B'\) hat bei \(A'\) einen rechten Winkel, dieselbe Hypotenuse \(d\): \(\sin\alpha_2 = s_2/d\).</li>
+        <li>Beide Wege dauern gleich lang: \(s_1 = v_1 t\), \(s_2 = v_2 t\).</li>
+        <li>Teilen: \(\dfrac{\sin\alpha_1}{\sin\alpha_2} = \dfrac{s_1}{s_2} = \dfrac{v_1}{v_2}\).</li>
+      </ol>
+      Der Winkel zwischen Front und Grenzfläche ist gleich dem Winkel zwischen Strahl und Lot, weil beide Schenkel jeweils senkrecht aufeinander stehen. Deshalb steht \(\alpha_1\) zweimal im Bild (an der Front bei \(A\), am Strahl bei \(B'\)), ebenso \(\alpha_2\).</div>
+    </div>
+  </div>
   <p>Für Licht ist <span class="f">\(v = c_0/n\)</span> mit der <b>Brechzahl</b> <span class="f">\(n\)</span> des Mediums (<span class="f">\(c_0\)</span>: Vakuumlichtgeschwindigkeit). Einsetzen (Heft): I <span class="f">\(t\,c_0/n_1 = d\sin\alpha_1\)</span> und II <span class="f">\(t\,c_0/n_2 = d\sin\alpha_2\)</span>. I durch II teilen: links kürzen sich <span class="f">\(t\)</span> und <span class="f">\(c_0\)</span>, übrig bleibt <span class="f">\(\frac{1/n_1}{1/n_2} = \frac{n_2}{n_1}\)</span> ⇒</p>
   <div class="formula">\[\frac{\sin\alpha_1}{\sin\alpha_2} = \frac{n_2}{n_1} = \frac{v_1}{v_2} = \frac{\lambda_1}{\lambda_2}\qquad\text{(Snelliussches Brechungsgesetz; FS S. 34: } \tfrac{\sin\alpha}{\sin\beta} = \tfrac{n_2}{n_1} = \tfrac{c_1}{c_2}\text{)}\]</div>
   <ul>
@@ -287,6 +715,100 @@
   </ul>
   <div class="grid2">
     <div>
+      <svg viewBox="0 0 380 304" width="100%" style="max-width:470px;display:block;margin:4px auto" role="img" aria-label="Interferenz zweier Kreiswellen: Wellenberge, Wellentäler, Maxima- und Minima-Linien und der Gangunterschied am Punkt P">
+        <defs>
+          <clipPath id="w7iz-clip"><rect x="40" y="4" width="340" height="258"/></clipPath>
+        </defs>
+        <g clip-path="url(#w7iz-clip)">
+        <circle cx="40" cy="120" r="30" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="60" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="90" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="120" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="150" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="180" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="210" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="240" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="270" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="300" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="330" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="120" r="15" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="45" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="75" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="105" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="135" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="165" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="195" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="225" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="255" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="285" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="120" r="315" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="30" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="60" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="90" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="120" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="150" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="180" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="210" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="240" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="270" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="300" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="330" fill="none" stroke="var(--accent)" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="40" cy="180" r="15" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="45" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="75" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="105" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="135" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="165" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="195" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="225" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="255" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="285" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <circle cx="40" cy="180" r="315" fill="none" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3 3" stroke-opacity="0.6"/>
+        <line x1="40" y1="150" x2="380" y2="150" stroke="var(--ok)" stroke-width="2.2"/>
+        <path d="M40,135 L43,134.9 L46,134.6 L49,134.1 L52,133.5 L55,132.7 L58,131.8 L61,130.7 L64,129.6 L67,128.4 L70,127.1 L73,125.8 L76,124.4 L79,122.9 L82,121.5 L85,120 L88,118.5 L91,117 L94,115.4 L97,113.8 L100,112.3 L103,110.7 L106,109 L109,107.4 L112,105.8 L115,104.2 L118,102.5 L121,100.9 L124,99.2 L127,97.6 L130,95.9 L133,94.3 L136,92.6 L139,90.9 L142,89.2 L145,87.6 L148,85.9 L151,84.2 L154,82.5 L157,80.8 L160,79.1 L163,77.4 L166,75.7 L169,74 L172,72.3 L175,70.6 L178,68.9 L181,67.2 L184,65.5 L187,63.8 L190,62.1 L193,60.4 L196,58.7 L199,57 L202,55.3 L205,53.6 L208,51.9 L211,50.1 L214,48.4 L217,46.7 L220,45 L223,43.3 L226,41.6 L229,39.9 L232,38.1 L235,36.4 L238,34.7 L241,33 L244,31.3 L247,29.6 L250,27.8 L253,26.1 L256,24.4 L259,22.7 L262,21 L265,19.2 L268,17.5 L271,15.8 L274,14.1 L277,12.3 L280,10.6 L283,8.9 L286,7.2 L289,5.5 L292,3.7 L295,2 L298,0.3 L301,-1.4 L304,-3.2 L307,-4.9 L310,-6.6 L313,-8.3 L316,-10.1 L319,-11.8 L322,-13.5 L325,-15.2 L328,-17 L331,-18.7 L334,-20.4 L337,-22.1 L340,-23.9 L343,-25.6 L346,-27.3 L349,-29 L352,-30.8 L355,-32.5 L358,-34.2 L361,-35.9 L364,-37.7 L367,-39.4 L370,-41.1 L373,-42.8 L376,-44.6 L379,-46.3 L382,-48 L385,-49.7" fill="none" stroke="var(--ok)" stroke-width="2.2"/>
+        <path d="M40,165 L43,165.1 L46,165.4 L49,165.9 L52,166.5 L55,167.3 L58,168.2 L61,169.3 L64,170.4 L67,171.6 L70,172.9 L73,174.2 L76,175.6 L79,177.1 L82,178.5 L85,180 L88,181.5 L91,183 L94,184.6 L97,186.2 L100,187.7 L103,189.3 L106,191 L109,192.6 L112,194.2 L115,195.8 L118,197.5 L121,199.1 L124,200.8 L127,202.4 L130,204.1 L133,205.7 L136,207.4 L139,209.1 L142,210.8 L145,212.4 L148,214.1 L151,215.8 L154,217.5 L157,219.2 L160,220.9 L163,222.6 L166,224.3 L169,226 L172,227.7 L175,229.4 L178,231.1 L181,232.8 L184,234.5 L187,236.2 L190,237.9 L193,239.6 L196,241.3 L199,243 L202,244.7 L205,246.4 L208,248.1 L211,249.9 L214,251.6 L217,253.3 L220,255 L223,256.7 L226,258.4 L229,260.1 L232,261.9 L235,263.6 L238,265.3 L241,267 L244,268.7 L247,270.4 L250,272.2 L253,273.9 L256,275.6 L259,277.3 L262,279 L265,280.8 L268,282.5 L271,284.2 L274,285.9 L277,287.7 L280,289.4 L283,291.1 L286,292.8 L289,294.5 L292,296.3 L295,298 L298,299.7 L301,301.4 L304,303.2 L307,304.9 L310,306.6 L313,308.3 L316,310.1 L319,311.8 L322,313.5 L325,315.2 L328,317 L331,318.7 L334,320.4 L337,322.1 L340,323.9 L343,325.6 L346,327.3 L349,329 L352,330.8 L355,332.5 L358,334.2 L361,335.9 L364,337.7 L367,339.4 L370,341.1 L373,342.8 L376,344.6 L379,346.3 L382,348 L385,349.7" fill="none" stroke="var(--ok)" stroke-width="2.2"/>
+        <path d="M40,142.5 L43,142.5 L46,142.3 L49,142.1 L52,141.9 L55,141.6 L58,141.2 L61,140.7 L64,140.3 L67,139.8 L70,139.2 L73,138.6 L76,138.1 L79,137.4 L82,136.8 L85,136.2 L88,135.5 L91,134.8 L94,134.2 L97,133.5 L100,132.8 L103,132.1 L106,131.4 L109,130.7 L112,130 L115,129.2 L118,128.5 L121,127.8 L124,127.1 L127,126.3 L130,125.6 L133,124.8 L136,124.1 L139,123.4 L142,122.6 L145,121.9 L148,121.1 L151,120.4 L154,119.6 L157,118.9 L160,118.1 L163,117.4 L166,116.6 L169,115.9 L172,115.1 L175,114.3 L178,113.6 L181,112.8 L184,112.1 L187,111.3 L190,110.6 L193,109.8 L196,109 L199,108.3 L202,107.5 L205,106.7 L208,106 L211,105.2 L214,104.5 L217,103.7 L220,102.9 L223,102.2 L226,101.4 L229,100.6 L232,99.9 L235,99.1 L238,98.3 L241,97.6 L244,96.8 L247,96 L250,95.3 L253,94.5 L256,93.7 L259,93 L262,92.2 L265,91.4 L268,90.7 L271,89.9 L274,89.1 L277,88.3 L280,87.6 L283,86.8 L286,86 L289,85.3 L292,84.5 L295,83.7 L298,83 L301,82.2 L304,81.4 L307,80.7 L310,79.9 L313,79.1 L316,78.3 L319,77.6 L322,76.8 L325,76 L328,75.3 L331,74.5 L334,73.7 L337,72.9 L340,72.2 L343,71.4 L346,70.6 L349,69.9 L352,69.1 L355,68.3 L358,67.6 L361,66.8 L364,66 L367,65.2 L370,64.5 L373,63.7 L376,62.9 L379,62.1 L382,61.4 L385,60.6" fill="none" stroke="var(--pos)" stroke-width="1.8" stroke-dasharray="6 4"/>
+        <path d="M40,157.5 L43,157.5 L46,157.7 L49,157.9 L52,158.1 L55,158.4 L58,158.8 L61,159.3 L64,159.7 L67,160.2 L70,160.8 L73,161.4 L76,161.9 L79,162.6 L82,163.2 L85,163.8 L88,164.5 L91,165.2 L94,165.8 L97,166.5 L100,167.2 L103,167.9 L106,168.6 L109,169.3 L112,170 L115,170.8 L118,171.5 L121,172.2 L124,172.9 L127,173.7 L130,174.4 L133,175.2 L136,175.9 L139,176.6 L142,177.4 L145,178.1 L148,178.9 L151,179.6 L154,180.4 L157,181.1 L160,181.9 L163,182.6 L166,183.4 L169,184.1 L172,184.9 L175,185.7 L178,186.4 L181,187.2 L184,187.9 L187,188.7 L190,189.4 L193,190.2 L196,191 L199,191.7 L202,192.5 L205,193.3 L208,194 L211,194.8 L214,195.5 L217,196.3 L220,197.1 L223,197.8 L226,198.6 L229,199.4 L232,200.1 L235,200.9 L238,201.7 L241,202.4 L244,203.2 L247,204 L250,204.7 L253,205.5 L256,206.3 L259,207 L262,207.8 L265,208.6 L268,209.3 L271,210.1 L274,210.9 L277,211.7 L280,212.4 L283,213.2 L286,214 L289,214.7 L292,215.5 L295,216.3 L298,217 L301,217.8 L304,218.6 L307,219.3 L310,220.1 L313,220.9 L316,221.7 L319,222.4 L322,223.2 L325,224 L328,224.7 L331,225.5 L334,226.3 L337,227.1 L340,227.8 L343,228.6 L346,229.4 L349,230.1 L352,230.9 L355,231.7 L358,232.4 L361,233.2 L364,234 L367,234.8 L370,235.5 L373,236.3 L376,237.1 L379,237.9 L382,238.6 L385,239.4" fill="none" stroke="var(--pos)" stroke-width="1.8" stroke-dasharray="6 4"/>
+        <path d="M40,127.5 L43,127.2 L46,126.5 L49,125.3 L52,123.7 L55,121.8 L58,119.6 L61,117.2 L64,114.7 L67,112 L70,109.2 L73,106.3 L76,103.4 L79,100.4 L82,97.3 L85,94.2 L88,91.1 L91,87.9 L94,84.8 L97,81.6 L100,78.3 L103,75.1 L106,71.9 L109,68.6 L112,65.3 L115,62 L118,58.7 L121,55.4 L124,52.1 L127,48.8 L130,45.5 L133,42.2 L136,38.8 L139,35.5 L142,32.2 L145,28.8 L148,25.5 L151,22.1 L154,18.8 L157,15.4 L160,12.1 L163,8.7 L166,5.4 L169,2 L172,-1.4 L175,-4.7 L178,-8.1 L181,-11.5 L184,-14.8 L187,-18.2 L190,-21.6 L193,-24.9 L196,-28.3 L199,-31.7 L202,-35.1 L205,-38.4 L208,-41.8 L211,-45.2 L214,-48.6 L217,-52 L220,-55.3 L223,-58.7 L226,-62.1 L229,-65.5 L232,-68.9 L235,-72.3 L238,-75.6 L241,-79 L244,-82.4 L247,-85.8 L250,-89.2 L253,-92.6 L256,-96 L259,-99.3 L262,-102.7 L265,-106.1 L268,-109.5 L271,-112.9 L274,-116.3 L277,-119.7 L280,-123.1 L283,-126.5 L286,-129.8 L289,-133.2 L292,-136.6 L295,-140 L298,-143.4 L301,-146.8 L304,-150.2 L307,-153.6 L310,-157 L313,-160.4 L316,-163.8 L319,-167.2 L322,-170.5 L325,-173.9 L328,-177.3 L331,-180.7 L334,-184.1 L337,-187.5 L340,-190.9 L343,-194.3 L346,-197.7 L349,-201.1 L352,-204.5 L355,-207.9 L358,-211.3 L361,-214.7 L364,-218.1 L367,-221.5 L370,-224.9 L373,-228.3 L376,-231.7 L379,-235 L382,-238.4 L385,-241.8" fill="none" stroke="var(--pos)" stroke-width="1.8" stroke-dasharray="6 4"/>
+        <path d="M40,172.5 L43,172.8 L46,173.5 L49,174.7 L52,176.3 L55,178.2 L58,180.4 L61,182.8 L64,185.3 L67,188 L70,190.8 L73,193.7 L76,196.6 L79,199.6 L82,202.7 L85,205.8 L88,208.9 L91,212.1 L94,215.2 L97,218.4 L100,221.7 L103,224.9 L106,228.1 L109,231.4 L112,234.7 L115,238 L118,241.3 L121,244.6 L124,247.9 L127,251.2 L130,254.5 L133,257.8 L136,261.2 L139,264.5 L142,267.8 L145,271.2 L148,274.5 L151,277.9 L154,281.2 L157,284.6 L160,287.9 L163,291.3 L166,294.6 L169,298 L172,301.4 L175,304.7 L178,308.1 L181,311.5 L184,314.8 L187,318.2 L190,321.6 L193,324.9 L196,328.3 L199,331.7 L202,335.1 L205,338.4 L208,341.8 L211,345.2 L214,348.6 L217,352 L220,355.3 L223,358.7 L226,362.1 L229,365.5 L232,368.9 L235,372.3 L238,375.6 L241,379 L244,382.4 L247,385.8 L250,389.2 L253,392.6 L256,396 L259,399.3 L262,402.7 L265,406.1 L268,409.5 L271,412.9 L274,416.3 L277,419.7 L280,423.1 L283,426.5 L286,429.8 L289,433.2 L292,436.6 L295,440 L298,443.4 L301,446.8 L304,450.2 L307,453.6 L310,457 L313,460.4 L316,463.8 L319,467.2 L322,470.5 L325,473.9 L328,477.3 L331,480.7 L334,484.1 L337,487.5 L340,490.9 L343,494.3 L346,497.7 L349,501.1 L352,504.5 L355,507.9 L358,511.3 L361,514.7 L364,518.1 L367,521.5 L370,524.9 L373,528.3 L376,531.7 L379,535 L382,538.4 L385,541.8" fill="none" stroke="var(--pos)" stroke-width="1.8" stroke-dasharray="6 4"/>
+        </g>
+        <line x1="40" y1="120" x2="190" y2="62.1" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="40" y1="180" x2="190" y2="62.1" stroke="var(--fg)" stroke-width="1.6"/>
+        <circle cx="40" cy="120" r="4" fill="var(--fg)"/>
+        <circle cx="40" cy="180" r="4" fill="var(--fg)"/>
+        <circle cx="190" cy="62.1" r="3.6" fill="var(--fg)"/>
+        <text x="34" y="124" font-size="12" fill="var(--fg)" text-anchor="end" font-weight="600">S<tspan dy="3.6" font-size="8.6">1</tspan></text>
+        <text x="34" y="184" font-size="12" fill="var(--fg)" text-anchor="end" font-weight="600">S<tspan dy="3.6" font-size="8.6">2</tspan></text>
+        <text x="196" y="55.1" font-size="12" fill="var(--fg)" font-weight="600" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">P</text>
+        <text x="111" y="84" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">s</tspan><tspan dy="3.6" font-size="8.6">1</tspan></text>
+        <text x="124" y="134" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">s</tspan><tspan dy="3.6" font-size="8.6">2</tspan></text>
+        <text x="198" y="80" font-size="11" fill="var(--fg)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Δ<tspan font-style="italic">s</tspan> = <tspan font-style="italic">s</tspan><tspan dy="3.3" font-size="7.9">2</tspan><tspan dy="-3.3"> − </tspan><tspan font-style="italic">s</tspan><tspan dy="3.3" font-size="7.9">1</tspan></text>
+        <text x="198" y="95" font-size="11" fill="var(--fg)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">= <tspan font-style="italic">λ</tspan> ⇒ Maximum</text>
+        <text x="376" y="145" font-size="10.5" fill="var(--ok)" text-anchor="end" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">0. Max.</text>
+        <text x="270" y="24" font-size="10.5" fill="var(--ok)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Max.</text>
+        <text x="218" y="256" font-size="10.5" fill="var(--ok)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">1. Max.</text>
+        <line x1="10" y1="278" x2="30" y2="278" stroke="var(--accent)" stroke-width="1.2" stroke-opacity="0.7"/>
+        <text x="34" y="282" font-size="10.5" fill="var(--muted)">Wellenberg</text>
+        <line x1="112" y1="278" x2="132" y2="278" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="136" y="282" font-size="10.5" fill="var(--muted)">Wellental</text>
+        <line x1="10" y1="294" x2="30" y2="294" stroke="var(--ok)" stroke-width="2.2"/>
+        <text x="34" y="298" font-size="10.5" fill="var(--muted)">Maxima: Δ<tspan font-style="italic">s</tspan> = <tspan font-style="italic">n</tspan>·<tspan font-style="italic">λ</tspan></text>
+        <line x1="170" y1="294" x2="190" y2="294" stroke="var(--pos)" stroke-width="1.8" stroke-dasharray="6 4"/>
+        <text x="194" y="298" font-size="10.5" fill="var(--muted)">Minima: Δ<tspan font-style="italic">s</tspan> = (<tspan font-style="italic">n</tspan> + ½)·<tspan font-style="italic">λ</tspan></text>
+      </svg>
+      <p class="small">Zwei Erreger \(S_1\), \(S_2\) im Abstand \(2\lambda\) schwingen gleichphasig (wie in der Wellenwanne). Wo Berg auf Berg oder Tal auf Tal trifft, liegen die Maxima (grün); wo Berg auf Tal trifft, die Minima (rot gestrichelt).</p>
+    </div>
+    <div>
+    <div class="note"><b>Gangunterschied am Punkt P:</b> \(s_1\) und \(s_2\) sind die Wege von den Erregern bis P. Hier ist \(\Delta s = s_2 - s_1 = \lambda\): Die Welle aus \(S_2\) kommt genau eine Schwingung später an, Berg trifft auf Berg, P liegt auf dem Maximum 1. Ordnung. Alle Punkte mit demselben \(\Delta s\) bilden eine Linie (Hyperbel).
+      <ul>
+        <li>konstruktiv: \(\Delta s = n\cdot\lambda\) (\(\Delta\varphi = n\cdot 2\pi\))</li>
+        <li>destruktiv: \(\Delta s = (n + \tfrac12)\cdot\lambda\) (\(\Delta\varphi = (2n+1)\pi\))</li>
+      </ul>
+      Beim Doppelspalt (Lektion 8) sind die beiden Spalte die Erreger.</div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div>
       <div class="controls">
         <label><span class="f">\(\Delta\varphi\)</span> <input type="range" id="ifPhi" min="0" max="360" value="90" step="5"> <span id="ifPhiv"></span></label>
         <label><span class="f">\(B/A\)</span> <input type="range" id="ifR" min="0" max="1" value="1" step="0.1"> <span id="ifRv"></span></label>
@@ -311,6 +833,57 @@
     <li>Allgemein: Reflexion am <b>dichteren</b> Medium (Welle wird dort langsamer) wie am festen Ende, mit Phasensprung; am dünneren Medium ohne. Bei Licht: Reflexion an Glas (von Luft kommend) mit Phasensprung <span class="f">\(\pi\)</span>.</li>
     <li>Schall am harten Spiegel (Ultraschall-Versuch, Abschnitt 8): Der Druck hat am harten Ende einen Bauch, die Teilchenauslenkung einen Knoten. Für die Messung ist das egal: Die Amplitudenminima liegen in jedem Fall im Abstand <span class="f">\(\lambda/2\)</span>.</li>
   </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 214" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Reflexion am festen Ende: Der Berg kommt als Tal zurück">
+        <defs>
+          <marker id="w7rf-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+          <pattern id="w7rf-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="1.6"/></pattern>
+        </defs>
+        <text x="10" y="16" font-size="13" fill="var(--fg)" font-weight="600">Festes Ende (Seil an der Wand)</text>
+        <rect x="322" y="28" width="16" height="178" fill="url(#w7rf-hatch)"/>
+        <line x1="322" y1="28" x2="322" y2="206" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="44" font-size="11" fill="var(--muted)" font-weight="600">vorher</text>
+        <path d="M14,80 L16,80 L18,80 L20,80 L22,80 L24,80 L26,80 L28,80 L30,80 L32,80 L34,80 L36,80 L38,80 L40,80 L42,80 L44,80 L46,80 L48,80 L50,80 L52,80 L54,80 L56,80 L58,80 L60,80 L62,80 L64,80 L66,79.9 L68,79.9 L70,79.8 L72,79.7 L74,79.6 L76,79.4 L78,79.2 L80,78.8 L82,78.4 L84,77.8 L86,77.1 L88,76.1 L90,75 L92,73.7 L94,72.1 L96,70.3 L98,68.2 L100,66 L102,63.6 L104,61.1 L106,58.7 L108,56.2 L110,54 L112,52 L114,50.3 L116,49 L118,48.3 L120,48 L122,48.3 L124,49 L126,50.3 L128,52 L130,54 L132,56.2 L134,58.7 L136,61.1 L138,63.6 L140,66 L142,68.2 L144,70.3 L146,72.1 L148,73.7 L150,75 L152,76.1 L154,77.1 L156,77.8 L158,78.4 L160,78.8 L162,79.2 L164,79.4 L166,79.6 L168,79.7 L170,79.8 L172,79.9 L174,79.9 L176,80 L178,80 L180,80 L182,80 L184,80 L186,80 L188,80 L190,80 L192,80 L194,80 L196,80 L198,80 L200,80 L202,80 L204,80 L206,80 L208,80 L210,80 L212,80 L214,80 L216,80 L218,80 L220,80 L222,80 L224,80 L226,80 L228,80 L230,80 L232,80 L234,80 L236,80 L238,80 L240,80 L242,80 L244,80 L246,80 L248,80 L250,80 L252,80 L254,80 L256,80 L258,80 L260,80 L262,80 L264,80 L266,80 L268,80 L270,80 L272,80 L274,80 L276,80 L278,80 L280,80 L282,80 L284,80 L286,80 L288,80 L290,80 L292,80 L294,80 L296,80 L298,80 L300,80 L302,80 L304,80 L306,80 L308,80 L310,80 L312,80 L314,80 L316,80 L318,80 L320,80 L322,80" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+        <text x="120" y="40" font-size="10.5" fill="var(--muted)" text-anchor="middle">Berg</text>
+        <line x1="190" y1="44" x2="246.4" y2="44" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7rf-arrow)"/>
+        <text x="256" y="48" font-size="11" fill="var(--arrow)">einlaufend</text>
+        <text x="10" y="124" font-size="11" fill="var(--muted)" font-weight="600">nachher</text>
+        <path d="M14,160 L16,160 L18,160 L20,160 L22,160 L24,160 L26,160 L28,160 L30,160 L32,160 L34,160 L36,160 L38,160 L40,160 L42,160 L44,160 L46,160 L48,160 L50,160 L52,160 L54,160 L56,160 L58,160 L60,160 L62,160 L64,160 L66,160.1 L68,160.1 L70,160.2 L72,160.3 L74,160.4 L76,160.6 L78,160.8 L80,161.2 L82,161.6 L84,162.2 L86,162.9 L88,163.9 L90,165 L92,166.3 L94,167.9 L96,169.7 L98,171.8 L100,174 L102,176.4 L104,178.9 L106,181.3 L108,183.8 L110,186 L112,188 L114,189.7 L116,191 L118,191.7 L120,192 L122,191.7 L124,191 L126,189.7 L128,188 L130,186 L132,183.8 L134,181.3 L136,178.9 L138,176.4 L140,174 L142,171.8 L144,169.7 L146,167.9 L148,166.3 L150,165 L152,163.9 L154,162.9 L156,162.2 L158,161.6 L160,161.2 L162,160.8 L164,160.6 L166,160.4 L168,160.3 L170,160.2 L172,160.1 L174,160.1 L176,160 L178,160 L180,160 L182,160 L184,160 L186,160 L188,160 L190,160 L192,160 L194,160 L196,160 L198,160 L200,160 L202,160 L204,160 L206,160 L208,160 L210,160 L212,160 L214,160 L216,160 L218,160 L220,160 L222,160 L224,160 L226,160 L228,160 L230,160 L232,160 L234,160 L236,160 L238,160 L240,160 L242,160 L244,160 L246,160 L248,160 L250,160 L252,160 L254,160 L256,160 L258,160 L260,160 L262,160 L264,160 L266,160 L268,160 L270,160 L272,160 L274,160 L276,160 L278,160 L280,160 L282,160 L284,160 L286,160 L288,160 L290,160 L292,160 L294,160 L296,160 L298,160 L300,160 L302,160 L304,160 L306,160 L308,160 L310,160 L312,160 L314,160 L316,160 L318,160 L320,160 L322,160" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+        <text x="120" y="208" font-size="10.5" fill="var(--muted)" text-anchor="middle">Tal</text>
+        <text x="150" y="184" font-size="11" fill="var(--pos)">Phasensprung <tspan font-style="italic">π</tspan>: Berg → Tal</text>
+        <text x="316" y="102" font-size="10.5" fill="var(--muted)" text-anchor="end">Ende fest: Knoten</text>
+        <circle cx="322" cy="80" r="2.6" fill="var(--fg)"/>
+        <circle cx="322" cy="160" r="2.6" fill="var(--fg)"/>
+        <line x1="250" y1="132" x2="193.6" y2="132" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7rf-arrow)"/>
+        <text x="256" y="136" font-size="11" fill="var(--arrow)">reflektiert</text>
+      </svg>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 214" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Reflexion am losen Ende: Der Berg kommt als Berg zurück">
+        <defs>
+          <marker id="w7rl-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+        </defs>
+        <text x="10" y="16" font-size="13" fill="var(--fg)" font-weight="600">Loses Ende (Ring an einer Stange)</text>
+        <line x1="330" y1="28" x2="330" y2="206" stroke="var(--muted)" stroke-width="3"/>
+        <text x="10" y="44" font-size="11" fill="var(--muted)" font-weight="600">vorher</text>
+        <path d="M14,80 L16,80 L18,80 L20,80 L22,80 L24,80 L26,80 L28,80 L30,80 L32,80 L34,80 L36,80 L38,80 L40,80 L42,80 L44,80 L46,80 L48,80 L50,80 L52,80 L54,80 L56,80 L58,80 L60,80 L62,80 L64,80 L66,79.9 L68,79.9 L70,79.8 L72,79.7 L74,79.6 L76,79.4 L78,79.2 L80,78.8 L82,78.4 L84,77.8 L86,77.1 L88,76.1 L90,75 L92,73.7 L94,72.1 L96,70.3 L98,68.2 L100,66 L102,63.6 L104,61.1 L106,58.7 L108,56.2 L110,54 L112,52 L114,50.3 L116,49 L118,48.3 L120,48 L122,48.3 L124,49 L126,50.3 L128,52 L130,54 L132,56.2 L134,58.7 L136,61.1 L138,63.6 L140,66 L142,68.2 L144,70.3 L146,72.1 L148,73.7 L150,75 L152,76.1 L154,77.1 L156,77.8 L158,78.4 L160,78.8 L162,79.2 L164,79.4 L166,79.6 L168,79.7 L170,79.8 L172,79.9 L174,79.9 L176,80 L178,80 L180,80 L182,80 L184,80 L186,80 L188,80 L190,80 L192,80 L194,80 L196,80 L198,80 L200,80 L202,80 L204,80 L206,80 L208,80 L210,80 L212,80 L214,80 L216,80 L218,80 L220,80 L222,80 L224,80 L226,80 L228,80 L230,80 L232,80 L234,80 L236,80 L238,80 L240,80 L242,80 L244,80 L246,80 L248,80 L250,80 L252,80 L254,80 L256,80 L258,80 L260,80 L262,80 L264,80 L266,80 L268,80 L270,80 L272,80 L274,80 L276,80 L278,80 L280,80 L282,80 L284,80 L286,80 L288,80 L290,80 L292,80 L294,80 L296,80 L298,80 L300,80 L302,80 L304,80 L306,80 L308,80 L310,80 L312,80 L314,80 L316,80 L318,80 L320,80 L322,80 L324,80 L326,80" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+        <text x="120" y="40" font-size="10.5" fill="var(--muted)" text-anchor="middle">Berg</text>
+        <line x1="190" y1="44" x2="246.4" y2="44" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7rl-arrow)"/>
+        <text x="256" y="48" font-size="11" fill="var(--arrow)">einlaufend</text>
+        <text x="10" y="124" font-size="11" fill="var(--muted)" font-weight="600">nachher</text>
+        <path d="M14,160 L16,160 L18,160 L20,160 L22,160 L24,160 L26,160 L28,160 L30,160 L32,160 L34,160 L36,160 L38,160 L40,160 L42,160 L44,160 L46,160 L48,160 L50,160 L52,160 L54,160 L56,160 L58,160 L60,160 L62,160 L64,160 L66,159.9 L68,159.9 L70,159.8 L72,159.7 L74,159.6 L76,159.4 L78,159.2 L80,158.8 L82,158.4 L84,157.8 L86,157.1 L88,156.1 L90,155 L92,153.7 L94,152.1 L96,150.3 L98,148.2 L100,146 L102,143.6 L104,141.1 L106,138.7 L108,136.2 L110,134 L112,132 L114,130.3 L116,129 L118,128.3 L120,128 L122,128.3 L124,129 L126,130.3 L128,132 L130,134 L132,136.2 L134,138.7 L136,141.1 L138,143.6 L140,146 L142,148.2 L144,150.3 L146,152.1 L148,153.7 L150,155 L152,156.1 L154,157.1 L156,157.8 L158,158.4 L160,158.8 L162,159.2 L164,159.4 L166,159.6 L168,159.7 L170,159.8 L172,159.9 L174,159.9 L176,160 L178,160 L180,160 L182,160 L184,160 L186,160 L188,160 L190,160 L192,160 L194,160 L196,160 L198,160 L200,160 L202,160 L204,160 L206,160 L208,160 L210,160 L212,160 L214,160 L216,160 L218,160 L220,160 L222,160 L224,160 L226,160 L228,160 L230,160 L232,160 L234,160 L236,160 L238,160 L240,160 L242,160 L244,160 L246,160 L248,160 L250,160 L252,160 L254,160 L256,160 L258,160 L260,160 L262,160 L264,160 L266,160 L268,160 L270,160 L272,160 L274,160 L276,160 L278,160 L280,160 L282,160 L284,160 L286,160 L288,160 L290,160 L292,160 L294,160 L296,160 L298,160 L300,160 L302,160 L304,160 L306,160 L308,160 L310,160 L312,160 L314,160 L316,160 L318,160 L320,160 L322,160 L324,160 L326,160" fill="none" stroke="var(--accent)" stroke-width="2.4"/>
+        <text x="120" y="120" font-size="10.5" fill="var(--muted)" text-anchor="middle">Berg</text>
+        <text x="150" y="184" font-size="11" fill="var(--ok)">kein Phasensprung: Berg → Berg</text>
+        <text x="316" y="102" font-size="10.5" fill="var(--muted)" text-anchor="end">Ende frei: Bauch</text>
+        <ellipse cx="330" cy="80" rx="4" ry="9" fill="none" stroke="var(--fg)" stroke-width="1.8"/>
+        <ellipse cx="330" cy="160" rx="4" ry="9" fill="none" stroke="var(--fg)" stroke-width="1.8"/>
+        <line x1="250" y1="132" x2="193.6" y2="132" stroke="var(--arrow)" stroke-width="2" marker-end="url(#w7rl-arrow)"/>
+        <text x="256" y="136" font-size="11" fill="var(--arrow)">reflektiert</text>
+      </svg>
+    </div>
+  </div>
+  <p class="small">Heft S. 21: Reflexion eines einzelnen Wellenbergs. Festes Ende: Die Wand hält das Seilende fest (Auslenkung immer null, Knoten); der Berg kommt als Tal zurück, Phasensprung \(\pi\) (entspricht \(\lambda/2\)). Loses Ende: Der Ring gleitet frei an der Stange; der Berg kommt als Berg zurück, kein Phasensprung, am Ende ein Bauch.</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -338,6 +911,182 @@
     <li>Alle Punkte zwischen zwei Knoten schwingen <b>in Phase</b>; benachbarte Abschnitte gegenphasig. Eine stehende Welle transportiert keine Energie.</li>
     <li><b>Durch Reflexion</b> (Heft): Stehende Wellen entstehen auch bei Reflexion, die reflektierte Welle ist die Gegenwelle. Am <b>festen</b> Ende liegt ein Knoten, am <b>offenen/losen</b> Ende ein Bauch. FS S. 22: Eigenschwingungen mit zwei festen (oder zwei losen) Enden <span class="f">\(\lambda_k = \frac{2l}{k+1}\)</span>, mit einem festen und einem losen Ende <span class="f">\(\lambda_k = \frac{2l}{k + 1/2}\)</span>, <span class="f">\(k = 0\)</span> Grundschwingung (Saite: <span class="f">\(\lambda_0 = 2l\)</span>).</li>
   </ul>
+  <div class="grid3">
+    <div>
+      <svg viewBox="0 0 260 340" width="100%" style="max-width:320px;display:block;margin:4px auto" role="img" aria-label="Eigenschwingungen, beide Enden fest: Grundschwingung und zwei Oberschwingungen mit Knoten und Bäuchen">
+        <defs>
+          <marker id="w7e1-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <pattern id="w7e1-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="1.6"/></pattern>
+        </defs>
+        <text x="10" y="16" font-size="12.5" fill="var(--fg)" font-weight="600">beide Enden fest</text>
+        <text x="10" y="31" font-size="10" fill="var(--muted)">z. B. Saite, Seil zwischen zwei Wänden</text>
+        <line x1="33.6" y1="46" x2="226.4" y2="46" stroke="var(--fg)" stroke-width="1" marker-end="url(#w7e1-fg)" marker-start="url(#w7e1-fg)"/>
+        <text x="130" y="50" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">l</tspan></text>
+        <text x="10" y="70" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 0: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">0</tspan><tspan dy="-3.1"> = 2</tspan><tspan font-style="italic">l</tspan>  (Grundschwingung)</text>
+        <line x1="30" y1="98" x2="230" y2="98" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,98 L32,98.6 L34,99.3 L36,99.9 L38,100.5 L40,101.1 L42,101.7 L44,102.4 L46,103 L48,103.6 L50,104.2 L52,104.8 L54,105.4 L56,105.9 L58,106.5 L60,107.1 L62,107.6 L64,108.2 L66,108.7 L68,109.2 L70,109.8 L72,110.3 L74,110.7 L76,111.2 L78,111.7 L80,112.1 L82,112.6 L84,113 L86,113.4 L88,113.8 L90,114.2 L92,114.5 L94,114.9 L96,115.2 L98,115.5 L100,115.8 L102,116.1 L104,116.4 L106,116.6 L108,116.8 L110,117 L112,117.2 L114,117.4 L116,117.5 L118,117.6 L120,117.8 L122,117.8 L124,117.9 L126,118 L128,118 L130,118 L132,118 L134,118 L136,117.9 L138,117.8 L140,117.8 L142,117.6 L144,117.5 L146,117.4 L148,117.2 L150,117 L152,116.8 L154,116.6 L156,116.4 L158,116.1 L160,115.8 L162,115.5 L164,115.2 L166,114.9 L168,114.5 L170,114.2 L172,113.8 L174,113.4 L176,113 L178,112.6 L180,112.1 L182,111.7 L184,111.2 L186,110.7 L188,110.3 L190,109.8 L192,109.2 L194,108.7 L196,108.2 L198,107.6 L200,107.1 L202,106.5 L204,105.9 L206,105.4 L208,104.8 L210,104.2 L212,103.6 L214,103 L216,102.4 L218,101.7 L220,101.1 L222,100.5 L224,99.9 L226,99.3 L228,98.6 L230,98" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,98 L32,97.4 L34,96.7 L36,96.1 L38,95.5 L40,94.9 L42,94.3 L44,93.6 L46,93 L48,92.4 L50,91.8 L52,91.2 L54,90.6 L56,90.1 L58,89.5 L60,88.9 L62,88.4 L64,87.8 L66,87.3 L68,86.8 L70,86.2 L72,85.7 L74,85.3 L76,84.8 L78,84.3 L80,83.9 L82,83.4 L84,83 L86,82.6 L88,82.2 L90,81.8 L92,81.5 L94,81.1 L96,80.8 L98,80.5 L100,80.2 L102,79.9 L104,79.6 L106,79.4 L108,79.2 L110,79 L112,78.8 L114,78.6 L116,78.5 L118,78.4 L120,78.2 L122,78.2 L124,78.1 L126,78 L128,78 L130,78 L132,78 L134,78 L136,78.1 L138,78.2 L140,78.2 L142,78.4 L144,78.5 L146,78.6 L148,78.8 L150,79 L152,79.2 L154,79.4 L156,79.6 L158,79.9 L160,80.2 L162,80.5 L164,80.8 L166,81.1 L168,81.5 L170,81.8 L172,82.2 L174,82.6 L176,83 L178,83.4 L180,83.9 L182,84.3 L184,84.8 L186,85.3 L188,85.7 L190,86.2 L192,86.8 L194,87.3 L196,87.8 L198,88.4 L200,88.9 L202,89.5 L204,90.1 L206,90.6 L208,91.2 L210,91.8 L212,92.4 L214,93 L216,93.6 L218,94.3 L220,94.9 L222,95.5 L224,96.1 L226,96.7 L228,97.4 L230,98" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="98" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="132" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="230" cy="98" r="2.4" fill="var(--fg)"/>
+        <text x="230" y="132" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="130" y="132" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="76" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="30" y1="76" x2="30" y2="120" stroke="var(--fg)" stroke-width="1.4"/>
+        <rect x="230" y="76" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="230" y1="76" x2="230" y2="120" stroke="var(--fg)" stroke-width="1.4"/>
+        <text x="10" y="158" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 1: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">1</tspan><tspan dy="-3.1"> = </tspan><tspan font-style="italic">l</tspan></text>
+        <line x1="30" y1="186" x2="230" y2="186" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,186 L32,187.3 L34,188.5 L36,189.7 L38,191 L40,192.2 L42,193.4 L44,194.5 L46,195.6 L48,196.7 L50,197.8 L52,198.7 L54,199.7 L56,200.6 L58,201.4 L60,202.2 L62,202.9 L64,203.5 L66,204.1 L68,204.6 L70,205 L72,205.4 L74,205.6 L76,205.8 L78,206 L80,206 L82,206 L84,205.8 L86,205.6 L88,205.4 L90,205 L92,204.6 L94,204.1 L96,203.5 L98,202.9 L100,202.2 L102,201.4 L104,200.6 L106,199.7 L108,198.7 L110,197.8 L112,196.7 L114,195.6 L116,194.5 L118,193.4 L120,192.2 L122,191 L124,189.7 L126,188.5 L128,187.3 L130,186 L132,184.7 L134,183.5 L136,182.3 L138,181 L140,179.8 L142,178.6 L144,177.5 L146,176.4 L148,175.3 L150,174.2 L152,173.3 L154,172.3 L156,171.4 L158,170.6 L160,169.8 L162,169.1 L164,168.5 L166,167.9 L168,167.4 L170,167 L172,166.6 L174,166.4 L176,166.2 L178,166 L180,166 L182,166 L184,166.2 L186,166.4 L188,166.6 L190,167 L192,167.4 L194,167.9 L196,168.5 L198,169.1 L200,169.8 L202,170.6 L204,171.4 L206,172.3 L208,173.3 L210,174.2 L212,175.3 L214,176.4 L216,177.5 L218,178.6 L220,179.8 L222,181 L224,182.3 L226,183.5 L228,184.7 L230,186" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,186 L32,184.7 L34,183.5 L36,182.3 L38,181 L40,179.8 L42,178.6 L44,177.5 L46,176.4 L48,175.3 L50,174.2 L52,173.3 L54,172.3 L56,171.4 L58,170.6 L60,169.8 L62,169.1 L64,168.5 L66,167.9 L68,167.4 L70,167 L72,166.6 L74,166.4 L76,166.2 L78,166 L80,166 L82,166 L84,166.2 L86,166.4 L88,166.6 L90,167 L92,167.4 L94,167.9 L96,168.5 L98,169.1 L100,169.8 L102,170.6 L104,171.4 L106,172.3 L108,173.3 L110,174.2 L112,175.3 L114,176.4 L116,177.5 L118,178.6 L120,179.8 L122,181 L124,182.3 L126,183.5 L128,184.7 L130,186 L132,187.3 L134,188.5 L136,189.7 L138,191 L140,192.2 L142,193.4 L144,194.5 L146,195.6 L148,196.7 L150,197.8 L152,198.7 L154,199.7 L156,200.6 L158,201.4 L160,202.2 L162,202.9 L164,203.5 L166,204.1 L168,204.6 L170,205 L172,205.4 L174,205.6 L176,205.8 L178,206 L180,206 L182,206 L184,205.8 L186,205.6 L188,205.4 L190,205 L192,204.6 L194,204.1 L196,203.5 L198,202.9 L200,202.2 L202,201.4 L204,200.6 L206,199.7 L208,198.7 L210,197.8 L212,196.7 L214,195.6 L216,194.5 L218,193.4 L220,192.2 L222,191 L224,189.7 L226,188.5 L228,187.3 L230,186" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="130" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="130" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="230" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="230" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="80" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="180" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="164" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="30" y1="164" x2="30" y2="208" stroke="var(--fg)" stroke-width="1.4"/>
+        <rect x="230" y="164" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="230" y1="164" x2="230" y2="208" stroke="var(--fg)" stroke-width="1.4"/>
+        <text x="10" y="246" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 2: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">2</tspan><tspan dy="-3.1"> = 2</tspan><tspan font-style="italic">l</tspan>/3</text>
+        <line x1="30" y1="274" x2="230" y2="274" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,274 L32,275.9 L34,277.7 L36,279.6 L38,281.4 L40,283.1 L42,284.7 L44,286.3 L46,287.7 L48,289 L50,290.2 L52,291.2 L54,292.1 L56,292.8 L58,293.4 L60,293.8 L62,294 L64,294 L66,293.8 L68,293.5 L70,293 L72,292.4 L74,291.5 L76,290.5 L78,289.4 L80,288.1 L82,286.7 L84,285.2 L86,283.6 L88,281.9 L90,280.2 L92,278.4 L94,276.5 L96,274.6 L98,272.7 L100,270.9 L102,269 L104,267.2 L106,265.5 L108,263.8 L110,262.2 L112,260.8 L114,259.4 L116,258.2 L118,257.1 L120,256.2 L122,255.4 L124,254.8 L126,254.4 L128,254.1 L130,254 L132,254.1 L134,254.4 L136,254.8 L138,255.4 L140,256.2 L142,257.1 L144,258.2 L146,259.4 L148,260.8 L150,262.2 L152,263.8 L154,265.5 L156,267.2 L158,269 L160,270.9 L162,272.7 L164,274.6 L166,276.5 L168,278.4 L170,280.2 L172,281.9 L174,283.6 L176,285.2 L178,286.7 L180,288.1 L182,289.4 L184,290.5 L186,291.5 L188,292.4 L190,293 L192,293.5 L194,293.8 L196,294 L198,294 L200,293.8 L202,293.4 L204,292.8 L206,292.1 L208,291.2 L210,290.2 L212,289 L214,287.7 L216,286.3 L218,284.7 L220,283.1 L222,281.4 L224,279.6 L226,277.7 L228,275.9 L230,274" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,274 L32,272.1 L34,270.3 L36,268.4 L38,266.6 L40,264.9 L42,263.3 L44,261.7 L46,260.3 L48,259 L50,257.8 L52,256.8 L54,255.9 L56,255.2 L58,254.6 L60,254.2 L62,254 L64,254 L66,254.2 L68,254.5 L70,255 L72,255.6 L74,256.5 L76,257.5 L78,258.6 L80,259.9 L82,261.3 L84,262.8 L86,264.4 L88,266.1 L90,267.8 L92,269.6 L94,271.5 L96,273.4 L98,275.3 L100,277.1 L102,279 L104,280.8 L106,282.5 L108,284.2 L110,285.8 L112,287.2 L114,288.6 L116,289.8 L118,290.9 L120,291.8 L122,292.6 L124,293.2 L126,293.6 L128,293.9 L130,294 L132,293.9 L134,293.6 L136,293.2 L138,292.6 L140,291.8 L142,290.9 L144,289.8 L146,288.6 L148,287.2 L150,285.8 L152,284.2 L154,282.5 L156,280.8 L158,279 L160,277.1 L162,275.3 L164,273.4 L166,271.5 L168,269.6 L170,267.8 L172,266.1 L174,264.4 L176,262.8 L178,261.3 L180,259.9 L182,258.6 L184,257.5 L186,256.5 L188,255.6 L190,255 L192,254.5 L194,254.2 L196,254 L198,254 L200,254.2 L202,254.6 L204,255.2 L206,255.9 L208,256.8 L210,257.8 L212,259 L214,260.3 L216,261.7 L218,263.3 L220,264.9 L222,266.6 L224,268.4 L226,270.3 L228,272.1 L230,274" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="96.7" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="96.7" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="163.3" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="163.3" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="230" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="230" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="63.3" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="130" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="196.7" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="252" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="30" y1="252" x2="30" y2="296" stroke="var(--fg)" stroke-width="1.4"/>
+        <rect x="230" y="252" width="7" height="44" fill="url(#w7e1-hatch)"/>
+        <line x1="230" y1="252" x2="230" y2="296" stroke="var(--fg)" stroke-width="1.4"/>
+        <text x="10" y="332" font-size="11.5" fill="var(--accent)" font-weight="600"><tspan font-style="italic">λ</tspan><tspan dy="3.4" font-size="8.3"><tspan font-style="italic">k</tspan></tspan><tspan dy="-3.4"> = 2</tspan><tspan font-style="italic">l</tspan> / (<tspan font-style="italic">k</tspan> + 1)</text>
+      </svg>
+    </div>
+    <div>
+      <svg viewBox="0 0 260 340" width="100%" style="max-width:320px;display:block;margin:4px auto" role="img" aria-label="Eigenschwingungen, beide Enden lose: Grundschwingung und zwei Oberschwingungen mit Knoten und Bäuchen">
+        <defs>
+          <marker id="w7e2-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <text x="10" y="16" font-size="12.5" fill="var(--fg)" font-weight="600">beide Enden lose</text>
+        <text x="10" y="31" font-size="10" fill="var(--muted)">z. B. Luftsäule, beide Enden offen</text>
+        <line x1="33.6" y1="46" x2="226.4" y2="46" stroke="var(--fg)" stroke-width="1" marker-end="url(#w7e2-fg)" marker-start="url(#w7e2-fg)"/>
+        <text x="130" y="50" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">l</tspan></text>
+        <text x="10" y="70" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 0: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">0</tspan><tspan dy="-3.1"> = 2</tspan><tspan font-style="italic">l</tspan>  (Grundschwingung)</text>
+        <line x1="30" y1="98" x2="230" y2="98" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,118 L32,118 L34,118 L36,117.9 L38,117.8 L40,117.8 L42,117.6 L44,117.5 L46,117.4 L48,117.2 L50,117 L52,116.8 L54,116.6 L56,116.4 L58,116.1 L60,115.8 L62,115.5 L64,115.2 L66,114.9 L68,114.5 L70,114.2 L72,113.8 L74,113.4 L76,113 L78,112.6 L80,112.1 L82,111.7 L84,111.2 L86,110.7 L88,110.3 L90,109.8 L92,109.2 L94,108.7 L96,108.2 L98,107.6 L100,107.1 L102,106.5 L104,105.9 L106,105.4 L108,104.8 L110,104.2 L112,103.6 L114,103 L116,102.4 L118,101.7 L120,101.1 L122,100.5 L124,99.9 L126,99.3 L128,98.6 L130,98 L132,97.4 L134,96.7 L136,96.1 L138,95.5 L140,94.9 L142,94.3 L144,93.6 L146,93 L148,92.4 L150,91.8 L152,91.2 L154,90.6 L156,90.1 L158,89.5 L160,88.9 L162,88.4 L164,87.8 L166,87.3 L168,86.8 L170,86.2 L172,85.7 L174,85.3 L176,84.8 L178,84.3 L180,83.9 L182,83.4 L184,83 L186,82.6 L188,82.2 L190,81.8 L192,81.5 L194,81.1 L196,80.8 L198,80.5 L200,80.2 L202,79.9 L204,79.6 L206,79.4 L208,79.2 L210,79 L212,78.8 L214,78.6 L216,78.5 L218,78.4 L220,78.2 L222,78.2 L224,78.1 L226,78 L228,78 L230,78" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,78 L32,78 L34,78 L36,78.1 L38,78.2 L40,78.2 L42,78.4 L44,78.5 L46,78.6 L48,78.8 L50,79 L52,79.2 L54,79.4 L56,79.6 L58,79.9 L60,80.2 L62,80.5 L64,80.8 L66,81.1 L68,81.5 L70,81.8 L72,82.2 L74,82.6 L76,83 L78,83.4 L80,83.9 L82,84.3 L84,84.8 L86,85.3 L88,85.7 L90,86.2 L92,86.8 L94,87.3 L96,87.8 L98,88.4 L100,88.9 L102,89.5 L104,90.1 L106,90.6 L108,91.2 L110,91.8 L112,92.4 L114,93 L116,93.6 L118,94.3 L120,94.9 L122,95.5 L124,96.1 L126,96.7 L128,97.4 L130,98 L132,98.6 L134,99.3 L136,99.9 L138,100.5 L140,101.1 L142,101.7 L144,102.4 L146,103 L148,103.6 L150,104.2 L152,104.8 L154,105.4 L156,105.9 L158,106.5 L160,107.1 L162,107.6 L164,108.2 L166,108.7 L168,109.2 L170,109.8 L172,110.3 L174,110.7 L176,111.2 L178,111.7 L180,112.1 L182,112.6 L184,113 L186,113.4 L188,113.8 L190,114.2 L192,114.5 L194,114.9 L196,115.2 L198,115.5 L200,115.8 L202,116.1 L204,116.4 L206,116.6 L208,116.8 L210,117 L212,117.2 L214,117.4 L216,117.5 L218,117.6 L220,117.8 L222,117.8 L224,117.9 L226,118 L228,118 L230,118" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="130" cy="98" r="2.4" fill="var(--fg)"/>
+        <text x="130" y="132" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="30" y="132" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="230" y="132" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <line x1="30" y1="74" x2="30" y2="122" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="30" cy="78" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="230" y1="74" x2="230" y2="122" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="118" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="158" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 1: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">1</tspan><tspan dy="-3.1"> = </tspan><tspan font-style="italic">l</tspan></text>
+        <line x1="30" y1="186" x2="230" y2="186" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,206 L32,206 L34,205.8 L36,205.6 L38,205.4 L40,205 L42,204.6 L44,204.1 L46,203.5 L48,202.9 L50,202.2 L52,201.4 L54,200.6 L56,199.7 L58,198.7 L60,197.8 L62,196.7 L64,195.6 L66,194.5 L68,193.4 L70,192.2 L72,191 L74,189.7 L76,188.5 L78,187.3 L80,186 L82,184.7 L84,183.5 L86,182.3 L88,181 L90,179.8 L92,178.6 L94,177.5 L96,176.4 L98,175.3 L100,174.2 L102,173.3 L104,172.3 L106,171.4 L108,170.6 L110,169.8 L112,169.1 L114,168.5 L116,167.9 L118,167.4 L120,167 L122,166.6 L124,166.4 L126,166.2 L128,166 L130,166 L132,166 L134,166.2 L136,166.4 L138,166.6 L140,167 L142,167.4 L144,167.9 L146,168.5 L148,169.1 L150,169.8 L152,170.6 L154,171.4 L156,172.3 L158,173.3 L160,174.2 L162,175.3 L164,176.4 L166,177.5 L168,178.6 L170,179.8 L172,181 L174,182.3 L176,183.5 L178,184.7 L180,186 L182,187.3 L184,188.5 L186,189.7 L188,191 L190,192.2 L192,193.4 L194,194.5 L196,195.6 L198,196.7 L200,197.8 L202,198.7 L204,199.7 L206,200.6 L208,201.4 L210,202.2 L212,202.9 L214,203.5 L216,204.1 L218,204.6 L220,205 L222,205.4 L224,205.6 L226,205.8 L228,206 L230,206" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,166 L32,166 L34,166.2 L36,166.4 L38,166.6 L40,167 L42,167.4 L44,167.9 L46,168.5 L48,169.1 L50,169.8 L52,170.6 L54,171.4 L56,172.3 L58,173.3 L60,174.2 L62,175.3 L64,176.4 L66,177.5 L68,178.6 L70,179.8 L72,181 L74,182.3 L76,183.5 L78,184.7 L80,186 L82,187.3 L84,188.5 L86,189.7 L88,191 L90,192.2 L92,193.4 L94,194.5 L96,195.6 L98,196.7 L100,197.8 L102,198.7 L104,199.7 L106,200.6 L108,201.4 L110,202.2 L112,202.9 L114,203.5 L116,204.1 L118,204.6 L120,205 L122,205.4 L124,205.6 L126,205.8 L128,206 L130,206 L132,206 L134,205.8 L136,205.6 L138,205.4 L140,205 L142,204.6 L144,204.1 L146,203.5 L148,202.9 L150,202.2 L152,201.4 L154,200.6 L156,199.7 L158,198.7 L160,197.8 L162,196.7 L164,195.6 L166,194.5 L168,193.4 L170,192.2 L172,191 L174,189.7 L176,188.5 L178,187.3 L180,186 L182,184.7 L184,183.5 L186,182.3 L188,181 L190,179.8 L192,178.6 L194,177.5 L196,176.4 L198,175.3 L200,174.2 L202,173.3 L204,172.3 L206,171.4 L208,170.6 L210,169.8 L212,169.1 L214,168.5 L216,167.9 L218,167.4 L220,167 L222,166.6 L224,166.4 L226,166.2 L228,166 L230,166" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="80" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="80" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="180" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="180" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="30" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="130" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="230" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <line x1="30" y1="162" x2="30" y2="210" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="30" cy="166" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="230" y1="162" x2="230" y2="210" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="166" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="246" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 2: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">2</tspan><tspan dy="-3.1"> = 2</tspan><tspan font-style="italic">l</tspan>/3</text>
+        <line x1="30" y1="274" x2="230" y2="274" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,294 L32,293.9 L34,293.6 L36,293.2 L38,292.6 L40,291.8 L42,290.9 L44,289.8 L46,288.6 L48,287.2 L50,285.8 L52,284.2 L54,282.5 L56,280.8 L58,279 L60,277.1 L62,275.3 L64,273.4 L66,271.5 L68,269.6 L70,267.8 L72,266.1 L74,264.4 L76,262.8 L78,261.3 L80,259.9 L82,258.6 L84,257.5 L86,256.5 L88,255.6 L90,255 L92,254.5 L94,254.2 L96,254 L98,254 L100,254.2 L102,254.6 L104,255.2 L106,255.9 L108,256.8 L110,257.8 L112,259 L114,260.3 L116,261.7 L118,263.3 L120,264.9 L122,266.6 L124,268.4 L126,270.3 L128,272.1 L130,274 L132,275.9 L134,277.7 L136,279.6 L138,281.4 L140,283.1 L142,284.7 L144,286.3 L146,287.7 L148,289 L150,290.2 L152,291.2 L154,292.1 L156,292.8 L158,293.4 L160,293.8 L162,294 L164,294 L166,293.8 L168,293.5 L170,293 L172,292.4 L174,291.5 L176,290.5 L178,289.4 L180,288.1 L182,286.7 L184,285.2 L186,283.6 L188,281.9 L190,280.2 L192,278.4 L194,276.5 L196,274.6 L198,272.7 L200,270.9 L202,269 L204,267.2 L206,265.5 L208,263.8 L210,262.2 L212,260.8 L214,259.4 L216,258.2 L218,257.1 L220,256.2 L222,255.4 L224,254.8 L226,254.4 L228,254.1 L230,254" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,254 L32,254.1 L34,254.4 L36,254.8 L38,255.4 L40,256.2 L42,257.1 L44,258.2 L46,259.4 L48,260.8 L50,262.2 L52,263.8 L54,265.5 L56,267.2 L58,269 L60,270.9 L62,272.7 L64,274.6 L66,276.5 L68,278.4 L70,280.2 L72,281.9 L74,283.6 L76,285.2 L78,286.7 L80,288.1 L82,289.4 L84,290.5 L86,291.5 L88,292.4 L90,293 L92,293.5 L94,293.8 L96,294 L98,294 L100,293.8 L102,293.4 L104,292.8 L106,292.1 L108,291.2 L110,290.2 L112,289 L114,287.7 L116,286.3 L118,284.7 L120,283.1 L122,281.4 L124,279.6 L126,277.7 L128,275.9 L130,274 L132,272.1 L134,270.3 L136,268.4 L138,266.6 L140,264.9 L142,263.3 L144,261.7 L146,260.3 L148,259 L150,257.8 L152,256.8 L154,255.9 L156,255.2 L158,254.6 L160,254.2 L162,254 L164,254 L166,254.2 L168,254.5 L170,255 L172,255.6 L174,256.5 L176,257.5 L178,258.6 L180,259.9 L182,261.3 L184,262.8 L186,264.4 L188,266.1 L190,267.8 L192,269.6 L194,271.5 L196,273.4 L198,275.3 L200,277.1 L202,279 L204,280.8 L206,282.5 L208,284.2 L210,285.8 L212,287.2 L214,288.6 L216,289.8 L218,290.9 L220,291.8 L222,292.6 L224,293.2 L226,293.6 L228,293.9 L230,294" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="63.3" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="63.3" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="130" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="130" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="196.7" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="196.7" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="30" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="96.7" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="163.3" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="230" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <line x1="30" y1="250" x2="30" y2="298" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="30" cy="254" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="230" y1="250" x2="230" y2="298" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="294" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="332" font-size="11.5" fill="var(--accent)" font-weight="600"><tspan font-style="italic">λ</tspan><tspan dy="3.4" font-size="8.3"><tspan font-style="italic">k</tspan></tspan><tspan dy="-3.4"> = 2</tspan><tspan font-style="italic">l</tspan> / (<tspan font-style="italic">k</tspan> + 1)</text>
+      </svg>
+    </div>
+    <div>
+      <svg viewBox="0 0 260 340" width="100%" style="max-width:320px;display:block;margin:4px auto" role="img" aria-label="Eigenschwingungen, ein Ende fest, eins lose: Grundschwingung und zwei Oberschwingungen mit Knoten und Bäuchen">
+        <defs>
+          <marker id="w7e3-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <pattern id="w7e3-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="1.6"/></pattern>
+        </defs>
+        <text x="10" y="16" font-size="12.5" fill="var(--fg)" font-weight="600">ein Ende fest, eins lose</text>
+        <text x="10" y="31" font-size="10" fill="var(--muted)">z. B. Luftsäule, ein Ende geschlossen</text>
+        <line x1="33.6" y1="46" x2="226.4" y2="46" stroke="var(--fg)" stroke-width="1" marker-end="url(#w7e3-fg)" marker-start="url(#w7e3-fg)"/>
+        <text x="130" y="50" font-size="12" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke"><tspan font-style="italic">l</tspan></text>
+        <text x="10" y="70" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 0: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">0</tspan><tspan dy="-3.1"> = 4</tspan><tspan font-style="italic">l</tspan>  (Grundschwingung)</text>
+        <line x1="30" y1="98" x2="230" y2="98" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,98 L32,98.3 L34,98.6 L36,98.9 L38,99.3 L40,99.6 L42,99.9 L44,100.2 L46,100.5 L48,100.8 L50,101.1 L52,101.4 L54,101.7 L56,102.1 L58,102.4 L60,102.7 L62,103 L64,103.3 L66,103.6 L68,103.9 L70,104.2 L72,104.5 L74,104.8 L76,105.1 L78,105.4 L80,105.7 L82,105.9 L84,106.2 L86,106.5 L88,106.8 L90,107.1 L92,107.4 L94,107.6 L96,107.9 L98,108.2 L100,108.4 L102,108.7 L104,109 L106,109.2 L108,109.5 L110,109.8 L112,110 L114,110.3 L116,110.5 L118,110.7 L120,111 L122,111.2 L124,111.5 L126,111.7 L128,111.9 L130,112.1 L132,112.4 L134,112.6 L136,112.8 L138,113 L140,113.2 L142,113.4 L144,113.6 L146,113.8 L148,114 L150,114.2 L152,114.4 L154,114.5 L156,114.7 L158,114.9 L160,115.1 L162,115.2 L164,115.4 L166,115.5 L168,115.7 L170,115.8 L172,116 L174,116.1 L176,116.2 L178,116.4 L180,116.5 L182,116.6 L184,116.7 L186,116.8 L188,116.9 L190,117 L192,117.1 L194,117.2 L196,117.3 L198,117.4 L200,117.4 L202,117.5 L204,117.6 L206,117.6 L208,117.7 L210,117.8 L212,117.8 L214,117.8 L216,117.9 L218,117.9 L220,117.9 L222,118 L224,118 L226,118 L228,118 L230,118" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,98 L32,97.7 L34,97.4 L36,97.1 L38,96.7 L40,96.4 L42,96.1 L44,95.8 L46,95.5 L48,95.2 L50,94.9 L52,94.6 L54,94.3 L56,93.9 L58,93.6 L60,93.3 L62,93 L64,92.7 L66,92.4 L68,92.1 L70,91.8 L72,91.5 L74,91.2 L76,90.9 L78,90.6 L80,90.3 L82,90.1 L84,89.8 L86,89.5 L88,89.2 L90,88.9 L92,88.6 L94,88.4 L96,88.1 L98,87.8 L100,87.6 L102,87.3 L104,87 L106,86.8 L108,86.5 L110,86.2 L112,86 L114,85.7 L116,85.5 L118,85.3 L120,85 L122,84.8 L124,84.5 L126,84.3 L128,84.1 L130,83.9 L132,83.6 L134,83.4 L136,83.2 L138,83 L140,82.8 L142,82.6 L144,82.4 L146,82.2 L148,82 L150,81.8 L152,81.6 L154,81.5 L156,81.3 L158,81.1 L160,80.9 L162,80.8 L164,80.6 L166,80.5 L168,80.3 L170,80.2 L172,80 L174,79.9 L176,79.8 L178,79.6 L180,79.5 L182,79.4 L184,79.3 L186,79.2 L188,79.1 L190,79 L192,78.9 L194,78.8 L196,78.7 L198,78.6 L200,78.6 L202,78.5 L204,78.4 L206,78.4 L208,78.3 L210,78.2 L212,78.2 L214,78.2 L216,78.1 L218,78.1 L220,78.1 L222,78 L224,78 L226,78 L228,78 L230,78" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="98" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="132" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="230" y="132" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="76" width="7" height="44" fill="url(#w7e3-hatch)"/>
+        <line x1="30" y1="76" x2="30" y2="120" stroke="var(--fg)" stroke-width="1.4"/>
+        <line x1="230" y1="74" x2="230" y2="122" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="78" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="158" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 1: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">1</tspan><tspan dy="-3.1"> = 4</tspan><tspan font-style="italic">l</tspan>/3</text>
+        <line x1="30" y1="186" x2="230" y2="186" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,186 L32,186.9 L34,187.9 L36,188.8 L38,189.7 L40,190.7 L42,191.6 L44,192.5 L46,193.4 L48,194.2 L50,195.1 L52,195.9 L54,196.7 L56,197.5 L58,198.3 L60,199 L62,199.7 L64,200.4 L66,201 L68,201.6 L70,202.2 L72,202.7 L74,203.2 L76,203.7 L78,204.1 L80,204.5 L82,204.8 L84,205.1 L86,205.4 L88,205.6 L90,205.8 L92,205.9 L94,206 L96,206 L98,206 L100,205.9 L102,205.8 L104,205.7 L106,205.5 L108,205.3 L110,205 L112,204.7 L114,204.4 L116,204 L118,203.5 L120,203.1 L122,202.5 L124,202 L126,201.4 L128,200.8 L130,200.1 L132,199.5 L134,198.7 L136,198 L138,197.2 L140,196.4 L142,195.6 L144,194.8 L146,193.9 L148,193.1 L150,192.2 L152,191.3 L154,190.4 L156,189.4 L158,188.5 L160,187.6 L162,186.6 L164,185.7 L166,184.7 L168,183.8 L170,182.9 L172,181.9 L174,181 L176,180.1 L178,179.2 L180,178.3 L182,177.5 L184,176.6 L186,175.8 L188,175 L190,174.2 L192,173.5 L194,172.8 L196,172.1 L198,171.4 L200,170.8 L202,170.2 L204,169.6 L206,169.1 L208,168.6 L210,168.2 L212,167.8 L214,167.4 L216,167.1 L218,166.8 L220,166.6 L222,166.4 L224,166.2 L226,166.1 L228,166 L230,166" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,186 L32,185.1 L34,184.1 L36,183.2 L38,182.3 L40,181.3 L42,180.4 L44,179.5 L46,178.6 L48,177.8 L50,176.9 L52,176.1 L54,175.3 L56,174.5 L58,173.7 L60,173 L62,172.3 L64,171.6 L66,171 L68,170.4 L70,169.8 L72,169.3 L74,168.8 L76,168.3 L78,167.9 L80,167.5 L82,167.2 L84,166.9 L86,166.6 L88,166.4 L90,166.2 L92,166.1 L94,166 L96,166 L98,166 L100,166.1 L102,166.2 L104,166.3 L106,166.5 L108,166.7 L110,167 L112,167.3 L114,167.6 L116,168 L118,168.5 L120,168.9 L122,169.5 L124,170 L126,170.6 L128,171.2 L130,171.9 L132,172.5 L134,173.3 L136,174 L138,174.8 L140,175.6 L142,176.4 L144,177.2 L146,178.1 L148,178.9 L150,179.8 L152,180.7 L154,181.6 L156,182.6 L158,183.5 L160,184.4 L162,185.4 L164,186.3 L166,187.3 L168,188.2 L170,189.1 L172,190.1 L174,191 L176,191.9 L178,192.8 L180,193.7 L182,194.5 L184,195.4 L186,196.2 L188,197 L190,197.8 L192,198.5 L194,199.2 L196,199.9 L198,200.6 L200,201.2 L202,201.8 L204,202.4 L206,202.9 L208,203.4 L210,203.8 L212,204.2 L214,204.6 L216,204.9 L218,205.2 L220,205.4 L222,205.6 L224,205.8 L226,205.9 L228,206 L230,206" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="163.3" cy="186" r="2.4" fill="var(--fg)"/>
+        <text x="163.3" y="220" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="96.7" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="230" y="220" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="164" width="7" height="44" fill="url(#w7e3-hatch)"/>
+        <line x1="30" y1="164" x2="30" y2="208" stroke="var(--fg)" stroke-width="1.4"/>
+        <line x1="230" y1="162" x2="230" y2="210" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="206" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="246" font-size="10.5" fill="var(--fg)"><tspan font-style="italic">k</tspan> = 2: <tspan font-style="italic">λ</tspan><tspan dy="3.1" font-size="7.6">2</tspan><tspan dy="-3.1"> = 4</tspan><tspan font-style="italic">l</tspan>/5</text>
+        <line x1="30" y1="274" x2="230" y2="274" stroke="var(--muted)" stroke-width="0.8"/>
+        <path d="M30,274 L32,275.6 L34,277.1 L36,278.7 L38,280.2 L40,281.7 L42,283.1 L44,284.4 L46,285.8 L48,287 L50,288.1 L52,289.2 L54,290.2 L56,291.1 L58,291.8 L60,292.5 L62,293 L64,293.4 L66,293.8 L68,293.9 L70,294 L72,293.9 L74,293.8 L76,293.4 L78,293 L80,292.5 L82,291.8 L84,291.1 L86,290.2 L88,289.2 L90,288.1 L92,287 L94,285.8 L96,284.4 L98,283.1 L100,281.7 L102,280.2 L104,278.7 L106,277.1 L108,275.6 L110,274 L112,272.4 L114,270.9 L116,269.3 L118,267.8 L120,266.3 L122,264.9 L124,263.6 L126,262.2 L128,261 L130,259.9 L132,258.8 L134,257.8 L136,256.9 L138,256.2 L140,255.5 L142,255 L144,254.6 L146,254.2 L148,254.1 L150,254 L152,254.1 L154,254.2 L156,254.6 L158,255 L160,255.5 L162,256.2 L164,256.9 L166,257.8 L168,258.8 L170,259.9 L172,261 L174,262.2 L176,263.6 L178,264.9 L180,266.3 L182,267.8 L184,269.3 L186,270.9 L188,272.4 L190,274 L192,275.6 L194,277.1 L196,278.7 L198,280.2 L200,281.7 L202,283.1 L204,284.4 L206,285.8 L208,287 L210,288.1 L212,289.2 L214,290.2 L216,291.1 L218,291.8 L220,292.5 L222,293 L224,293.4 L226,293.8 L228,293.9 L230,294" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" stroke-opacity="0.7"/>
+        <path d="M30,274 L32,272.4 L34,270.9 L36,269.3 L38,267.8 L40,266.3 L42,264.9 L44,263.6 L46,262.2 L48,261 L50,259.9 L52,258.8 L54,257.8 L56,256.9 L58,256.2 L60,255.5 L62,255 L64,254.6 L66,254.2 L68,254.1 L70,254 L72,254.1 L74,254.2 L76,254.6 L78,255 L80,255.5 L82,256.2 L84,256.9 L86,257.8 L88,258.8 L90,259.9 L92,261 L94,262.2 L96,263.6 L98,264.9 L100,266.3 L102,267.8 L104,269.3 L106,270.9 L108,272.4 L110,274 L112,275.6 L114,277.1 L116,278.7 L118,280.2 L120,281.7 L122,283.1 L124,284.4 L126,285.8 L128,287 L130,288.1 L132,289.2 L134,290.2 L136,291.1 L138,291.8 L140,292.5 L142,293 L144,293.4 L146,293.8 L148,293.9 L150,294 L152,293.9 L154,293.8 L156,293.4 L158,293 L160,292.5 L162,291.8 L164,291.1 L166,290.2 L168,289.2 L170,288.1 L172,287 L174,285.8 L176,284.4 L178,283.1 L180,281.7 L182,280.2 L184,278.7 L186,277.1 L188,275.6 L190,274 L192,272.4 L194,270.9 L196,269.3 L198,267.8 L200,266.3 L202,264.9 L204,263.6 L206,262.2 L208,261 L210,259.9 L212,258.8 L214,257.8 L216,256.9 L218,256.2 L220,255.5 L222,255 L224,254.6 L226,254.2 L228,254.1 L230,254" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+        <circle cx="30" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="30" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="110" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="110" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <circle cx="190" cy="274" r="2.4" fill="var(--fg)"/>
+        <text x="190" y="308" font-size="9.5" fill="var(--muted)" text-anchor="middle">K</text>
+        <text x="70" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="150" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <text x="230" y="308" font-size="9.5" fill="var(--pos)" text-anchor="middle">B</text>
+        <rect x="23" y="252" width="7" height="44" fill="url(#w7e3-hatch)"/>
+        <line x1="30" y1="252" x2="30" y2="296" stroke="var(--fg)" stroke-width="1.4"/>
+        <line x1="230" y1="250" x2="230" y2="298" stroke="var(--muted)" stroke-width="2.4"/>
+        <ellipse cx="230" cy="254" rx="3.5" ry="7" fill="none" stroke="var(--fg)" stroke-width="1.6"/>
+        <text x="10" y="332" font-size="11.5" fill="var(--accent)" font-weight="600"><tspan font-style="italic">λ</tspan><tspan dy="3.4" font-size="8.3"><tspan font-style="italic">k</tspan></tspan><tspan dy="-3.4"> = 2</tspan><tspan font-style="italic">l</tspan> / (<tspan font-style="italic">k</tspan> + ½)</text>
+      </svg>
+    </div>
+  </div>
+  <p class="small">Eigenschwingungen (FS S. 22): durchgezogen und gestrichelt die beiden Extremlagen, K = Knoten, B = Bauch. Am festen Ende liegt immer ein Knoten, am losen (offenen) Ende ein Bauch. In die Länge \(l\) passt deshalb ein ganzzahliges Vielfaches von \(\lambda/2\), wenn beide Enden gleich sind, und ein Vielfaches von \(\lambda/2\) plus \(\lambda/4\), wenn sie verschieden sind. Eigenfrequenzen \(f_k = c/\lambda_k\), zum Beispiel Saite: \(f_k = (k+1)\,\dfrac{c}{2l}\).</p>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -364,6 +1113,156 @@
     <li><b>Warum die Gerade statt eines einzelnen Abstands:</b> Die Steigung der Regressionsgeraden mittelt über alle Minima; ein einzelner Knotenabstand hätte den vollen Ablesefehler. Gleiche Idee wie <span class="f">\(t(n)\)</span> beim Schwingkreis (Lektion 6).</li>
     <li><b>Fehlerbetrachtung (im Abitur verlangt):</b> Ein Fehler von 10 % bei <span class="f">\(c\)</span> heißt 10 % bei <span class="f">\(\Delta s\)</span>, also knapp 0,8 mm pro Knotenabstand. Hauptquellen: Die Minima lassen sich nur auf etwa 1 mm genau orten (Empfänger hat Ausdehnung, Nebenreflexionen), und die Skala wird auf etwa 1 mm abgelesen; die Lufttemperatur erklärt 10 % nicht.</li>
   </ul>
+  <div class="grid2">
+    <div>
+      <svg viewBox="0 0 360 222" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Aufbau des Ultraschall-Versuchs: Generator, Sender, verschiebbarer Empfänger auf einer Schiene, Spiegel und Oszilloskop">
+        <defs>
+          <marker id="w7ua-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+          <pattern id="w7ua-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="var(--soft)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--muted)" stroke-width="1.6"/></pattern>
+        </defs>
+        <path d="M38,64.2 L39,64.5 L40,64.9 L41,65.4 L42,66 L43,66.7 L44,67.6 L45,68.4 L46,69.4 L47,70.5 L48,71.6 L49,72.8 L50,74 L51,75.3 L52,76.6 L53,78 L54,79.3 L55,79.3 L56,78 L57,76.6 L58,75.3 L59,74 L60,72.8 L61,71.6 L62,70.5 L63,69.4 L64,68.4 L65,67.6 L66,66.7 L67,66 L68,65.4 L69,64.9 L70,64.5 L71,64.2 L72,64.1 L73,64 L74,64.1 L75,64.2 L76,64.5 L77,64.9 L78,65.4 L79,66 L80,66.7 L81,67.6 L82,68.4 L83,69.4 L84,70.5 L85,71.6 L86,72.8 L87,74 L88,75.3 L89,76.6 L90,78 L91,79.3 L92,79.3 L93,78 L94,76.6 L95,75.3 L96,74 L97,72.8 L98,71.6 L99,70.5 L100,69.4 L101,68.4 L102,67.6 L103,66.7 L104,66 L105,65.4 L106,64.9 L107,64.5 L108,64.2 L109,64.1 L110,64 L111,64.1 L112,64.2 L113,64.5 L114,64.9 L115,65.4 L116,66 L117,66.7 L118,67.6 L119,68.4 L120,69.4 L121,70.5 L122,71.6 L123,72.8 L124,74 L125,75.3 L126,76.6 L127,78 L128,79.3 L129,79.3 L130,78 L131,76.6 L132,75.3 L133,74 L134,72.8 L135,71.6 L136,70.5 L137,69.4 L138,68.4 L139,67.6 L140,66.7 L141,66 L142,65.4 L143,64.9 L144,64.5 L145,64.2 L146,64.1 L147,64 L148,64.1 L149,64.2 L150,64.5 L151,64.9 L152,65.4 L153,66 L154,66.7 L155,67.6 L156,68.4 L157,69.4 L158,70.5 L159,71.6 L160,72.8 L161,74 L162,75.3 L163,76.6 L164,78 L165,79.3 L166,79.3 L167,78 L168,76.6 L169,75.3 L170,74 L171,72.8 L172,71.6 L173,70.5 L174,69.4 L175,68.4 L176,67.6 L177,66.7 L178,66 L179,65.4 L180,64.9 L181,64.5 L182,64.2 L183,64.1 L184,64 L185,64.1 L186,64.2 L187,64.5 L188,64.9 L189,65.4 L190,66 L191,66.7 L192,67.6 L193,68.4 L194,69.4 L195,70.5 L196,71.6 L197,72.8 L198,74 L199,75.3 L200,76.6 L201,78 L202,79.3 L203,79.3 L204,78 L205,76.6 L206,75.3 L207,74 L208,72.8 L209,71.6 L210,70.5 L211,69.4 L212,68.4 L213,67.6 L214,66.7 L215,66 L216,65.4 L217,64.9 L218,64.5 L219,64.2 L220,64.1 L221,64 L222,64.1 L223,64.2 L224,64.5 L225,64.9 L226,65.4 L227,66 L228,66.7 L229,67.6 L230,68.4 L231,69.4 L232,70.5 L233,71.6 L234,72.8 L235,74 L236,75.3 L237,76.6 L238,78 L239,79.3 L240,79.3 L241,78 L242,76.6 L243,75.3 L244,74 L245,72.8 L246,71.6 L247,70.5 L248,69.4 L249,68.4 L250,67.6 L251,66.7 L252,66 L253,65.4 L254,64.9 L255,64.5 L256,64.2 L257,64.1 L258,64 L259,64.1 L260,64.2 L261,64.5 L262,64.9 L263,65.4 L264,66 L265,66.7 L266,67.6 L267,68.4 L268,69.4 L269,70.5 L270,71.6 L271,72.8 L272,74 L273,75.3 L274,76.6 L275,78 L276,79.3 L277,79.3 L278,78 L279,76.6 L280,75.3 L281,74 L282,72.8 L283,71.6 L284,70.5 L285,69.4 L286,68.4 L287,67.6 L288,66.7 L289,66 L290,65.4 L291,64.9 L292,64.5 L293,64.2 L294,64.1 L295,64 L296,64.1 L297,64.2 L298,64.5 L299,64.9 L300,65.4 L301,66 L302,66.7 L303,67.6 L304,68.4 L305,69.4 L306,70.5 L307,71.6 L308,72.8 L309,74 L310,75.3 L311,76.6 L312,78 L313,79.3 L314,79.3 L315,78 L316,76.6 L317,75.3 L318,74 L319,72.8 L320,71.6 L321,70.5 L322,69.4 L323,68.4 L324,67.6 L325,66.7 L326,66 L327,65.4 L328,64.9 L329,64.5 L330,64.2 L331,64.1 L332,64" fill="none" stroke="var(--muted)" stroke-width="1.1" stroke-dasharray="4 3"/>
+        <path d="M38,95.8 L39,95.5 L40,95.1 L41,94.6 L42,94 L43,93.3 L44,92.4 L45,91.6 L46,90.6 L47,89.5 L48,88.4 L49,87.2 L50,86 L51,84.7 L52,83.4 L53,82 L54,80.7 L55,80.7 L56,82 L57,83.4 L58,84.7 L59,86 L60,87.2 L61,88.4 L62,89.5 L63,90.6 L64,91.6 L65,92.4 L66,93.3 L67,94 L68,94.6 L69,95.1 L70,95.5 L71,95.8 L72,95.9 L73,96 L74,95.9 L75,95.8 L76,95.5 L77,95.1 L78,94.6 L79,94 L80,93.3 L81,92.4 L82,91.6 L83,90.6 L84,89.5 L85,88.4 L86,87.2 L87,86 L88,84.7 L89,83.4 L90,82 L91,80.7 L92,80.7 L93,82 L94,83.4 L95,84.7 L96,86 L97,87.2 L98,88.4 L99,89.5 L100,90.6 L101,91.6 L102,92.4 L103,93.3 L104,94 L105,94.6 L106,95.1 L107,95.5 L108,95.8 L109,95.9 L110,96 L111,95.9 L112,95.8 L113,95.5 L114,95.1 L115,94.6 L116,94 L117,93.3 L118,92.4 L119,91.6 L120,90.6 L121,89.5 L122,88.4 L123,87.2 L124,86 L125,84.7 L126,83.4 L127,82 L128,80.7 L129,80.7 L130,82 L131,83.4 L132,84.7 L133,86 L134,87.2 L135,88.4 L136,89.5 L137,90.6 L138,91.6 L139,92.4 L140,93.3 L141,94 L142,94.6 L143,95.1 L144,95.5 L145,95.8 L146,95.9 L147,96 L148,95.9 L149,95.8 L150,95.5 L151,95.1 L152,94.6 L153,94 L154,93.3 L155,92.4 L156,91.6 L157,90.6 L158,89.5 L159,88.4 L160,87.2 L161,86 L162,84.7 L163,83.4 L164,82 L165,80.7 L166,80.7 L167,82 L168,83.4 L169,84.7 L170,86 L171,87.2 L172,88.4 L173,89.5 L174,90.6 L175,91.6 L176,92.4 L177,93.3 L178,94 L179,94.6 L180,95.1 L181,95.5 L182,95.8 L183,95.9 L184,96 L185,95.9 L186,95.8 L187,95.5 L188,95.1 L189,94.6 L190,94 L191,93.3 L192,92.4 L193,91.6 L194,90.6 L195,89.5 L196,88.4 L197,87.2 L198,86 L199,84.7 L200,83.4 L201,82 L202,80.7 L203,80.7 L204,82 L205,83.4 L206,84.7 L207,86 L208,87.2 L209,88.4 L210,89.5 L211,90.6 L212,91.6 L213,92.4 L214,93.3 L215,94 L216,94.6 L217,95.1 L218,95.5 L219,95.8 L220,95.9 L221,96 L222,95.9 L223,95.8 L224,95.5 L225,95.1 L226,94.6 L227,94 L228,93.3 L229,92.4 L230,91.6 L231,90.6 L232,89.5 L233,88.4 L234,87.2 L235,86 L236,84.7 L237,83.4 L238,82 L239,80.7 L240,80.7 L241,82 L242,83.4 L243,84.7 L244,86 L245,87.2 L246,88.4 L247,89.5 L248,90.6 L249,91.6 L250,92.4 L251,93.3 L252,94 L253,94.6 L254,95.1 L255,95.5 L256,95.8 L257,95.9 L258,96 L259,95.9 L260,95.8 L261,95.5 L262,95.1 L263,94.6 L264,94 L265,93.3 L266,92.4 L267,91.6 L268,90.6 L269,89.5 L270,88.4 L271,87.2 L272,86 L273,84.7 L274,83.4 L275,82 L276,80.7 L277,80.7 L278,82 L279,83.4 L280,84.7 L281,86 L282,87.2 L283,88.4 L284,89.5 L285,90.6 L286,91.6 L287,92.4 L288,93.3 L289,94 L290,94.6 L291,95.1 L292,95.5 L293,95.8 L294,95.9 L295,96 L296,95.9 L297,95.8 L298,95.5 L299,95.1 L300,94.6 L301,94 L302,93.3 L303,92.4 L304,91.6 L305,90.6 L306,89.5 L307,88.4 L308,87.2 L309,86 L310,84.7 L311,83.4 L312,82 L313,80.7 L314,80.7 L315,82 L316,83.4 L317,84.7 L318,86 L319,87.2 L320,88.4 L321,89.5 L322,90.6 L323,91.6 L324,92.4 L325,93.3 L326,94 L327,94.6 L328,95.1 L329,95.5 L330,95.8 L331,95.9 L332,96" fill="none" stroke="var(--muted)" stroke-width="1.1" stroke-dasharray="4 3"/>
+        <circle cx="313.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="276.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="239.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="202.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="165.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="128.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="91.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <circle cx="54.5" cy="80" r="1.8" fill="var(--muted)"/>
+        <rect x="20" y="60" width="18" height="40" rx="3" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.4"/>
+        <text x="29" y="52" font-size="10.5" fill="var(--fg)" text-anchor="middle">Sender</text>
+        <rect x="332" y="40" width="10" height="80" fill="url(#w7ua-hatch)"/>
+        <line x1="332" y1="40" x2="332" y2="120" stroke="var(--fg)" stroke-width="2"/>
+        <text x="336" y="34" font-size="10.5" fill="var(--fg)" text-anchor="middle">Spiegel</text>
+        <line x1="165.5" y1="88" x2="165.5" y2="126" stroke="var(--fg)" stroke-width="1.4"/>
+        <circle cx="165.5" cy="80" r="7" fill="var(--pos)"/>
+        <line x1="143.1" y1="56" x2="187.9" y2="56" stroke="var(--fg)" stroke-width="1.4" marker-end="url(#w7ua-fg)" marker-start="url(#w7ua-fg)"/>
+        <text x="165.5" y="44" font-size="10.5" fill="var(--fg)" text-anchor="middle">Empfänger (verschiebbar)</text>
+        <line x1="243.1" y1="106" x2="272.9" y2="106" stroke="var(--fg)" stroke-width="1.1" marker-end="url(#w7ua-fg)" marker-start="url(#w7ua-fg)"/>
+        <text x="258" y="120" font-size="10.5" fill="var(--fg)" text-anchor="middle">Δ<tspan font-style="italic">s</tspan> = <tspan font-style="italic">λ</tspan>/2</text>
+        <line x1="38" y1="126" x2="332" y2="126" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="38" y1="126" x2="38" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="48" y1="126" x2="48" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="58" y1="126" x2="58" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="68" y1="126" x2="68" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="78" y1="126" x2="78" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="88" y1="126" x2="88" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="98" y1="126" x2="98" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="108" y1="126" x2="108" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="118" y1="126" x2="118" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="128" y1="126" x2="128" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="138" y1="126" x2="138" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="148" y1="126" x2="148" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="158" y1="126" x2="158" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="168" y1="126" x2="168" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="178" y1="126" x2="178" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="188" y1="126" x2="188" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="198" y1="126" x2="198" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="208" y1="126" x2="208" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="218" y1="126" x2="218" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="228" y1="126" x2="228" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="238" y1="126" x2="238" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="248" y1="126" x2="248" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="258" y1="126" x2="258" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="268" y1="126" x2="268" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="278" y1="126" x2="278" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="288" y1="126" x2="288" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="298" y1="126" x2="298" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="308" y1="126" x2="308" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="318" y1="126" x2="318" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <line x1="328" y1="126" x2="328" y2="131" stroke="var(--fg)" stroke-width="0.8"/>
+        <text x="38" y="143" font-size="10" fill="var(--muted)">Schiene mit Skala</text>
+        <line x1="29" y1="100" x2="29" y2="156" stroke="var(--muted)" stroke-width="1.4"/>
+        <rect x="10" y="156" width="96" height="46" rx="6" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+        <text x="58" y="175" font-size="11" fill="var(--fg)" text-anchor="middle">Generator</text>
+        <text x="58" y="192" font-size="11" fill="var(--fg)" text-anchor="middle"><tspan font-style="italic">f</tspan> = 24 kHz</text>
+        <path d="M165.5,126 L165.5,146 L280,146 L280,150" fill="none" stroke="var(--muted)" stroke-width="1.4"/>
+        <rect x="214" y="150" width="132" height="66" rx="6" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+        <rect x="222" y="157" width="116" height="38" fill="var(--card)" stroke="var(--line)" stroke-width="1"/>
+        <path d="M226,176 L227,176.7 L228,177.4 L229,178 L230,178.5 L231,178.8 L232,179 L233,179 L234,178.7 L235,178.3 L236,177.8 L237,177.1 L238,176.4 L239,175.7 L240,174.9 L241,174.3 L242,173.7 L243,173.3 L244,173.1 L245,173 L246,173.1 L247,173.4 L248,173.9 L249,174.5 L250,175.2 L251,175.9 L252,176.6 L253,177.4 L254,178 L255,178.5 L256,178.8 L257,179 L258,179 L259,178.8 L260,178.4 L261,177.9 L262,177.2 L263,176.5 L264,175.8 L265,175 L266,174.4 L267,173.8 L268,173.4 L269,173.1 L270,173 L271,173.1 L272,173.4 L273,173.8 L274,174.4 L275,175.1 L276,175.8 L277,176.5 L278,177.3 L279,177.9 L280,178.4 L281,178.8 L282,179 L283,179 L284,178.8 L285,178.5 L286,178 L287,177.3 L288,176.6 L289,175.9 L290,175.1 L291,174.5 L292,173.9 L293,173.4 L294,173.1 L295,173 L296,173.1 L297,173.3 L298,173.7 L299,174.3 L300,175 L301,175.7 L302,176.4 L303,177.2 L304,177.8 L305,178.4 L306,178.7 L307,179 L308,179 L309,178.8 L310,178.5 L311,178 L312,177.4 L313,176.7 L314,176 L315,175.2 L316,174.5 L317,173.9 L318,173.5 L319,173.1 L320,173 L321,173.1 L322,173.3 L323,173.7 L324,174.2 L325,174.9 L326,175.6 L327,176.4 L328,177.1 L329,177.7 L330,178.3 L331,178.7 L332,178.9 L333,179 L334,178.9" fill="none" stroke="var(--ok)" stroke-width="1.6"/>
+        <text x="280" y="210" font-size="10.5" fill="var(--fg)" text-anchor="middle">Oszilloskop</text>
+      </svg>
+      <p class="small">Aufbau 1 (Heft S. 25), ergänzt um Generator und Oszilloskop: Sender und Spiegel erzeugen eine stehende Welle (gestrichelt: Einhüllende der Amplitude). Der Empfänger wird auf der Schiene verschoben; steht er in einem Minimum, zeigt das Oszilloskop fast kein Signal. Benachbarte Minima liegen \(\Delta s = \lambda/2\) auseinander.</p>
+    </div>
+    <div>
+      <svg viewBox="0 0 360 232" width="100%" style="max-width:414px;display:block;margin:4px auto" role="img" aria-label="Auswertung: Position s der Minima über ihrer Nummer u mit Ausgleichsgerade und Steigungsdreieck">
+        <defs>
+          <marker id="w7up-fg" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--fg)"/></marker>
+        </defs>
+        <line x1="52" y1="172" x2="340" y2="172" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="148" x2="340" y2="148" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="124" x2="340" y2="124" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="100" x2="340" y2="100" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="76" x2="340" y2="76" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="52" x2="340" y2="52" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="28" x2="340" y2="28" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="84" y1="196" x2="84" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="116" y1="196" x2="116" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="148" y1="196" x2="148" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="180" y1="196" x2="180" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="212" y1="196" x2="212" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="244" y1="196" x2="244" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="276" y1="196" x2="276" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="308" y1="196" x2="308" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="340" y1="196" x2="340" y2="18.4" stroke="var(--line)" stroke-width="0.8"/>
+        <line x1="52" y1="196" x2="346.4" y2="196" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7up-fg)"/>
+        <line x1="52" y1="196" x2="52" y2="15.6" stroke="var(--fg)" stroke-width="1.2" marker-end="url(#w7up-fg)"/>
+        <text x="350" y="224" font-size="11" fill="var(--fg)" text-anchor="end"><tspan font-style="italic">u</tspan> (Nummer des Minimums)</text>
+        <text x="60" y="18" font-size="11" fill="var(--fg)"><tspan font-style="italic">s</tspan> in cm</text>
+        <line x1="84" y1="196" x2="84" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="84" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">1</text>
+        <line x1="116" y1="196" x2="116" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="116" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">2</text>
+        <line x1="148" y1="196" x2="148" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="148" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">3</text>
+        <line x1="180" y1="196" x2="180" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="180" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">4</text>
+        <line x1="212" y1="196" x2="212" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="212" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">5</text>
+        <line x1="244" y1="196" x2="244" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="244" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">6</text>
+        <line x1="276" y1="196" x2="276" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="276" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">7</text>
+        <line x1="308" y1="196" x2="308" y2="200" stroke="var(--fg)" stroke-width="1"/>
+        <text x="308" y="212" font-size="10" fill="var(--muted)" text-anchor="middle">8</text>
+        <line x1="48" y1="196" x2="52" y2="196" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="200" font-size="10" fill="var(--muted)" text-anchor="end">0</text>
+        <line x1="48" y1="172" x2="52" y2="172" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="176" font-size="10" fill="var(--muted)" text-anchor="end">1</text>
+        <line x1="48" y1="148" x2="52" y2="148" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="152" font-size="10" fill="var(--muted)" text-anchor="end">2</text>
+        <line x1="48" y1="124" x2="52" y2="124" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="128" font-size="10" fill="var(--muted)" text-anchor="end">3</text>
+        <line x1="48" y1="100" x2="52" y2="100" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="104" font-size="10" fill="var(--muted)" text-anchor="end">4</text>
+        <line x1="48" y1="76" x2="52" y2="76" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="80" font-size="10" fill="var(--muted)" text-anchor="end">5</text>
+        <line x1="48" y1="52" x2="52" y2="52" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="56" font-size="10" fill="var(--muted)" text-anchor="end">6</text>
+        <line x1="48" y1="28" x2="52" y2="28" stroke="var(--fg)" stroke-width="1"/>
+        <text x="45" y="32" font-size="10" fill="var(--muted)" text-anchor="end">7</text>
+        <line x1="64.8" y1="178.8" x2="327.2" y2="24" stroke="var(--accent)" stroke-width="1.8"/>
+        <line x1="116" y1="148.6" x2="276" y2="148.6" stroke="var(--fg)" stroke-width="1.1"/>
+        <line x1="276" y1="148.6" x2="276" y2="54.2" stroke="var(--fg)" stroke-width="1.1"/>
+        <text x="196" y="163.6" font-size="10.5" fill="var(--fg)" text-anchor="middle" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">Δ<tspan font-style="italic">u</tspan> = 5</text>
+        <text x="282" y="105.4" font-size="10.5" fill="var(--fg)" stroke="var(--card)" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">3,94 cm</text>
+        <circle cx="84" cy="167" r="3.2" fill="var(--pos)"/>
+        <circle cx="116" cy="149.7" r="3.2" fill="var(--pos)"/>
+        <circle cx="148" cy="129.3" r="3.2" fill="var(--pos)"/>
+        <circle cx="180" cy="110.6" r="3.2" fill="var(--pos)"/>
+        <circle cx="212" cy="92.7" r="3.2" fill="var(--pos)"/>
+        <circle cx="244" cy="72" r="3.2" fill="var(--pos)"/>
+        <circle cx="276" cy="54.5" r="3.2" fill="var(--pos)"/>
+        <circle cx="308" cy="35.4" r="3.2" fill="var(--pos)"/>
+        <rect x="58" y="24" width="152" height="50" rx="6" fill="var(--card)" stroke="var(--line)" stroke-width="1"/>
+        <text x="66" y="40" font-size="10.5" fill="var(--fg)">Steigung <tspan font-style="italic">m</tspan> = 3,94 cm : 5</text>
+        <text x="66" y="54" font-size="10.5" fill="var(--fg)">= 0,787 cm = Δ<tspan font-style="italic">s</tspan></text>
+        <text x="66" y="68" font-size="10.5" fill="var(--accent)">⇒ <tspan font-style="italic">λ</tspan> = 2Δ<tspan font-style="italic">s</tspan> = 1,57 cm</text>
+      </svg>
+      <p class="small">Auswertung wie im Heft: Position \(s\) jedes Minimums über seiner Nummer \(u\), schematische Messpunkte mit der Heft-Steigung. Die Steigung der Ausgleichsgeraden ist der Minima-Abstand \(\Delta s\). Der Achsenabschnitt hängt nur davon ab, wo die Skala beginnt, und spielt keine Rolle.</p>
+    </div>
+  </div>
   <div class="grid2">
     <div>
       <div class="controls">
@@ -510,6 +1409,83 @@
     <li><b>1.4 a (4 BE)</b> LCD: ohne Spannung dreht die Flüssigkristallschicht die Polarisation um <span class="f">\(90^\circ\)</span>, das Licht passiert den gekreuzten zweiten Filter, das Teilpixel ist hell. Weiß = alle drei Teilpixel hell ⇒ <span class="f">\(U_{\mathrm{Rot}} = U_{\mathrm{Grün}} = U_{\mathrm{Blau}} = 0\,\mathrm{V}\)</span>.</li>
     <li><b>1.4 b (4 BE)</b> Rot: nur Rot hell ⇒ <span class="f">\(U_{\mathrm{Rot}} = 0\,\mathrm{V}\)</span>, <span class="f">\(U_{\mathrm{Grün}} = U_{\mathrm{Blau}} = 3\,\mathrm{V}\)</span> (Spannung ⇒ keine Drehung ⇒ gesperrt). Gelb = Rot + Grün (additive Mischung, M1-C) ⇒ <span class="f">\(U_{\mathrm{Rot}} = U_{\mathrm{Grün}} = 0\,\mathrm{V}\)</span>, <span class="f">\(U_{\mathrm{Blau}} = 3\,\mathrm{V}\)</span>.</li>
   </ul>
+  <svg viewBox="0 0 380 262" width="100%" style="max-width:470px;display:block;margin:4px auto" role="img" aria-label="LCD-Teilpixel: ohne Spannung dreht der Flüssigkristall die Schwingungsrichtung um 90 Grad, das Pixel ist hell; mit 3 Volt keine Drehung, das Pixel ist dunkel">
+    <defs>
+      <marker id="w7lc-arrow" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--arrow)"/></marker>
+      <marker id="w7lc-efield" viewBox="0 0 10 10" refX="5.5" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,0.8 L10,5 L0,9.2 z" fill="var(--efield)"/></marker>
+    </defs>
+    <text x="10" y="22" font-size="12" fill="var(--fg)" font-weight="600"><tspan font-style="italic">U</tspan> = 0 V: Teilpixel hell</text>
+    <line x1="34" y1="72" x2="336" y2="72" stroke="var(--kin)" stroke-width="7" stroke-opacity="0.22"/>
+    <line x1="28" y1="72" x2="35" y2="72" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="26.2" y1="76.2" x2="31.2" y2="81.2" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="22" y1="78" x2="22" y2="85" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17.8" y1="76.2" x2="12.8" y2="81.2" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="72" x2="9" y2="72" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17.8" y1="67.8" x2="12.8" y2="62.8" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="22" y1="66" x2="22" y2="59" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="26.2" y1="67.8" x2="31.2" y2="62.8" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="22" cy="72" r="4" fill="var(--kin)"/>
+    <line x1="47.1" y1="72" x2="68.8" y2="72" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <line x1="52.6" y1="62.6" x2="63.4" y2="81.4" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <line x1="63.4" y1="62.6" x2="52.6" y2="81.4" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <circle cx="100" cy="72" r="22" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="100" y1="50" x2="100" y2="94" stroke="var(--fg)" stroke-width="2.6"/>
+    <line x1="140" y1="62.1" x2="140" y2="81.8" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <rect x="160" y="48" width="64" height="48" rx="8" fill="var(--soft)" stroke="var(--efield)" stroke-width="1.4"/>
+    <path d="M192,60 A14,14 0 0 1 206,74" fill="none" stroke="var(--efield)" stroke-width="1.8" marker-end="url(#w7lc-efield)"/>
+    <text x="184" y="92" font-size="10" fill="var(--efield)" text-anchor="middle">90°</text>
+    <line x1="236.2" y1="72" x2="255.8" y2="72" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <circle cx="286" cy="72" r="22" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="264" y1="72" x2="308" y2="72" stroke="var(--fg)" stroke-width="2.6"/>
+    <line x1="316.1" y1="72" x2="331.9" y2="72" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <rect x="340" y="56" width="32" height="32" rx="4" fill="#ffd54a" stroke="var(--muted)" stroke-width="1"/>
+    <text x="4" y="112" font-size="10" fill="var(--muted)">Licht,</text>
+    <text x="4" y="124" font-size="10" fill="var(--muted)">unpolarisiert</text>
+    <text x="100" y="112" font-size="10" fill="var(--muted)" text-anchor="middle">Polfilter 1</text>
+    <text x="100" y="124" font-size="10" fill="var(--muted)" text-anchor="middle">Achse 90°</text>
+    <text x="192" y="112" font-size="10" fill="var(--muted)" text-anchor="middle">Flüssigkristall</text>
+    <text x="192" y="124" font-size="10" fill="var(--muted)" text-anchor="middle"><tspan font-style="italic">U</tspan> = 0 V</text>
+    <text x="286" y="112" font-size="10" fill="var(--muted)" text-anchor="middle">Polfilter 2</text>
+    <text x="286" y="124" font-size="10" fill="var(--muted)" text-anchor="middle">Achse 0°</text>
+    <text x="356" y="112" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="600">hell</text>
+    <text x="10" y="152" font-size="12" fill="var(--fg)" font-weight="600"><tspan font-style="italic">U</tspan> = 3 V: Teilpixel dunkel</text>
+    <line x1="34" y1="202" x2="290" y2="202" stroke="var(--kin)" stroke-width="7" stroke-opacity="0.22"/>
+    <line x1="28" y1="202" x2="35" y2="202" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="26.2" y1="206.2" x2="31.2" y2="211.2" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="22" y1="208" x2="22" y2="215" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17.8" y1="206.2" x2="12.8" y2="211.2" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="16" y1="202" x2="9" y2="202" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="17.8" y1="197.8" x2="12.8" y2="192.8" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="22" y1="196" x2="22" y2="189" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <line x1="26.2" y1="197.8" x2="31.2" y2="192.8" stroke="var(--kin)" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="22" cy="202" r="4" fill="var(--kin)"/>
+    <line x1="47.1" y1="202" x2="68.8" y2="202" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <line x1="52.6" y1="192.6" x2="63.4" y2="211.4" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <line x1="63.4" y1="192.6" x2="52.6" y2="211.4" stroke="var(--arrow)" stroke-width="1.4" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <circle cx="100" cy="202" r="22" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="100" y1="180" x2="100" y2="224" stroke="var(--fg)" stroke-width="2.6"/>
+    <line x1="140" y1="192.2" x2="140" y2="211.8" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <rect x="160" y="178" width="64" height="48" rx="8" fill="var(--soft)" stroke="var(--efield)" stroke-width="1.4"/>
+    <text x="192" y="200" font-size="10" fill="var(--efield)" text-anchor="middle">keine</text>
+    <text x="192" y="213" font-size="10" fill="var(--efield)" text-anchor="middle">Drehung</text>
+    <line x1="246" y1="192.2" x2="246" y2="211.8" stroke="var(--arrow)" stroke-width="1.6" marker-end="url(#w7lc-arrow)" marker-start="url(#w7lc-arrow)"/>
+    <circle cx="286" cy="202" r="22" fill="var(--soft)" stroke="var(--fg)" stroke-width="1.2"/>
+    <line x1="264" y1="202" x2="308" y2="202" stroke="var(--fg)" stroke-width="2.6"/>
+    <line x1="316" y1="196" x2="328" y2="208" stroke="var(--pos)" stroke-width="2.2"/>
+    <line x1="316" y1="208" x2="328" y2="196" stroke="var(--pos)" stroke-width="2.2"/>
+    <text x="322" y="184" font-size="10" fill="var(--pos)" text-anchor="middle">gesperrt</text>
+    <rect x="340" y="186" width="32" height="32" rx="4" fill="#1b1f24" stroke="var(--muted)" stroke-width="1"/>
+    <text x="4" y="242" font-size="10" fill="var(--muted)">Licht,</text>
+    <text x="4" y="254" font-size="10" fill="var(--muted)">unpolarisiert</text>
+    <text x="100" y="242" font-size="10" fill="var(--muted)" text-anchor="middle">Polfilter 1</text>
+    <text x="100" y="254" font-size="10" fill="var(--muted)" text-anchor="middle">Achse 90°</text>
+    <text x="192" y="242" font-size="10" fill="var(--muted)" text-anchor="middle">Flüssigkristall</text>
+    <text x="192" y="254" font-size="10" fill="var(--muted)" text-anchor="middle"><tspan font-style="italic">U</tspan> = 3 V</text>
+    <text x="286" y="242" font-size="10" fill="var(--muted)" text-anchor="middle">Polfilter 2</text>
+    <text x="286" y="254" font-size="10" fill="var(--muted)" text-anchor="middle">Achse 0°</text>
+    <text x="356" y="242" font-size="10.5" fill="var(--fg)" text-anchor="middle" font-weight="600">dunkel</text>
+  </svg>
+  <p class="small">LCD-Teilpixel (Abitur 2025, 1.4): Polfilter 1 und 2 sind gekreuzt. Ohne Spannung dreht die Flüssigkristallschicht die Schwingungsrichtung um \(90^\circ\), das Licht passiert Filter 2: hell. Mit \(3\,\mathrm{V}\) dreht sie nicht, Filter 2 sperrt: dunkel. Rote Doppelpfeile: Schwingungsrichtung des Lichts.</p>
   <div class="note exam"><b>Muster dieser Aufgabe:</b> Begriffe (AFB I) → Diagramm und Regression nach Schema (AFB I/II) → Beurteilen mit Zahlen und Prozent (AFB II) → Transfer auf drei Filter und LCD (AFB III). 40 BE, davon 12 BE reine Dokumentation und Zeichnung. Wer das TR-Schema beherrscht, hat ein Drittel der Punkte, bevor Physik ins Spiel kommt.</div>
 </section>
 
