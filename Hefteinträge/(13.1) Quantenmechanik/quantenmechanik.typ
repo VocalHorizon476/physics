@@ -743,3 +743,131 @@ $
 
 #pagebreak()
 
+= Der Franck-Hertz-Versuch
+_Kommt im Abi sehr gerne dran – einfach YouTube-Video angucken._
+
+Gas lässt sich bei bestimmter Energie für Elektronen anregen. Wenn ein Elektron in dem Gerät beschleunigt wird, dann verändert sich die Energie des Elektrons über den Verlauf des Raums. Je nachdem, mit welcher Energie das Elektron startet und zu welchem Zeitpunkt es welche Energie erhält, hängt ab, welcher Anteil des Gases, das es durchqueren muss, angeregt werden kann und das Elektron somit abbremsen würde, weshalb es nicht gemessen werden würde.
+
+#grid(
+  columns: (4fr, 3fr),
+  [
+    #align(center)[#image("images/Schaltbild Franck-Hertz-Versuch.jpeg", width: 100%)]
+
+  ],
+  [
+    #align(center)[#image("images/Aufbau Franck-Hertz-Versuch.jpeg", width: 100%)]
+  ],
+)
+
+$U_B$: 0–60 V, #h(2em) $U_"gegen" = -2 "V"$
+
+_Herr Tepe sagt "Glühwendel" anstatt von "Glühkathode" und anstatt von "Gitter" "Gitteranode"._
+
+== Durchführung
+Eine Glühwendel wird beheizt, um den glühelektrischen Effekt zu erzeugen.
+Die dort freiwerdenden Elektronen werden mithilfe einer variablen Beschleunigungsspannung $U_B$ in Richtung der Gitteranode beschleunigt.\
+Hinter der Gitteranode liegt eine sogenannte Auffangelektrode. Zwischen Gitter und Elektrode liegt eine Gegenspannung an. Elektronen, die durch das Gitter fliegen und das Gegenfeld $E_2$ überwinden, fließen über die Auffangelektrode ab. Dieser Elektronenstrom $I$ wird gemessen. \
+In der Franck-Hertz-Röhre befindet sich ein Gas (z.B. Quecksilber). \
+Stoßen Elektronen mit ausreichend hoher Energie auf die Gasatome, so können diese energetisch angeregt werden. Die Elektronen verlieren dabei an kinetischer Energie:
+$
+  underbrace(E_"kin", "nach Stoß") & = underbrace(E_"kin, 0", "vor Stoß") - E_"Anregung"
+$
+
+Erhöht man $U_B$, so wird $E_"kin"$ am Gitter immer größer. Ist $E_"kin" > e^- dot U_G$ dann kommen Elektronen bis zur Auffangelektrode vordringen.\
+Findet eine Anregung statt, weil auf dem Weg der Elektronen $E_"kin, 0" > E_"Anregung"$ wird, so geht den Elektronen Energie verloren und sie erreichen die Auffangelektrode nicht mehr. $I$ wird dann kleiner.\
+Erhöht man $U_B$ weiter, wird $I$ wieder größer, bis auf den Weg von Wendel zu Gitter die Beschleunigung ausreicht, um ein zweites Mal Gasatome anzuregen.\
+Es ergibt sich folgendes Bild:
+
+
+
+
+#pagebreak()
+
+#align(center)[#image("images/Franck-Herz(1).png", width: 70%)]
+
+$
+  e^- dot U_B gt.tilde E_"Anregung"
+$
+
+#align(center)[#image("images/Franck-Herz(2).png", width: 70%)]
+
+
+== $U_B$-$I$-Diagramm
+#align(center)[
+  #canvas({
+    import draw: *
+    // Franck-Hertz-Kurve (Quecksilber): Maxima im Abstand von ca. 4,9 V
+    // Periode: langsamer Anstieg (70 %), dann weicher Abfall (30 %)
+    let anstieg = 0.7
+    let kurve(u) = {
+      if u <= 2 { return 0 } // Gegenspannung: erst ab ca. 2 V fließt Strom
+      let s = calc.rem(u - 3.5 + 4.9, 4.9) / 4.9
+      let form = if u < 3.5 { 0 } else if s < anstieg {
+        (1 - calc.cos(calc.pi * s / anstieg)) / 2
+      } else {
+        (1 + calc.cos(calc.pi * (s - anstieg) / (1 - anstieg))) / 2
+      }
+      let einhuellende = 0.3 * calc.pow(u - 2, 1.3)
+      einhuellende * (0.35 + 0.65 * form)
+    }
+
+    // Diagrammgröße und Achsenbereich -> Umrechnung Datenwerte in Canvas-Koordinaten
+    let (breite, hoehe) = (12, 6)
+    let (u-max, i-max) = (33, 20)
+    let cx(u) = u * breite / u-max
+    let cy(i) = i * hoehe / i-max
+
+    // Lage der Maxima numerisch suchen (jeweils um 3,5 V + 0,7 · 4,9 V + n · 4,9 V)
+    let maxima = range(5).map(n => {
+      let start = 3.5 + anstieg * 4.9 + n * 4.9 - 1
+      range(201).map(k => start + k * 0.01).fold(start, (best, u) => if kurve(u) > kurve(best) { u } else { best })
+    })
+
+    plot.plot(
+      size: (breite, hoehe),
+      axis-style: "school-book",
+      x-label: $U_B "in V"$,
+      y-label: $I "in nA"$,
+      x-min: 0,
+      x-max: u-max,
+      y-min: 0,
+      y-max: i-max,
+      x-tick-step: 5,
+      y-tick-step: none,
+      {
+        plot.add(kurve, domain: (0, 30), samples: 600, style: (stroke: (paint: green.darken(20%), thickness: 1.5pt)))
+      },
+    )
+
+    // Gestrichelte Lote von den Maxima auf die x-Achse
+    for u in maxima {
+      line((cx(u), cy(kurve(u))), (cx(u), 0), stroke: (paint: gray, dash: "dashed", thickness: 0.6pt))
+    }
+
+    // Klammern von Berg zu Berg mit ΔE darunter
+    for n in range(maxima.len() - 1) {
+      let (a, b) = (maxima.at(n), maxima.at(n + 1))
+      line((cx(a), 0.15), (cx(a), -0.85), stroke: 0.8pt)
+      line((cx(b), 0.15), (cx(b), -0.85), stroke: 0.8pt)
+      decorations.brace(
+        (cx(a), -0.8),
+        (cx(b), -0.8),
+        flip: true,
+        amplitude: 0.35,
+        stroke: black,
+      )
+      content(((cx(a) + cx(b)) / 2, -1.55), $Delta E$)
+    }
+
+    // Eingekreiste Nummern über dem ersten und zweiten Berg
+    for (n, u) in maxima.slice(0, 2).enumerate() {
+      let mitte = (cx(u), cy(kurve(u)) + 0.55)
+      circle(mitte, radius: 0.22, stroke: 0.7pt)
+      content(mitte, text(size: 9pt)[#(n + 1)])
+    }
+  })
+]
+
+$
+  Delta E = E_"Anregung"
+$
