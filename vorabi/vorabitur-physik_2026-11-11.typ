@@ -19,7 +19,7 @@ $
        & = (h dot c)/(589 "nm")
 $
 
-=> Entspricht dem Übergang von $n=4$ nach $n=3$.
+$=>$ Entspricht dem Übergang von $n=4$ nach $n=3$.
 
 === 1.1 c)
 die Na-DL emittiert Licht der Wellenlänge $lambda approx 598$ nm. \
@@ -48,7 +48,7 @@ $
              n dot lambda & = g dot sin(arctan a/d) \
   arcsin (n dot lambda)/g & = arctan a/d \
                         a & = d dot tan(arcsin((n dot lambda)/g)) \
-                          & = 14.3"cm" tan (arcsin((1 dot 589 dot 10^(-9) m )/(1.666 dot 10^(-6) m ))
+                          & = 14.3"cm" tan (arcsin((1 dot 589 dot 10^(-9) m )/(1.666 dot 10^(-6) m )))
 $
 
 === 1.2 c)
@@ -71,7 +71,7 @@ Lässt man einen kleinen CCD-Chip auf einer Kreisbahn das Spektrum abfahren, so 
 
 #pagebreak()
 == Aufgabe 2)
-=== 2.1)
+=== a)
 #align(center)[#image("images/Fadenstrahlrohr.png", width: 90%)]
 
 $
@@ -80,4 +80,59 @@ $
     B & : "Magnetfeld"
 $
 
-$U_H$ führt zur Erhitzung der Glühwendel. Durch den glühelektrischen Effekt
+$U_H$ führt zur Erhitzung der Glühwendel. Durch den glühelektrischen Effekt treten dort Elektronen aus. Die freien Elektronen werden dann durch die Spannung $U_B$ in Richtung der Lochblende beschleunigt. \
+Elektronen, die das Loch in der Blende passieren, bilden den Elektronenstrahl.
+
+=== b)
+#let einzug(body) = block(above: 0.8em, below: 1.5em, inset: (left: 2em), body)
+
+1. Messdaten in Tabelle in TR übernehmen.
+$
+  "Umrechnung:" && U_B & -> sqrt(U_B) \
+        "Bsp.:" && 75V & -> sqrt(75) sqrt(V)
+$
+
+2. Diagramm anlegen:
+#einzug()[
+  x-Achse: $sqrt(U_B)$ in $sqrt(V)$\
+  y-Achse: $r$ in $c m$
+]
+
+3. Erwartet wird $r tilde sqrt(U_B)$
+#einzug()[
+  $=>$ lineare Regression\
+  $=> y = 0.13633 x - 0.01519$
+]
+
+4. Im physikalischen Kontext:
+#einzug()[
+  Der y-Achsenabschnitt ist im Verhältnis zur Abweichung der Messpunkte zur Ausgleichsgeraden klein und kann als vermutliche Messungenauigkeit vernachlässigt werden.
+
+  $
+    r (sqrt(U_B)) & = underbrace(0.1362 "cm"/sqrt(V), k) dot sqrt(U_B)
+  $
+]
+$
+              k & = sqrt((2 m e) / (e dot B^2)) quad             && | ()^2 \
+            k^2 & = (2 m e) / (e dot B^2) quad                   && | dot B^2/2 \
+  k^2 dot B^2/2 & = m^e/e                                        && | "KW" \
+          e/m^e & = 2/(k^2 dot B^2) \
+                & = 2/((0.1362 "cm"/sqrt(V))^2 dot (0.0025 T)^2) \
+                & = 1.73 dot 10^11 C/"kg"
+$
+
+Literaturwert:
+$
+  e/m^e & = 1.759 dot 10^11 C/"kg"
+$
+$
+  "Abweichung       "
+  ((1.759 - 1.73) dot 10^11 C/"kg")/(1.759 dot 10^11 C/"kg") dot 100 % = 1.9%
+$
+
+=== c)
+In der Röhre befindet sich ein dünnes Gas.\
+Treffen die Elektronen des Strahls auf die Gasatome, können sie diese anregen.\
+Bei der Abregung kann dann Licht ggf. im sichtbaren Wellenlängenbereich abgegeben werden.
+
+
